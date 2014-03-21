@@ -1,5 +1,5 @@
-class Container {
-	
+class Container { //TODO double check threadsafety for all operations, reduce length of synchronized ops
+	private final Object lock = new Object();
 	boolean highlight;
 	float x,y,w,h;
 	int cols, rows;
@@ -30,12 +30,16 @@ class Container {
 		fill(170);
 		rect(x,y,w+1,h+1);
 		
-		for (Selectable s: entries){ // display everything except current interacting
-			if (s != interacting) s.display();
+		synchronized(lock){
+			for (Selectable s: entries){ // display everything except current interacting
+				if (s != interacting) s.display();
+			}
 		}
+		 
    	}
 	
 	void add(Selectable s){
+		synchronized(lock){
 		if (entries.size() == rows*cols){
 			// println("Error: Attempted to Add Selectable to Full Container!");
 			return;	
@@ -72,10 +76,12 @@ class Container {
 			if (!s.dragging) s.moveToRest();
 			entries.add(s);
 		}
+		}
 		s.current = this;
 	}
 		
 	void remove(Selectable s){
+		synchronized(lock){
 		int index = entries.indexOf(s);
 		if (index == -1) return;
 		Selectable cur;
@@ -88,6 +94,7 @@ class Container {
 			cur.moveToRest();
 		}
 		entries.remove(index);
+		}
 		s.current = null;
 	}
 	
@@ -101,13 +108,15 @@ class Container {
 			else interacting = null;
 		}
 		if (interacting == null){ //if no current interacting find topmost interacting
-			if (!(mx > x && mx < x + w && my > y && my < y + h)) return false; 
+			if (!(mx > x && mx < x + w && my > y && my < y + h)) return false;
+			synchronized(lock){ 
 			for (int j=entries.size()-1; j >=0; j--){ 
 				Selectable s = entries.get(j);
 				if (s.interact(mx,my)){
 					interacting = s;
 					return true;
 				}
+			}
 			}
 		}
 		return false;
@@ -122,12 +131,14 @@ class Container {
 		}
 		else{//shouldn't hit
 			if (!(mx > x && mx < x + w && my > y && my < y + h)) return false;
+			synchronized(lock){ 
 			for (int j=entries.size()-1; j >=0; j--){ 
 				Selectable s = (entries.get(j)).clicked(mx,my);
 				if (s != null){
 					interacting = s;
 					return true;
 				}
+			}
 			}
 			return false;
 		}
