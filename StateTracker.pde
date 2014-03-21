@@ -53,13 +53,16 @@ class StateTracker {
 		}
 	}
 	
-	void interact(int mx, int my) {
-		plus.interact(mx,my);
-		minus.interact(mx,my);
+	boolean interact(int mx, int my) {
+		
+		boolean interacted = plus.interact(mx,my) || minus.interact(mx,my);
 		
 		for (int i=0; i < states.size(); i++){
-			(states.get(i)).interact(mx,my);
+			if (interacted) break;
+			interacted = interacted || (states.get(i)).interact(mx,my);
 		}
+		
+		return interacted;
 	}
 	
 	boolean clicked(int mx, int my) {

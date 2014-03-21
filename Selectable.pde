@@ -1,7 +1,8 @@
 class Selectable {
-	boolean dragging = false;
-	boolean rollover = false;
-	boolean isClone = false;
+	private boolean visible;
+	boolean dragging;
+	boolean rollover;
+	boolean isClone;
 	
 	float x,y,w,h; // entry position and size
 	float restx, resty;
@@ -30,6 +31,11 @@ class Selectable {
 		home = null;
 		current = null;
 		lib_idx = -1;
+		
+		visible  = true;
+		dragging = false;
+		rollover = false;
+		isClone  = false;
 	}
 	
 	Selectable instantiate(){
@@ -38,27 +44,33 @@ class Selectable {
 		return s;
 	}
 	
+	boolean isVisible(){
+		return visible;
+	}
+	
   	void display() {
-   		//draw box for entry
-		int a = dragging ? 150 : 255;
+		if (visible){
+			//draw box for entry
+			int a = dragging ? 150 : 255;
 		
-		noStroke();
-		fill(color(225,226,227,a));
-		rect(x,y,w,h);
+			noStroke();
+			fill(color(225,226,227,a));
+			rect(x,y,w,h);
 		
-		fill(color(r,g,b,a));
-		rect(x+6,y,7,h);
+			fill(color(r,g,b,a));
+			rect(x+6,y,7,h);
 		
-		noFill();
-		if (rollover) {
-			strokeWeight(2);
-			stroke(color(70));
+			noFill();
+			if (rollover) {
+				strokeWeight(2);
+				stroke(color(70));
+				}
+			else{
+				strokeWeight(1);
+				stroke(color(170));
 			}
-		else{
-			strokeWeight(1);
-			stroke(color(170));
+			rect(x,y,w,h);
 		}
-		rect(x,y,w,h);
    	}
 	
 	boolean interact(int mx, int my) {
@@ -109,16 +121,16 @@ class Selectable {
 		
 		if(current == null){
 			if (!isClone) home.add(this);
+			else visible = false;//will be deleted by garabage collection but remove from draw cycle in meantime
 		}
-		
-		if(current instanceof DropTarget){
+		else if(current instanceof DropTarget){
+			x = restx;
+			y = resty;
+			
 			current.isIntersectedAABB(this);
 			current.updateRenderContext();
 			println("RELOAD!");
 		}
-		
-		x = restx;
-		y = resty;
 		return true;
 	}
 	

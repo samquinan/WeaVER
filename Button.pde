@@ -37,8 +37,9 @@ class Button {
 		return (mx > x && mx < x+w && my > y && my < y+h) ? true : false;
 	}
 	
-	void interact(int mx, int my) {
+	boolean interact(int mx, int my) {
 		rollover = active & intersected(mx, my);
+		return rollover;
 	}
 	
 	boolean clicked(int mx, int my) {
@@ -46,8 +47,10 @@ class Button {
 		return mouseDown;
 	}
 	
-    void released(){
+    boolean released(){//returns true if release did work
+	  boolean tmp = mouseDown;
       mouseDown = false;
+	  return tmp;
     }
 	
 }

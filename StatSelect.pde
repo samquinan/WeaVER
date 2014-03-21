@@ -35,19 +35,21 @@ class StatSelect extends Selectable{
 	}
 	
   	void display() {
-		super.display();
-		textSize(11);
-		textAlign(LEFT, CENTER);
-		fill(0);
-		text(var,x+15,y+h/2-2);
+		if (this.isVisible()) {
+			super.display();
+			textSize(11);
+			textAlign(LEFT, CENTER);
+			fill(0);
+			text(var,x+15,y+h/2-2);
 		
-		textSize(9);
-		fill(0);
-		textAlign(RIGHT, TOP);
-		text(statop, x+w-3, y);
+			textSize(9);
+			fill(0);
+			textAlign(RIGHT, TOP);
+			text(statop, x+w-3, y);
 		
-		textAlign(RIGHT, BOTTOM);
-		text(hgt, x+w-3, y+h-2);
+			textAlign(RIGHT, BOTTOM);
+			text(hgt, x+w-3, y+h-2);
+		}
 	}
 	
 	StatSelect instantiate(){

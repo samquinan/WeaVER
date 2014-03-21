@@ -29,6 +29,11 @@ class Segment2D implements QuadTreeElement {
 	vertex(p1.x, p1.y);
   }
   
+  void makeVetexCalls(PShape s){
+	 s.vertex(p0.x, p0.y);
+	 s.vertex(p1.x, p1.y);
+  } 
+  
   boolean intersectsAABB(float minx, float miny, float maxx, float maxy){
     //handle degenerate case p1 = p0
     if (p1.x == p0.x && p1.y == p0.y) //TODO switch to epsilon test?

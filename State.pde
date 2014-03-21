@@ -64,8 +64,9 @@ class State {
 		return (mx > x && mx < x+w && my > y && my < y+h) ? true : false;
 	}
 	
-	void interact(int mx, int my) {
+	boolean interact(int mx, int my) {
 		rollover = !active & intersected(mx, my);
+		return rollover;
 	}
 	
 	boolean clicked(int mx, int my) {

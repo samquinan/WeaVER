@@ -10,7 +10,8 @@ class Field{
   float viewHeight, viewWidth;
   
   Field(String file, int dx, int dy, PVector offset, float maxh, float maxw){ // expects 1 value per line (!) no commas, no lat / long
-    dimx = dx;
+	
+	dimx = dx;
     dimy = dy;
     //spacing = s;
     //buffer = buf;
@@ -41,6 +42,21 @@ class Field{
       }
     } 
   }
+  
+  Field(FloatList d, float vmax, float vmin, int dx, int dy, PVector offset, float s){ 
+	  
+	dimx = dx;
+    dimy = dy;
+    viewZero = offset;
+    
+    spacing = s;
+    viewHeight = dy*spacing;
+    viewWidth = dx*spacing;
+    
+    data = d;
+	maxVal = vmax;
+	minVal = vmin;
+}
   
   float getMin(){
     return minVal;
@@ -652,7 +668,8 @@ class Field{
                     
       }
     }
-	
+	//hotswap
+	contour.update();
   }
   
   void genFillNearestNeighbor(PImage img, ColorMapf cmap, boolean interpolate){

@@ -15,6 +15,8 @@ Contour2D highlight;
 int cornerx, cornery;
 int tabw, tabh;
 
+Button testing;
+
 void setup() {
   	smooth();
   	size(1040, 646, P2D);
@@ -44,6 +46,7 @@ void setup() {
 	
 	// controls
 	tracker = new StateTracker(cornerx+20,cornery+samplesy*spacing+30,"VIEWS");
+	testing = new Button(width-25, height-40, 15);
 	
 	c = new Library(cornerx+(samplesx*spacing) + 20,45,tabw,tabh,2,7);
 	c.setLabel("FIELDS");
@@ -62,31 +65,18 @@ void setup() {
 	t_cmap.linkLegend(k);
 	t_cmap.setLabel("COLOR MAP");
 	c.linkTarget(t_cmap);
-
 }
 
 void draw(){
-  	background(230);
-	
-	//handle interactions
-	tracker.interact(mouseX,mouseY);
-	boolean interacting = c.interact(mouseX,mouseY);
-	if (!interacting){ // get selection if exists
-		Segment2D selection = cselect.select(mouseX, mouseY, 4);
-		if (selection != null){
-			highlight = selection.getSrcContour();
-		}
-		else highlight = null;
-	}
-	
-		
+  	background(230);	
+			
 	//draw map bg
 	fill(255);
 	noStroke();
 	rect(cornerx, cornery, samplesx*spacing, samplesy*spacing, 0);
 	
 	//draw map
-	strokeWeight(1);
+	strokeWeight(2);
 	stroke(30,30,30,255);//stroke(85,46,27,255);
 	fill(210);//fill(247,241,230);
 	shape(map, cornerx+(39*spacing), cornery+(35*spacing), 123*spacing, 75*spacing);
@@ -95,26 +85,25 @@ void draw(){
 	image(fill, cornerx, cornery);
 	
 	// draw outline
-	strokeWeight(1);
-	stroke(30,30,30,255);//stroke(85,46,27,255);
+	strokeWeight(2);
+	stroke(255,255,255,255);//stroke(85,46,27,255);
 	noFill();
 	shape(map, cornerx+(39*spacing), cornery+(35*spacing), 123*spacing, 75*spacing);	
 	
 	// contours
 	//draw contours
 	colorMode(HSB, 360, 100, 100, 100);
-	stroke(0,0,10,100);
+	stroke(0,0,15,100);
 	strokeCap(SQUARE);
 	drawContours(contours, color(0,0,0), 2.0);
 	//drawContours(contours, 119, 27, 44, 80, 40, 100, color(119,40,21,100));
 	strokeCap(ROUND);
-	colorMode(RGB,255);
-	
+	colorMode(RGB,255);	
+		
 	// draw controls
 	c.display();
 	k.display();
 	tracker.display();
-	
 	
 	//frame rate for testing
 	textSize(10);
@@ -123,6 +112,10 @@ void draw(){
 	text(frameRate, width-3, height-3);
 	textSize(10);
 	
+	testing.display();
+	
+	//selction tooltip
+	drawToolTip();
 }
 
 void loadData(){
@@ -238,7 +231,7 @@ void loadData(){
 	encd.useBilinear(true);
 	encd.useInterpolation(false);
 	encd.setColorMap(rh);
-	encd.genIsovalues(10);
+	encd.genIsovalues(0, 10);
 	entry = new StatSelect(tabw,tabh,color(0,116,162),encd, "RH", "500mb", "mean");
 	c.add(entry);
 	
@@ -248,7 +241,7 @@ void loadData(){
 	encd.useBilinear(true);
 	encd.useInterpolation(false);
 	encd.setColorMap(rh);
-	encd.genIsovalues(10);
+	encd.genIsovalues(0, 10);
 	entry = new StatSelect(tabw,tabh,color(245,127,41),encd, "RH", "750mb", "mean");
 	c.add(entry);
 	
@@ -279,8 +272,21 @@ void drawContours(ArrayList<Contour2D> contours, color select, float weight)
 		stroke(select);
 		highlight.drawContour();
 		
+		// String s = highlight.getID();
+		// fill(0,0,100,70);
+		// noStroke();
+		// rect(mouseX - (s.length()/2)*6, mouseY-17, s.length()*6, 12);
+		// fill(0);
+		// textAlign(CENTER,BOTTOM);
+		// textSize(10);
+		// text(s, mouseX, mouseY-5);
+	}
+}
+
+void drawToolTip(){
+	if ((highlight != null)){// && trigger){		
 		String s = highlight.getID();
-		fill(0,0,100,70);
+		fill(255,179);
 		noStroke();
 		rect(mouseX - (s.length()/2)*6, mouseY-17, s.length()*6, 12);
 		fill(0);
@@ -298,9 +304,39 @@ void mousePressed(){
 			tracker.update(t_cmap,t_contour);
 		}
 	}
+	
+	if(testing.clicked(mouseX,mouseY)) debug();
+}
+
+void mouseMoved(){
+	testing.interact(mouseX,mouseY);
+	
+	//handle interactions
+	boolean interacting = tracker.interact(mouseX,mouseY);
+	interacting = interacting || c.interact(mouseX,mouseY);
+	
+	if (!interacting){ // get selection if exists
+		Segment2D selection = cselect.select(mouseX, mouseY, 4);
+		if (selection != null){
+			highlight = selection.getSrcContour();
+		}
+		else highlight = null;
+	}
+}
+
+void mouseDragged(){
+	c.interact(mouseX,mouseY);
 }
 
 void mouseReleased() {
+	testing.released();
 	c.released();
 	tracker.released();
+}
+
+
+void debug(){
+	for (Contour2D c : contours){
+		println(c.getID() + "\t" + c.cached);
+	}
 }

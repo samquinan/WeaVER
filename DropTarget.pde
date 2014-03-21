@@ -91,12 +91,16 @@ class DropTarget extends Container {
 				if (layer1 != null){
 					layer1.clear();
 					(entries.get(0)).genContours(layer1);
-				//quadtree
+					//quadtree
 					if (qtree != null){
 						qtree.clear();
 						for (Contour2D c: layer1){
-							c.addAllSegmentsToQuadTree(qtree); 
+							c.addAllSegmentsToQuadTree(qtree);
 						}
+					}
+					//cache contours
+					for (Contour2D c: layer1){
+						c.genPShape();
 					}
 				}
 				break;
