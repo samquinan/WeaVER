@@ -15,8 +15,6 @@ Contour2D highlight;
 int cornerx, cornery;
 int tabw, tabh;
 
-Button testing;
-
 void setup() {
   	smooth();
   	size(1040, 646, P2D);
@@ -51,7 +49,6 @@ void setup() {
 	
 	// controls
 	tracker = new StateTracker(cornerx+20,cornery+samplesy*spacing+30,"VIEWS");
-	testing = new Button(width-25, height-40, 15);
 			
 	t_contour = new DropTarget(cornerx+10+(1*(tabw+4)),cornery-tabh-10,tabw,tabh);
 	t_contour.linkContours(contours);
@@ -111,9 +108,7 @@ void draw(){
 	fill(70);
 	text(frameRate, width-3, height-3);
 	textSize(10);
-	
-	// testing.display();
-	
+		
 	//selction tooltip
 	drawToolTip();
 }
@@ -167,11 +162,9 @@ void mousePressed(){
 		}
 	}
 	
-	if(testing.clicked(mouseX,mouseY)) debug();
 }
 
 void mouseMoved(){
-	testing.interact(mouseX,mouseY);
 	
 	//handle interactions
 	boolean interacting = tracker.interact(mouseX,mouseY);
@@ -191,7 +184,6 @@ void mouseDragged(){
 }
 
 void mouseReleased() {
-	testing.released();
 	c.released();
 	tracker.released();
 }

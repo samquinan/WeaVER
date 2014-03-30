@@ -1,15 +1,22 @@
-class Button {
+class RectButton implements Button {
 	
 	float x,y,w,h;
 	boolean rollover = false;
 	boolean mouseDown = false;
 	boolean active = true;
 		
-	Button(float x0, float y0, float side){
+	RectButton(float x0, float y0, float side){
 	    x=x0;
 		y=y0;
 		w=side;
 		h=side;
+	}
+	
+	RectButton(float x0, float y0, float w0, float h0){
+	    x=x0;
+		y=y0;
+		w=w0;
+		h=h0;
 	}
 	
 	boolean isActive(){

@@ -1,4 +1,4 @@
-class CharButton extends Button {
+class CharButton extends RectButton {
 	char c;
 	int csize;
 	
