@@ -321,61 +321,7 @@ class HardcodedDataLoad implements Runnable{
 		encd.genIsovalues(273.15, 2);
 		entry = new StatSelect(tabw,tabh,color(0,116,162), encd, "TMP", "700mb", "mean");
 		c.add(entry);
-		
-		// //mean 500mb TMP
-		// f = new Field("./datasets/tmp_500mb_mean.txt", samplesx, samplesy, corner, samplesy*spacing, samplesx*spacing);
-		// encd = new Encoding(f);
-		// encd.useBilinear(true);
-		// encd.useInterpolation(false);
-		// encd.setColorMap(tmp_5c);
-		// encd.genIsovalues(273.15, 5);
-		// entry = new StatSelect(tabw,tabh,color(0,116,162),encd, "TMP", "500mb", "mean");
-		// c.add(entry);
-		// println("one");
-		// 	
-		// //mean 750mb TMP
-		// f = new Field("./datasets/tmp_750mb_mean.txt", samplesx, samplesy, corner, samplesy*spacing, samplesx*spacing);
-		// encd = new Encoding(f);
-		// encd.useBilinear(true);
-		// encd.useInterpolation(false);
-		// encd.setColorMap(tmp_5c);
-		// encd.genIsovalues(273.15, 2);
-		// entry = new StatSelect(tabw,tabh,color(245,127,41),encd, "TMP", "750mb", "mean");
-		// c.add(entry);
-		// println("too");
-		// 	
-		// //mean 2m TMP
-		// f = new Field("./datasets/tmp_2m_mean.txt", samplesx, samplesy, corner, samplesy*spacing, samplesx*spacing);
-		// encd = new Encoding(f);
-		// encd.useBilinear(true);
-		// encd.useInterpolation(false);
-		// encd.setColorMap(tmp_3c);
-		// encd.genIsovalues(273.15, 3);
-		// entry = new StatSelect(tabw,tabh,color(88,89,91),encd, "TMP", "2m", "mean");
-		// c.add(entry);
-		// println("tree");
-		// 	
-		// //mean 500mb RH
-		// f = new Field("./datasets/rh_500mb_mean.txt", samplesx, samplesy, corner, samplesy*spacing, samplesx*spacing);
-		// encd = new Encoding(f);
-		// encd.useBilinear(true);
-		// encd.useInterpolation(false);
-		// encd.setColorMap(rh);
-		// encd.genIsovalues(0, 10);
-		// entry = new StatSelect(tabw,tabh,color(0,116,162),encd, "RH", "500mb", "mean");
-		// c.add(entry);
-		// println("fore");
-		// 	
-		// //mean 750mb RH
-		// f = new Field("./datasets/rh_750mb_mean.txt", samplesx, samplesy, corner, samplesy*spacing, samplesx*spacing);
-		// encd = new Encoding(f);
-		// encd.useBilinear(true);
-		// encd.useInterpolation(false);
-		// encd.setColorMap(rh);
-		// encd.genIsovalues(0, 10);
-		// entry = new StatSelect(tabw,tabh,color(245,127,41),encd, "RH", "750mb", "mean");
-		// c.add(entry);
-		// println("Johnny Ive");
+				
 	}	
 }
 
