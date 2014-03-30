@@ -143,6 +143,12 @@ class Selectable {
 	void genFill(PImage img){
 	}
 	
+	void genFill(PImage img, int time){
+	}
+	
 	void genContours(ArrayList<Contour2D> contours){
+	}
+	
+	void genContours(ArrayList<Contour2D> contours, int time){
 	}
 }

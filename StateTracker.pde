@@ -112,10 +112,8 @@ class StateTracker {
 		idxPrev = idxActive;
 	}
 	
-	void released() {
-		plus.released();
-		minus.released();
-		return;
+	boolean released() {
+		return plus.released() || minus.released();
 	}
 		
 }

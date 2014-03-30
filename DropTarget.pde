@@ -3,6 +3,7 @@ class DropTarget extends Container {
 	Legend legend;
 	ArrayList<Contour2D> layer1;
 	QuadTree_Node<Segment2D> qtree;
+	TimeControl timer;
 	String label;
 	
 	DropTarget(float ix, float iy, float dx, float dy) {
@@ -35,6 +36,10 @@ class DropTarget extends Container {
 		legend = l;
 	}
 	
+	void linkTimeControl(TimeControl t){
+		timer = t;
+	}
+	
   	void display() {
 		textSize(8);
 		textAlign(LEFT, BOTTOM);
@@ -60,6 +65,7 @@ class DropTarget extends Container {
 	}
 	
 	void updateRenderContext(){
+		int fhr = timer.getIndex();
 		int n = entries.size();
 		switch(n){
 			case 0:
@@ -81,7 +87,7 @@ class DropTarget extends Container {
 				//fill
 				if (layer0 != null){
 					Selectable s = entries.get(0);
-					s.genFill(layer0);
+					s.genFill(layer0, fhr);
 				//legend
 					if (s instanceof StatSelect && legend != null){
 						legend.setColorMap(((StatSelect) s).getColorMap());
@@ -90,7 +96,7 @@ class DropTarget extends Container {
 				//contours
 				if (layer1 != null){
 					layer1.clear();
-					(entries.get(0)).genContours(layer1);
+					(entries.get(0)).genContours(layer1, fhr);
 					//quadtree
 					if (qtree != null){
 						qtree.clear();

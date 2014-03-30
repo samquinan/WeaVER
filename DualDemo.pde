@@ -1,6 +1,7 @@
 PFont plotFont;
 Library c;
 StateTracker tracker;
+TimeControl timer;
 DropTarget t_cmap, t_contour;
 
 PShape map;
@@ -35,7 +36,7 @@ void setup() {
 	c.setLabel("FIELDS");
 	
 	(new Thread(new HardcodedDataLoad())).start();
-	
+		
     // load map
     map = loadShape("roughUS.svg");
 	map.disableStyle();
@@ -49,16 +50,21 @@ void setup() {
 	
 	// controls
 	tracker = new StateTracker(cornerx+20,cornery+samplesy*spacing+30,"VIEWS");
+	
+    timer = new TimeControl(cornerx+(samplesx*spacing) + 20, cornery+samplesy*spacing - 50, tabw*2, 30);
+	timer.setLabel("FORECAST HOUR");
 			
 	t_contour = new DropTarget(cornerx+10+(1*(tabw+4)),cornery-tabh-10,tabw,tabh);
 	t_contour.linkContours(contours);
 	t_contour.linkQuadTree(cselect);
+	t_contour.linkTimeControl(timer);
 	t_contour.setLabel("CONTOUR");
 	c.linkTarget(t_contour);
 	
 	t_cmap = new DropTarget(cornerx+10,cornery-tabh-10,tabw,tabh);
 	t_cmap.linkImage(fill);
 	t_cmap.linkLegend(k);
+	t_cmap.linkTimeControl(timer);
 	t_cmap.setLabel("COLOR MAP");
 	c.linkTarget(t_cmap);
 	
@@ -101,6 +107,7 @@ void draw(){
 	c.display();
 	k.display();
 	tracker.display();
+	timer.display();
 	
 	//frame rate for testing
 	textSize(10);
@@ -155,37 +162,62 @@ void drawToolTip(){
 
 
 void mousePressed(){
-	c.clicked(mouseX,mouseY);
-	if(tracker.clicked(mouseX,mouseY)){
+	if(c.clicked(mouseX,mouseY)){
+		//do nothing	
+	}
+	else if(tracker.clicked(mouseX,mouseY)){
 		if(tracker.changed()){
 			tracker.update(t_cmap,t_contour);
 		}
 	}
-	
+	else if(timer.clicked(mouseX, mouseY)){
+		
+	}
 }
 
 void mouseMoved(){
 	
 	//handle interactions
-	boolean interacting = tracker.interact(mouseX,mouseY);
-	interacting = interacting || c.interact(mouseX,mouseY);
-	
-	if (!interacting){ // get selection if exists
+	if (tracker.interact(mouseX,mouseY)){
+		//do nothing
+	}
+	else if (c.interact(mouseX,mouseY)){
+		//do nothing
+	}
+	else if (timer.interact(mouseX, mouseY)){
+		//do nothing
+	}
+	else { // not interacting with controls, get selection if exists
 		Segment2D selection = cselect.select(mouseX, mouseY, 4);
 		if (selection != null){
 			highlight = selection.getSrcContour();
 		}
 		else highlight = null;
-	}
+	}	
 }
 
 void mouseDragged(){
-	c.interact(mouseX,mouseY);
+	if(c.interact(mouseX,mouseY)){
+		//do nothing
+	}
+	else if(timer.drag(mouseX, mouseY)){
+		
+		println("recontour!");
+	}
+
 }
 
 void mouseReleased() {
-	c.released();
-	tracker.released();
+	if (c.released()){
+		//do nothing
+	}
+	else if (tracker.released()){
+		//do nothing
+	}
+	else if (timer.released()){
+		println("recontour!");//additional recontour for slider
+		println("cache contours");
+	}
 }
 
 class HardcodedDataLoad implements Runnable{
