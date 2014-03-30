@@ -20,7 +20,7 @@ Button testing;
 void setup() {
   	smooth();
   	size(1040, 646, P2D);
-  	plotFont = createFont("Georgia", 11);
+  	plotFont = createFont("Georgia", 12);
   	textFont(plotFont);
   	
     spacing = 4;
@@ -277,61 +277,81 @@ class HardcodedDataLoad implements Runnable{
 		Encoding encd;
 		StatSelect entry;
 		PVector corner = new PVector(cornerx, cornery);
-	
-		//mean 500mb TMP
-		f = new Field("./datasets/tmp_500mb_mean.txt", samplesx, samplesy, corner, samplesy*spacing, samplesx*spacing);
-		encd = new Encoding(f);
-		encd.useBilinear(true);
-		encd.useInterpolation(false);
-		encd.setColorMap(tmp_5c);
-		encd.genIsovalues(273.15, 5);
-		entry = new StatSelect(tabw,tabh,color(0,116,162),encd, "TMP", "500mb", "mean");
-		c.add(entry);
-		println("one");
-	
-		//mean 750mb TMP
-		f = new Field("./datasets/tmp_750mb_mean.txt", samplesx, samplesy, corner, samplesy*spacing, samplesx*spacing);
-		encd = new Encoding(f);
-		encd.useBilinear(true);
-		encd.useInterpolation(false);
-		encd.setColorMap(tmp_5c);
-		encd.genIsovalues(273.15, 2);
-		entry = new StatSelect(tabw,tabh,color(245,127,41),encd, "TMP", "750mb", "mean");
-		c.add(entry);
-		println("too");
-	
-		//mean 2m TMP
-		f = new Field("./datasets/tmp_2m_mean.txt", samplesx, samplesy, corner, samplesy*spacing, samplesx*spacing);
-		encd = new Encoding(f);
+		
+		ArrayList<Field> fields = new ArrayList<Field>();
+		String dir = "./datasets/700mb/";
+		String run = "15";
+		String grid = "212";
+		String deriv = "mean";
+		for (int k=0; k<=87; k+=3){
+			String fhr = String.format("%02d", k);
+			String file = dir + "sref.t" + run + "z.pgrb" + grid + ".f" + fhr + "."+ deriv + ".txt";
+			f = new Field(file, samplesx, samplesy, corner, samplesy*spacing, samplesx*spacing);
+			fields.add(f);
+		}
+		
+		encd = new Encoding(fields);
 		encd.useBilinear(true);
 		encd.useInterpolation(false);
 		encd.setColorMap(tmp_3c);
-		encd.genIsovalues(273.15, 3);
-		entry = new StatSelect(tabw,tabh,color(88,89,91),encd, "TMP", "2m", "mean");
+		encd.genIsovalues(273.15, 2);
+		entry = new StatSelect(tabw,tabh,color(0,116,162), encd, "TMP", "700mb", "mean");
 		c.add(entry);
-		println("tree");
-	
-		//mean 500mb RH
-		f = new Field("./datasets/rh_500mb_mean.txt", samplesx, samplesy, corner, samplesy*spacing, samplesx*spacing);
-		encd = new Encoding(f);
-		encd.useBilinear(true);
-		encd.useInterpolation(false);
-		encd.setColorMap(rh);
-		encd.genIsovalues(0, 10);
-		entry = new StatSelect(tabw,tabh,color(0,116,162),encd, "RH", "500mb", "mean");
-		c.add(entry);
-		println("fore");
-	
-		//mean 750mb RH
-		f = new Field("./datasets/rh_750mb_mean.txt", samplesx, samplesy, corner, samplesy*spacing, samplesx*spacing);
-		encd = new Encoding(f);
-		encd.useBilinear(true);
-		encd.useInterpolation(false);
-		encd.setColorMap(rh);
-		encd.genIsovalues(0, 10);
-		entry = new StatSelect(tabw,tabh,color(245,127,41),encd, "RH", "750mb", "mean");
-		c.add(entry);
-		println("Johnny Ive");
+		
+		// //mean 500mb TMP
+		// f = new Field("./datasets/tmp_500mb_mean.txt", samplesx, samplesy, corner, samplesy*spacing, samplesx*spacing);
+		// encd = new Encoding(f);
+		// encd.useBilinear(true);
+		// encd.useInterpolation(false);
+		// encd.setColorMap(tmp_5c);
+		// encd.genIsovalues(273.15, 5);
+		// entry = new StatSelect(tabw,tabh,color(0,116,162),encd, "TMP", "500mb", "mean");
+		// c.add(entry);
+		// println("one");
+		// 	
+		// //mean 750mb TMP
+		// f = new Field("./datasets/tmp_750mb_mean.txt", samplesx, samplesy, corner, samplesy*spacing, samplesx*spacing);
+		// encd = new Encoding(f);
+		// encd.useBilinear(true);
+		// encd.useInterpolation(false);
+		// encd.setColorMap(tmp_5c);
+		// encd.genIsovalues(273.15, 2);
+		// entry = new StatSelect(tabw,tabh,color(245,127,41),encd, "TMP", "750mb", "mean");
+		// c.add(entry);
+		// println("too");
+		// 	
+		// //mean 2m TMP
+		// f = new Field("./datasets/tmp_2m_mean.txt", samplesx, samplesy, corner, samplesy*spacing, samplesx*spacing);
+		// encd = new Encoding(f);
+		// encd.useBilinear(true);
+		// encd.useInterpolation(false);
+		// encd.setColorMap(tmp_3c);
+		// encd.genIsovalues(273.15, 3);
+		// entry = new StatSelect(tabw,tabh,color(88,89,91),encd, "TMP", "2m", "mean");
+		// c.add(entry);
+		// println("tree");
+		// 	
+		// //mean 500mb RH
+		// f = new Field("./datasets/rh_500mb_mean.txt", samplesx, samplesy, corner, samplesy*spacing, samplesx*spacing);
+		// encd = new Encoding(f);
+		// encd.useBilinear(true);
+		// encd.useInterpolation(false);
+		// encd.setColorMap(rh);
+		// encd.genIsovalues(0, 10);
+		// entry = new StatSelect(tabw,tabh,color(0,116,162),encd, "RH", "500mb", "mean");
+		// c.add(entry);
+		// println("fore");
+		// 	
+		// //mean 750mb RH
+		// f = new Field("./datasets/rh_750mb_mean.txt", samplesx, samplesy, corner, samplesy*spacing, samplesx*spacing);
+		// encd = new Encoding(f);
+		// encd.useBilinear(true);
+		// encd.useInterpolation(false);
+		// encd.setColorMap(rh);
+		// encd.genIsovalues(0, 10);
+		// entry = new StatSelect(tabw,tabh,color(245,127,41),encd, "RH", "750mb", "mean");
+		// c.add(entry);
+		// println("Johnny Ive");
 	}	
 }
 

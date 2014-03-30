@@ -65,7 +65,17 @@ class StatSelect extends Selectable{
 	void genFill(PImage img){
 		statfield.genFill(img);
 	}
+	
+	void genFill(PImage img, int time){
+		statfield.genFill(img, time);
+	}
+	
 	void genContours(ArrayList<Contour2D> contours){
 		statfield.genContours(contours);
 	}
+	
+	void genContours(ArrayList<Contour2D> contours, int time){
+		statfield.genContours(contours, time);
+	}
+	
 }

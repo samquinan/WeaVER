@@ -21,6 +21,21 @@ class Encoding {
 		interpolate = false;
 	}
 	
+	Encoding(ArrayList<Field> f){
+		fields = f;
+		
+		//default to blank
+		cmap = new ColorMapf();
+		cmap.add(fields.get(0).getMin(), color(0, 0, 0, 0));
+		cmap.add(fields.get(0).getMax(), color(0, 0, 0, 0));
+		
+		isovalues = new ArrayList<Float>();
+		
+		bilinear = true;
+		interpolate = false;
+	}
+	
+	
 	void useBilinear(boolean b){
 		bilinear = b;
 	}
@@ -82,6 +97,17 @@ class Encoding {
 		}
 	}
 	
+	void genContours(ArrayList<Contour2D> contours, int idx){
+		Contour2D c;
+		Field f = fields.get(idx);
+		for (Float iso: isovalues){
+			  c = new Contour2D(2*f.dimy);
+			  f.genIsocontour(iso, c);
+			  c.setID(Float.toString(iso)); 
+		   	  contours.add(c);
+		}
+	}	
+	
 	void genFill(PImage img){
 		if (bilinear){
 			(fields.get(0)).genFillBilinear(img, cmap, interpolate);
@@ -90,4 +116,14 @@ class Encoding {
 			(fields.get(0)).genFillNearestNeighbor(img, cmap, interpolate);
 		}
 	}
+	
+	void genFill(PImage img, int idx){
+		if (bilinear){
+			(fields.get(idx)).genFillBilinear(img, cmap, interpolate);
+		}
+		else{
+			(fields.get(idx)).genFillNearestNeighbor(img, cmap, interpolate);
+		}
+	}
+	
 }
