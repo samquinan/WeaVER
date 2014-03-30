@@ -171,7 +171,7 @@ void mousePressed(){
 		}
 	}
 	else if(timer.clicked(mouseX, mouseY)){
-		
+		// do nothing
 	}
 }
 
@@ -201,8 +201,8 @@ void mouseDragged(){
 		//do nothing
 	}
 	else if(timer.drag(mouseX, mouseY)){
-		
-		println("recontour!");
+		t_cmap.updateRenderContext(false);//update but do not cache
+		t_contour.updateRenderContext(false);//update but do not cache
 	}
 
 }
@@ -215,8 +215,8 @@ void mouseReleased() {
 		//do nothing
 	}
 	else if (timer.released()){
-		println("recontour!");//additional recontour for slider
-		println("cache contours");
+		t_cmap.updateRenderContext(true);//TODO remove extra recontour before cache on slider
+		t_contour.updateRenderContext(true);//TODO remove extra recontour before cache on slider
 	}
 }
 
