@@ -123,12 +123,12 @@ class Selectable {
 			if (!isClone) home.add(this);
 			else visible = false;//will be deleted by garabage collection but remove from draw cycle in meantime
 		}
-		else if(current instanceof DropTarget){
+		else if(current instanceof DropTarget){ //(current instanceof DropTarget)
 			x = restx;
 			y = resty;
 			
 			current.isIntersectedAABB(this);
-			current.updateRenderContext();
+			((DropTarget) current).updateRenderContext();
 			println("RELOAD!");
 		}
 		return true;

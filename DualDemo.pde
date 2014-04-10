@@ -54,19 +54,19 @@ void setup() {
     timer = new TimeControl(cornerx+(samplesx*spacing) + 20, cornery+samplesy*spacing - 50, tabw*2, 30);
 	timer.setLabel("FORECAST HOUR");
 			
-	t_contour = new DropTarget(cornerx+10+(1*(tabw+4)),cornery-tabh-10,tabw,tabh);
+	t_contour = new FieldTarget(cornerx+10+(1*(tabw+4)),cornery-tabh-10,tabw,tabh);
 	t_contour.linkContours(contours);
 	t_contour.linkQuadTree(cselect);
 	t_contour.linkTimeControl(timer);
 	t_contour.setLabel("CONTOUR");
-	c.linkTarget(t_contour);
+	c.linkTarget((DropTarget) t_contour);
 	
-	t_cmap = new DropTarget(cornerx+10,cornery-tabh-10,tabw,tabh);
+	t_cmap = new FieldTarget(cornerx+10,cornery-tabh-10,tabw,tabh);
 	t_cmap.linkImage(fill);
 	t_cmap.linkLegend(k);
 	t_cmap.linkTimeControl(timer);
 	t_cmap.setLabel("COLOR MAP");
-	c.linkTarget(t_cmap);
+	c.linkTarget((DropTarget) t_cmap);
 	
 }
 

@@ -156,6 +156,6 @@ class Container { //TODO double check threadsafety for all operations, reduce le
 		return tmp;
 	}
 	
-	void updateRenderContext(){}
+	// void updateRenderContext(){}
 	
 }
