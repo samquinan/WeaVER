@@ -17,8 +17,9 @@ int cornerx, cornery;
 int tabw, tabh;
 
 void setup() {
-  	smooth();
   	size(1040, 646, P2D);
+	smooth(8);
+	
   	plotFont = createFont("Georgia", 12);
   	textFont(plotFont);
   	
@@ -302,6 +303,7 @@ class HardcodedDataLoad implements Runnable{
 		StatSelect entry;
 		PVector corner = new PVector(cornerx, cornery);
 		
+		// LOAD MEAN
 		ArrayList<Field> fields = new ArrayList<Field>();
 		String dir = "./datasets/700mb/";
 		String run = "15";
@@ -321,6 +323,16 @@ class HardcodedDataLoad implements Runnable{
 		encd.genIsovalues(273.15, 2);
 		entry = new StatSelect(tabw,tabh,color(0,116,162), encd, "TMP", "700mb", "mean");
 		c.add(entry);
+		
+		// LOAD STDDEV
+		// fields = new ArrayList<Field>();
+		// deriv = "stddev";
+		// for (int k=0; k<=87; k+=3){
+		// 	String fhr = String.format("%02d", k);
+		// 	String file = dir + "sref.t" + run + "z.pgrb" + grid + ".f" + fhr + "."+ deriv + ".txt";
+		// 	f = new Field(file, samplesx, samplesy, corner, samplesy*spacing, samplesx*spacing);
+		// 	fields.add(f);
+		// }
 				
 	}	
 }

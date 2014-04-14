@@ -4,6 +4,12 @@ class FieldTarget extends DropTarget {
 		super(ix, iy, dx, dy);		
 	}
 	
+	void add(Selectable s){
+		if (s instanceof StatSelect){
+			super.add(s);	
+		}
+	}
+	
 	void updateRenderContext(){ //defaults to cached update
 		int n = entries.size();
 		switch(n){
