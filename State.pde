@@ -16,9 +16,9 @@ class State {
 		textsize = 12;
 		
 		dtargetEntries = new ArrayList< ArrayList<Selectable> >();
-		dtargetEntries.add(new ArrayList<Selectable>());
-		dtargetEntries.add(new ArrayList<Selectable>());
-		dtargetEntries.add(new ArrayList<Selectable>());
+		// dtargetEntries.add(new ArrayList<Selectable>());
+		// dtargetEntries.add(new ArrayList<Selectable>());
+		// dtargetEntries.add(new ArrayList<Selectable>());
 	}
 	
 	void setTextSize(int s){
@@ -50,18 +50,33 @@ class State {
 		text(s, x+(w/2), y+(h/3));
 	}
 	
-	void saveState(Container t1, Container t2, Container t3){
+	// void saveState(Container t1, Container t2, Container t3){
+	// 	dtargetEntries.clear();
+	// 	dtargetEntries.add(new ArrayList<Selectable>(t1.entries));
+	// 	dtargetEntries.add(new ArrayList<Selectable>(t2.entries));
+	// 	dtargetEntries.add(new ArrayList<Selectable>(t3.entries));
+	// }
+	// 
+	// void restoreState(Container t1, Container t2, Container t3){
+	// 	t1.entries = dtargetEntries.get(0);
+	// 	t2.entries = dtargetEntries.get(1);
+	// 	t3.entries = dtargetEntries.get(2);
+	// }
+	
+	void saveState(ArrayList<Container> targets){
 		dtargetEntries.clear();
-		dtargetEntries.add(new ArrayList<Selectable>(t1.entries));
-		dtargetEntries.add(new ArrayList<Selectable>(t2.entries));
-		dtargetEntries.add(new ArrayList<Selectable>(t3.entries));
+		for (int i = 0; i < targets.size(); i++){
+			dtargetEntries.add(new ArrayList<Selectable>((targets.get(i)).entries));
+		}
 	}
 	
-	void restoreState(Container t1, Container t2, Container t3){
-		t1.entries = dtargetEntries.get(0);
-		t2.entries = dtargetEntries.get(1);
-		t3.entries = dtargetEntries.get(2);
+	void restoreState(ArrayList<Container> targets){
+		for (int i = 0; i < targets.size(); i++){
+			if (i < dtargetEntries.size()) (targets.get(i)).entries = dtargetEntries.get(i);
+			else (targets.get(i)).entries = new ArrayList<Selectable>();
+		}		
 	}
+	
 	
 	private boolean intersected(int mx, int my){
 		return (mx > x && mx < x+w && my > y && my < y+h) ? true : false;

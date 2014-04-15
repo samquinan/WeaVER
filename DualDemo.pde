@@ -2,6 +2,8 @@ PFont plotFont;
 Library c;
 StateTracker tracker;
 TimeControl timer;
+ArrayList<Container> targets;
+
 ScalarTarget t_cmap, t_contour;
 WindTarget t_barbs;
 
@@ -37,7 +39,7 @@ void setup() {
 	tabh = 22;
 	
 	//load data in background
-	c = new Library(cornerx+(samplesx*spacing) + 20,45,tabw,tabh,2,7);
+	c = new Library(cornerx+(samplesx*spacing) + 20,45,tabw,tabh,2,16);
 	c.setLabel("FIELDS");
 	
 	glyphs = new BarbGlyphList();
@@ -62,12 +64,14 @@ void setup() {
     timer = new TimeControl(cornerx+(samplesx*spacing) + 20, cornery+samplesy*spacing - 50, tabw*2, 30);
 	timer.setLabel("FORECAST HOUR");
 	
+	targets = new ArrayList<Container>();
 	
 	t_barbs = new WindTarget(cornerx+10+(2*(tabw+4)),cornery-tabh-10,tabw,tabh);
 	t_barbs.linkBarbs(barbs);
 	t_barbs.linkTimeControl(timer);
 	t_barbs.setLabel("BARBS");
 	c.linkTarget(t_barbs);
+	targets.add(t_barbs);
 			
 	t_contour = new ScalarTarget(cornerx+10+(1*(tabw+4)),cornery-tabh-10,tabw,tabh);
 	t_contour.linkContours(contours);
@@ -75,6 +79,7 @@ void setup() {
 	t_contour.linkTimeControl(timer);
 	t_contour.setLabel("CONTOUR");
 	c.linkTarget(t_contour);
+	targets.add(t_contour);
 	
 	t_cmap = new ScalarTarget(cornerx+10,cornery-tabh-10,tabw,tabh);
 	t_cmap.linkImage(fill);
@@ -82,6 +87,7 @@ void setup() {
 	t_cmap.linkTimeControl(timer);
 	t_cmap.setLabel("COLOR MAP");
 	c.linkTarget(t_cmap);
+	targets.add(t_cmap);
 }
 
 void draw(){
@@ -191,7 +197,7 @@ void mousePressed(){
 	}
 	else if(tracker.clicked(mouseX,mouseY)){
 		if(tracker.changed()){
-			tracker.update(t_cmap,t_contour,t_barbs);
+			tracker.update(targets);
 		}
 	}
 	else if(timer.clicked(mouseX, mouseY)){

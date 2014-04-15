@@ -104,19 +104,33 @@ class StateTracker {
 		return retval;
 	}
 	
-	void update(Container t1, Container t2, Container t3){
-		if (idxPrev < states.size()) (states.get(idxPrev)).saveState(t1,t2,t3);
-		(states.get(idxActive)).restoreState(t1,t2,t3);
+	// void update(Container t1, Container t2, Container t3){
+	// 	if (idxPrev < states.size()) (states.get(idxPrev)).saveState(t1,t2,t3);
+	// 	(states.get(idxActive)).restoreState(t1,t2,t3);
+	// 	
+	// 	Target tmp = (Target) t1;
+	// 	if (tmp != null) tmp.updateRenderContext();
+	// 	tmp = (Target) t2;
+	// 	if (tmp != null) tmp.updateRenderContext();
+	// 	tmp = (Target) t3;
+	// 	if (tmp != null) tmp.updateRenderContext();
+	// 			
+	// 	idxPrev = idxActive;
+	// }
+	
+	void update(ArrayList<Container> targets){
+		if (idxPrev < states.size()) (states.get(idxPrev)).saveState(targets);
+		(states.get(idxActive)).restoreState(targets);
 		
-		Target tmp = (Target) t1;
-		if (tmp != null) tmp.updateRenderContext();
-		tmp = (Target) t2;
-		if (tmp != null) tmp.updateRenderContext();
-		tmp = (Target) t3;
-		if (tmp != null) tmp.updateRenderContext();
-				
+		Target tmp;
+		for (Container c : targets){
+			tmp = (Target) c;
+			if (tmp != null) tmp.updateRenderContext();
+		}
+						
 		idxPrev = idxActive;
 	}
+	
 	
 	boolean released() {
 		return plus.released() || minus.released();
