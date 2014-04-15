@@ -11,18 +11,19 @@ class BarbGlyphList {
 		float l = 8;
 	
 		// barb 0
-		float s = 4;
+		float s = 5;
 		// float dx = s*sin(radians(60));
 		// float dy = s*cos(radians(60));
 		// barb = createShape(TRIANGLE, 0, -s, -dx, dy, dx, dy);
 		barb = createShape(GROUP);
-		fill(0);
-		stroke(0);
+		barb.disableStyle();
+		// fill(0);
+		// stroke(0);
 		barb.addChild(createShape(ELLIPSE, 0, 0, s, s));
-		noFill();
-		stroke(0);
-		strokeWeight(1);
-		barb.addChild(createShape(ELLIPSE, -s, -s, 3*s, 3*s));
+		// noFill();
+		// stroke(0);
+		// strokeWeight(1);
+		// barb.addChild(createShape(ELLIPSE, -s, -s, 3*s, 3*s));
 		barbs.add(barb);
 	
 		// barb 5

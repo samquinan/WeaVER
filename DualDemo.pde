@@ -3,7 +3,7 @@ Library c;
 StateTracker tracker;
 TimeControl timer;
 ScalarTarget t_cmap, t_contour;
-//WindTarget t_barbs;
+WindTarget t_barbs;
 
 PShape map;
 int samplesx, samplesy, spacing;
@@ -13,6 +13,8 @@ ArrayList<Contour2D> contours;
 Legend k;
 QuadTree_Node<Segment2D> cselect;
 Contour2D highlight;
+
+ArrayList<Barb> barbs;
 BarbGlyphList glyphs;
 
 int cornerx, cornery;
@@ -39,6 +41,7 @@ void setup() {
 	c.setLabel("FIELDS");
 	
 	glyphs = new BarbGlyphList();
+	barbs = new ArrayList<Barb>();
 	
 	(new Thread(new HardcodedDataLoad())).start();
 		
@@ -60,8 +63,11 @@ void setup() {
 	timer.setLabel("FORECAST HOUR");
 	
 	
-	//t_barbs = new WindTarget(cornerx+10+(2*(tabw+4)),cornery-tabh-10,tabw,tabh);
-	
+	t_barbs = new WindTarget(cornerx+10+(2*(tabw+4)),cornery-tabh-10,tabw,tabh);
+	t_barbs.linkBarbs(barbs);
+	t_barbs.linkTimeControl(timer);
+	t_barbs.setLabel("BARBS");
+	c.linkTarget(t_barbs);
 			
 	t_contour = new ScalarTarget(cornerx+10+(1*(tabw+4)),cornery-tabh-10,tabw,tabh);
 	t_contour.linkContours(contours);
@@ -76,7 +82,6 @@ void setup() {
 	t_cmap.linkTimeControl(timer);
 	t_cmap.setLabel("COLOR MAP");
 	c.linkTarget(t_cmap);
-	
 }
 
 void draw(){
@@ -111,6 +116,15 @@ void draw(){
 	//drawContours(contours, 119, 27, 44, 80, 40, 100, color(119,40,21,100));
 	strokeCap(ROUND);
 	colorMode(RGB,255);	
+	
+	// barbs
+	strokeWeight(1.3);
+	fill(0);
+	stroke(0);
+	for(Barb barb : barbs){
+		barb.draw();
+	}
+	
 		
 	// draw controls
 	c.display();
@@ -212,6 +226,7 @@ void mouseDragged(){
 	else if(timer.drag(mouseX, mouseY)){
 		t_cmap.updateRenderContext(false);//update but do not cache
 		t_contour.updateRenderContext(false);//update but do not cache
+		t_barbs.updateRenderContext();
 	}
 
 }
@@ -226,6 +241,7 @@ void mouseReleased() {
 	else if (timer.released()){
 		t_cmap.updateRenderContext(true);//TODO remove extra recontour before cache on slider
 		t_contour.updateRenderContext(true);//TODO remove extra recontour before cache on slider
+		t_barbs.updateRenderContext();
 	}
 }
 

@@ -10,6 +10,12 @@ class ScalarTarget extends ScalarTargetBase {
 		}
 	}
 	
+	boolean isIntersectedAABB(Selectable s){
+		boolean tmp = super.isIntersectedAABB(s);
+		highlight = highlight && (s instanceof EncodesScalar);
+		return tmp;
+	}
+	
 	void updateRenderContext(){ //defaults to cached update
 		int n = entries.size();
 		switch(n){
