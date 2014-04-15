@@ -2,6 +2,10 @@ PFont plotFont;
 PShape map;
 BarbGlyphList glyphs;
 StatView view_0;
+MNSDView view_1;
+
+TextButton modeSwap;
+boolean mode = true;
 
 // int samplesx, samplesy, spacing;
 // int cornerx, cornery;
@@ -22,7 +26,6 @@ void setup() {
     map = loadShape("roughUS.svg");
 	map.disableStyle();
 	
-	
 	// generate view_0
     int spacing = 5;
     int samplesx = 185;
@@ -37,28 +40,52 @@ void setup() {
 	view_0.setMap(map);
 	view_0.linkGlyphs(glyphs);
 	view_0.loadData();
+	
+	view_1 = new MNSDView(samplesx, samplesy, spacing, cornerx, cornery, tabw, tabh, 12);
+	view_1.setMap(map);
+	view_1.loadData();
+	
+	modeSwap = new TextButton(cornerx + 20, height - 20, "SWAP");
 }
 
 void draw(){
-  	background(230);	
-	view_0.draw();
+  	background(230);
+	
+	if (mode) view_0.draw();
+	else view_1.draw();
+	
+	modeSwap.display();
 }
 
 
-void mousePressed(){
-	view_0.mousePress(mouseX, mouseY);
+void mousePressed(){	
+	if (mode) view_0.mousePress(mouseX, mouseY);
+	else view_1.mousePress(mouseX, mouseY);
+	
+	if (modeSwap.clicked(mouseX, mouseY)){
+		mode = !mode;
+	}
 }
 
 void mouseMoved(){
-	view_0.mouseMove(mouseX, mouseY);
+	if (mode) view_0.mouseMove(mouseX, mouseY);
+	else view_1.mouseMove(mouseX, mouseY);
+	
+	modeSwap.interact(mouseX, mouseY);
 }
 
 void mouseDragged(){
-	view_0.mouseDrag(mouseX, mouseY);
+	if (mode) view_0.mouseDrag(mouseX, mouseY);
+	else view_1.mouseDrag(mouseX, mouseY);
+	
+	modeSwap.interact(mouseX, mouseY);
 }
 
 void mouseReleased() {
-	view_0.mouseRelease();
+	if (mode) view_0.mouseRelease();
+	else view_1.mouseRelease();
+	
+	modeSwap.released();
 }
 
 // class HardcodedDataLoad implements Runnable{
