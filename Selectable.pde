@@ -128,7 +128,6 @@ class Selectable {
 			
 			current.isIntersectedAABB(this);
 			((Target) current).updateRenderContext();
-			println("RELOAD!");
 		}
 		return true;
 	}

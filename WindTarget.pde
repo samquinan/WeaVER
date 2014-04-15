@@ -82,7 +82,6 @@ class WindTarget extends Container implements Target{
 			EncodesVector s = (EncodesVector) entries.get(0);
 			if (s != null){
 				s.genBarbs(layer, fhr);
-				println(fhr);
 			}
 		}
 	}

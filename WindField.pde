@@ -17,6 +17,8 @@ class WindField extends Field {
 	}
 	
 	void generateBarbs(ArrayList<Barb> barbs, BarbGlyphList src){
+		if (src == null) return;
+		
 		int k = ceil(32/spacing);
 		int countx = floor(float(dimx)/k);
 		int county = floor(float(dimy)/k);
