@@ -2,7 +2,8 @@ PFont plotFont;
 Library c;
 StateTracker tracker;
 TimeControl timer;
-DropTarget t_cmap, t_contour;
+ScalarTarget t_cmap, t_contour;
+//WindTarget t_barbs;
 
 PShape map;
 int samplesx, samplesy, spacing;
@@ -12,6 +13,7 @@ ArrayList<Contour2D> contours;
 Legend k;
 QuadTree_Node<Segment2D> cselect;
 Contour2D highlight;
+BarbGlyphList glyphs;
 
 int cornerx, cornery;
 int tabw, tabh;
@@ -36,6 +38,8 @@ void setup() {
 	c = new Library(cornerx+(samplesx*spacing) + 20,45,tabw,tabh,2,7);
 	c.setLabel("FIELDS");
 	
+	glyphs = new BarbGlyphList();
+	
 	(new Thread(new HardcodedDataLoad())).start();
 		
     // load map
@@ -54,20 +58,24 @@ void setup() {
 	
     timer = new TimeControl(cornerx+(samplesx*spacing) + 20, cornery+samplesy*spacing - 50, tabw*2, 30);
 	timer.setLabel("FORECAST HOUR");
+	
+	
+	//t_barbs = new WindTarget(cornerx+10+(2*(tabw+4)),cornery-tabh-10,tabw,tabh);
+	
 			
-	t_contour = new FieldTarget(cornerx+10+(1*(tabw+4)),cornery-tabh-10,tabw,tabh);
+	t_contour = new ScalarTarget(cornerx+10+(1*(tabw+4)),cornery-tabh-10,tabw,tabh);
 	t_contour.linkContours(contours);
 	t_contour.linkQuadTree(cselect);
 	t_contour.linkTimeControl(timer);
 	t_contour.setLabel("CONTOUR");
-	c.linkTarget((DropTarget) t_contour);
+	c.linkTarget(t_contour);
 	
-	t_cmap = new FieldTarget(cornerx+10,cornery-tabh-10,tabw,tabh);
+	t_cmap = new ScalarTarget(cornerx+10,cornery-tabh-10,tabw,tabh);
 	t_cmap.linkImage(fill);
 	t_cmap.linkLegend(k);
 	t_cmap.linkTimeControl(timer);
 	t_cmap.setLabel("COLOR MAP");
-	c.linkTarget((DropTarget) t_cmap);
+	c.linkTarget(t_cmap);
 	
 }
 
@@ -296,10 +304,21 @@ class HardcodedDataLoad implements Runnable{
 	    rh.add(80, color(93, 180, 80, 255));
 	    rh.add(90, color(41, 98, 33, 255));
 	    rh.add(100, color(9, 49, 3, 255));
-	
+		
+		// testing wind isotachs
+		ColorMapf test = new ColorMapf();
+		colorMode(HSB, 360, 100, 100, 100);	
+	    test.add( 0, color(  0,   0, 100,   0));
+	    test.add(49.9, color(	 0,   0, 100, 0));
+		test.add(50, color( 96,  21,  80, 100));
+		test.add(60, color( 96,  21,  80, 100));
+		test.add(70, color( 68,  43,  71, 100));
+		test.add(80, color( 41,  66,  59, 100));
+		test.add(90, color( 13,  88,  43, 100));
+		colorMode(RGB,255);
 	
 		Field f;
-		Encoding encd;
+		ScalarEncoding encd;
 		StatSelect entry;
 		PVector corner = new PVector(cornerx, cornery);
 		
@@ -316,13 +335,34 @@ class HardcodedDataLoad implements Runnable{
 			fields.add(f);
 		}
 		
-		encd = new Encoding(fields);
+		encd = new ScalarEncoding(fields);
 		encd.useBilinear(true);
 		encd.useInterpolation(false);
 		encd.setColorMap(tmp_3c);
 		encd.genIsovalues(273.15, 2);
 		entry = new StatSelect(tabw,tabh,color(0,116,162), encd, "TMP", "700mb", "mean");
 		c.add(entry);
+		
+		// LOAD WIND
+		WindField wf;
+		WindEncoding w_encd;
+		ArrayList<WindField> wfields = new ArrayList<WindField>();
+		dir = "./datasets/500mb/";
+		deriv = "mean";
+		for (int k=0; k<=87; k+=3){
+			String fhr = String.format("%02d", k);
+			String file  = dir + "sref.t" + run + "z.pgrb" + grid + ".f" + fhr + ".WSPD."+ deriv + ".txt";
+			String file2 = dir + "sref.t" + run + "z.pgrb" + grid + ".f" + fhr + ".WDIR."+ deriv + ".txt";
+			wf = new WindField(file, file2, samplesx, samplesy, corner, samplesy*spacing, samplesx*spacing);
+			wfields.add(wf);
+		}
+		
+		w_encd = new WindEncoding(wfields, glyphs);
+		w_encd.useBilinear(true);
+		w_encd.useInterpolation(false);
+		w_encd.setColorMap(test);
+		w_encd.genIsovalues(0, 10);
+		c.add(new WindSelect(tabw,tabh,color(162,60,0), w_encd, "500mb", "mean"));
 		
 		// LOAD STDDEV
 		// fields = new ArrayList<Field>();

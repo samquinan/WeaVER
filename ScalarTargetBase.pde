@@ -1,4 +1,4 @@
-class DropTarget extends Container {
+abstract class ScalarTargetBase extends Container implements Target {
 	PImage layer0;
 	Legend legend;
 	
@@ -8,7 +8,7 @@ class DropTarget extends Container {
 	TimeControl timer;
 	String label;
 	
-	DropTarget(float ix, float iy, float dx, float dy) {
+	ScalarTargetBase(float ix, float iy, float dx, float dy) {
 		super(ix, iy, dx, dy, 1, 1);
 		
 		layer0 = null;
@@ -53,13 +53,6 @@ class DropTarget extends Container {
 	void remove(Selectable s){
 		super.remove(s);
 		updateRenderContext();	
-	}
-	
-	void updateRenderContext(){}
-	void updateRenderContext(boolean cache){}	
-	void cacheRenderContext(){}
-	
-	
-	
+	}	
 		
 }

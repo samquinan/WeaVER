@@ -1,11 +1,11 @@
-class FieldTarget extends DropTarget {
+class ScalarTarget extends ScalarTargetBase {
 	
-	FieldTarget(float ix, float iy, float dx, float dy) {
+	ScalarTarget(float ix, float iy, float dx, float dy) {
 		super(ix, iy, dx, dy);		
 	}
 	
 	void add(Selectable s){
-		if (s instanceof StatSelect){
+		if (s instanceof EncodesScalar){
 			super.add(s);	
 		}
 	}
@@ -69,20 +69,25 @@ class FieldTarget extends DropTarget {
 		int fhr = timer.getIndex();
 		//fill
 		if (layer0 != null){
-			Selectable s = entries.get(0);
-			s.genFill(layer0, fhr);
-		//legend
-			if (s instanceof StatSelect && legend != null){
-				legend.setColorMap(((StatSelect) s).getColorMap());
+			EncodesScalar s = (EncodesScalar) entries.get(0);
+			if (s != null){
+				s.genFill(layer0, fhr);
+				if (legend != null){
+					legend.setColorMap(s.getColorMap());
+				}
 			}
+			
 		}
 		//contours
 		if (layer1 != null){
 			layer1.clear();
-			(entries.get(0)).genContours(layer1, fhr);
-			//quadtree
-			if (qtree != null){
-				qtree.clear();
+			EncodesScalar s = (EncodesScalar) entries.get(0);
+			if (s != null){
+				s.genContours(layer1, fhr);
+				//quadtree
+				if (qtree != null){
+					qtree.clear();
+				}
 			}
 		}
 	}

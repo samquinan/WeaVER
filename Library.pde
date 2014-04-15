@@ -1,11 +1,11 @@
 class Library extends Container {
 	int k;
-	ArrayList<DropTarget> targets;
+	ArrayList<Container> targets;
 	String label;
 	
 	Library(float ix, float iy, float dx, float dy, int c, int r) {
 		super(ix, iy, dx, dy, c, r);
-		targets = new ArrayList<DropTarget>();
+		targets = new ArrayList<Container>();
 		k = 0;
 		label = "";
 	}
@@ -14,11 +14,12 @@ class Library extends Container {
 		label = s;
 	}
 	
-	void linkTarget(DropTarget t){
-		targets.add(t);
+	void linkTarget(Container t){
+		if (t instanceof Target) targets.add(t);
+		else println("Error: attempted to link container that does not implement 'Target' interface");
 	}
 	
-	void unlinkTarget(DropTarget t){
+	void unlinkTarget(Container t){
 		targets.remove(t);
 	}
 	
@@ -54,7 +55,7 @@ class Library extends Container {
 		text(label,x+2,y-1);
 		
 		super.display();
-		for (DropTarget t: targets){
+		for (Container t: targets){
 			t.display();
 		}
 		if (interacting != null) {
@@ -66,7 +67,7 @@ class Library extends Container {
 		
 		// get current interacting
 		if (!(super.interact(mx, my))){ // if this has no interaction, test all targets for interaction
-			for (DropTarget t: targets){
+			for (Container t: targets){
 				if (t.interact(mx,my)){
 					interacting = t.interacting;
 					break;
@@ -87,7 +88,7 @@ class Library extends Container {
 			if (interacting.current == null){
 				if (this.isIntersectedAABB(interacting)) this.add(interacting);
 				else{
-					for (DropTarget t: targets){
+					for (Container t: targets){
 						if(t.isIntersectedAABB(interacting)){
 							t.add(interacting);
 							break;
@@ -103,7 +104,7 @@ class Library extends Container {
 	boolean clicked(int mx, int my) {
 		boolean click = super.clicked(mx,my);
 		if (!click){
-			for (DropTarget t: targets){
+			for (Container t: targets){
 				click = click || t.clicked(mx,my);
 				if (click) break;
 			}
@@ -113,7 +114,7 @@ class Library extends Container {
 	
 	boolean released(){
 		boolean r = super.released();
-		for (DropTarget t: targets){
+		for (Container t: targets){
 			r = r || t.released();	
 		}
 		return r;

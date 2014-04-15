@@ -1,65 +1,23 @@
-class Encoding {
+class ScalarEncoding extends EncodingBase implements EncodesScalar{
 	ArrayList<Field> fields;
-	ColorMapf cmap;
-	ArrayList<Float> isovalues;
 	
-	boolean bilinear;
-	boolean interpolate;
-	
-	Encoding(Field f){
+	ScalarEncoding(Field f){
+		super();
 		fields = new ArrayList<Field>();
 		fields.add(f);
 		
-		//default to blank
-		cmap = new ColorMapf();
 		cmap.add(fields.get(0).getMin(), color(0, 0, 0, 0));
 		cmap.add(fields.get(0).getMax(), color(0, 0, 0, 0));
-		
-		isovalues = new ArrayList<Float>();
-		
-		bilinear = true;
-		interpolate = false;
 	}
 	
-	Encoding(ArrayList<Field> f){
+	ScalarEncoding(ArrayList<Field> f){
+		super();
 		fields = f;
 		
-		//default to blank
-		cmap = new ColorMapf();
 		cmap.add(fields.get(0).getMin(), color(0, 0, 0, 0));
 		cmap.add(fields.get(0).getMax(), color(0, 0, 0, 0));
-		
-		isovalues = new ArrayList<Float>();
-		
-		bilinear = true;
-		interpolate = false;
 	}
-	
-	
-	void useBilinear(boolean b){
-		bilinear = b;
-	}
-	
-	void useInterpolation(boolean b){
-		interpolate = b;
-	}
-	
-	ColorMapf getColorMap(){
-		return cmap;
-	}
-		
-	void setColorMap(ColorMapf c){
-		cmap = c;
-	}
-	
-	void addIsovalue(float iso){
-		isovalues.add(iso);
-	}
-	
-	void addIsovalues(ArrayList<Float> list){
-		isovalues.addAll(list);
-	}
-		
+			
 	void genIsovalues(float dv){
 		float intercept = 0;
 		float vmin, vmax;
@@ -84,7 +42,6 @@ class Encoding {
 			iso += dv;
 		}
 	}
-	
 	
 	void genContours(ArrayList<Contour2D> contours){
 		Contour2D c;

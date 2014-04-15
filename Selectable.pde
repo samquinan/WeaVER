@@ -13,7 +13,6 @@ class Selectable {
 	Container current;
 	int lib_idx; //library index
 	
-	
 	Selectable(float ix, float iy, float iw, float ih, color rgb) {
 	    x = ix;
 		restx = ix;
@@ -123,12 +122,12 @@ class Selectable {
 			if (!isClone) home.add(this);
 			else visible = false;//will be deleted by garabage collection but remove from draw cycle in meantime
 		}
-		else if(current instanceof DropTarget){ //(current instanceof DropTarget)
+		else if(current instanceof Target){ //inefficient double cast -- restructure to fix
 			x = restx;
 			y = resty;
 			
 			current.isIntersectedAABB(this);
-			((DropTarget) current).updateRenderContext();
+			((Target) current).updateRenderContext();
 			println("RELOAD!");
 		}
 		return true;
@@ -140,15 +139,4 @@ class Selectable {
 		return true;
 	}
 	
-	void genFill(PImage img){
-	}
-	
-	void genFill(PImage img, int time){
-	}
-	
-	void genContours(ArrayList<Contour2D> contours){
-	}
-	
-	void genContours(ArrayList<Contour2D> contours, int time){
-	}
 }

@@ -104,7 +104,7 @@ class StateTracker {
 		return retval;
 	}
 	
-	void update(DropTarget t1, DropTarget t2){
+	void update(ScalarTarget t1, ScalarTarget t2){
 		if (idxPrev < states.size()) (states.get(idxPrev)).saveState(t1,t2);
 		(states.get(idxActive)).restoreState(t1,t2);
 		t1.updateRenderContext();

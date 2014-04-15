@@ -1,8 +1,8 @@
-class StatSelect extends Selectable{
+class StatSelect extends Selectable implements EncodesScalar{
 	String var, hgt, statop;
-	Encoding statfield;
+	ScalarEncoding statfield;
 	
-	StatSelect(float ix, float iy, float iw, float ih, color rgb, Encoding f){
+	StatSelect(float ix, float iy, float iw, float ih, color rgb, ScalarEncoding f){
 		super(ix, iy, iw, ih, rgb);
 		statfield = f;
 		var = "";
@@ -10,7 +10,7 @@ class StatSelect extends Selectable{
 		statop = "";
 	}
 	
-	StatSelect(float ix, float iy, float iw, float ih, color rgb, Encoding f, String v, String h, String op){
+	StatSelect(float ix, float iy, float iw, float ih, color rgb, ScalarEncoding f, String v, String h, String op){
 		super(ix, iy, iw, ih, rgb);
 		statfield = f;
 		var = v;
@@ -18,7 +18,7 @@ class StatSelect extends Selectable{
 		statop = op;
 	}
 	
-	StatSelect(float iw, float ih, color rgb, Encoding f){
+	StatSelect(float iw, float ih, color rgb, ScalarEncoding f){
 		super(0, 0, iw, ih, rgb);
 		statfield = f;
 		var = "";
@@ -26,7 +26,7 @@ class StatSelect extends Selectable{
 		statop = "";
 	}
 	
-	StatSelect(float iw, float ih, color rgb, Encoding f, String v, String h, String op){
+	StatSelect(float iw, float ih, color rgb, ScalarEncoding f, String v, String h, String op){
 		super(0, 0, iw, ih, rgb);
 		statfield = f;
 		var = v;
@@ -62,6 +62,14 @@ class StatSelect extends Selectable{
 		return statfield.getColorMap();
 	}
 	
+	void genContours(ArrayList<Contour2D> contours){
+		statfield.genContours(contours);
+	}
+	
+	void genContours(ArrayList<Contour2D> contours, int time){
+		statfield.genContours(contours, time);
+	}
+	
 	void genFill(PImage img){
 		statfield.genFill(img);
 	}
@@ -70,12 +78,5 @@ class StatSelect extends Selectable{
 		statfield.genFill(img, time);
 	}
 	
-	void genContours(ArrayList<Contour2D> contours){
-		statfield.genContours(contours);
-	}
-	
-	void genContours(ArrayList<Contour2D> contours, int time){
-		statfield.genContours(contours, time);
-	}
 	
 }

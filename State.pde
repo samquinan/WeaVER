@@ -49,13 +49,13 @@ class State {
 		text(s, x+(w/2), y+(h/3));
 	}
 	
-	void saveState(DropTarget t1, DropTarget t2){
+	void saveState(ScalarTarget t1, ScalarTarget t2){
 		dtargetEntries.clear();
 		dtargetEntries.add(new ArrayList<Selectable>(t1.entries));
 		dtargetEntries.add(new ArrayList<Selectable>(t2.entries));
 	}
 	
-	void restoreState(DropTarget t1, DropTarget t2){
+	void restoreState(ScalarTarget t1, ScalarTarget t2){
 		t1.entries = dtargetEntries.get(0);
 		t2.entries = dtargetEntries.get(1);
 	}
