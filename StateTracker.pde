@@ -104,11 +104,17 @@ class StateTracker {
 		return retval;
 	}
 	
-	void update(ScalarTarget t1, ScalarTarget t2){
-		if (idxPrev < states.size()) (states.get(idxPrev)).saveState(t1,t2);
-		(states.get(idxActive)).restoreState(t1,t2);
-		t1.updateRenderContext();
-		t2.updateRenderContext();
+	void update(Container t1, Container t2, Container t3){
+		if (idxPrev < states.size()) (states.get(idxPrev)).saveState(t1,t2,t3);
+		(states.get(idxActive)).restoreState(t1,t2,t3);
+		
+		Target tmp = (Target) t1;
+		if (tmp != null) tmp.updateRenderContext();
+		tmp = (Target) t2;
+		if (tmp != null) tmp.updateRenderContext();
+		tmp = (Target) t3;
+		if (tmp != null) tmp.updateRenderContext();
+				
 		idxPrev = idxActive;
 	}
 	

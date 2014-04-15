@@ -70,7 +70,7 @@ class Library extends Container {
 			for (Container t: targets){
 				if (t.interact(mx,my)){
 					interacting = t.interacting;
-					break;
+					//break; // need to propogate new interacting back to container of previous interacting -- TODO investigate proper solution, but in meantime this works
 				} 
 			}
 		}
@@ -100,6 +100,33 @@ class Library extends Container {
 		
 		return (interacting != null);
 	}
+	
+	// boolean drag (int mx, int my){
+	// 	// handle movement between containers
+	// 	if (interacting != null && interacting.dragging){
+	// 		
+	// 		//remove if leaves current
+	// 		if (interacting.current != null){
+	// 			boolean inCurrent = interacting.current.isIntersectedAABB(interacting);
+	// 			if (!inCurrent) interacting.current.remove(interacting);
+	// 		}
+	// 		
+	// 		//add if possible
+	// 		if (interacting.current == null){
+	// 			if (this.isIntersectedAABB(interacting)) this.add(interacting);
+	// 			else{
+	// 				for (Container t: targets){
+	// 					if(t.isIntersectedAABB(interacting)){
+	// 						t.add(interacting);
+	// 						break;
+	// 					}
+	// 				}
+	// 			}
+	// 		}
+	// 	}
+	// 	
+	// 	return (interacting != null);
+	// }
 	
 	boolean clicked(int mx, int my) {
 		boolean click = super.clicked(mx,my);

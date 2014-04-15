@@ -101,6 +101,7 @@ class Container { //TODO double check threadsafety for all operations, reduce le
 	boolean interact(int mx, int my) {
 		highlight = false;
 		//check if last interacting is still interacting -- propogate interaction
+		synchronized(lock){ 
 		if (interacting != null) {
 			if (interacting.interact(mx,my)){
 				return true;
@@ -109,7 +110,6 @@ class Container { //TODO double check threadsafety for all operations, reduce le
 		}
 		if (interacting == null){ //if no current interacting find topmost interacting
 			if (!(mx > x && mx < x + w && my > y && my < y + h)) return false;
-			synchronized(lock){ 
 			for (int j=entries.size()-1; j >=0; j--){ 
 				Selectable s = entries.get(j);
 				if (s.interact(mx,my)){
@@ -117,7 +117,7 @@ class Container { //TODO double check threadsafety for all operations, reduce le
 					return true;
 				}
 			}
-			}
+		}
 		}
 		return false;
 	}

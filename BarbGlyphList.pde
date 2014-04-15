@@ -19,7 +19,7 @@ class BarbGlyphList {
 		barb.disableStyle();
 		// fill(0);
 		// stroke(0);
-		barb.addChild(createShape(ELLIPSE, 0, 0, s, s));
+		barb.addChild(createShape(ELLIPSE, -s/2, -s/2, s, s));
 		// noFill();
 		// stroke(0);
 		// strokeWeight(1);

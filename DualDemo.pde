@@ -21,18 +21,18 @@ int cornerx, cornery;
 int tabw, tabh;
 
 void setup() {
-  	size(1040, 646, P2D);
+  	size(1225, 815, P2D);
 	smooth(8);
 	
   	plotFont = createFont("Georgia", 12);
   	textFont(plotFont);
   	
-    spacing = 4;
+    spacing = 5;
     samplesx = 185;
     samplesy = 129;
 	
 	cornerx = 60;
-	cornery = 60;
+	cornery = 80;
 	tabw = 90;
 	tabh = 22;
 	
@@ -119,8 +119,9 @@ void draw(){
 	
 	// barbs
 	strokeWeight(1.3);
-	fill(0);
-	stroke(0);
+	color clr = color(60);
+	fill(clr);
+	stroke(clr);
 	for(Barb barb : barbs){
 		barb.draw();
 	}
@@ -190,7 +191,7 @@ void mousePressed(){
 	}
 	else if(tracker.clicked(mouseX,mouseY)){
 		if(tracker.changed()){
-			tracker.update(t_cmap,t_contour);
+			tracker.update(t_cmap,t_contour,t_barbs);
 		}
 	}
 	else if(timer.clicked(mouseX, mouseY)){
