@@ -1,15 +1,14 @@
 PFont plotFont;
 PShape map;
 BarbGlyphList glyphs;
-StatView view_0;
-MNSDView view_1;
 
-TextButton modeSwap;
-boolean mode = true;
+MenuBar menu;
+int mode;
 
-// int samplesx, samplesy, spacing;
-// int cornerx, cornery;
-// int tabw, tabh;
+StatView view_1;
+MNSDView view_2;
+
+LoadAnimation spinner;
 
 void setup() {
   	size(1225, 815, P2D);
@@ -36,56 +35,108 @@ void setup() {
 	int tabw = 90;
 	int tabh = 22;
 	
-	view_0 = new StatView(samplesx, samplesy, spacing, cornerx, cornery, tabw, tabh, 32);
-	view_0.setMap(map);
-	view_0.linkGlyphs(glyphs);
-	view_0.loadData();
+	menu = new MenuBar(0,0,width,12);
+	menu.addItem("Deterministic");
+	menu.addItem("Stat Field");
+	menu.addItem("MNSD");
+	menu.addItem("Probability");
+	menu.addItem("Direct Ensemble");
 	
-	view_1 = new MNSDView(samplesx, samplesy, spacing, cornerx, cornery, tabw, tabh, 12);
+	mode = menu.getMode();
+	
+	view_1 = new StatView(samplesx, samplesy, spacing, cornerx, cornery, tabw, tabh, 32);
 	view_1.setMap(map);
+	view_1.linkGlyphs(glyphs);
 	view_1.loadData();
 	
-	modeSwap = new TextButton(cornerx + 20, height - 20, "SWAP");
+	view_2 = new MNSDView(samplesx, samplesy, spacing, cornerx, cornery, tabw, tabh, 12);
+	view_2.setMap(map);
+	view_2.loadData();
+	
+	spinner = new LoadAnimation(new PVector(width/2,height/2), 25.0, radians(120)/1000.0, 37);
+	spinner.switchState();
+	
 }
 
 void draw(){
   	background(230);
 	
-	if (mode) view_0.draw();
-	else view_1.draw();
+	menu.display();	
 	
-	modeSwap.display();
-}
-
-
-void mousePressed(){	
-	if (mode) view_0.mousePress(mouseX, mouseY);
-	else view_1.mousePress(mouseX, mouseY);
-	
-	if (modeSwap.clicked(mouseX, mouseY)){
-		mode = !mode;
+	switch (mode){
+		case 1:
+			view_1.draw();
+			break;
+		case 2:
+			view_2.draw();
+			break;
+		default:
+			spinner.update();
+			spinner.display();
 	}
 }
 
-void mouseMoved(){
-	if (mode) view_0.mouseMove(mouseX, mouseY);
-	else view_1.mouseMove(mouseX, mouseY);
+
+void mousePressed(){
+	if (menu.clicked(mouseX, mouseY)) return;
 	
-	modeSwap.interact(mouseX, mouseY);
+	switch (mode){	
+		case 1:
+			view_1.mousePress(mouseX, mouseY); 
+			break;
+		case 2:
+			view_2.mousePress(mouseX, mouseY); 
+			break;
+		default:
+	}
+	
+}
+
+void mouseMoved(){
+	if (menu.interact(mouseX, mouseY)) return;
+	
+	switch (mode){	
+		case 1:
+			view_1.mouseMove(mouseX, mouseY); 
+			break;
+		case 2:
+			view_2.mouseMove(mouseX, mouseY); 
+			break;
+		default:
+	}
+		
 }
 
 void mouseDragged(){
-	if (mode) view_0.mouseDrag(mouseX, mouseY);
-	else view_1.mouseDrag(mouseX, mouseY);
+	if (menu.interact(mouseX, mouseY)) return;
 	
-	modeSwap.interact(mouseX, mouseY);
+	switch (mode){	
+		case 1:
+			view_1.mouseDrag(mouseX, mouseY); 
+			break;
+		case 2:
+			view_2.mouseDrag(mouseX, mouseY); 
+			break;
+		default:
+	}
+		
 }
 
 void mouseReleased() {
-	if (mode) view_0.mouseRelease();
-	else view_1.mouseRelease();
+	if(menu.released()){
+		mode = menu.getMode();
+		return;
+	}
 	
-	modeSwap.released();
+	switch (mode){	
+		case 1:
+			view_1.mouseRelease(); 
+			break;
+		case 2:
+			view_2.mouseRelease(); 
+			break;
+		default:
+	}
 }
 
 // class HardcodedDataLoad implements Runnable{
