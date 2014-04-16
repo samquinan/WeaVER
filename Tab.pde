@@ -1,6 +1,7 @@
 class Tab extends TextButton{
 	int bufferx;
 	int mode;
+	float w, h;
 	
 	Tab(float x0, float y0, String s, int buffer, int m){
 		super(x0,y0,s);
@@ -11,13 +12,17 @@ class Tab extends TextButton{
 		highlight = color(255);
 		pressed = color(255);
 		
+		textSize(textsize);
+		w = 2*bufferx+textWidth(text);
+		h = textsize+2;
+		
 		mode = m;
 	}
 	
 	void display(){
 		noStroke();
 		fill(230); // TODO -- un-hardcode parallel to background
-		if (!active) rect(x-bufferx, y, 2*bufferx+textWidth(text), textsize+2);
+		if (!active) rect(x-bufferx, y, w, h);
 		super.display();
 	}
 	

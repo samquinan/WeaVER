@@ -5,6 +5,7 @@ BarbGlyphList glyphs;
 MenuBar menu;
 int mode;
 
+DtrmView view_0;
 StatView view_1;
 MNSDView view_2;
 
@@ -39,10 +40,15 @@ void setup() {
 	menu.addItem("Deterministic");
 	menu.addItem("Stat Field");
 	menu.addItem("MNSD");
-	menu.addItem("Probability");
-	menu.addItem("Direct Ensemble");
+	// menu.addItem("Probability");
+	// menu.addItem("Direct Ensemble");
 	
 	mode = menu.getMode();
+	
+	view_0 = new DtrmView(samplesx, samplesy, spacing, cornerx, cornery, tabw, tabh, 32);
+	view_0.setMap(map);
+	view_0.linkGlyphs(glyphs);
+	view_0.loadData();
 	
 	view_1 = new StatView(samplesx, samplesy, spacing, cornerx, cornery, tabw, tabh, 32);
 	view_1.setMap(map);
@@ -64,6 +70,9 @@ void draw(){
 	menu.display();	
 	
 	switch (mode){
+		case 0:
+			view_0.draw();
+			break;
 		case 1:
 			view_1.draw();
 			break;
@@ -80,7 +89,10 @@ void draw(){
 void mousePressed(){
 	if (menu.clicked(mouseX, mouseY)) return;
 	
-	switch (mode){	
+	switch (mode){
+		case 0:
+			view_0.mousePress(mouseX, mouseY); 
+			break;
 		case 1:
 			view_1.mousePress(mouseX, mouseY); 
 			break;
@@ -95,7 +107,10 @@ void mousePressed(){
 void mouseMoved(){
 	if (menu.interact(mouseX, mouseY)) return;
 	
-	switch (mode){	
+	switch (mode){
+		case 0:
+			view_0.mouseMove(mouseX, mouseY); 
+			break;	
 		case 1:
 			view_1.mouseMove(mouseX, mouseY); 
 			break;
@@ -110,7 +125,10 @@ void mouseMoved(){
 void mouseDragged(){
 	if (menu.interact(mouseX, mouseY)) return;
 	
-	switch (mode){	
+	switch (mode){
+		case 0:
+			view_0.mouseDrag(mouseX, mouseY); 
+			break;	
 		case 1:
 			view_1.mouseDrag(mouseX, mouseY); 
 			break;
@@ -128,7 +146,10 @@ void mouseReleased() {
 		return;
 	}
 	
-	switch (mode){	
+	switch (mode){
+		case 0:
+			view_0.mouseRelease(); 
+			break;	
 		case 1:
 			view_1.mouseRelease(); 
 			break;

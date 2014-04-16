@@ -1,4 +1,4 @@
-class StatView extends View {
+class DtrmView extends View {
 	BarbGlyphList glyphs;
 	
 	ScalarTarget t_cmap, t_contour;
@@ -11,7 +11,7 @@ class StatView extends View {
 	Contour2D highlight;
 	ArrayList<Barb> barbs;
 	
-	StatView(int sx, int sy, int ds, int cx, int cy, int tw, int th, int libsize){
+	DtrmView(int sx, int sy, int ds, int cx, int cy, int tw, int th, int libsize){
 		super(sx, sy, ds, cx, cy, tw, th, ceil(libsize/2.0));
 		glyphs = null;
 		
@@ -316,13 +316,15 @@ class StatView extends View {
 	
 		// 700mb tmp
 		ArrayList<Field> fields = new ArrayList<Field>();
-		String dir = "./datasets/StatFields/700mb_TMP/";
+		String dir = "./datasets/DtrmFields/700mb_TMP/";
+		String model = "em";
+		String p = "ctl";
 		String run = "21";
 		String grid = "212";
-		String deriv = "mean";
+		String deriv = "";
 		for (int k=0; k<=87; k+=3){
 			String fhr = String.format("%02d", k);
-			String file = dir + "sref.t" + run + "z.pgrb" + grid + ".f" + fhr + "."+ deriv + ".txt";
+			String file = dir + "sref_"+ model +".t" + run + "z.pgrb" + grid + "." + p + ".f" + fhr + ".txt";
 			f = new Field(file, samplesx, samplesy, corner, samplesy*spacing, samplesx*spacing);
 			fields.add(f);
 		}
@@ -336,11 +338,11 @@ class StatView extends View {
 		
 		// 700mb RH
 		fields = new ArrayList<Field>();
-		dir = "./datasets/StatFields/700mb_RH/";
-		deriv = "mean";
+		dir = "./datasets/DtrmFields/700mb_RH/";
+		deriv = "";
 		for (int k=0; k<=87; k+=3){
 			String fhr = String.format("%02d", k);
-			String file = dir + "sref.t" + run + "z.pgrb" + grid + ".f" + fhr + "."+ deriv + ".txt";
+			String file = dir + "sref_"+ model +".t" + run + "z.pgrb" + grid + "." + p + ".f" + fhr + ".txt";
 			f = new Field(file, samplesx, samplesy, corner, samplesy*spacing, samplesx*spacing);
 			fields.add(f);
 		}
@@ -350,38 +352,15 @@ class StatView extends View {
 		encd.useInterpolation(false);
 		encd.setColorMap(rh);
 		encd.genIsovalues(0, 10);
-		library.add(new StatSelect(tabw,tabh,c700mb, encd, "RH", "700mb", deriv));
-		
-		// 700mb Wind
-		WindField wf;
-		WindEncoding w_encd;
-		ArrayList<WindField> wfields = new ArrayList<WindField>();
-		dir = "./datasets/StatFields/700mb_Wind/";
-		deriv = "mean";
-		for (int k=0; k<=87; k+=3){
-			String fhr = String.format("%02d", k);
-			String file  = dir + "sref.t" + run + "z.pgrb" + grid + ".f" + fhr + ".WSPD."+ deriv + ".txt";
-			String file2 = dir + "sref.t" + run + "z.pgrb" + grid + ".f" + fhr + ".WDIR."+ deriv + ".txt";
-			wf = new WindField(file, file2, samplesx, samplesy, corner, samplesy*spacing, samplesx*spacing);
-			wfields.add(wf);
-		}
-			
-		w_encd = new WindEncoding(wfields, glyphs);
-		w_encd.useBilinear(true);
-		w_encd.useInterpolation(false);
-		w_encd.setColorMap(wind);
-		w_encd.genIsovalues(0, 10);
-		library.add(new WindSelect(tabw,tabh, c700mb, w_encd, "500mb", deriv));
-		
-		
+		library.add(new StatSelect(tabw,tabh,c700mb, encd, "RH", "700mb", deriv));		
 		
 		// 500mb TMP
 		fields = new ArrayList<Field>();
-		dir = "./datasets/StatFields/500mb_TMP/";
-		deriv = "mean";
+		dir = "./datasets/DtrmFields/500mb_TMP/";
+		deriv = "";
 		for (int k=0; k<=87; k+=3){
 			String fhr = String.format("%02d", k);
-			String file = dir + "sref.t" + run + "z.pgrb" + grid + ".f" + fhr + "."+ deriv + ".txt";
+			String file = dir + "sref_"+ model +".t" + run + "z.pgrb" + grid + "." + p + ".f" + fhr + ".txt";
 			f = new Field(file, samplesx, samplesy, corner, samplesy*spacing, samplesx*spacing);
 			fields.add(f);
 		}
@@ -395,11 +374,11 @@ class StatView extends View {
 		
 		// 500mb RH
 		fields = new ArrayList<Field>();
-		dir = "./datasets/StatFields/500mb_RH/";
-		deriv = "mean";
+		dir = "./datasets/DtrmFields/500mb_RH/";
+		deriv = "";
 		for (int k=0; k<=87; k+=3){
 			String fhr = String.format("%02d", k);
-			String file = dir + "sref.t" + run + "z.pgrb" + grid + ".f" + fhr + "."+ deriv + ".txt";
+			String file = dir + "sref_"+ model +".t" + run + "z.pgrb" + grid + "." + p + ".f" + fhr + ".txt";
 			f = new Field(file, samplesx, samplesy, corner, samplesy*spacing, samplesx*spacing);
 			fields.add(f);
 		}
@@ -410,54 +389,34 @@ class StatView extends View {
 		encd.setColorMap(rh);
 		encd.genIsovalues(0, 10);
 		library.add(new StatSelect(tabw,tabh,c500mb, encd, "RH", "500mb", deriv));
-		
-	
-		// 500mb Wind
-		wfields = new ArrayList<WindField>();
-		dir = "./datasets/StatFields/500mb_Wind/";
-		deriv = "mean";
+				
+		// Surface APCP
+		fields = new ArrayList<Field>();
+		dir = "./datasets/DtrmFields/3hr_APCP/";
+		deriv = "";
 		for (int k=0; k<=87; k+=3){
 			String fhr = String.format("%02d", k);
-			String file  = dir + "sref.t" + run + "z.pgrb" + grid + ".f" + fhr + ".WSPD."+ deriv + ".txt";
-			String file2 = dir + "sref.t" + run + "z.pgrb" + grid + ".f" + fhr + ".WDIR."+ deriv + ".txt";
-			wf = new WindField(file, file2, samplesx, samplesy, corner, samplesy*spacing, samplesx*spacing);
-			wfields.add(wf);
+			String file = dir + "sref_"+ model +".t" + run + "z.pgrb" + grid + "." + p + ".f" + fhr + ".txt";
+			f = new Field(file, samplesx, samplesy, corner, samplesy*spacing, samplesx*spacing);
+			fields.add(f);
 		}
-			
-		w_encd = new WindEncoding(wfields, glyphs);
-		w_encd.useBilinear(true);
-		w_encd.useInterpolation(false);
-		w_encd.setColorMap(wind);
-		w_encd.genIsovalues(0, 10);
-		library.add(new WindSelect(tabw,tabh, c500mb, w_encd, "500mb", deriv));
 		
-		// // Surface APCP
-		// fields = new ArrayList<Field>();
-		// dir = "./datasets/StatFields/3hr_APCP/";
-		// deriv = "max";
-		// for (int k=0; k<=87; k+=3){
-		// 	String fhr = String.format("%02d", k);
-		// 	String file = dir + "sref.t" + run + "z.pgrb" + grid + ".f" + fhr + "."+ deriv + ".txt";
-		// 	f = new Field(file, samplesx, samplesy, corner, samplesy*spacing, samplesx*spacing);
-		// 	fields.add(f);
-		// }
-		// 
-		// encd = new ScalarEncoding(fields);
-		// encd.useBilinear(false);
-		// encd.useInterpolation(false);
-		// encd.setColorMap(precip);
-		// encd.addIsovalue(4*25.4);
-		// encd.addIsovalue(3*25.4);
-		// encd.addIsovalue(2*25.4);
-		// encd.addIsovalue(1*25.4);
-		// encd.addIsovalue(0.75*25.4);
-		// encd.addIsovalue( 0.5*25.4);
-		// encd.addIsovalue(0.25*25.4);
-		// encd.addIsovalue( 0.1*25.4);
-		// // encd.addIsovalue(0.05*25.4);
-		// // encd.addIsovalue(0.01*25.4);
-		// 
-		// library.add(new StatSelect(tabw,tabh,cSurface, encd, "APCP", "surface", "3hr "+deriv));
+		encd = new ScalarEncoding(fields);
+		encd.useBilinear(true);
+		encd.useInterpolation(false);
+		encd.setColorMap(precip);
+		encd.addIsovalue(4*25.4);
+		encd.addIsovalue(3*25.4);
+		encd.addIsovalue(2*25.4);
+		encd.addIsovalue(1*25.4);
+		encd.addIsovalue(0.75*25.4);
+		encd.addIsovalue( 0.5*25.4);
+		encd.addIsovalue(0.25*25.4);
+		encd.addIsovalue( 0.1*25.4);
+		// encd.addIsovalue(0.05*25.4);
+		// encd.addIsovalue(0.01*25.4);
+		
+		library.add(new StatSelect(tabw,tabh,cSurface, encd, "APCP", "surface", "3hr"));
 	}
 
 }

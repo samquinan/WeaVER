@@ -29,7 +29,7 @@ class MNSDView extends View {
 		mnsd_target0.linkContours(contours);
 		mnsd_target0.linkQuadTree(cselect);
 		mnsd_target0.linkTimeControl(timer);
-		mnsd_target0.setLabel("COLOR [SD] / CONTOUR [MN]");
+		mnsd_target0.setLabel("COLOR / CONTOUR");
 		library.linkTarget(mnsd_target0);
 		targets.add(mnsd_target0);
 	}
@@ -147,24 +147,32 @@ class MNSDView extends View {
 		
 		// testing MNSD
 		ColorMapf test = new ColorMapf();
-		colorMode(HSB, 360, 100, 100, 100);	
-	    test.add( 0, color(  0,   0, 100,   0));
-	    test.add(1.9, color(	 0,   0, 100, 0));
-		test.add(  2, color( 96,  21,  80, 100));
-		test.add(  3, color( 96,  21,  80, 100));
-		test.add(  5, color( 68,  43,  71, 100));
-		test.add(  7, color( 41,  66,  59, 100));
-		test.add( 10, color( 13,  88,  43, 100));
+		colorMode(HSB, 360, 100, 100, 100);
+        test.add(  0, color(360, 20, 84, 0));
+		test.add(1.49, color(360, 20, 84, 0));
+		test.add( 1.5, color(360, 20, 84, 100));
+		test.add(   2, color(337, 26, 80, 100));
+		test.add(   3, color(315, 32, 76, 100));
+		test.add(   5, color(292, 38, 71, 100));
+		test.add(   7, color(270, 45, 65, 100));
+		test.add(  10, color(247, 51, 59, 100));
+		test.add(  15, color(225, 57, 52, 100));
+		test.add(  20, color(202, 63, 43, 100));
+		test.add(  25, color(180, 70, 29, 100));
 		colorMode(RGB,255);
 
 		Field f;
 		ScalarEncoding encd, encd2;
 		PVector corner = new PVector(cornerx, cornery);
+		
+		color c700mb, c500mb;
+		c500mb = color(83,30,175);
+		c700mb = color(0,116,162);
 	
-		// LOAD MEAN
+		// 700mb tmp
 		ArrayList<Field> fields = new ArrayList<Field>();
-		String dir = "./datasets/700mb/";
-		String run = "15";
+		String dir = "./datasets/StatFields/700mb_TMP/";
+		String run = "21";
 		String grid = "212";
 		String deriv = "mean";
 		for (int k=0; k<=87; k+=3){
@@ -193,8 +201,8 @@ class MNSDView extends View {
 		encd2.useBilinear(true);
 		encd2.useInterpolation(false);
 		encd2.setColorMap(test);
-		encd2.addIsovalue(0.5);
 		encd2.addIsovalue(1);
+		encd2.addIsovalue(1.5);
 		encd2.addIsovalue(2);
 		encd2.addIsovalue(3);
 		encd2.addIsovalue(5);
@@ -204,7 +212,49 @@ class MNSDView extends View {
 		encd2.addIsovalue(20);
 		
 		// Create Selectable 
-		library.add(new MNSDSelect(tabw,tabh,color(0,116,162), encd, encd2, "TMP", "700mb"));
+		library.add(new MNSDSelect(tabw,tabh,c700mb, encd, encd2, "TMP", "700mb"));
+		
+		//500mb tmp 
+		fields = new ArrayList<Field>();
+		dir = "./datasets/StatFields/500mb_TMP/";
+		deriv = "mean";
+		for (int k=0; k<=87; k+=3){
+			String fhr = String.format("%02d", k);
+			String file = dir + "sref.t" + run + "z.pgrb" + grid + ".f" + fhr + "."+ deriv + ".txt";
+			f = new Field(file, samplesx, samplesy, corner, samplesy*spacing, samplesx*spacing);
+			fields.add(f);
+		}
+		
+		encd = new ScalarEncoding(fields);
+		encd.useBilinear(true);
+		encd.useInterpolation(false);
+		encd.genIsovalues(273.15, 2);		
+		
+		fields2 = new ArrayList<Field>();
+		deriv = "stddev";
+		for (int k=0; k<=87; k+=3){
+			String fhr = String.format("%02d", k);
+			String file = dir + "sref.t" + run + "z.pgrb" + grid + ".f" + fhr + "."+ deriv + ".txt";
+			f = new Field(file, samplesx, samplesy, corner, samplesy*spacing, samplesx*spacing);
+			fields2.add(f);
+		}
+		
+		encd2 = new ScalarEncoding(fields2);
+		encd2.useBilinear(true);
+		encd2.useInterpolation(false);
+		encd2.setColorMap(test);
+		encd2.addIsovalue(1);
+		encd2.addIsovalue(1.5);
+		encd2.addIsovalue(2);
+		encd2.addIsovalue(3);
+		encd2.addIsovalue(5);
+		encd2.addIsovalue(7);
+		encd2.addIsovalue(10);
+		encd2.addIsovalue(15);
+		encd2.addIsovalue(20);
+		
+		library.add(new MNSDSelect(tabw,tabh,c500mb, encd, encd2, "TMP", "500mb"));
+		
 	}
 
 }

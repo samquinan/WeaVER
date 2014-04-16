@@ -11,7 +11,7 @@ class MenuBar {
 		w = iw;
 		h = sText+3;
 		
-		buffer = 7;
+		buffer = 10;
 		textSize = sText;
 		
 		nextx = x+buffer+2;

@@ -57,7 +57,7 @@ class Legend {
 		textAlign(RIGHT, CENTER);
 		for(int i=n; i<=m; i++){
 			float val = cmap.val.get(i);
-			float tag_y = map(val, vmin, vmax, 0, h);
+			float tag_y = map(val, vmax, vmin, 0, h);
 			//line(x-10, y+tag_y, x-5, y+tag_y);
 			if (convert) val = val - 273.15;
 			text(Float.toString(val), x-3, y-2+tag_y);
@@ -97,7 +97,7 @@ class Legend {
 		
 	  	for (int y = 0; y < img.height; y++){
 	  		for (int x = 0; x < img.width; x++){
-				float val = map(y, 0, img.height-1, vmin, vmax);
+				float val = map(y, 0, img.height-1, vmax, vmin);
 				c = cmap.getColor(val, interpolate);
 				
 				img.pixels[getIndex(x,y,img.width)] = c;
