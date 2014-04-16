@@ -6,11 +6,12 @@ abstract class View {
 	
 	PShape map;
 	
-	int samplesx, samplesy, spacing;
+	int samplesx, samplesy;
+	float spacing;
 	int cornerx, cornery;
 	int tabw, tabh;
 	
-	View(int sx, int sy, int ds, int cx, int cy, int tw, int th, int nliby){
+	View(int sx, int sy, float ds, int cx, int cy, int tw, int th, int nliby){
 		samplesx = sx;
 		samplesy = sy;
 		spacing  = ds;
@@ -23,7 +24,7 @@ abstract class View {
 		library.setLabel("FIELDS");
 		
 		tracker = new StateTracker(cornerx+20,cornery+samplesy*spacing+30,"VIEWS");
-	    timer = new TimeControl(cornerx+(samplesx*spacing) + 20, cornery+samplesy*spacing - 50, tabw*2, 30);
+	    timer = new TimeControl(cornerx+samplesx*spacing + 20, cornery+samplesy*spacing - 50, tabw*2, 30);
 		timer.setLabel("FORECAST HOUR");
 		
 		targets = new ArrayList<Container>();

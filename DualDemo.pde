@@ -27,7 +27,7 @@ void setup() {
 	map.disableStyle();
 	
 	// generate view_0
-    int spacing = 5;
+    int spacing =    5;
     int samplesx = 185;
     int samplesy = 129;
 	

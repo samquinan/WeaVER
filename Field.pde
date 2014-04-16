@@ -677,7 +677,7 @@ class Field{
 	  int samplesx = dimx;
 	  int samplesy = dimy;
 	  
-	  if (samplesx*spacing != img.width || samplesy*spacing != img.height){
+	  if (int(samplesx*spacing) != img.width || int(samplesy*spacing) != img.height){
 		  println("Error in genFill: PImage dims do not match field");
 	  }
 	  
@@ -707,7 +707,7 @@ class Field{
 	  int samplesx = dimx;
 	  int samplesy = dimy;
 	  
-	  if (samplesx*spacing != img.width || samplesy*spacing != img.height){
+	  if (int(samplesx*spacing) != img.width || int(samplesy*spacing) != img.height){
 		  println("Error in genFill: PImage dims do not match field");
 	  }
 	  

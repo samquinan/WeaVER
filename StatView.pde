@@ -11,14 +11,14 @@ class StatView extends View {
 	Contour2D highlight;
 	ArrayList<Barb> barbs;
 	
-	StatView(int sx, int sy, int ds, int cx, int cy, int tw, int th, int libsize){
+	StatView(int sx, int sy, float ds, int cx, int cy, int tw, int th, int libsize){
 		super(sx, sy, ds, cx, cy, tw, th, ceil(libsize/2.0));
 		glyphs = null;
 		
 		// Initialize Render State
 			//Color Map
 		fill = createImage(int(samplesx*spacing), int(samplesy*spacing), ARGB);
-		legend = new Legend(cornerx-22,cornery+1,12,(samplesy*spacing)-2);
+		legend = new Legend(cornerx-22,cornery+1,12,int(samplesy*spacing)-2);
 		
 			//Contours
 		contours = new ArrayList<Contour2D>();
