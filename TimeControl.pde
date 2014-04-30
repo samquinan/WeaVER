@@ -115,4 +115,26 @@ class TimeControl {
 		
 		element = String.format("%02d", cur*3);
 	}
+	
+	boolean increment(){
+		boolean affected = false;
+		if (bFwd.isActive()){
+			affected = true;
+			cur++;
+		}
+		makeConsistent();
+		return affected;
+	}
+	
+	boolean decrement(){
+		boolean affected = false;
+		if (bBack.isActive()){
+			affected = true;
+			cur--;
+		}
+		makeConsistent();
+		return affected;
+	}
+	
+	
 }

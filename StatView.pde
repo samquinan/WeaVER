@@ -431,33 +431,33 @@ class StatView extends View {
 		w_encd.genIsovalues(0, 10);
 		library.add(new WindSelect(tabw,tabh, c500mb, w_encd, "500mb", deriv));
 		
-		// // Surface APCP
-		// fields = new ArrayList<Field>();
-		// dir = "./datasets/StatFields/3hr_APCP/";
-		// deriv = "max";
-		// for (int k=0; k<=87; k+=3){
-		// 	String fhr = String.format("%02d", k);
-		// 	String file = dir + "sref.t" + run + "z.pgrb" + grid + ".f" + fhr + "."+ deriv + ".txt";
-		// 	f = new Field(file, samplesx, samplesy, corner, samplesy*spacing, samplesx*spacing);
-		// 	fields.add(f);
-		// }
-		// 
-		// encd = new ScalarEncoding(fields);
-		// encd.useBilinear(false);
-		// encd.useInterpolation(false);
-		// encd.setColorMap(precip);
-		// encd.addIsovalue(4*25.4);
-		// encd.addIsovalue(3*25.4);
-		// encd.addIsovalue(2*25.4);
-		// encd.addIsovalue(1*25.4);
-		// encd.addIsovalue(0.75*25.4);
-		// encd.addIsovalue( 0.5*25.4);
-		// encd.addIsovalue(0.25*25.4);
-		// encd.addIsovalue( 0.1*25.4);
-		// // encd.addIsovalue(0.05*25.4);
-		// // encd.addIsovalue(0.01*25.4);
-		// 
-		// library.add(new StatSelect(tabw,tabh,cSurface, encd, "APCP", "surface", "3hr "+deriv));
+		// Surface APCP
+		fields = new ArrayList<Field>();
+		dir = "./datasets/StatFields/3hr_APCP/";
+		deriv = "max";
+		for (int k=0; k<=87; k+=3){
+			String fhr = String.format("%02d", k);
+			String file = dir + "sref.t" + run + "z.pgrb" + grid + ".f" + fhr + "."+ deriv + ".txt";
+			f = new Field(file, samplesx, samplesy, corner, samplesy*spacing, samplesx*spacing);
+			fields.add(f);
+		}
+		
+		encd = new ScalarEncoding(fields);
+		encd.useBilinear(true);
+		encd.useInterpolation(false);
+		encd.setColorMap(precip);
+		encd.addIsovalue(4*25.4);
+		encd.addIsovalue(3*25.4);
+		encd.addIsovalue(2*25.4);
+		encd.addIsovalue(1*25.4);
+		encd.addIsovalue(0.75*25.4);
+		encd.addIsovalue( 0.5*25.4);
+		encd.addIsovalue(0.25*25.4);
+		encd.addIsovalue( 0.1*25.4);
+		// encd.addIsovalue(0.05*25.4);
+		// encd.addIsovalue(0.01*25.4);
+		
+		library.add(new StatSelect(tabw,tabh,cSurface, encd, "APCP", "surface", "3hr "+deriv));
 	}
 
 }

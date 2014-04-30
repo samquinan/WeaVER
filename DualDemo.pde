@@ -160,6 +160,22 @@ void mouseReleased() {
 	}
 }
 
+void keyPressed() {
+	switch (mode){
+		case 0:
+			view_0.keyPress(key, keyCode); 
+			break;	
+		case 1:
+			view_1.keyPress(key, keyCode); 
+			break;
+		case 2:
+			view_2.keyPress(key, keyCode); 
+			break;
+		default:
+	}
+}
+
+
 // class HardcodedDataLoad implements Runnable{
 // 	public void run() {
 // 		loadData();

@@ -103,4 +103,24 @@ abstract class View {
 		else return false;
 	}
 	
+	boolean keyPress(char key, int code) {
+		boolean changed = false;
+	  	if (key == CODED) {
+	  	  	if (code == LEFT) {
+	  	  		changed = changed || timer.decrement();
+	  	  	} else if (code == RIGHT) {
+	  	  		changed = changed || timer.increment();
+	  	  	} 
+	  	}
+		
+		if (changed){
+			for (Container c : targets){
+				Target tmp = (Target) c;
+				if (tmp != null) tmp.updateRenderContext(true);
+			}
+		}
+		
+		return changed;
+	}		
+	
 }
