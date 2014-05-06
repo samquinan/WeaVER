@@ -5,6 +5,7 @@ class Slider {
   float offsetX, offsetY; // Mouseclick offset
   boolean dragging = false;
   boolean rollover = false;
+  boolean active;
   int sigDigits;
   String label;
   boolean showSliderValue = true;
@@ -24,6 +25,8 @@ class Slider {
     offsetY = 0;
     sigDigits = 0;
 	label = "";
+	
+	active = true;
   }
   
   // additional intitalization controls
@@ -51,6 +54,14 @@ class Slider {
   
   void displaySliderValue(boolean b){
 	  showSliderValue = b;
+  }
+  
+  boolean isActive(){
+  	  return active;
+  }
+  
+  void setActive(boolean b){
+  	  active = b;
   }
   
   // get methods
@@ -83,7 +94,7 @@ class Slider {
 	  }
       //highlight color for slider knob
       if (dragging) fill(50);
-      else fill(130,200,250);
+      else fill(121, 169, 209);
     }
     else{
       fill(150);
@@ -97,12 +108,14 @@ class Slider {
   
   // mouse interaction methods
   boolean interact(float mx, float my){
+	if (!active) return active;   
     if(dragging) updateVal(mouseX);
     else rollover = ((sq(mx - map(s, v1, v2, line_x1, line_x2))/sq(Rx+offsetX)) + ((sq(my - line_y))/sq(Ry+offsetY))) <= 1;
 	return (dragging || rollover);
   }
   
   boolean clicked(float mx, float my){
+	if (!active) return active;
     dragging = ((sq(mx - map(s, v1, v2, line_x1, line_x2))/sq(Rx+offsetX)) + ((sq(my - line_y))/sq(Ry+offsetY))) <= 1;
 	return dragging;
   }

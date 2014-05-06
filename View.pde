@@ -43,6 +43,21 @@ abstract class View {
 	abstract void loadData();
 	abstract void draw();
 	
+	void updateAnim(){
+		if(timer.update()){
+			for (Container c : targets){
+				Target tmp = (Target) c;
+				if (tmp != null){
+					tmp.updateRenderContext(false); //double update of targets that do not require caching on release -- TODO revisit
+				}
+			}
+		}
+	}
+	
+	void haltAnim(){
+		timer.setAnimating(false);
+	}
+	
 	void mousePress(int mx, int my){
 		press(mx, my);
 	}

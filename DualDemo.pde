@@ -142,7 +142,24 @@ void mouseDragged(){
 
 void mouseReleased() {
 	if(menu.released()){
-		mode = menu.getMode();
+		//halt current if animating
+		int cur = menu.getMode();
+		if (cur != mode){
+			switch (mode){
+				case 0:
+					view_0.haltAnim(); 
+					break;	
+				case 1:
+					view_1.haltAnim(); 
+					break;
+				case 2:
+					view_2.haltAnim(); 
+					break;
+				default:
+			}
+			//swap
+			mode = cur;
+		}
 		return;
 	}
 	

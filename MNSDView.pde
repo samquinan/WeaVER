@@ -35,6 +35,8 @@ class MNSDView extends View {
 	}
 	
 	void draw(){
+		//update state if animating
+		updateAnim();
 		
 		//draw map bg
 		fill(255);

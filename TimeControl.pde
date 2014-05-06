@@ -5,8 +5,8 @@ class TimeControl {
 	Slider slider;
 	FwdButton bFwd;
 	BackButton bBack;
-	
-	// boolean animate;
+	TextSwitch loop;
+	int tPrev, tSum, tTotal; 	
 		
 	TimeControl(float x0, float y0, float w0, int stages){
 		x = x0;
@@ -23,8 +23,16 @@ class TimeControl {
 		
 	    bFwd = new FwdButton(x+25, y+30, 13);
 	    bBack = new BackButton(x,  y+30, 13);
+		
+		loop = new TextSwitch(x+w-40, y+30, "animate");
+		loop.setTextSize(12);
+		loop.setColors(color(50, 50, 50, 120), color(47, 109, 162), color(30), color(23, 64, 98), color(80), color(0), color(0));
 				
 		makeConsistent();
+		
+		tPrev = 0;
+		tSum = 0;
+		tTotal = 500;
 	}
 	
 	int getIndex(){
@@ -39,6 +47,7 @@ class TimeControl {
 		slider.display();
 	    bFwd.display();
 	    bBack.display();
+		loop.display();
 		
 	    textSize(11);
 		fill(0, 0, 0, 255);
@@ -51,6 +60,30 @@ class TimeControl {
 	    text(element, x + w/2, y+30);
 		
 	}
+	
+	void setAnimating(boolean b){
+		loop.setState(b);
+	}
+	
+	boolean update(){
+		if (loop.isOn()){
+			int tCur = millis();
+			tSum += tCur - tPrev;
+			tPrev = tCur;
+			if (tSum >= tTotal){
+				PVector r = slider.getRange();
+				if (++cur > r.y){
+					cur = int(r.x);
+				}
+				slider.setVal(cur);
+				updateCountLabel();
+				tSum = 0;
+				return true;
+			}
+			return false;
+		}
+		return false;
+	}
 		
 	boolean interact(int mx, int my) {
 		boolean interacted = slider.interact(mx, my);
@@ -60,12 +93,17 @@ class TimeControl {
 		if (interacted) return interacted;
 		
 	    interacted = interacted || bBack.interact(mx, my);
+		if (interacted) return interacted;
+		
+	    interacted = interacted || loop.interact(mx, my);
+		
 		return interacted;
 	}
 	
 	boolean drag(int mx, int my) {
 		 if(bFwd.drag(mx, my)) return false;
 		 if(bBack.drag(mx, my)) return false;
+		 if(loop.interact(mx, my)) return false;
 		
 		boolean interacted = slider.interact(mx, my);
 		int now = int(slider.getValue());
@@ -86,6 +124,9 @@ class TimeControl {
 		if (clicked) return clicked;
 		
 		clicked = clicked || bBack.clicked(mx, my);
+		if (clicked) return clicked;
+		
+		clicked = clicked || loop.clicked(mx, my);
 		return clicked;
 	}
 	
@@ -103,7 +144,26 @@ class TimeControl {
 		if (released){
 			cur--;
 			makeConsistent();
+			return released;
 		}
+		
+		released = released || loop.released();
+		if (released){
+			if(loop.isOn()){
+				slider.setActive(false);
+				bFwd.setActive(false);
+				bBack.setActive(false);
+				tPrev = millis();
+				tSum = 0;
+				return false; //hack to prevent secondary effect of caching 				
+			}
+			else{
+				slider.setActive(true);
+				makeConsistent();
+				return true;
+			}
+		}
+		
 		return released;
 	}
 	
@@ -113,26 +173,34 @@ class TimeControl {
     	bFwd.setActive((cur < r.y));
     	bBack.setActive((cur > r.x));
 		
+		updateCountLabel();
+	}
+	
+	private void updateCountLabel(){
 		element = String.format("%02d", cur*3);
 	}
 	
 	boolean increment(){
 		boolean affected = false;
-		if (bFwd.isActive()){
-			affected = true;
-			cur++;
+		if (!loop.isOn()){
+			if (bFwd.isActive()){
+				affected = true;
+				cur++;
+			}
+			makeConsistent();
 		}
-		makeConsistent();
 		return affected;
 	}
 	
 	boolean decrement(){
 		boolean affected = false;
-		if (bBack.isActive()){
-			affected = true;
-			cur--;
+		if (!loop.isOn()){
+			if (bBack.isActive()){
+				affected = true;
+				cur--;
+			}
+			makeConsistent();
 		}
-		makeConsistent();
 		return affected;
 	}
 	
