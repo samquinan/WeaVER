@@ -7,6 +7,7 @@ abstract class ScalarTargetBase extends Container implements Target {
 	
 	TimeControl timer;
 	String label;
+	boolean hover;
 	
 	ScalarTargetBase(float ix, float iy, float dx, float dy) {
 		super(ix, iy, dx, dy, 1, 1);
@@ -16,6 +17,7 @@ abstract class ScalarTargetBase extends Container implements Target {
 		legend = null;
 		qtree = null;
 		label = "";
+		hover = false;
 	}
 	
 	void setLabel(String s){
@@ -50,9 +52,18 @@ abstract class ScalarTargetBase extends Container implements Target {
 		super.display();
    	}
 	
+	boolean interact(int mx, int my) {
+		hover = (mx > x && mx < x + w && my > y && my < y + h);
+		return super.interact(mx,my);
+	}
+	
 	void remove(Selectable s){
 		super.remove(s);
 		updateRenderContext();	
-	}	
+	}
+	
+	boolean isHovering(){
+		return hover && (interacting != null);	
+	}
 		
 }

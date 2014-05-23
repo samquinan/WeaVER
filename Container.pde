@@ -1,5 +1,5 @@
 class Container { //TODO double check threadsafety for all operations, reduce length of synchronized ops
-	private final Object lock = new Object();
+	protected final Object lock = new Object();
 	boolean highlight;
 	float x,y,w,h;
 	int cols, rows;
@@ -35,7 +35,6 @@ class Container { //TODO double check threadsafety for all operations, reduce le
 				if (s != interacting) s.display();
 			}
 		}
-		 
    	}
 	
 	void add(Selectable s){

@@ -13,6 +13,7 @@ class ScalarTarget extends ScalarTargetBase {
 	boolean isIntersectedAABB(Selectable s){
 		boolean tmp = super.isIntersectedAABB(s);
 		highlight = highlight && (s instanceof EncodesScalar);
+		hover = hover && !highlight;
 		return tmp;
 	}
 	

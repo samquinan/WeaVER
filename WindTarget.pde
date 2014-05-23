@@ -1,6 +1,7 @@
 class WindTarget extends Container implements Target{
 	
 	ArrayList<Barb> layer;
+	boolean hover;
 	
 	TimeControl timer;
 	String label;
@@ -8,6 +9,7 @@ class WindTarget extends Container implements Target{
 	WindTarget(float ix, float iy, float dx, float dy) {
 		super(ix, iy, dx, dy, 1, 1);
 		layer = null;
+		hover = false;
 	}
 	
 	void setLabel(String s){
@@ -27,19 +29,30 @@ class WindTarget extends Container implements Target{
 		textAlign(LEFT, BOTTOM);
 		fill(70);
 		text(label,x+2,y-1);
-		super.display();
+		super.display();		
    	}
+	
+	boolean interact(int mx, int my) {
+		hover = (mx > x && mx < x + w && my > y && my < y + h);
+		return super.interact(mx,my);
+	}
+	
+	boolean isHovering(){
+		return hover;	
+	}
+	
 	
 	void add(Selectable s){
 		if (s instanceof EncodesVector){
 			super.add(s);	
 		}
 	}
-	
+		
 	boolean isIntersectedAABB(Selectable s){
 		boolean valid = (s instanceof EncodesVector);
 		boolean tmp = super.isIntersectedAABB(s) && valid;
 		highlight = highlight && valid;
+		hover = hover && !highlight;
 		return tmp;
 	}
 	

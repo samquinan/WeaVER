@@ -79,7 +79,9 @@ class DtrmView extends View {
 		}
 	
 		// fill
+		if(t_barbs.isHovering() || t_contour.isHovering()) tint(255, 200);
 		image(fill, cornerx, cornery);
+		noTint();
 	
 		// draw outline
 		if (map != null){
@@ -88,19 +90,40 @@ class DtrmView extends View {
 			noFill();
 			shape(map, cornerx+(39*spacing), cornery+(35*spacing), 123*spacing, 75*spacing);
 		}	
-	
+		
+		color clr;
+		float weight;
 		// contours
 		//draw contours
 		colorMode(HSB, 360, 100, 100, 100);
-		stroke(0,0,15,100);
 		strokeCap(SQUARE);
-		drawContours(contours, color(0,0,0), 2.0);
+		if (t_contour.isHovering()){
+			clr = color(0,0,15,100);
+			weight = 2.3;
+		}
+		else {
+			if(t_barbs.isHovering() || t_cmap.isHovering()){
+				clr = color(0,0,15,50);
+				weight = 1.0;
+			}
+			else{
+				clr = color(0,0,15,100);
+				weight = 2.0;
+			}
+		}
+		stroke(clr);
+		drawContours(contours, color(0,0,0), weight);
 		strokeCap(ROUND);
 		colorMode(RGB,255);	
 	
 		// barbs
+		clr = color(60);
 		strokeWeight(1.3);
-		color clr = color(60);
+		if(t_barbs.isHovering()){
+			clr = color(40);	
+			strokeWeight(2.3);
+			}
+		else if (t_contour.isHovering() || t_cmap.isHovering()) clr = color(60, 60);
 		fill(clr);
 		stroke(clr);
 		for(Barb barb : barbs){
@@ -109,7 +132,11 @@ class DtrmView extends View {
 	
 		// draw controls
 		library.display();
+		
+		if(t_barbs.isHovering() || t_contour.isHovering()) tint(255, 200);
 		legend.display();
+		noTint();
+		
 		tracker.display();
 		timer.display();
 	

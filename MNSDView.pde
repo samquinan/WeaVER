@@ -67,7 +67,7 @@ class MNSDView extends View {
 		colorMode(HSB, 360, 100, 100, 100);
 		stroke(0,0,15,100);
 		strokeCap(SQUARE);
-		drawContours(contours, color(0,0,0), 2.0);
+		drawContours(contours, color(0,0,0), (mnsd_target0.isHovering() ? 1.0 : 2.0));
 		strokeCap(ROUND);
 		colorMode(RGB,255);	
 		
