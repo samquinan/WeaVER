@@ -1,5 +1,6 @@
 class Orbiter {
 	int state;
+	color current;
 	
 	PVector cOrbit;
 	float rOrbit;
@@ -31,12 +32,18 @@ class Orbiter {
 		dTransition = 0;
 	}
 	
-	void display(color argb){
-		if (state==0) return;
+	int display(color argb){
+		if (state==0) return 0;
 		int a = (argb >> 24) & 0xFF;
 		color cc = (round(map(dTransition, 0, 1, 0, a)) << 24) | (argb & 0x00FFFFFF);
 		fill(cc);
 		ellipse(xSat, ySat, sizeSat, sizeSat);
+		a = (cc >> 24) & 0xFF;
+		return a;
+	}
+	
+	boolean isOff(){
+		return (state == 0);
 	}
 	
 	void switchState(){
