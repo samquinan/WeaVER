@@ -3,16 +3,16 @@ class EnsembleView extends View {
 	Switch cbp_switch;
 		
 	EnsembleTarget target0; //TODO deal with same selectable in multiple targets? 
-	// EnsembleTarget target1;
-	// EnsembleTarget target2;
+	EnsembleTarget target1;
+	EnsembleTarget target2;
 	
 	ArrayList<Contour2D> contours_0;
-	// ArrayList<Contour2D> contours_1;
-	// ArrayList<Contour2D> contours_2;
+	ArrayList<Contour2D> contours_1;
+	ArrayList<Contour2D> contours_2;
 	
 	QuadTree_Node<Segment2D> cselect_0;
-	// QuadTree_Node<Segment2D> cselect_1;
-	// QuadTree_Node<Segment2D> cselect_2;
+	QuadTree_Node<Segment2D> cselect_1;
+	QuadTree_Node<Segment2D> cselect_2;
 	
 	Contour2D highlight;
 	
@@ -30,12 +30,12 @@ class EnsembleView extends View {
 		// Initialize Render State				
 		//Contours
 		contours_0 = new ArrayList<Contour2D>();
-		// contours_1 = new ArrayList<Contour2D>();
-		// contours_2 = new ArrayList<Contour2D>();
+		contours_1 = new ArrayList<Contour2D>();
+		contours_2 = new ArrayList<Contour2D>();
 		
 		cselect_0 = new QuadTree_Node<Segment2D>(cornerx, cornery, cornerx+samplesx*spacing, cornery+samplesy*spacing, ensbMembCount);
-		// cselect_1 = new QuadTree_Node<Segment2D>(cornerx, cornery, cornerx+samplesx*spacing, cornery+samplesy*spacing, ensbMembCount);
-		// cselect_2 = new QuadTree_Node<Segment2D>(cornerx, cornery, cornerx+samplesx*spacing, cornery+samplesy*spacing, ensbMembCount);
+		cselect_1 = new QuadTree_Node<Segment2D>(cornerx, cornery, cornerx+samplesx*spacing, cornery+samplesy*spacing, ensbMembCount);
+		cselect_2 = new QuadTree_Node<Segment2D>(cornerx, cornery, cornerx+samplesx*spacing, cornery+samplesy*spacing, ensbMembCount);
 		
 		highlight = null;
 				
@@ -45,9 +45,29 @@ class EnsembleView extends View {
 		target0.linkSPQuadTree(cselect_0);
 		target0.linkTimeControl(timer);
 		target0.linkSwitch(cbp_switch);
-		target0.setLabel("CONTOURS  [PURPLE]");
+		target0.setLabel("CONTOURS");
 		library.linkTarget(target0);
 		targets.add(target0);
+					
+		target1 = new EnsembleTarget(cornerx+10+(1*(tabw+4)),cornery-tabh-10,tabw,tabh);
+		target1.linkSPContours(contours_1);
+		target1.linkSPQuadTree(cselect_1);
+		target1.linkTimeControl(timer);
+		target1.linkSwitch(cbp_switch);
+		target1.setLabel("CONTOURS");
+		library.linkTarget(target1);
+		targets.add(target1);
+		
+		target2 = new EnsembleTarget(cornerx+10+(2*(tabw+4)),cornery-tabh-10,tabw,tabh);
+		target2.linkSPContours(contours_2);
+		target2.linkSPQuadTree(cselect_2);
+		target2.linkTimeControl(timer);
+		target2.linkSwitch(cbp_switch);
+		target2.setLabel("CONTOURS");
+		library.linkTarget(target2);
+		targets.add(target2);
+		
+		
 	}
 	
 	void draw(){
@@ -84,20 +104,68 @@ class EnsembleView extends View {
 		
 		}
 		else {
-			// contours
-			int s_1 = 27;
-			int s_2 = 44;
-			int b_1 = 80;
-			int b_2 = 40;
-			int a = 80;
+			
+			
+			boolean someHovering = target2.isHovering() | target1.isHovering() | target0.isHovering();
+			int s_1, s_2, b_1, b_2, a;
 			
 			//draw contours
 			colorMode(HSB, 360, 100, 100, 100);
 			stroke(0,0,15,100);
 			strokeCap(SQUARE);
-			drawContours(contours_0, 239, s_1, s_2, b_1, b_2, a, color(239,40,21,100), (target0.isHovering() ? 2.0 : 1.0), 2.0);
+			
+			// default
+			s_1 = 27;
+			s_2 = 44;
+			b_1 = 80;
+			b_2 = 40;
+			a = 80;
+			if (target2.isHovering()) a = 100;
+			else if (someHovering){
+				s_1 = 0;
+				s_2 = 12;
+				b_1 = 90;
+				b_2 = 50;
+				a = 70;
+			}
+			
+			drawContours(contours_2,   0, s_1, s_2, b_1, b_2, a, color(239,40,21,100), 1.5, 2.0);
+			
+			s_1 = 27;
+			s_2 = 44;
+			b_1 = 80;
+			b_2 = 40;
+			a = 80;
+			if (target1.isHovering()) a = 100;
+			else if (someHovering){
+				s_1 = 0;
+				s_2 = 12;
+				b_1 = 90;
+				b_2 = 50;
+				a = 70;
+			}
+			
+			drawContours(contours_1, 119, s_1, s_2, b_1, b_2, a, color(119,40,21,100), 1.5, 2.0);
+			
+			s_1 = 27;
+			s_2 = 44;
+			b_1 = 80;
+			b_2 = 40;
+			a = 80;
+			if (target0.isHovering()) a = 100;
+			else if (someHovering){
+				s_1 = 0;
+				s_2 = 12;
+				b_1 = 90;
+				b_2 = 50;
+				a = 70;
+			}
+			
+			drawContours(contours_0, 239, s_1, s_2, b_1, b_2, a, color(  0,40,21,100), 1.5, 2.0);
 			strokeCap(ROUND);
-			colorMode(RGB,255);	
+			colorMode(RGB,255);
+			
+				
 		}
 				
 		// draw controls
@@ -176,7 +244,7 @@ class EnsembleView extends View {
 			String s = highlight.getID();
 			fill(255,179);
 			noStroke();
-			rect(mouseX - (s.length()/2)*6, mouseY-17, s.length()*6, 12);
+			rect(mouseX - textWidth(s)/2 -2, mouseY-textAscent()-textDescent()-5, textWidth(s)+4, textAscent()+textDescent());
 			fill(0);
 			textAlign(CENTER,BOTTOM);
 			textSize(10);
@@ -193,14 +261,35 @@ class EnsembleView extends View {
 			return true;
 		}
 		else {
-			Segment2D selection = cselect_0.select(mouseX, mouseY, 4);
-			if (selection != null){
-				highlight = selection.getSrcContour();
-				return true;
+			if (cbp_switch.isOn()){
+				//CBP
+				return false;											
 			}
-			else{
-				highlight = null;
-				return false;
+			else {
+				//Spaghetti Plots                                           //TODO better solution than nested if statements?
+				Segment2D selection = cselect_0.select(mouseX, mouseY, 4);			
+				if (selection != null){
+					highlight = selection.getSrcContour();
+					return true;
+				}
+				else{
+					selection = cselect_1.select(mouseX, mouseY, 4);
+					if (selection != null){
+						highlight = selection.getSrcContour();
+						return true;
+					}
+					else{
+						selection = cselect_2.select(mouseX, mouseY, 4);
+						if (selection != null){
+							highlight = selection.getSrcContour();
+							return true;
+						}
+						else{
+							highlight = null;
+							return false;
+						}
+					}
+				}
 			}
 		}
 	}
@@ -226,7 +315,6 @@ class EnsembleView extends View {
 		c500mb = color(83,30,175);
 		c700mb = color(0,116,162);
 		
-		// 700mb tmp
 		String dir = "./datasets/EnsembleFields/500mb_TMP/";
 		String run = "21";
 		String grid = "212";
@@ -235,11 +323,12 @@ class EnsembleView extends View {
 		
 		int initCapacity = models.length*perturbations.length;
 		ArrayList<String> member_labels = new ArrayList<String>(initCapacity);
+		
+		//500mb TMP
 		ArrayList< ArrayList<Field> > ensemble = new ArrayList< ArrayList<Field> >(initCapacity);
 		
 		for (int i=0; i < models.length; i++){
 			for (int j=0; j < perturbations.length; j++){
-				
 				ArrayList<Field> member = new ArrayList<Field>(30);
 				for (int k=0; k<=87; k+=3){
 					String fhr = String.format("%02d", k);
@@ -248,7 +337,7 @@ class EnsembleView extends View {
 					member.add(f);
 				}
 				ensemble.add(member);
-				member_labels.add( " "+ models[i] + " " + perturbations[j] + " ");
+				member_labels.add( models[i] + " " + perturbations[j] );
 			}
 		}
 		
@@ -256,17 +345,44 @@ class EnsembleView extends View {
 		encd = new EnsembleEncoding(ensemble);
 		encd.setMemberLabels(member_labels);
 		encd.setIsovalue(258.15);//-15 C
-		library.add(new EnsembleSelect(tabw,tabh,c700mb, encd, "TMP", "500mb", "258.15˚ K"));
+		library.add(new EnsembleSelect(tabw,tabh,c500mb, encd, "TMP", "500mb", "258.15˚ K"));
 		
 		encd = new EnsembleEncoding(ensemble);
 		encd.setMemberLabels(member_labels);
 		encd.setIsovalue(253.15);//-20 C
-		library.add(new EnsembleSelect(tabw,tabh,c700mb, encd, "TMP", "500mb", "253.15˚ K"));
+		library.add(new EnsembleSelect(tabw,tabh,c500mb, encd, "TMP", "500mb", "253.15˚ K"));
 		
 		encd = new EnsembleEncoding(ensemble);
 		encd.setMemberLabels(member_labels);
 		encd.setIsovalue(248.15);//-25 C
-		library.add(new EnsembleSelect(tabw,tabh,c700mb, encd, "TMP", "500mb", "248.15˚ K"));
+		library.add(new EnsembleSelect(tabw,tabh,c500mb, encd, "TMP", "500mb", "248.15˚ K"));
+		
+		//700mb TMP
+		dir = "./datasets/EnsembleFields/700mb_TMP/";
+		ensemble = new ArrayList< ArrayList<Field> >(initCapacity);
+		
+		for (int i=0; i < models.length; i++){
+			for (int j=0; j < perturbations.length; j++){
+				ArrayList<Field> member = new ArrayList<Field>(30);
+				for (int k=0; k<=87; k+=3){
+					String fhr = String.format("%02d", k);
+					String file = dir + "sref_"+ models[i] +".t" + run + "z.pgrb" + grid +"." + perturbations[j] + ".f" + fhr + ".txt";
+					f = new Field(file, samplesx, samplesy, corner, samplesy*spacing, samplesx*spacing);
+					member.add(f);
+				}
+				ensemble.add(member);
+			}
+		}
+		
+		encd = new EnsembleEncoding(ensemble);
+		encd.setMemberLabels(member_labels);
+		encd.setIsovalue(283.15);//10 C
+		library.add(new EnsembleSelect(tabw,tabh,c700mb, encd, "TMP", "700mb", "283.15˚ K"));
+		
+		encd = new EnsembleEncoding(ensemble);
+		encd.setMemberLabels(member_labels);
+		encd.setIsovalue(288.15);//15 C
+		library.add(new EnsembleSelect(tabw,tabh,c700mb, encd, "TMP", "700mb", "288.15˚ K"));
 		
 	}
 

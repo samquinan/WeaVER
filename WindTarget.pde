@@ -39,7 +39,7 @@ class WindTarget extends Container implements Target{
 	}
 	
 	boolean isHovering(){
-		return hover;	
+		return hover && (interacting != null);	
 	}
 	
 	

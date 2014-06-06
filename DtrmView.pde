@@ -184,7 +184,7 @@ class DtrmView extends View {
 			String s = highlight.getID();
 			fill(255,179);
 			noStroke();
-			rect(mouseX - (s.length()/2)*6, mouseY-17, s.length()*6, 12);
+			rect(mouseX - textWidth(s)/2 -2, mouseY-textAscent()-textDescent()-5, textWidth(s)+4, textAscent()+textDescent());
 			fill(0);
 			textAlign(CENTER,BOTTOM);
 			textSize(10);
