@@ -16,6 +16,7 @@ abstract class ScalarTargetBase extends Container implements Target {
 		layer1 = null;
 		legend = null;
 		qtree = null;
+		timer = null;
 		label = "";
 		hover = false;
 	}

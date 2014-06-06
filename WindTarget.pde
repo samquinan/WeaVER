@@ -9,6 +9,7 @@ class WindTarget extends Container implements Target{
 	WindTarget(float ix, float iy, float dx, float dy) {
 		super(ix, iy, dx, dy, 1, 1);
 		layer = null;
+		timer = null;
 		hover = false;
 	}
 	
@@ -88,7 +89,7 @@ class WindTarget extends Container implements Target{
 	}
 	
 	private void update(){
-		int fhr = timer.getIndex();
+		int fhr = (timer == null) ? 0 : timer.getIndex();
 		//barbs
 		if (layer != null){
 			layer.clear();

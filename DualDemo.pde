@@ -1,6 +1,4 @@
 PFont plotFont;
-PShape map;
-BarbGlyphList glyphs;
 
 MenuBar menu;
 int mode;
@@ -8,6 +6,7 @@ int mode;
 DtrmView view_0;
 StatView view_1;
 MNSDView view_2;
+EnsembleView view_3;
 
 LoadAnimation spinner;
 
@@ -20,10 +19,10 @@ void setup() {
   	textFont(plotFont);
   	
 	// generate barb glyphs
-	glyphs = new BarbGlyphList();
+	BarbGlyphList glyphs = new BarbGlyphList();
 	
     // load map
-    map = loadShape("roughUS.svg");
+    PShape map = loadShape("roughUS.svg");
 	map.disableStyle();
 	
 	// generate view_0
@@ -37,12 +36,6 @@ void setup() {
 	int tabh = 22;
 	
 	menu = new MenuBar(0,0,width,12);
-	menu.addItem("Deterministic");
-	menu.addItem("Stat Field");
-	menu.addItem("MNSD");
-	// menu.addItem("Probability");
-	// menu.addItem("Direct Ensemble");
-	
 	mode = menu.getMode();
 	
 	view_0 = new DtrmView(samplesx, samplesy, spacing, cornerx, cornery, tabw, tabh, 32);
@@ -59,9 +52,19 @@ void setup() {
 	view_2.setMap(map);
 	view_2.loadData();
 	
+	view_3 = new EnsembleView(samplesx, samplesy, spacing, cornerx, cornery, tabw, tabh, 12);
+	view_3.setMap(map);
+	view_3.loadData();
+	
 	spinner = new LoadAnimation(new PVector(width/2,height/2), 25.0, radians(120)/1000.0, 37);
 	spinner.switchState();
 	
+	menu.addItem("Deterministic");
+	menu.addItem("Stat Field");
+	menu.addItem("MNSD");
+	menu.addItem("Direct Ensemble");
+	// menu.addItem("Probability");
+	mode = menu.getMode();	
 }
 
 void draw(){
@@ -78,6 +81,9 @@ void draw(){
 			break;
 		case 2:
 			view_2.draw();
+			break;
+		case 3:
+			view_3.draw();
 			break;
 		default:
 			spinner.update();
@@ -99,6 +105,9 @@ void mousePressed(){
 		case 2:
 			view_2.mousePress(mouseX, mouseY); 
 			break;
+		case 3:
+			view_3.mousePress(mouseX, mouseY); 
+			break;		
 		default:
 	}
 	
@@ -117,6 +126,9 @@ void mouseMoved(){
 		case 2:
 			view_2.mouseMove(mouseX, mouseY); 
 			break;
+		case 3:
+			view_3.mouseMove(mouseX, mouseY); 
+			break;
 		default:
 	}
 		
@@ -134,6 +146,9 @@ void mouseDragged(){
 			break;
 		case 2:
 			view_2.mouseDrag(mouseX, mouseY); 
+			break;
+		case 3:
+			view_3.mouseDrag(mouseX, mouseY); 
 			break;
 		default:
 	}
@@ -155,6 +170,9 @@ void mouseReleased() {
 				case 2:
 					view_2.haltAnim(); 
 					break;
+				case 3:
+					view_3.haltAnim(); 
+					break;				
 				default:
 			}
 			//swap
@@ -173,6 +191,9 @@ void mouseReleased() {
 		case 2:
 			view_2.mouseRelease(); 
 			break;
+		case 3:
+			view_3.mouseRelease(); 
+			break;
 		default:
 	}
 }
@@ -188,16 +209,37 @@ void keyPressed() {
 		case 2:
 			view_2.keyPress(key, keyCode); 
 			break;
+		case 3:
+			view_3.keyPress(key, keyCode); 
+			break;
 		default:
 	}
 }
 
 
-// class HardcodedDataLoad implements Runnable{
-// 	public void run() {
-// 		loadData();
+// class LoadViews implements Runnable{
+// 	
+// 	DtrmView view_0;
+// 	StatView view_1;
+// 	MNSDView view_2;
+// 	EnsembleView view_3;
+// 	
+// 	boolean finished;
+// 	
+// 	LoadViews(){
+// 		view_0 = null;
+// 		view_1 = null;
+// 		view_2 = null;
+// 		view_3 = null;
+// 		finished = false;
 // 	}
 // 	
-// 	void loadData(){				
+// 	
+// 	public void run() {
+// 		load();
+// 	}
+// 	
+// 	void load(){
+// 						
 // 	}	
 // }

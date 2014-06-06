@@ -73,7 +73,7 @@ class ScalarTarget extends ScalarTargetBase {
 	}
 		
 	private void noCacheUpdate(){
-		int fhr = timer.getIndex();
+		int fhr = (timer == null) ? 0 : timer.getIndex();
 		//fill
 		if (layer0 != null){
 			EncodesScalar s = (EncodesScalar) entries.get(0);

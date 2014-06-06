@@ -1,6 +1,6 @@
 class MNSDView extends View {
-		
-	ScalarTarget mnsd_target0;
+							   //TODO add 2nd target (texture)
+	ScalarTarget mnsd_target0; //TODO deal with same selectable in multiple targets?
 	
 	PImage fill;
 	ArrayList<Contour2D> contours;

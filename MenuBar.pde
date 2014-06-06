@@ -44,7 +44,7 @@ class MenuBar {
 	}
 	
 	int getMode(){
-		return active.getMode();
+		return (active == null) ? -1 : active.getMode();
 	}
 	
 	boolean clicked(int mx, int my){

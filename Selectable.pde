@@ -3,7 +3,7 @@ class Selectable {
 	boolean dragging;
 	boolean rollover;
 	boolean isClone;
-	
+		
 	float x,y,w,h; // entry position and size
 	float restx, resty;
 	int r,g,b; //color
