@@ -46,6 +46,7 @@ class EnsembleView extends View {
 		target0.linkTimeControl(timer);
 		target0.linkSwitch(cbp_switch);
 		target0.setLabel("CONTOURS");
+		target0.setColor(color(64, 56, 118, 200));
 		library.linkTarget(target0);
 		targets.add(target0);
 					
@@ -55,6 +56,7 @@ class EnsembleView extends View {
 		target1.linkTimeControl(timer);
 		target1.linkSwitch(cbp_switch);
 		target1.setLabel("CONTOURS");
+		target1.setColor(color(47, 110, 53, 200));
 		library.linkTarget(target1);
 		targets.add(target1);
 		
@@ -64,6 +66,7 @@ class EnsembleView extends View {
 		target2.linkTimeControl(timer);
 		target2.linkSwitch(cbp_switch);
 		target2.setLabel("CONTOURS");
+		target2.setColor(color(110, 47, 47, 200));
 		library.linkTarget(target2);
 		targets.add(target2);
 		

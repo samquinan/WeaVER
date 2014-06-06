@@ -7,6 +7,8 @@ class EnsembleTarget extends Container implements Target{
 	TimeControl timer;
 	Switch cbp;
 	String label;
+	color clr;
+	color border;
 	
 	EnsembleTarget(float ix, float iy, float dx, float dy) {
 		super(ix, iy, dx, dy, 1, 1);
@@ -14,6 +16,13 @@ class EnsembleTarget extends Container implements Target{
 		sp_qtree = null;
 		timer = null;
 		hover = false;
+		clr = color(255,255,255,0);
+		border = color(170, 0);
+	}
+	
+	void setColor(color cin){
+		clr = cin;
+		border = color(170, 255);
 	}
 	
 	void setLabel(String s){
@@ -41,6 +50,10 @@ class EnsembleTarget extends Container implements Target{
 		textAlign(LEFT, BOTTOM);
 		fill(70);
 		text(label,x+2,y-1);
+		stroke(border);
+		strokeWeight(1);
+		fill(clr);
+		rect(x+2+textWidth(label)+5, y-2-textAscent()-textDescent(), 9, 9);
 		super.display();		
    	}
 	
