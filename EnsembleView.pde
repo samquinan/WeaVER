@@ -19,7 +19,7 @@ class EnsembleView extends View {
 	EnsembleView(int sx, int sy, float ds, int cx, int cy, int tw, int th, int libsize){
 		super(sx, sy, ds, cx, cy, tw, th, ceil(libsize/2.0));
 		
-		int ensbMembCount = 21;// TODO shouldn't be hardcoded
+		int n = 50;
 		
 		// Controls
 		cbp_switch = new Switch(cornerx+(samplesx*spacing)-60, cornery-tabh-10, 16, 14);
@@ -33,9 +33,9 @@ class EnsembleView extends View {
 		contours_1 = new ArrayList<Contour2D>();
 		contours_2 = new ArrayList<Contour2D>();
 		
-		cselect_0 = new QuadTree_Node<Segment2D>(cornerx, cornery, cornerx+samplesx*spacing, cornery+samplesy*spacing, ensbMembCount);
-		cselect_1 = new QuadTree_Node<Segment2D>(cornerx, cornery, cornerx+samplesx*spacing, cornery+samplesy*spacing, ensbMembCount);
-		cselect_2 = new QuadTree_Node<Segment2D>(cornerx, cornery, cornerx+samplesx*spacing, cornery+samplesy*spacing, ensbMembCount);
+		cselect_0 = new QuadTree_Node<Segment2D>(cornerx, cornery, cornerx+samplesx*spacing, cornery+samplesy*spacing, n);
+		cselect_1 = new QuadTree_Node<Segment2D>(cornerx, cornery, cornerx+samplesx*spacing, cornery+samplesy*spacing, n);
+		cselect_2 = new QuadTree_Node<Segment2D>(cornerx, cornery, cornerx+samplesx*spacing, cornery+samplesy*spacing, n);
 		
 		highlight = null;
 				
@@ -117,54 +117,75 @@ class EnsembleView extends View {
 			stroke(0,0,15,100);
 			strokeCap(SQUARE);
 			
-			// default
-			s_1 = 27;
-			s_2 = 44;
-			b_1 = 80;
-			b_2 = 40;
-			a = 80;
-			if (target2.isHovering()) a = 100;
-			else if (someHovering){
-				s_1 = 0;
-				s_2 = 12;
-				b_1 = 90;
-				b_2 = 50;
-				a = 70;
+			// Target 2
+			if (!target2.isHovering()){
+				if (someHovering){ //grey out
+					s_1 = 0;
+					s_2 = 12;
+					b_1 = 90;
+					b_2 = 50;
+					a = 70;
+				}
+				else{ //default draw
+					s_1 = 27;
+					s_2 = 44;
+					b_1 = 80;
+					b_2 = 40;
+					a = 80;
+				}
+				drawContours(contours_2,   0, s_1, s_2, b_1, b_2, a, color(0,50,27,100), 1.5, 2.5);
 			}
 			
-			drawContours(contours_2,   0, s_1, s_2, b_1, b_2, a, color(239,40,21,100), 1.5, 2.0);
-			
-			s_1 = 27;
-			s_2 = 44;
-			b_1 = 80;
-			b_2 = 40;
-			a = 80;
-			if (target1.isHovering()) a = 100;
-			else if (someHovering){
-				s_1 = 0;
-				s_2 = 12;
-				b_1 = 90;
-				b_2 = 50;
-				a = 70;
+			// Target 1
+			if (!target1.isHovering()){
+				if (someHovering){ //grey out
+					s_1 = 0;
+					s_2 = 12;
+					b_1 = 90;
+					b_2 = 50;
+					a = 70;
+				}
+				else{ //default draw
+					s_1 = 27;
+					s_2 = 44;
+					b_1 = 80;
+					b_2 = 40;
+					a = 80;
+				}
+				drawContours(contours_1, 119, s_1, s_2, b_1, b_2, a, color(119,50,27,100), 1.5, 2.5);
 			}
 			
-			drawContours(contours_1, 119, s_1, s_2, b_1, b_2, a, color(119,40,21,100), 1.5, 2.0);
-			
-			s_1 = 27;
-			s_2 = 44;
-			b_1 = 80;
-			b_2 = 40;
-			a = 80;
-			if (target0.isHovering()) a = 100;
-			else if (someHovering){
-				s_1 = 0;
-				s_2 = 12;
-				b_1 = 90;
-				b_2 = 50;
-				a = 70;
+			// Target 0
+			if (!target0.isHovering()){
+				if (someHovering){ //grey out
+					s_1 = 0;
+					s_2 = 12;
+					b_1 = 90;
+					b_2 = 50;
+					a = 70;
+				}
+				else{ //default draw
+					s_1 = 27;
+					s_2 = 44;
+					b_1 = 80;
+					b_2 = 40;
+					a = 80;
+				}
+				drawContours(contours_0, 239, s_1, s_2, b_1, b_2, a, color(239,50,27,100), 1.5, 2.5);
 			}
 			
-			drawContours(contours_0, 239, s_1, s_2, b_1, b_2, a, color(  0,40,21,100), 1.5, 2.0);
+			// Hover over Top
+			if (someHovering){
+				s_1 = 27;
+				s_2 = 44;
+				b_1 = 80;
+				b_2 = 40;
+				a = 100;
+				if(target2.isHovering()) drawContours(contours_2,   0, s_1, s_2, b_1, b_2, a, color(0,50,27,100), 1.5, 2.5);
+				else if(target1.isHovering()) drawContours(contours_1, 119, s_1, s_2, b_1, b_2, a, color(119,50,27,100), 1.5, 2.5);
+				else drawContours(contours_0, 239, s_1, s_2, b_1, b_2, a, color(239,50,27,100), 1.5, 2.5);
+			}
+			
 			strokeCap(ROUND);
 			colorMode(RGB,255);
 			
@@ -194,21 +215,21 @@ class EnsembleView extends View {
 		strokeWeight(weight);
 	
 		int n = int(contours.size());
-		// boolean trigger = false;
+		boolean trigger = false;
 	
 		//draw all but selection
 		Contour2D c;
 		for (int i=0; i<n; i++){
 			c = contours.get(i);
 			if (c == highlight){
-				// trigger = true;
+				trigger = true;
 				continue;
 			}
 			c.drawContour();
 		}
 	
 		//draw selection
-		if ((highlight != null)){// && trigger){
+		if ((highlight != null) && trigger){
 			strokeWeight(weight+1);
 			stroke(select);
 			highlight.drawContour();
@@ -223,18 +244,22 @@ class EnsembleView extends View {
 		int n = int(contours.size());
 	
 		//draw all but selection
+		boolean trigger = false;
 		Contour2D c;
 		for (int i=0; i<n; i++){
 			int s = int(map(i, 0, n-1, s_min, s_max));
 			int b = int(map(i, 0, n-1, b_min, b_max));
 			stroke(h,s,b,a);
 			c = contours.get(i);
-			if (c == highlight) continue;
+			if (c == highlight){
+				trigger = true;
+				continue;
+			} 
 			c.drawContour();
 		}
 
 		//draw selection
-		if ((highlight != null)){
+		if ((highlight != null) && trigger){
 			strokeWeight(weight2);
 			stroke(select);
 			highlight.drawContour();
@@ -270,19 +295,19 @@ class EnsembleView extends View {
 			}
 			else {
 				//Spaghetti Plots                                           //TODO better solution than nested if statements?
-				Segment2D selection = cselect_0.select(mouseX, mouseY, 4);			
+				Segment2D selection = cselect_0.select(mouseX, mouseY, 2);			
 				if (selection != null){
 					highlight = selection.getSrcContour();
 					return true;
 				}
 				else{
-					selection = cselect_1.select(mouseX, mouseY, 4);
+					selection = cselect_1.select(mouseX, mouseY, 2);
 					if (selection != null){
 						highlight = selection.getSrcContour();
 						return true;
 					}
 					else{
-						selection = cselect_2.select(mouseX, mouseY, 4);
+						selection = cselect_2.select(mouseX, mouseY, 2);
 						if (selection != null){
 							highlight = selection.getSrcContour();
 							return true;
@@ -312,6 +337,7 @@ class EnsembleView extends View {
 		
 		Field f;
 		EnsembleEncoding encd;
+		EnsembleSelect select;
 		PVector corner = new PVector(cornerx, cornery);
 		
 		color c700mb, c500mb;
@@ -348,17 +374,24 @@ class EnsembleView extends View {
 		encd = new EnsembleEncoding(ensemble);
 		encd.setMemberLabels(member_labels);
 		encd.setIsovalue(258.15);//-15 C
-		library.add(new EnsembleSelect(tabw,tabh,c500mb, encd, "TMP", "500mb", "258.15˚ K"));
+		select = new EnsembleSelect(tabw,tabh,c500mb, encd, "TMP", "500mb", "258.15˚ K");
+		select.setSingleCopy(true);
+		library.add(select);
 		
 		encd = new EnsembleEncoding(ensemble);
 		encd.setMemberLabels(member_labels);
 		encd.setIsovalue(253.15);//-20 C
-		library.add(new EnsembleSelect(tabw,tabh,c500mb, encd, "TMP", "500mb", "253.15˚ K"));
+		select = new EnsembleSelect(tabw,tabh,c500mb, encd, "TMP", "500mb", "253.15˚ K");
+		select.setSingleCopy(true);
+		library.add(select);
 		
 		encd = new EnsembleEncoding(ensemble);
 		encd.setMemberLabels(member_labels);
 		encd.setIsovalue(248.15);//-25 C
-		library.add(new EnsembleSelect(tabw,tabh,c500mb, encd, "TMP", "500mb", "248.15˚ K"));
+		select = new EnsembleSelect(tabw,tabh,c500mb, encd, "TMP", "500mb", "248.15˚ K");
+		select.setSingleCopy(true);
+		library.add(select);
+		
 		
 		//700mb TMP
 		dir = "./datasets/EnsembleFields/700mb_TMP/";
@@ -380,12 +413,17 @@ class EnsembleView extends View {
 		encd = new EnsembleEncoding(ensemble);
 		encd.setMemberLabels(member_labels);
 		encd.setIsovalue(283.15);//10 C
-		library.add(new EnsembleSelect(tabw,tabh,c700mb, encd, "TMP", "700mb", "283.15˚ K"));
+		select = new EnsembleSelect(tabw,tabh,c700mb, encd, "TMP", "700mb", "283.15˚ K");
+		select.setSingleCopy(true);
+		library.add(select);
+		
 		
 		encd = new EnsembleEncoding(ensemble);
 		encd.setMemberLabels(member_labels);
 		encd.setIsovalue(288.15);//15 C
-		library.add(new EnsembleSelect(tabw,tabh,c700mb, encd, "TMP", "700mb", "288.15˚ K"));
+		select = new EnsembleSelect(tabw,tabh,c700mb, encd, "TMP", "700mb", "288.15˚ K");
+		select.setSingleCopy(true);
+		library.add(select);
 		
 	}
 

@@ -1,5 +1,5 @@
 class Selectable {
-	private boolean visible;
+	protected boolean visible;
 	boolean dragging;
 	boolean rollover;
 	boolean isClone;
