@@ -14,7 +14,7 @@ class Tab extends TextButton{
 		
 		textSize(textsize);
 		w = 2*bufferx+textWidth(text);
-		h = textsize+2;
+		h = textAscent()+textDescent()+2;
 		
 		mode = m;
 	}
@@ -28,7 +28,7 @@ class Tab extends TextButton{
 	
 	protected boolean intersected(float mx, float my){
 		textSize(textsize);
-		return (mx > x-bufferx && mx < x+bufferx+textWidth(text) && my > y+1 && my < y+textsize+1) ? true : false;
+		return (mx > x-bufferx && mx < x+bufferx+textWidth(text) && my > y+1 && my < y+textAscent()+textDescent()+1) ? true : false;
 	}
 	
 	int getMode(){

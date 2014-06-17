@@ -75,7 +75,7 @@ class TextSwitch implements Button{
 	
 	private boolean intersected(float mx, float my){
 		textSize(textsize);
-		return (mx > x && mx < x+textWidth(text) && my > y+1 && my < y+textsize+1) ? true : false;
+		return (mx > x && mx < x+textWidth(text) && my > y+1 && my < y+textAscent()+textDescent()+1) ? true : false;
 	}
 	
 	boolean interact(int mx, int my){
