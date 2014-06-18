@@ -168,49 +168,46 @@ class EnsembleTarget extends Container implements Target{
 	
 	private void update(){
 		int fhr = (timer == null) ? 0 : timer.getIndex();
-		//update based on switch to minimize processing
+		
+		//update SP -- need members in both views but do not need quad tree
+		if (sp_members != null){
+			sp_members.clear();
+			EncodesSP s = (EncodesSP) entries.get(0);
+			if (s != null){
+				s.genSPContours(sp_members, fhr);
+				//quadtree
+				if (sp_qtree != null){
+					sp_qtree.clear();
+				}
+			}
+		}
+		
 		if(cbp.isOn()){
 			//update CBP
 		}
-		else {
-			//update SP
-			if (sp_members != null){
-				sp_members.clear();
-				EncodesSP s = (EncodesSP) entries.get(0);
-				if (s != null){
-					s.genSPContours(sp_members, fhr);
-					//quadtree
-					if (sp_qtree != null){
-						sp_qtree.clear();
-					}
-				}
-			}
-			
-		}		
 	}
 	
 	private void cacheCurrent(){
 		//cache based on switch to minimize processing
+		
+		if (sp_members != null){
+			if (!cbp.isOn() && sp_qtree != null){ //generate quadtree and cache contours
+				sp_qtree.clear();
+				for (Contour2D c: sp_members){
+					c.addAllSegmentsToQuadTree(sp_qtree);
+					c.genPShape();
+				}
+			}
+			else { // cache contours only
+				for (Contour2D c: sp_members){
+					c.genPShape();
+				}
+			}
+		}	
+		
 		if(cbp.isOn()){
 			//update CBP
 		}
-		else {
-			//update SP
-			if (sp_members != null){
-				if (sp_qtree != null){ //generate quadtree and cache contours
-					sp_qtree.clear();
-					for (Contour2D c: sp_members){
-						c.addAllSegmentsToQuadTree(sp_qtree);
-						c.genPShape();
-					}
-				}
-				else { //cache contours only
-					for (Contour2D c: sp_members){
-						c.genPShape();
-					}
-				}
-			}	
-		}		
 	}
 	
 	

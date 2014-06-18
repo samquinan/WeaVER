@@ -112,6 +112,8 @@ class EnsembleView extends View {
 	  	  	} 
 	  	}
 		
+		// if (key == 'p') println(cbp_switch.isOn());
+		
 		if (changed){
 			for (Container c : targets){
 				Target tmp = (Target) c;
@@ -200,7 +202,7 @@ class EnsembleView extends View {
 					b_2 = 50;
 					a = 100;
 				}
-				drawContours(contours_2,   0, s_1, s_2, b_1, b_2, a, color(0,50,27,100), 1.5, 2.5);
+				drawContours(contours_2,   0, s_1, s_2, b_1, b_2, a, 1.5);
 			}
 			
 			// Target 1
@@ -219,7 +221,7 @@ class EnsembleView extends View {
 					b_2 = 50;
 					a = 100;
 				}
-				drawContours(contours_1, 119, s_1, s_2, b_1, b_2, a, color(119,50,27,100), 1.5, 2.5);
+				drawContours(contours_1, 119, s_1, s_2, b_1, b_2, a, 1.5);
 			}
 			
 			// Target 0
@@ -238,7 +240,7 @@ class EnsembleView extends View {
 					b_2 = 50;
 					a = 100;
 				}
-				drawContours(contours_0, 239, s_1, s_2, b_1, b_2, a, color(239,50,27,100), 1.5, 2.5);
+				drawContours(contours_0, 239, s_1, s_2, b_1, b_2, a, 1.5);
 			}
 			
 			// Hover over Top
@@ -248,16 +250,34 @@ class EnsembleView extends View {
 				b_1 = 80;
 				b_2 = 40;
 				a = 100;
-				if(target2.isHovering()) drawContours(contours_2,   0, s_1, s_2, b_1, b_2, a, color(0,50,27,100), 1.5, 2.5);
-				else if(target1.isHovering()) drawContours(contours_1, 119, s_1, s_2, b_1, b_2, a, color(119,50,27,100), 1.5, 2.5);
-				else drawContours(contours_0, 239, s_1, s_2, b_1, b_2, a, color(239,50,27,100), 1.5, 2.5);
+				if(target2.isHovering()) drawContours(contours_2,   0, s_1, s_2, b_1, b_2, a, 1.5);
+				else if(target1.isHovering()) drawContours(contours_1, 119, s_1, s_2, b_1, b_2, a, 1.5);
+				else drawContours(contours_0, 239, s_1, s_2, b_1, b_2, a, 1.5);
 			}
 			
 			strokeCap(ROUND);
 			colorMode(RGB,255);
-			
 				
 		}
+		
+		//draw highlight in either SP or CBP mode
+		colorMode(HSB, 360, 100, 100, 100);
+		color hcolor; 
+		switch(target_index){
+			case 0:
+				hcolor = color(239,50,27,100);
+				break;
+			case 1:
+				hcolor = color(119,50,27,100);
+				break;
+			case 2:
+				hcolor = color(0,50,27,100);
+				break;
+			default:
+				hcolor = color(0,0);
+		}
+		drawHighlight(hcolor, 2.5);
+		colorMode(RGB,255);
 				
 		// draw controls
 		library.display();
@@ -354,34 +374,64 @@ class EnsembleView extends View {
 		if (selectFromContour) drawToolTip();
 	}
 	
-	protected void drawContours(ArrayList<Contour2D> contours, color select, float weight)
-	{
-		noFill();
-		strokeWeight(weight);
+	// protected void drawContours(ArrayList<Contour2D> contours, color select, float weight)
+	// {
+	// 	noFill();
+	// 	strokeWeight(weight);
+	// 
+	// 	int n = int(contours.size());
+	// 	boolean trigger = false;
+	// 
+	// 	//draw all but selection
+	// 	Contour2D c;
+	// 	for (int i=0; i<n; i++){
+	// 		c = contours.get(i);
+	// 		if (c == highlight){
+	// 			trigger = true;
+	// 			continue;
+	// 		}
+	// 		c.drawContour();
+	// 	}
+	// 
+	// 	//draw selection
+	// 	if ((highlight != null) && trigger){
+	// 		strokeWeight(weight+1);
+	// 		stroke(select);
+	// 		highlight.drawContour();
+	// 	}
+	// }
 	
-		int n = int(contours.size());
-		boolean trigger = false;
+	// protected void drawContours(ArrayList<Contour2D> contours, int h, int s_min, int s_max, int b_min, int b_max, int a, color select, float weight, float weight2)
+	// {
+	// 	noFill();
+	// 	strokeWeight(weight);
+	// 
+	// 	int n = int(contours.size());
+	// 
+	// 	//draw all but selection
+	// 	boolean trigger = false;
+	// 	Contour2D c;
+	// 	for (int i=0; i<n; i++){
+	// 		int s = int(map(i, 0, n-1, s_min, s_max));
+	// 		int b = int(map(i, 0, n-1, b_min, b_max));
+	// 		stroke(h,s,b,a);
+	// 		c = contours.get(i);
+	// 		if (c == highlight){
+	// 			trigger = true;
+	// 			continue;
+	// 		} 
+	// 		c.drawContour();
+	// 	}
+	// 
+	// 	//draw selection
+	// 	if ((highlight != null) && trigger){
+	// 		strokeWeight(weight2);
+	// 		stroke(select);
+	// 		highlight.drawContour();
+	// 	}
+	// }
 	
-		//draw all but selection
-		Contour2D c;
-		for (int i=0; i<n; i++){
-			c = contours.get(i);
-			if (c == highlight){
-				trigger = true;
-				continue;
-			}
-			c.drawContour();
-		}
-	
-		//draw selection
-		if ((highlight != null) && trigger){
-			strokeWeight(weight+1);
-			stroke(select);
-			highlight.drawContour();
-		}
-	}
-	
-	protected void drawContours(ArrayList<Contour2D> contours, int h, int s_min, int s_max, int b_min, int b_max, int a, color select, float weight, float weight2)
+	protected void drawContours(ArrayList<Contour2D> contours, int h, int s_min, int s_max, int b_min, int b_max, int a, float weight)
 	{
 		noFill();
 		strokeWeight(weight);
@@ -402,16 +452,18 @@ class EnsembleView extends View {
 			} 
 			c.drawContour();
 		}
-
-		//draw selection
-		if ((highlight != null) && trigger){
-			strokeWeight(weight2);
+	}
+	
+	protected void drawHighlight(color select, float weight)
+	{
+		if (highlight != null){
+			strokeWeight(weight);
 			stroke(select);
 			highlight.drawContour();
 		}
+			
 	}
 	
-
 	protected void drawToolTip(){
 		if ((highlight != null)){// && trigger){		
 			String s = highlight.getID();
@@ -436,7 +488,7 @@ class EnsembleView extends View {
 		else {
 			if (cbp_switch.isOn()){
 				//CBP
-				return false;											
+				return selectFromHoverables();											
 			}
 			else {
 				return selectHighlight();
@@ -449,7 +501,15 @@ class EnsembleView extends View {
 	}
 	
 	protected boolean release(){
-		return cbp_switch.released() || super.release();
+		if(cbp_switch.released()){
+			if (!cbp_switch.isOn()){
+				target0.cacheRenderContext();  //only caches if valid
+				target1.cacheRenderContext();  //only caches if valid
+				target2.cacheRenderContext();  //only caches if valid
+			}
+			return true;
+		}
+		else return super.release();
 	}
 	
 	private boolean selectHighlight(){
@@ -481,62 +541,69 @@ class EnsembleView extends View {
 					return true;
 				}
 				else{
-					boolean rval = false;
-					highlight = null;
-					target_index = -1;
-					member_index = -2;
-					selectFromContour = false;
-					if (lastHoverable != null){
-						lastHoverable.rollover = false;
-						lastHoverable = null;
-					}
-					
-					if(target0.hasSelectable()){
-						for (int i=0; i < member_select0.size(); i++){
-							TextHoverable tmp = member_select0.get(i);
-							if (tmp.interact(mouseX,mouseY)){
-								target_index = 0;
-								member_index = i;
-								highlight = contours_0.get(i);
-								lastHoverable = tmp;
-								rval=true;
-								break; 
-							}
-						}
-					}
-					
-					if(rval != true && target1.hasSelectable()){
-						for (int i=0; i < member_select1.size(); i++){
-							TextHoverable tmp = member_select1.get(i);
-							if (tmp.interact(mouseX,mouseY)){
-								target_index = 1;
-								member_index = i;
-								highlight = contours_1.get(i);
-								lastHoverable = tmp;
-								rval=true;
-								break; 
-							}
-						}
-					}
-					
-					if(rval != true && target2.hasSelectable()){
-						for (int i=0; i < member_select2.size(); i++){
-							TextHoverable tmp = member_select2.get(i);
-							if (tmp.interact(mouseX,mouseY)){
-								target_index = 2;
-								member_index = i;
-								highlight = contours_2.get(i);
-								lastHoverable = tmp;
-								rval=true;
-								break; 
-							}
-						}
-					}
-					
-					return rval;
+					//attempt select
+					return selectFromHoverables();
 				}
 			}
 		}
+	}
+	
+	private boolean selectFromHoverables(){
+		
+		highlight = null;
+		target_index = -1;
+		member_index = -2;
+		selectFromContour = false;
+		if (lastHoverable != null){
+			lastHoverable.rollover = false;
+			lastHoverable = null;
+		}
+		
+		boolean rval = false;
+		
+		if(target0.hasSelectable()){
+			for (int i=0; i < member_select0.size(); i++){
+				TextHoverable tmp = member_select0.get(i);
+				if (tmp.interact(mouseX,mouseY)){
+					target_index = 0;
+					member_index = i;
+					highlight = contours_0.get(i);
+					lastHoverable = tmp;
+					rval=true;
+					break; 
+				}
+			}
+		}
+		
+		if(rval != true && target1.hasSelectable()){
+			for (int i=0; i < member_select1.size(); i++){
+				TextHoverable tmp = member_select1.get(i);
+				if (tmp.interact(mouseX,mouseY)){
+					target_index = 1;
+					member_index = i;
+					highlight = contours_1.get(i);
+					lastHoverable = tmp;
+					rval=true;
+					break; 
+				}
+			}
+		}
+		
+		if(rval != true && target2.hasSelectable()){
+			for (int i=0; i < member_select2.size(); i++){
+				TextHoverable tmp = member_select2.get(i);
+				if (tmp.interact(mouseX,mouseY)){
+					target_index = 2;
+					member_index = i;
+					highlight = contours_2.get(i);
+					lastHoverable = tmp;
+					rval=true;
+					break; 
+				}
+			}
+		}
+		
+		return rval;
 	}
 			
 	
