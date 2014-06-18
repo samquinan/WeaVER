@@ -66,17 +66,36 @@ class State {
 	void saveState(ArrayList<Container> targets){
 		dtargetEntries.clear();
 		for (int i = 0; i < targets.size(); i++){
-			dtargetEntries.add(new ArrayList<Selectable>((targets.get(i)).entries));
+			ArrayList<Selectable> tmp = new ArrayList<Selectable>((targets.get(i)).entries);
+			dtargetEntries.add(tmp);
+			for(Selectable s : tmp){
+				if (s instanceof EnsembleSelect){
+					EnsembleSelect es = (EnsembleSelect) s;
+					if (es != null){
+						(es.parent).child = null;
+					}
+				}
+			}
 		}
 	}
 	
 	void restoreState(ArrayList<Container> targets){
 		for (int i = 0; i < targets.size(); i++){
-			if (i < dtargetEntries.size()) (targets.get(i)).entries = dtargetEntries.get(i);
+			if (i < dtargetEntries.size()){ 
+				ArrayList<Selectable> tmp = dtargetEntries.get(i);
+				(targets.get(i)).entries = tmp;
+				for(Selectable s : tmp){
+					if (s instanceof EnsembleSelect){
+						EnsembleSelect es = (EnsembleSelect) s;
+						if (es != null){
+							(es.parent).child = es;
+						}
+					}
+				}
+			}
 			else (targets.get(i)).entries = new ArrayList<Selectable>();
 		}		
 	}
-	
 	
 	private boolean intersected(int mx, int my){
 		return (mx > x && mx < x+w && my > y && my < y+h) ? true : false;

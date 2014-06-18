@@ -19,7 +19,7 @@ class StateTracker {
 		textsize = 10;
 		label = s;
 		
-		maxStates = 7;
+		maxStates = 8;
 		states = new ArrayList<State>(maxStates);
 		
 		State state = new State(x+40, y-10, 17, "1");
