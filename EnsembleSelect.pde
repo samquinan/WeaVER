@@ -166,6 +166,10 @@ class EnsembleSelect extends Selectable implements EncodesSP, EncodesCBP{
 		encd.setIsovalue(iso);
 	}
 	
+	ArrayList<String> getMemberLabels(){
+		return encd.getMemberLabels();
+	}
+	
 	
 	// ColorMapf getColorMap(){
 	// 	return encd.getColorMap();

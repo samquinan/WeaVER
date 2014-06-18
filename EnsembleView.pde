@@ -10,11 +10,22 @@ class EnsembleView extends View {
 	ArrayList<Contour2D> contours_1;
 	ArrayList<Contour2D> contours_2;
 	
+	ArrayList<TextHoverable> member_select0;
+	ArrayList<TextHoverable> member_select1;
+	ArrayList<TextHoverable> member_select2;
+	TextHoverable lastHoverable;
+	
+	color c0, c1, c2;
+	
+	boolean selectFromContour;
+	
 	QuadTree_Node<Segment2D> cselect_0;
 	QuadTree_Node<Segment2D> cselect_1;
 	QuadTree_Node<Segment2D> cselect_2;
 	
 	Contour2D highlight;
+	int target_index;
+	int member_index;
 	
 	EnsembleView(int sx, int sy, float ds, int cx, int cy, int tw, int th, int libsize){
 		super(sx, sy, ds, cx, cy, tw, th, ceil(libsize/2.0));
@@ -26,18 +37,27 @@ class EnsembleView extends View {
 		cbp_switch.setColors(color(170), color(110), color(70));
 		cbp_switch.setLabels("SP", "CBP"); 
 		
-		
 		// Initialize Render State				
 		//Contours
 		contours_0 = new ArrayList<Contour2D>();
 		contours_1 = new ArrayList<Contour2D>();
 		contours_2 = new ArrayList<Contour2D>();
 		
+		member_select0 = new ArrayList<TextHoverable>();
+		member_select1 = new ArrayList<TextHoverable>();
+		member_select2 = new ArrayList<TextHoverable>();
+		
 		cselect_0 = new QuadTree_Node<Segment2D>(cornerx, cornery, cornerx+samplesx*spacing, cornery+samplesy*spacing, n);
 		cselect_1 = new QuadTree_Node<Segment2D>(cornerx, cornery, cornerx+samplesx*spacing, cornery+samplesy*spacing, n);
 		cselect_2 = new QuadTree_Node<Segment2D>(cornerx, cornery, cornerx+samplesx*spacing, cornery+samplesy*spacing, n);
 		
 		highlight = null;
+		target_index = -1;
+		member_index = -2;
+				
+		c0 = color(64, 56, 118, 200);
+		c1 = color(47, 110, 53, 200);
+		c2 = color(110, 47, 47, 200);
 				
 		// Initialize Targets
 		target0 = new EnsembleTarget(cornerx+10,cornery-tabh-10,tabw,tabh);
@@ -45,8 +65,9 @@ class EnsembleView extends View {
 		target0.linkSPQuadTree(cselect_0);
 		target0.linkTimeControl(timer);
 		target0.linkSwitch(cbp_switch);
+		target0.linkSPHoverables(member_select0, (library.getMinXY()).x+15, (library.getMaxXY()).y + 45);
 		target0.setLabel("CONTOURS");
-		target0.setColor(color(64, 56, 118, 200));
+		target0.setColor(c0);
 		library.linkTarget(target0);
 		targets.add(target0);
 					
@@ -55,8 +76,9 @@ class EnsembleView extends View {
 		target1.linkSPQuadTree(cselect_1);
 		target1.linkTimeControl(timer);
 		target1.linkSwitch(cbp_switch);
+		target1.linkSPHoverables(member_select1, (library.getMinXY()).x+75, (library.getMaxXY()).y + 45);
 		target1.setLabel("CONTOURS");
-		target1.setColor(color(47, 110, 53, 200));
+		target1.setColor(c1);
 		library.linkTarget(target1);
 		targets.add(target1);
 		
@@ -65,12 +87,32 @@ class EnsembleView extends View {
 		target2.linkSPQuadTree(cselect_2);
 		target2.linkTimeControl(timer);
 		target2.linkSwitch(cbp_switch);
+		target2.linkSPHoverables(member_select2, (library.getMinXY()).x+135, (library.getMaxXY()).y + 45);
 		target2.setLabel("CONTOURS");
-		target2.setColor(color(110, 47, 47, 200));
+		target2.setColor(c2);
 		library.linkTarget(target2);
 		targets.add(target2);
 		
-		
+		selectFromContour = false;
+		lastHoverable = null;
+	}
+	
+	void updateAnim(){
+		super.updateAnim();
+		if (highlight != null && !selectFromContour){
+			switch (target_index){
+				case 0:
+					highlight = contours_0.get(member_index);
+					break;
+				case 1:
+					highlight = contours_1.get(member_index);
+					break;
+				case 2:
+					highlight = contours_2.get(member_index);
+					break;
+				default:
+			}
+		}
 	}
 	
 	void draw(){
@@ -108,7 +150,6 @@ class EnsembleView extends View {
 		}
 		else {
 			
-			
 			boolean someHovering = target2.isHovering() | target1.isHovering() | target0.isHovering();
 			int s_1, s_2, b_1, b_2, a;
 			
@@ -127,11 +168,11 @@ class EnsembleView extends View {
 					a = 70;
 				}
 				else{ //default draw
-					s_1 = 27;
-					s_2 = 44;
-					b_1 = 80;
-					b_2 = 40;
-					a = 80;
+					s_1 = 22;
+					s_2 = 34;
+					b_1 = 90;
+					b_2 = 50;
+					a = 100;
 				}
 				drawContours(contours_2,   0, s_1, s_2, b_1, b_2, a, color(0,50,27,100), 1.5, 2.5);
 			}
@@ -146,11 +187,11 @@ class EnsembleView extends View {
 					a = 70;
 				}
 				else{ //default draw
-					s_1 = 27;
-					s_2 = 44;
-					b_1 = 80;
-					b_2 = 40;
-					a = 80;
+					s_1 = 22;
+					s_2 = 34;
+					b_1 = 90;
+					b_2 = 50;
+					a = 100;
 				}
 				drawContours(contours_1, 119, s_1, s_2, b_1, b_2, a, color(119,50,27,100), 1.5, 2.5);
 			}
@@ -165,11 +206,11 @@ class EnsembleView extends View {
 					a = 70;
 				}
 				else{ //default draw
-					s_1 = 27;
-					s_2 = 44;
-					b_1 = 80;
-					b_2 = 40;
-					a = 80;
+					s_1 = 22;
+					s_2 = 34;
+					b_1 = 90;
+					b_2 = 50;
+					a = 100;
 				}
 				drawContours(contours_0, 239, s_1, s_2, b_1, b_2, a, color(239,50,27,100), 1.5, 2.5);
 			}
@@ -197,7 +238,85 @@ class EnsembleView extends View {
 		tracker.display();
 		timer.display();
 		cbp_switch.display();
-	
+		
+		if (target0.hasSelectable()){
+			// group label
+			float tmpx, tmpy;
+			tmpx = (library.getMinXY()).x + 15;
+			tmpy = (library.getMaxXY()).y + 42;
+			
+			textSize(8);
+			textAlign(LEFT, BOTTOM);
+			fill(70);
+			String label = "MEMBERS";			
+			text(label, tmpx, tmpy);
+			stroke(170);
+			strokeWeight(1);
+			fill(c0);
+			rect(tmpx-11, tmpy-textAscent()-textDescent(), 9, 9);
+			noStroke();
+			noFill();
+			
+			// member labels
+			for (int i=0; i < member_select0.size(); i++){
+				TextHoverable h = member_select0.get(i);
+				if (selectFromContour && (target_index == 0)) h.rollover = (i == member_index);
+				h.display();
+			}
+		}
+		
+		if (target1.hasSelectable()){
+			// group label
+			float tmpx, tmpy;
+			tmpx = (library.getMinXY()).x + 75;
+			tmpy = (library.getMaxXY()).y + 42;
+			
+			textSize(8);
+			textAlign(LEFT, BOTTOM);
+			fill(70);
+			String label = "MEMBERS";			
+			text(label, tmpx, tmpy);
+			stroke(170);
+			strokeWeight(1);
+			fill(c1);
+			rect(tmpx-11, tmpy-textAscent()-textDescent(), 9, 9);
+			noStroke();
+			noFill();
+			
+			// member labels
+			for (int i=0; i < member_select1.size(); i++){
+				TextHoverable h = member_select1.get(i);
+				if (selectFromContour && (target_index == 1)) h.rollover = (i == member_index);
+				h.display();
+			}
+		}
+		
+		if (target2.hasSelectable()){
+			// group label
+			float tmpx, tmpy;
+			tmpx = (library.getMinXY()).x + 135;
+			tmpy = (library.getMaxXY()).y + 42;
+			
+			textSize(8);
+			textAlign(LEFT, BOTTOM);
+			fill(70);
+			String label = "MEMBERS";			
+			text(label, tmpx, tmpy);
+			stroke(170);
+			strokeWeight(1);
+			fill(c2);
+			rect(tmpx-11, tmpy-textAscent()-textDescent(), 9, 9);
+			noStroke();
+			noFill();
+			
+			// member labels
+			for (int i=0; i < member_select2.size(); i++){
+				TextHoverable h = member_select2.get(i);
+				if (selectFromContour && (target_index == 2)) h.rollover = (i == member_index);
+				h.display();
+			}
+		}
+		
 		//frame rate for testing
 		textSize(10);
 		textAlign(RIGHT, BOTTOM);
@@ -206,7 +325,7 @@ class EnsembleView extends View {
 		textSize(10);
 		
 		//selection tooltip
-		drawToolTip();
+		if (selectFromContour) drawToolTip();
 	}
 	
 	protected void drawContours(ArrayList<Contour2D> contours, color select, float weight)
@@ -294,30 +413,7 @@ class EnsembleView extends View {
 				return false;											
 			}
 			else {
-				//Spaghetti Plots                                           //TODO better solution than nested if statements?
-				Segment2D selection = cselect_0.select(mouseX, mouseY, 2);			
-				if (selection != null){
-					highlight = selection.getSrcContour();
-					return true;
-				}
-				else{
-					selection = cselect_1.select(mouseX, mouseY, 2);
-					if (selection != null){
-						highlight = selection.getSrcContour();
-						return true;
-					}
-					else{
-						selection = cselect_2.select(mouseX, mouseY, 2);
-						if (selection != null){
-							highlight = selection.getSrcContour();
-							return true;
-						}
-						else{
-							highlight = null;
-							return false;
-						}
-					}
-				}
+				return selectHighlight();
 			}
 		}
 	}
@@ -330,6 +426,92 @@ class EnsembleView extends View {
 		return cbp_switch.released() || super.release();
 	}
 	
+	private boolean selectHighlight(){
+		//Spaghetti Plots                                           //TODO better solution than nested if statements?
+		Segment2D selection = cselect_0.select(mouseX, mouseY, 2);			
+		if (selection != null){
+			highlight = selection.getSrcContour();
+			target_index = 0;
+			member_index = contours_0.indexOf(highlight);
+			selectFromContour = true;
+			return true;
+		}
+		else{
+			selection = cselect_1.select(mouseX, mouseY, 2);
+			if (selection != null){
+				highlight = selection.getSrcContour();
+				target_index = 1;
+				member_index = contours_1.indexOf(highlight);
+				selectFromContour = true;
+				return true;
+			}
+			else{
+				selection = cselect_2.select(mouseX, mouseY, 2);
+				if (selection != null){
+					highlight = selection.getSrcContour();
+					target_index = 2;
+					member_index = contours_2.indexOf(highlight);
+					selectFromContour = true;
+					return true;
+				}
+				else{
+					boolean rval = false;
+					highlight = null;
+					target_index = -1;
+					member_index = -2;
+					selectFromContour = false;
+					if (lastHoverable != null){
+						lastHoverable.rollover = false;
+						lastHoverable = null;
+					}
+					
+					if(target0.hasSelectable()){
+						for (int i=0; i < member_select0.size(); i++){
+							TextHoverable tmp = member_select0.get(i);
+							if (tmp.interact(mouseX,mouseY)){
+								target_index = 0;
+								member_index = i;
+								highlight = contours_0.get(i);
+								lastHoverable = tmp;
+								rval=true;
+								break; 
+							}
+						}
+					}
+					
+					if(rval != true && target1.hasSelectable()){
+						for (int i=0; i < member_select1.size(); i++){
+							TextHoverable tmp = member_select1.get(i);
+							if (tmp.interact(mouseX,mouseY)){
+								target_index = 1;
+								member_index = i;
+								highlight = contours_1.get(i);
+								lastHoverable = tmp;
+								rval=true;
+								break; 
+							}
+						}
+					}
+					
+					if(rval != true && target2.hasSelectable()){
+						for (int i=0; i < member_select2.size(); i++){
+							TextHoverable tmp = member_select2.get(i);
+							if (tmp.interact(mouseX,mouseY)){
+								target_index = 2;
+								member_index = i;
+								highlight = contours_2.get(i);
+								lastHoverable = tmp;
+								rval=true;
+								break; 
+							}
+						}
+					}
+					
+					return rval;
+				}
+			}
+		}
+	}
 			
 	
 	void loadData(){
