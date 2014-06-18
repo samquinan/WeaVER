@@ -4,6 +4,7 @@ class MNSDView extends View {
 	
 	PImage fill;
 	ArrayList<Contour2D> contours;
+	int member_index;
 	Legend legend;
 	QuadTree_Node<Segment2D> cselect;
 	Contour2D highlight;
@@ -20,6 +21,7 @@ class MNSDView extends View {
 		contours = new ArrayList<Contour2D>();
 		cselect = new QuadTree_Node<Segment2D>(cornerx, cornery, cornerx+samplesx*spacing, cornery+samplesy*spacing, 21);
 		highlight = null;
+		member_index = -2;
 				
 		// Initialize Targets
 			
@@ -32,7 +34,7 @@ class MNSDView extends View {
 		mnsd_target0.setLabel("COLOR / CONTOUR");
 		library.linkTarget(mnsd_target0);
 		targets.add(mnsd_target0);
-	}
+	}	
 	
 	void draw(){
 		//update state if animating
@@ -136,14 +138,44 @@ class MNSDView extends View {
 			Segment2D selection = cselect.select(mouseX, mouseY, 4);
 			if (selection != null){
 				highlight = selection.getSrcContour();
+				member_index = contours.indexOf(highlight);
 				return true;
 			}
 			else{
 				highlight = null;
+				member_index = -2;
 				return false;
 			}
 		}
+	}
+	
+	boolean keyPress(char key, int code) {
+		boolean changed = false;
+	  	if (key == CODED) {
+	  	  	if (code == LEFT) {
+	  	  		changed = changed || timer.decrement();
+	  	  	} else if (code == RIGHT) {
+	  	  		changed = changed || timer.increment();
+	  	  	} 
+	  	}
+		
+		if (changed){
+			for (Container c : targets){
+				Target tmp = (Target) c;
+				if (tmp != null) tmp.updateRenderContext(true);
+			}
+			updateHighlight();
+		}
+		
+		return changed;
 	}		
+	
+	private void updateHighlight(){
+		if (highlight != null){
+			highlight = contours.get(member_index);
+		}
+	}
+			
 	
 	void loadData(){
 		

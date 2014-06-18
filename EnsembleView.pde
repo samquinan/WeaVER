@@ -99,7 +99,32 @@ class EnsembleView extends View {
 	
 	void updateAnim(){
 		super.updateAnim();
-		if (highlight != null && !selectFromContour){
+		updateHighlight();
+	}
+	
+	boolean keyPress(char key, int code) {
+		boolean changed = false;
+	  	if (key == CODED) {
+	  	  	if (code == LEFT) {
+	  	  		changed = changed || timer.decrement();
+	  	  	} else if (code == RIGHT) {
+	  	  		changed = changed || timer.increment();
+	  	  	} 
+	  	}
+		
+		if (changed){
+			for (Container c : targets){
+				Target tmp = (Target) c;
+				if (tmp != null) tmp.updateRenderContext(true);
+			}
+			updateHighlight();
+		}
+		
+		return changed;
+	}		
+	
+	private void updateHighlight(){
+		if (highlight != null){
 			switch (target_index){
 				case 0:
 					highlight = contours_0.get(member_index);
@@ -114,6 +139,7 @@ class EnsembleView extends View {
 			}
 		}
 	}
+	
 	
 	void draw(){
 		//update state if animating
