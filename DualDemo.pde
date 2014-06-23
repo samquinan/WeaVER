@@ -43,6 +43,8 @@ void draw(){
   	background(230);
 	
 	menu.display();
+	noStroke();
+	noFill();
 	
 	if (!populated){
 		if (!triggered && loader.isComplete()){

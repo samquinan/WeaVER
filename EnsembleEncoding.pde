@@ -89,15 +89,18 @@ class EnsembleEncoding implements EncodesSP, EncodesCBP {
 	private void cacheSPContours(){
 		int n = (members.get(0)).size();
 		int m = members.size();
-		cached_sp = new ArrayList< ArrayList<Contour2D> >(n);
+
+	    if (cached_sp == null) cached_sp = new ArrayList< ArrayList<Contour2D> >(n);
+	    else cached_sp.clear();
+             
 		if (initComplete){
 			for (int idx = 0; idx < n; idx++){
 				ArrayList<Contour2D> contours = new ArrayList<Contour2D>(m);
 				Contour2D c;
-				ArrayList<Field> member;
+				// ArrayList<Field> member;
 				for (int i = 0; i < members.size(); i++){
-					member = members.get(i);
-					Field f = member.get(idx);
+					// member = members.get(i);
+					Field f = (members.get(i)).get(idx);
 					c = new Contour2D(2*f.dimy);
 					f.genIsocontour(isovalue, c);
 					c.setID(labels.get(i));

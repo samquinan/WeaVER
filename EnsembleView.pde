@@ -439,7 +439,7 @@ class EnsembleView extends View {
 		int n = int(contours.size());
 	
 		//draw all but selection
-		boolean trigger = false;
+		// boolean trigger = false;
 		Contour2D c;
 		for (int i=0; i<n; i++){
 			int s = int(map(i, 0, n-1, s_min, s_max));
@@ -447,7 +447,7 @@ class EnsembleView extends View {
 			stroke(h,s,b,a);
 			c = contours.get(i);
 			if (c == highlight){
-				trigger = true;
+				// trigger = true;
 				continue;
 			} 
 			c.drawContour();
@@ -649,6 +649,7 @@ class EnsembleView extends View {
 		encd = new EnsembleEncoding(ensemble);
 		encd.setMemberLabels(member_labels);
 		encd.setIsovalue(258.15);//-15 C
+		encd.setCachingSP(true);
 		select = new EnsembleSelect(tabw,tabh,c500mb, encd, "TMP", "500mb", "258.15˚ K");
 		select.setSingleCopy(true);
 		library.add(select);

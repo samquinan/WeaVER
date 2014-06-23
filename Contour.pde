@@ -2,7 +2,7 @@ class Contour2D {
  private final Object lock = new Object();
  volatile boolean cached;
  PShape contour;
- private int initCap;
+ // private int initCap;
  private ArrayList<Segment2D> members;
  private ArrayList<Segment2D> build;
  String id;
@@ -18,7 +18,7 @@ class Contour2D {
  Contour2D(int initCapacity){
    members = new ArrayList<Segment2D>();
    build = new ArrayList<Segment2D>(initCapacity);
-   initCap = initCapacity;
+   // initCap = initCapacity;
    id="";
  }
  

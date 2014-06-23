@@ -159,7 +159,7 @@ class StatView extends View {
 		strokeWeight(weight);
 	
 		int n = int(contours.size());
-		boolean trigger = false;
+		// boolean trigger = false;
 	
 		//draw all but selection
 		Contour2D c;
@@ -371,7 +371,7 @@ class StatView extends View {
 		
 		Field f;
 		ScalarEncoding encd;
-		StatSelect entry;
+		// StatSelect entry;
 		PVector corner = new PVector(cornerx, cornery);
 	
 		// 700mb tmp

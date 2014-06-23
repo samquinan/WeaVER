@@ -595,7 +595,6 @@ class Field{
           case 9:
             p1 = map(iso, val10, val11, val10Pos.x, val11Pos.x);
             p2 = map(iso, val00, val01, val00Pos.x, val01Pos.x);
-            line(p1, val10Pos.y, p2, val00Pos.y);
 			s = new Segment2D(new PVector(p1, val10Pos.y), new PVector(p2, val00Pos.y));
 			contour.addSegment(s);
             break;
