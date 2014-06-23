@@ -649,7 +649,7 @@ class EnsembleView extends View {
 		encd = new EnsembleEncoding(ensemble);
 		encd.setMemberLabels(member_labels);
 		encd.setIsovalue(258.15);//-15 C
-		encd.setCachingSP(true);
+		// encd.setCachingSP(true);
 		select = new EnsembleSelect(tabw,tabh,c500mb, encd, "TMP", "500mb", "258.15˚ K");
 		select.setSingleCopy(true);
 		library.add(select);
@@ -657,6 +657,7 @@ class EnsembleView extends View {
 		encd = new EnsembleEncoding(ensemble);
 		encd.setMemberLabels(member_labels);
 		encd.setIsovalue(253.15);//-20 C
+		// encd.setCachingSP(true);
 		select = new EnsembleSelect(tabw,tabh,c500mb, encd, "TMP", "500mb", "253.15˚ K");
 		select.setSingleCopy(true);
 		library.add(select);
@@ -664,6 +665,7 @@ class EnsembleView extends View {
 		encd = new EnsembleEncoding(ensemble);
 		encd.setMemberLabels(member_labels);
 		encd.setIsovalue(248.15);//-25 C
+		// encd.setCachingSP(true);
 		select = new EnsembleSelect(tabw,tabh,c500mb, encd, "TMP", "500mb", "248.15˚ K");
 		select.setSingleCopy(true);
 		library.add(select);
@@ -689,6 +691,7 @@ class EnsembleView extends View {
 		encd = new EnsembleEncoding(ensemble);
 		encd.setMemberLabels(member_labels);
 		encd.setIsovalue(283.15);//10 C
+		// encd.setCachingSP(true);
 		select = new EnsembleSelect(tabw,tabh,c700mb, encd, "TMP", "700mb", "283.15˚ K");
 		select.setSingleCopy(true);
 		library.add(select);
@@ -697,6 +700,7 @@ class EnsembleView extends View {
 		encd = new EnsembleEncoding(ensemble);
 		encd.setMemberLabels(member_labels);
 		encd.setIsovalue(288.15);//15 C
+		// encd.setCachingSP(true);
 		select = new EnsembleSelect(tabw,tabh,c700mb, encd, "TMP", "700mb", "288.15˚ K");
 		select.setSingleCopy(true);
 		library.add(select);
