@@ -378,7 +378,7 @@ class DtrmView extends View {
 	
 		// 700mb tmp
 		ArrayList<Field> fields = new ArrayList<Field>();
-		String dir = "./datasets/DtrmFields/700mb_TMP/";
+		String dir = "./datasets/EnsembleFields/700mb_TMP/";
 		String model = "em";
 		String p = "ctl";
 		String run = "21";
@@ -400,7 +400,7 @@ class DtrmView extends View {
 		
 		// 700mb RH
 		fields = new ArrayList<Field>();
-		dir = "./datasets/DtrmFields/700mb_RH/";
+		dir = "./datasets/EnsembleFields/700mb_RH/";
 		deriv = "";
 		for (int k=0; k<=87; k+=3){
 			String fhr = String.format("%02d", k);
@@ -418,7 +418,7 @@ class DtrmView extends View {
 		
 		// 500mb TMP
 		fields = new ArrayList<Field>();
-		dir = "./datasets/DtrmFields/500mb_TMP/";
+		dir = "./datasets/EnsembleFields/500mb_TMP/";
 		deriv = "";
 		for (int k=0; k<=87; k+=3){
 			String fhr = String.format("%02d", k);
@@ -436,7 +436,7 @@ class DtrmView extends View {
 		
 		// 500mb RH
 		fields = new ArrayList<Field>();
-		dir = "./datasets/DtrmFields/500mb_RH/";
+		dir = "./datasets/EnsembleFields/500mb_RH/";
 		deriv = "";
 		for (int k=0; k<=87; k+=3){
 			String fhr = String.format("%02d", k);
@@ -454,7 +454,7 @@ class DtrmView extends View {
 				
 		// Surface APCP
 		fields = new ArrayList<Field>();
-		dir = "./datasets/DtrmFields/3hr_APCP/";
+		dir = "./datasets/EnsembleFields/3hr_APCP/";
 		deriv = "";
 		for (int k=0; k<=87; k+=3){
 			String fhr = String.format("%02d", k);
