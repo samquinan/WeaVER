@@ -177,7 +177,7 @@ class MNSDView extends View {
 	}
 			
 	
-	void loadData(){
+	void loadData(String dataDir, int run_input){
 		
 		// testing MNSD
 		ColorMapf test = new ColorMapf();
@@ -205,8 +205,8 @@ class MNSDView extends View {
 	
 		// 700mb tmp
 		ArrayList<Field> fields = new ArrayList<Field>();
-		String dir = "./datasets/StatFields/700mb_TMP/";
-		String run = "21";
+		String dir = dataDir + "/StatFields/700mb_TMP/";
+		String run = String.format("%02d", run_input);
 		String grid = "212";
 		String deriv = "mean";
 		for (int k=0; k<=87; k+=3){
@@ -250,7 +250,7 @@ class MNSDView extends View {
 		
 		//500mb tmp 
 		fields = new ArrayList<Field>();
-		dir = "./datasets/StatFields/500mb_TMP/";
+		dir = dataDir + "/StatFields/500mb_TMP/";
 		deriv = "mean";
 		for (int k=0; k<=87; k+=3){
 			String fhr = String.format("%02d", k);

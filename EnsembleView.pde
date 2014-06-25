@@ -607,7 +607,7 @@ class EnsembleView extends View {
 	}
 			
 	
-	void loadData(){
+	void loadData(String dataDir, int run_input){
 		
 		
 		Field f;
@@ -619,8 +619,8 @@ class EnsembleView extends View {
 		c500mb = color(83,30,175);
 		c700mb = color(0,116,162);
 		
-		String dir = "./datasets/EnsembleFields/500mb_TMP/";
-		String run = "21";
+		String dir = dataDir + "/EnsembleFields/500mb_TMP/";
+		String run = String.format("%02d", run_input);
 		String grid = "212";
 		String[] models = {"em", "nmm", "nmb"};
 		String[] perturbations = {"ctl", "n1", "n2", "n3", "p1", "p2", "p3"};
@@ -672,7 +672,7 @@ class EnsembleView extends View {
 		
 		
 		//700mb TMP
-		dir = "./datasets/EnsembleFields/700mb_TMP/";
+		dir = dataDir + "/EnsembleFields/700mb_TMP/";
 		ensemble = new ArrayList< ArrayList<Field> >(initCapacity);
 		
 		for (int i=0; i < models.length; i++){

@@ -40,7 +40,7 @@ abstract class View {
 		return map;
 	}
 	
-	abstract void loadData();
+	abstract void loadData(String dataDir, int run_input);
 	abstract void draw();
 	
 	void updateAnim(){

@@ -240,7 +240,7 @@ class StatView extends View {
 		}
 	}
 	
-	void loadData(){
+	void loadData(String dataDir, int run_input){
 	
 		// TMP : increments of 5 degrees C
 		ColorMapf tmp_5c = new ColorMapf();
@@ -376,8 +376,8 @@ class StatView extends View {
 	
 		// 700mb tmp
 		ArrayList<Field> fields = new ArrayList<Field>();
-		String dir = "./datasets/StatFields/700mb_TMP/";
-		String run = "21";
+		String dir = dataDir + "/StatFields/700mb_TMP/";
+		String run = String.format("%02d", run_input);
 		String grid = "212";
 		String deriv = "mean";
 		for (int k=0; k<=87; k+=3){
@@ -396,7 +396,7 @@ class StatView extends View {
 		
 		// 700mb RH
 		fields = new ArrayList<Field>();
-		dir = "./datasets/StatFields/700mb_RH/";
+		dir = dataDir + "/StatFields/700mb_RH/";
 		deriv = "mean";
 		for (int k=0; k<=87; k+=3){
 			String fhr = String.format("%02d", k);
@@ -416,7 +416,7 @@ class StatView extends View {
 		WindField wf;
 		WindEncoding w_encd;
 		ArrayList<WindField> wfields = new ArrayList<WindField>();
-		dir = "./datasets/StatFields/700mb_Wind/";
+		dir = dataDir + "/StatFields/700mb_Wind/";
 		deriv = "mean";
 		for (int k=0; k<=87; k+=3){
 			String fhr = String.format("%02d", k);
@@ -437,7 +437,7 @@ class StatView extends View {
 		
 		// 500mb TMP
 		fields = new ArrayList<Field>();
-		dir = "./datasets/StatFields/500mb_TMP/";
+		dir = dataDir + "/StatFields/500mb_TMP/";
 		deriv = "mean";
 		for (int k=0; k<=87; k+=3){
 			String fhr = String.format("%02d", k);
@@ -455,7 +455,7 @@ class StatView extends View {
 		
 		// 500mb RH
 		fields = new ArrayList<Field>();
-		dir = "./datasets/StatFields/500mb_RH/";
+		dir = dataDir + "/StatFields/500mb_RH/";
 		deriv = "mean";
 		for (int k=0; k<=87; k+=3){
 			String fhr = String.format("%02d", k);
@@ -474,7 +474,7 @@ class StatView extends View {
 	
 		// 500mb Wind
 		wfields = new ArrayList<WindField>();
-		dir = "./datasets/StatFields/500mb_Wind/";
+		dir = dataDir + "/StatFields/500mb_Wind/";
 		deriv = "mean";
 		for (int k=0; k<=87; k+=3){
 			String fhr = String.format("%02d", k);
@@ -493,7 +493,7 @@ class StatView extends View {
 		
 		// Surface APCP
 		fields = new ArrayList<Field>();
-		dir = "./datasets/StatFields/3hr_APCP/";
+		dir = dataDir + "/StatFields/3hr_APCP/";
 		deriv = "max";
 		for (int k=0; k<=87; k+=3){
 			String fhr = String.format("%02d", k);

@@ -275,27 +275,32 @@ class ViewLoader implements Runnable{
 		int tabw = 90;
 		int tabh = 22;
 		
+		//TODO place into data structure with colormaps, other user defined preferences from config file
+		//		-- Need to determine what prefs we want to give users
+		String dir = "./datasets";
+		int run = 15;
+		
 		// generate view_0		
 		view_0 = new DtrmView(samplesx, samplesy, spacing, cornerx, cornery, tabw, tabh, 32);
 		view_0.setMap(map);
 		view_0.linkGlyphs(glyphs);
-		view_0.loadData();
+		view_0.loadData(dir, run);
 		
 		// generate view_1
 		view_1 = new StatView(samplesx, samplesy, spacing, cornerx, cornery, tabw, tabh, 32);
 		view_1.setMap(map);
 		view_1.linkGlyphs(glyphs);
-		view_1.loadData();
+		view_1.loadData(dir, run);
 		
 		// generate view_2
 		view_2 = new MNSDView(samplesx, samplesy, spacing, cornerx, cornery, tabw, tabh, 12);
 		view_2.setMap(map);
-		view_2.loadData();
+		view_2.loadData(dir, run);
 		
 		// generate view_3
 		view_3 = new EnsembleView(samplesx, samplesy, spacing, cornerx, cornery, tabw, tabh, 12);
 		view_3.setMap(map);
-		view_3.loadData();
+		view_3.loadData(dir, run);
 		
 		finished = true;				
 	}	
