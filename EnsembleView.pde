@@ -129,13 +129,13 @@ class EnsembleView extends View {
 		if (highlight != null){
 			switch (target_index){
 				case 0:
-					highlight = contours_0.get(member_index);
+					highlight = (member_index < contours_0.size()) ? contours_0.get(member_index) : null;
 					break;
 				case 1:
-					highlight = contours_1.get(member_index);
+					highlight = (member_index < contours_1.size()) ? contours_1.get(member_index) : null;
 					break;
 				case 2:
-					highlight = contours_2.get(member_index);
+					highlight = (member_index < contours_2.size()) ? contours_2.get(member_index) : null;
 					break;
 				default:
 			}

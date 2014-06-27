@@ -275,8 +275,9 @@ class ViewLoader implements Runnable{
 		int tabw = 90;
 		int tabh = 22;
 		
-		//TODO place into data structure with colormaps, other user defined preferences from config file
+		//TODO place into data structure with colormaps, projection, other user defined preferences from config file
 		//		-- Need to determine what prefs we want to give users
+		//TODO PROPER PROJECTION (!)
 		String dir = "./datasets";
 		int run = 15;
 		

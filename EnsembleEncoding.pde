@@ -9,17 +9,27 @@ class EnsembleEncoding implements EncodesSP, EncodesCBP {
 	
 	// CBP
 	// ColorMapf cmap;
+	// boolean bilinear;
+	// boolean interpolate;
+	//
+	// ArrayList < Field > bands;
+	// ArrayList< ArrayList<Contour2D> > outliers;
 	
 	EnsembleEncoding(ArrayList< ArrayList<Field> > fields){
 		members = fields;
-		cached_sp = null;
 		initComplete = false;
+		cached_sp = null;
+		// bilinear = true;
+		// interpolate = false;
 		genMemberLabels();	
 	}
 	
 	EnsembleEncoding(ArrayList< ArrayList<Field> > fields, ArrayList<String> member_labels){
 		members = fields;
 		initComplete = false;
+		cached_sp = null;
+		// bilinear = true;
+		// interpolate = false;
 		if (members.size() != member_labels.size()){
 			println("ERROR: Number of labels for EnsembleEncoding does not match number of members");
 			genMemberLabels();

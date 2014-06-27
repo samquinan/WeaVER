@@ -514,7 +514,7 @@ class Field{
   void genIsocontour(float iso, Contour2D contour){ 
 	
     float incrY = spacing; // regular spacing of points assuming regular grid
-    float incrX = spacing; //      -- [TODO] not appropriate for lat/long
+    float incrX = spacing; //      -- [TODO] not appropriate for lat/long -- maybe grid small enough that linear sufficient? 
       
     for (int j=0; j < dimy; j++){ //simulte 2D array
       for (int i=0; i < dimx; i++) {
