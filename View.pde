@@ -136,6 +136,20 @@ abstract class View {
 		}
 		
 		return changed;
-	}		
+	}
+	
+    public FloatList readDataToFloatList(String file){ //again should be a static method but processing doesn't like so this is the messy hack
+  	  FloatList tmp = new FloatList();
+	   
+      String[] lines = loadStrings(file);
+      boolean first = true;  
+      for(String line: lines)
+      {
+        float val = float(line.trim());
+        tmp.append(val);
+      }
+	  
+  	  return tmp; 
+    }			
 	
 }

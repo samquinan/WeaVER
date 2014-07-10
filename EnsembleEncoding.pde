@@ -4,6 +4,9 @@ class EnsembleEncoding implements EncodesSP, EncodesCBP {
 	ArrayList< ArrayList<Field> > members;
 	ArrayList< ArrayList<Contour2D> > cached_sp;
 	ArrayList<String> labels;
+	
+	ContourBoxPlot cbp;
+	
 	private boolean initComplete;
 	float isovalue;
 	
@@ -15,8 +18,9 @@ class EnsembleEncoding implements EncodesSP, EncodesCBP {
 	// ArrayList < Field > bands;
 	// ArrayList< ArrayList<Contour2D> > outliers;
 	
-	EnsembleEncoding(ArrayList< ArrayList<Field> > fields){
+	EnsembleEncoding(ArrayList< ArrayList<Field> > fields, ContourBoxPlot c){
 		members = fields;
+		cbp = c;
 		initComplete = false;
 		cached_sp = null;
 		// bilinear = true;
@@ -24,8 +28,9 @@ class EnsembleEncoding implements EncodesSP, EncodesCBP {
 		genMemberLabels();	
 	}
 	
-	EnsembleEncoding(ArrayList< ArrayList<Field> > fields, ArrayList<String> member_labels){
+	EnsembleEncoding(ArrayList< ArrayList<Field> > fields, ContourBoxPlot c, ArrayList<String> member_labels){
 		members = fields;
+		cbp = c;
 		initComplete = false;
 		cached_sp = null;
 		// bilinear = true;
@@ -134,7 +139,45 @@ class EnsembleEncoding implements EncodesSP, EncodesCBP {
 		else{
 			cached_sp = null; // clear cache
 		}
+	}		
+	
+	void getCBPmedian(WrappedContour2D wrapper){
+		cbp.getCBPmedian(wrapper);
 	}
+	
+	void getCBPmedian(WrappedContour2D wrapper, int idx){
+		cbp.getCBPmedian(wrapper, idx);
+	}
+	
+	
+	// Contour2D getCBPmedian(){
+	// 	return cbp.getCBPmedian();
+	// }
+	// Contour2D getCBPmedian(int idx){
+	// 	return cbp.getCBPmedian(idx);
+	// }
+	
+	// ArrayList<Contour2D> getCBPoutliers(){
+	// 		return cbp.getCBPoutliers();
+	// }
+	// ArrayList<Contour2D> getCBPoutliers(int idx){
+	// 		return cbp.getCBPoutliers(idx);
+	// }
+	
+	void getCBPoutliers(ArrayList<Contour2D> contours){
+		cbp.getCBPoutliers(contours);
+	}
+	void getCBPoutliers(ArrayList<Contour2D> contours, int idx){
+		cbp.getCBPoutliers(contours, idx);
+	}
+	
+	void genCBPbands(PImage img, ColorMapf cmap, ColorMapf cmap2){
+		cbp.genCBPbands(img, cmap, cmap2);	
+	}
+	void genCBPbands(PImage img, ColorMapf cmap, ColorMapf cmap2, int idx){
+		cbp.genCBPbands(img, cmap, cmap2, idx);
+	}
+	
 	
 		
 }

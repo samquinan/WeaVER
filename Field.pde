@@ -43,13 +43,13 @@ class Field{
     } 
   }
   
-  Field(FloatList d, float vmax, float vmin, int dx, int dy, PVector offset, float s){ 
+  Field(FloatList d, float vmax, float vmin, int dx, int dy, PVector offset, float maxh, float maxw){ 
 	  
 	dimx = dx;
     dimy = dy;
     viewZero = offset;
     
-    spacing = s;
+    spacing = min(maxh/dy, maxw/dx);
     viewHeight = dy*spacing;
     viewWidth = dx*spacing;
     
@@ -701,6 +701,41 @@ class Field{
 	  img.updatePixels();
   }
   
+  //HACK! TODO make so does proper alpha belending rather than binary overwrite on non-zero alpha
+  void genFillNearestNeighbor(PImage img, ColorMapf cmap, boolean interpolate, boolean overwriteClear){
+	  
+	  int samplesx = dimx;
+	  int samplesy = dimy;
+	  
+	  if (int(samplesx*spacing) != img.width || int(samplesy*spacing) != img.height){
+		  println("Error in genFill: PImage dims do not match field");
+	  }
+	  
+	  img.loadPixels();
+	  for (int j = 0; j < samplesy; j++){
+		  for (int i = 0; i < samplesx; i++){
+			  //nearest neighbor
+			  float val = data.get(getIndex(i,j,samplesx));//grab data value
+			  color c = cmap.getColor(val, interpolate);
+			  
+			  if (overwriteClear || (((c >> 24) & 0xFF) > 0)){
+				  int idx;
+				  for (int n = 0; n < spacing; n++){
+					idx = getIndex(int(i*spacing), int(((samplesy-1)-j)*spacing)+n, int(samplesx*spacing));
+				  	for (int m = 0; m < spacing; m++){
+						img.pixels[idx] = c;
+						idx++;
+					}
+				  }
+			  }
+			  
+		  }
+	  }
+
+	  img.updatePixels();
+  }
+  
+  
   void genFillBilinear(PImage img, ColorMapf cmap, boolean interpolate){
 	  
 	  int samplesx = dimx;
@@ -747,10 +782,60 @@ class Field{
 	  img.updatePixels();
   }
   
+  //HACK! TODO make so does proper alpha belending rather than binary overwrite on non-zero alpha
+  void genFillBilinear(PImage img, ColorMapf cmap, boolean interpolate, boolean overwriteClear){
+	  
+	  int samplesx = dimx;
+	  int samplesy = dimy;
+	  
+	  if (int(samplesx*spacing) != img.width || int(samplesy*spacing) != img.height){
+		  println("Error in genFill: PImage dims do not match field");
+	  }
+	  
+	  img.loadPixels();
+	  for (int y = 0; y < img.height; y++){
+	  	  for (int x = 0; x < img.width; x++){
+	  		  //grab 4 nearest data values for interpolation
+	  		  int i0, j0, i1, j1;
+	  		  float ax, ay;
+  		  
+	  		  float tmp = ((2.0*x+1.0)/(2*spacing)) - 0.5;
+	  		  i0 = floor(tmp);
+	  		  i1 = ceil(tmp);
+	  		  ax = tmp - i0;
+  		  		  
+	  		  tmp = ((2.0*((samplesy*spacing-1)-y)+1.0)/(2*spacing)) - 0.5;//note: 0,0 is bottom left
+	  		  j0 = floor(tmp);
+	  		  j1 = ceil(tmp);
+	  		  ay = tmp - j0;
+		    		  
+	  		  float v00, v01, v10, v11;
+	  		  v00 = data.get(getIndex(constrain(i0,0,(samplesx-1)),constrain(j0,0,(samplesy-1)),samplesx));
+	  		  v01 = data.get(getIndex(constrain(i0,0,(samplesx-1)),constrain(j1,0,(samplesy-1)),samplesx));
+	  		  v10 = data.get(getIndex(constrain(i1,0,(samplesx-1)),constrain(j0,0,(samplesy-1)),samplesx));
+	  		  v11 = data.get(getIndex(constrain(i1,0,(samplesx-1)),constrain(j1,0,(samplesy-1)),samplesx));
+  		  
+	  		  //bilinear interpolation
+	  		  float v0x, v1x;
+	  		  v0x = map(ax,0.0,1.0,v00,v10);
+	  		  v1x = map(ax,0.0,1.0,v01,v11);
+  		  
+	  		  float v = map(ay,0.0,1.0,v0x,v1x);
+			  color c = cmap.getColor(v, interpolate);
+			  
+			  if (overwriteClear || (((c >> 24) & 0xFF) > 0)) img.pixels[getIndex(x,y,img.width)] = c; 
+	  	  }
+	  }
+	  img.updatePixels();
+  }
+  
+  
   private int getIndex(int x, int y, int N)
   {
      int idx = (y*N)+x;
      return idx;
   }
   
+  
+    
 }

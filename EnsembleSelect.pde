@@ -162,6 +162,42 @@ class EnsembleSelect extends Selectable implements EncodesSP, EncodesCBP{
 		encd.genSPContours(contours, time);
 	}
 	
+	void getCBPmedian(WrappedContour2D wrapper){
+		encd.getCBPmedian(wrapper);
+	}
+	
+	void getCBPmedian(WrappedContour2D wrapper, int idx){
+		encd.getCBPmedian(wrapper, idx);
+	}
+	
+	// Contour2D getCBPmedian(){
+	// 	return encd.getCBPmedian();
+	// }
+	// Contour2D getCBPmedian(int idx){
+	// 	return encd.getCBPmedian(idx);
+	// }
+	
+	// ArrayList<Contour2D> getCBPoutliers(){
+	// 		return encd.getCBPoutliers();
+	// }
+	// ArrayList<Contour2D> getCBPoutliers(int idx){
+	// 		return encd.getCBPoutliers(idx);
+	// }
+	
+	void getCBPoutliers(ArrayList<Contour2D> contours){
+		encd.getCBPoutliers(contours);
+	}
+	void getCBPoutliers(ArrayList<Contour2D> contours, int idx){
+		encd.getCBPoutliers(contours, idx);
+	}
+	
+	void genCBPbands(PImage img, ColorMapf cmap, ColorMapf cmap2){
+		encd.genCBPbands(img, cmap, cmap2);	
+	}
+	void genCBPbands(PImage img, ColorMapf cmap, ColorMapf cmap2, int idx){
+		encd.genCBPbands(img, cmap, cmap2, idx);
+	}	
+	
 	void setIsovalue(float iso){
 		encd.setIsovalue(iso);
 	}

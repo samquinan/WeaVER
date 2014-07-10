@@ -3,6 +3,13 @@ class EnsembleTarget extends Container implements Target{
 	ArrayList<Contour2D> sp_members;
 	QuadTree_Node<Segment2D> sp_qtree;
 	
+	WrappedContour2D cbp_median;
+	ArrayList<Contour2D> cbp_outliers;	
+	PImage cbp_bands;
+	
+	color c_band, c_envl;
+	ColorMapf cmap, cmap2;
+	
 	boolean h_setup;
 	float h_anchorX, h_anchorY;
 	boolean generated;
@@ -20,18 +27,62 @@ class EnsembleTarget extends Container implements Target{
 		sp_members = null;
 		sp_qtree = null;
 		sp_hoverables = null;
+		cbp_median = null;
+		cbp_outliers = null;
+		cbp_bands = null;
 		timer = null;
 		h_setup = false;
 		hover = false;
 		clr = color(255,255,255,0);
 		border = color(170, 0);
 		generated = false;
+		
+		color tmp;
+		c_band = color(140);
+		c_envl = color(220);
+
+		cmap = new ColorMapf();
+		tmp = (0 << 24) | (c_band & 0x00FFFFFF);
+		cmap.add(0, tmp);
+		cmap.add(0.49, tmp);
+		cmap.add(0.5, tmp);
+		cmap.add(1.0, c_band);
+
+		cmap2 = new ColorMapf();
+		tmp = (0 << 24) | (c_envl & 0x00FFFFFF);
+		cmap2.add(0, tmp);
+		cmap2.add(0.49, tmp);
+		cmap2.add(0.5, tmp);
+		cmap2.add(1.0, c_envl);
+		
 	}
 	
 	void setColor(color cin){
 		clr = cin;
 		border = color(170, 255);
 	}
+	
+	void setBandColors(color c0, color c1){ //fix
+		c_band = c0;
+		c_envl = c1;
+
+		color tmp;
+
+		cmap = new ColorMapf();
+		tmp = (0 << 24) | (c_band & 0x00FFFFFF);
+		cmap.add(0, tmp);
+		cmap.add(0.49, tmp);
+		cmap.add(0.5, tmp);
+		cmap.add(1.0, c_band);
+
+		cmap2 = new ColorMapf();
+		tmp = (0 << 24) | (c_envl & 0x00FFFFFF);
+		cmap2.add(0, tmp);
+		cmap2.add(0.49, tmp);
+		cmap2.add(0.5, tmp);
+		cmap2.add(1.0, c_envl);
+	}
+	
 	
 	void setLabel(String s){
 		label = s;
@@ -54,6 +105,18 @@ class EnsembleTarget extends Container implements Target{
 	
 	void linkSPQuadTree(QuadTree_Node<Segment2D> q){
 		sp_qtree = q;
+	}
+	
+	void linkCBPMedian(WrappedContour2D w){
+		cbp_median = w;
+	}
+	
+	void linkCBPOutliers(ArrayList<Contour2D> contours){ 
+		cbp_outliers = contours;
+	}
+	
+	void linkCBPBands(PImage img){ 
+		cbp_bands = img;
 	}
 	
 	void linkTimeControl(TimeControl t){
@@ -164,10 +227,38 @@ class EnsembleTarget extends Container implements Target{
 	private void clear(){
 		if (sp_members != null) sp_members.clear();
 		if (sp_qtree != null) sp_qtree.clear();
+		if (cbp_median != null) cbp_median.replaceContour(null);
+		if (cbp_outliers != null) cbp_outliers.clear();
+		if (cbp_bands != null) clearImage();
 	}
+		
+    private void clearImage(){ //should be a static method but Processing doesn't like them
+    	  if (cbp_bands == null) return;
+    	  cbp_bands.loadPixels();
+    	  int dim = cbp_bands.width * cbp_bands.height;
+    	  for (int i=0; i < dim; i++){
+    	  	cbp_bands.pixels[i] = color(0,0,0,0);
+    	  }
+    	  cbp_bands.updatePixels();
+    }
 	
 	private void update(){
 		int fhr = (timer == null) ? 0 : timer.getIndex();
+		
+		if(cbp.isOn()){
+			//update CBP
+			//TODO need clear calls here? -- shouldn't			
+			EncodesCBP s = (EncodesCBP) entries.get(0);
+			if (s != null){
+				s.getCBPmedian(cbp_median, fhr);//null input ignored internally
+				if (cbp_outliers != null){
+					cbp_outliers.clear(); //safe
+					s.getCBPoutliers(cbp_outliers, fhr);//null input ignored internally
+				}
+				s.genCBPbands(cbp_bands, cmap, cmap2, fhr);//null input ignored internally
+			}
+		}
+		
 		
 		//update SP -- need members in both views but do not need quad tree
 		if (sp_members != null){
@@ -182,13 +273,20 @@ class EnsembleTarget extends Container implements Target{
 			}
 		}
 		
-		if(cbp.isOn()){
-			//update CBP
-		}
 	}
 	
 	private void cacheCurrent(){
 		//cache based on switch to minimize processing
+		
+		if(cbp.isOn()){ //TODO PShapes will persist because contours not being deleted and generated on the fly -- expands memory usage -- do up front?
+			//update CBP 
+			if (cbp_median != null) cbp_median.genPShape();
+			if (cbp_outliers != null){
+				for (Contour2D c: cbp_outliers){
+					c.genPShape();
+				}
+			}
+		}
 		
 		if (sp_members != null){
 			if (!cbp.isOn() && sp_qtree != null){ //generate quadtree and cache contours
@@ -205,9 +303,6 @@ class EnsembleTarget extends Container implements Target{
 			}
 		}	
 		
-		if(cbp.isOn()){
-			//update CBP
-		}
 	}
 	
 	
