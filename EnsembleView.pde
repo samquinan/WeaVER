@@ -180,7 +180,6 @@ class EnsembleView extends View {
 		}
 	}
 	
-	
 	void draw(){
 		//update state if animating
 		updateAnim();
@@ -444,66 +443,8 @@ class EnsembleView extends View {
 		//selection tooltip
 		if (selectFromContour) drawToolTip();
 	}
-	
-	// protected void drawContours(ArrayList<Contour2D> contours, color select, float weight)
-	// {
-	// 	noFill();
-	// 	strokeWeight(weight);
-	// 
-	// 	int n = int(contours.size());
-	// 	boolean trigger = false;
-	// 
-	// 	//draw all but selection
-	// 	Contour2D c;
-	// 	for (int i=0; i<n; i++){
-	// 		c = contours.get(i);
-	// 		if (c == highlight){
-	// 			trigger = true;
-	// 			continue;
-	// 		}
-	// 		c.drawContour();
-	// 	}
-	// 
-	// 	//draw selection
-	// 	if ((highlight != null) && trigger){
-	// 		strokeWeight(weight+1);
-	// 		stroke(select);
-	// 		highlight.drawContour();
-	// 	}
-	// }
-	
-	// protected void drawContours(ArrayList<Contour2D> contours, int h, int s_min, int s_max, int b_min, int b_max, int a, color select, float weight, float weight2)
-	// {
-	// 	noFill();
-	// 	strokeWeight(weight);
-	// 
-	// 	int n = int(contours.size());
-	// 
-	// 	//draw all but selection
-	// 	boolean trigger = false;
-	// 	Contour2D c;
-	// 	for (int i=0; i<n; i++){
-	// 		int s = int(map(i, 0, n-1, s_min, s_max));
-	// 		int b = int(map(i, 0, n-1, b_min, b_max));
-	// 		stroke(h,s,b,a);
-	// 		c = contours.get(i);
-	// 		if (c == highlight){
-	// 			trigger = true;
-	// 			continue;
-	// 		} 
-	// 		c.drawContour();
-	// 	}
-	// 
-	// 	//draw selection
-	// 	if ((highlight != null) && trigger){
-	// 		strokeWeight(weight2);
-	// 		stroke(select);
-	// 		highlight.drawContour();
-	// 	}
-	// }
-	
-	protected void drawContours(ArrayList<Contour2D> contours, int h, int s_min, int s_max, int b_min, int b_max, int a, float weight)
-	{
+		
+	protected void drawContours(ArrayList<Contour2D> contours, int h, int s_min, int s_max, int b_min, int b_max, int a, float weight){
 		noFill();
 		strokeWeight(weight);
 	
@@ -525,8 +466,7 @@ class EnsembleView extends View {
 		}
 	}
 	
-	protected void drawHighlight(color select, float weight)
-	{
+	protected void drawHighlight(color select, float weight){
 		if (highlight != null){
 			strokeWeight(weight);
 			stroke(select);
@@ -738,14 +678,14 @@ class EnsembleView extends View {
 		//CBP -- 258.15
 		dir = dataDir + "/CBP/500mb_TMP/258_15/"+run+"/";
 		
-		// initialize for variable number of outliers
+			// initialize for variable number of outliers
 		outlier_filenames = new ArrayList< ArrayList<String> >(30);
 		for (int i=0; i < 30; i++){
 			ArrayList<String> list = new ArrayList<String>();
 			outlier_filenames.add(list);
 		}
 		
-		// get outlier file names
+			// get outlier file names
 		File folder = sketchFile(dir);
 		String[] contents = folder.list(outlierFilter);
 		if (contents != null){
@@ -760,7 +700,7 @@ class EnsembleView extends View {
 			println("Error: null result from list() for contents of " + dir);
 		}
 				
-		// load CBP data
+			// load CBP data
 		build_median = new ArrayList<Contour2D>();
 		build_bands = new ArrayList<Field>();
 		build_envelop = new ArrayList<Field>();
@@ -806,7 +746,7 @@ class EnsembleView extends View {
 		
 		ContourBoxPlot cbp = new ContourBoxPlot(build_median, build_bands, build_envelop, build_outliers);
 		
-		// Create Selectables
+			// Create Selectables
 		encd = new EnsembleEncoding(ensemble, cbp);
 		encd.setMemberLabels(member_labels);
 		encd.setIsovalue(258.15);//-15 C
@@ -815,8 +755,91 @@ class EnsembleView extends View {
 		select.setSingleCopy(true);
 		library.add(select);
 		
+		
+		
 		//CBP -- 253.15
 		dir = dataDir + "/CBP/500mb_TMP/253_15/"+run+"/";
+		
+			// initialize for variable number of outliers
+		outlier_filenames = new ArrayList< ArrayList<String> >(30);
+		for (int i=0; i < 30; i++){
+			ArrayList<String> list = new ArrayList<String>();
+			outlier_filenames.add(list);
+		}
+		
+			// get outlier file names
+		folder = sketchFile(dir);
+		contents = folder.list(outlierFilter);
+		if (contents != null){
+			for (int i = 0; i < contents.length; i++) {
+				String filename = contents[i];
+				int idx = Integer.parseInt(filename.substring(filename.length()-6,filename.length()-4))/3;			
+				ArrayList<String> list = outlier_filenames.get(idx);
+				list.add(filename);
+			}
+		}
+		else {
+			println("Error: null result from list() for contents of " + dir);
+		}
+				
+			// load CBP data
+		build_median = new ArrayList<Contour2D>();
+		build_bands = new ArrayList<Field>();
+		build_envelop = new ArrayList<Field>();
+	    build_outliers = new ArrayList<ArrayList<Contour2D>>();
+		
+		for (int i=0; i < 30; i++){
+			fhr = "f"+String.format("%02d", i*3);
+			
+			String file;
+			Field tmp_src;
+			Contour2D tmp_contour;
+			
+			//median
+			file = dir + "median"+"_gridRes_"+grid+"_"+fhr+".csv";
+			tmp_src = new Field(file, samplesx, samplesy, corner, samplesy*spacing, samplesx*spacing);
+			tmp_contour = new Contour2D(2*tmp_src.dimy);
+			tmp_src.genIsocontour(0.5, tmp_contour);
+			build_median.add(tmp_contour);
+			
+			//bands
+			file = dir + "band"+"_gridRes_"+grid+"_"+fhr+".csv";
+			tmp_src = new Field(file, samplesx, samplesy, corner, samplesy*spacing, samplesx*spacing);
+			build_bands.add(tmp_src);
+			
+			//envelope
+			file = dir + "envelop"+"_gridRes_"+grid+"_"+fhr+".csv";
+			tmp_src = new Field(file, samplesx, samplesy, corner, samplesy*spacing, samplesx*spacing);
+			build_envelop.add(tmp_src);			
+			
+			//outliers
+			ArrayList < Contour2D > build_outliers_fhr = new ArrayList < Contour2D >();
+			ArrayList<String> list = outlier_filenames.get(i);
+			for (String s: list){
+				file = dir + s;
+				tmp_src = new Field(file, samplesx, samplesy, corner, samplesy*spacing, samplesx*spacing);
+				tmp_contour = new Contour2D(2*tmp_src.dimy);
+				tmp_src.genIsocontour(0.5, tmp_contour);
+				build_outliers_fhr.add(tmp_contour);
+			}
+			build_outliers.add(build_outliers_fhr);
+		
+		}
+		
+		cbp = new ContourBoxPlot(build_median, build_bands, build_envelop, build_outliers);
+		
+		encd = new EnsembleEncoding(ensemble, cbp);
+		encd.setMemberLabels(member_labels);
+		encd.setIsovalue(253.15);//-15 C
+		// encd.setCachingSP(true);
+		select = new EnsembleSelect(tabw,tabh,c500mb, encd, "TMP", "500mb", "253.15˚ K");
+		select.setSingleCopy(true);
+		library.add(select);
+		
+		
+		
+		//CBP -- 248.15
+		dir = dataDir + "/CBP/500mb_TMP/248_15/"+run+"/";
 		
 		// initialize for variable number of outliers
 		outlier_filenames = new ArrayList< ArrayList<String> >(30);
@@ -888,76 +911,192 @@ class EnsembleView extends View {
 		
 		encd = new EnsembleEncoding(ensemble, cbp);
 		encd.setMemberLabels(member_labels);
-		encd.setIsovalue(253.15);//-15 C
+		encd.setIsovalue(248.15);//-15 C
 		// encd.setCachingSP(true);
-		select = new EnsembleSelect(tabw,tabh,c500mb, encd, "TMP", "500mb", "253.15˚ K");
+		select = new EnsembleSelect(tabw,tabh,c500mb, encd, "TMP", "500mb", "248.15˚ K");
+		select.setSingleCopy(true);
+		library.add(select);
+		
+				
+		
+		//700mb TMP
+		
+		dir = dataDir + "/EnsembleFields/700mb_TMP/";
+		ensemble = new ArrayList< ArrayList<Field> >(initCapacity);
+
+		for (int i=0; i < models.length; i++){
+			for (int j=0; j < perturbations.length; j++){
+				ArrayList<Field> member = new ArrayList<Field>(30);
+				for (int k=0; k<=87; k+=3){
+					fhr = String.format("%02d", k);
+					String file = dir + "sref_"+ models[i] +".t" + run + "z.pgrb" + grid +"." + perturbations[j] + ".f" + fhr + ".txt";
+					f = new Field(file, samplesx, samplesy, corner, samplesy*spacing, samplesx*spacing);
+					member.add(f);
+				}
+				ensemble.add(member);
+			}
+		}
+		
+		//CBP -- 283.15
+		dir = dataDir + "/CBP/700mb_TMP/283_15/"+run+"/";
+		
+		// initialize for variable number of outliers
+		outlier_filenames = new ArrayList< ArrayList<String> >(30);
+		for (int i=0; i < 30; i++){
+			ArrayList<String> list = new ArrayList<String>();
+			outlier_filenames.add(list);
+		}
+		
+		// get outlier file names
+		folder = sketchFile(dir);
+		contents = folder.list(outlierFilter);
+		if (contents != null){
+			for (int i = 0; i < contents.length; i++) {
+				String filename = contents[i];
+				int idx = Integer.parseInt(filename.substring(filename.length()-6,filename.length()-4))/3;			
+				ArrayList<String> list = outlier_filenames.get(idx);
+				list.add(filename);
+			}
+		}
+		else {
+			println("Error: null result from list() for contents of " + dir);
+		}
+				
+		// load CBP data
+		build_median = new ArrayList<Contour2D>();
+		build_bands = new ArrayList<Field>();
+		build_envelop = new ArrayList<Field>();
+	    build_outliers = new ArrayList<ArrayList<Contour2D>>();
+		
+		for (int i=0; i < 30; i++){
+			fhr = "f"+String.format("%02d", i*3);
+			
+			String file;
+			Field tmp_src;
+			Contour2D tmp_contour;
+			
+			//median
+			file = dir + "median"+"_gridRes_"+grid+"_"+fhr+".csv";
+			tmp_src = new Field(file, samplesx, samplesy, corner, samplesy*spacing, samplesx*spacing);
+			tmp_contour = new Contour2D(2*tmp_src.dimy);
+			tmp_src.genIsocontour(0.5, tmp_contour);
+			build_median.add(tmp_contour);
+			
+			//bands
+			file = dir + "band"+"_gridRes_"+grid+"_"+fhr+".csv";
+			tmp_src = new Field(file, samplesx, samplesy, corner, samplesy*spacing, samplesx*spacing);
+			build_bands.add(tmp_src);
+			
+			//envelope
+			file = dir + "envelop"+"_gridRes_"+grid+"_"+fhr+".csv";
+			tmp_src = new Field(file, samplesx, samplesy, corner, samplesy*spacing, samplesx*spacing);
+			build_envelop.add(tmp_src);			
+			
+			//outliers
+			ArrayList < Contour2D > build_outliers_fhr = new ArrayList < Contour2D >();
+			ArrayList<String> list = outlier_filenames.get(i);
+			for (String s: list){
+				file = dir + s;
+				tmp_src = new Field(file, samplesx, samplesy, corner, samplesy*spacing, samplesx*spacing);
+				tmp_contour = new Contour2D(2*tmp_src.dimy);
+				tmp_src.genIsocontour(0.5, tmp_contour);
+				build_outliers_fhr.add(tmp_contour);
+			}
+			build_outliers.add(build_outliers_fhr);
+		
+		}
+		
+		cbp = new ContourBoxPlot(build_median, build_bands, build_envelop, build_outliers);
+		
+		encd = new EnsembleEncoding(ensemble, cbp);
+		encd.setMemberLabels(member_labels);
+		encd.setIsovalue(283.15);//10 C
+		// encd.setCachingSP(true);
+		select = new EnsembleSelect(tabw,tabh,c700mb, encd, "TMP", "700mb", "283.15˚ K");
 		select.setSingleCopy(true);
 		library.add(select);
 		
 		
 		
-		// Create Selectables
-		// encd = new EnsembleEncoding(ensemble);
-		// encd.setMemberLabels(member_labels);
-		// encd.setIsovalue(258.15);//-15 C
-		// // encd.setCachingSP(true);
-		// select = new EnsembleSelect(tabw,tabh,c500mb, encd, "TMP", "500mb", "258.15˚ K");
-		// select.setSingleCopy(true);
-		// library.add(select);
-		//
-		// encd = new EnsembleEncoding(ensemble);
-		// encd.setMemberLabels(member_labels);
-		// encd.setIsovalue(253.15);//-20 C
-		// // encd.setCachingSP(true);
-		// select = new EnsembleSelect(tabw,tabh,c500mb, encd, "TMP", "500mb", "253.15˚ K");
-		// select.setSingleCopy(true);
-		// library.add(select);
+		//CBP -- 288.15
+		dir = dataDir + "/CBP/700mb_TMP/288_15/"+run+"/";
 		
+		// initialize for variable number of outliers
+		outlier_filenames = new ArrayList< ArrayList<String> >(30);
+		for (int i=0; i < 30; i++){
+			ArrayList<String> list = new ArrayList<String>();
+			outlier_filenames.add(list);
+		}
 		
-		// encd = new EnsembleEncoding(ensemble, cbp);
-		// encd.setMemberLabels(member_labels);
-		// encd.setIsovalue(248.15);//-25 C
-		// // encd.setCachingSP(true);
-		// select = new EnsembleSelect(tabw,tabh,c500mb, encd, "TMP", "500mb", "248.15˚ K");
-		// select.setSingleCopy(true);
-		// library.add(select);
+		// get outlier file names
+		folder = sketchFile(dir);
+		contents = folder.list(outlierFilter);
+		if (contents != null){
+			for (int i = 0; i < contents.length; i++) {
+				String filename = contents[i];
+				int idx = Integer.parseInt(filename.substring(filename.length()-6,filename.length()-4))/3;			
+				ArrayList<String> list = outlier_filenames.get(idx);
+				list.add(filename);
+			}
+		}
+		else {
+			println("Error: null result from list() for contents of " + dir);
+		}
+				
+		// load CBP data
+		build_median = new ArrayList<Contour2D>();
+		build_bands = new ArrayList<Field>();
+		build_envelop = new ArrayList<Field>();
+	    build_outliers = new ArrayList<ArrayList<Contour2D>>();
 		
+		for (int i=0; i < 30; i++){
+			fhr = "f"+String.format("%02d", i*3);
+			
+			String file;
+			Field tmp_src;
+			Contour2D tmp_contour;
+			
+			//median
+			file = dir + "median"+"_gridRes_"+grid+"_"+fhr+".csv";
+			tmp_src = new Field(file, samplesx, samplesy, corner, samplesy*spacing, samplesx*spacing);
+			tmp_contour = new Contour2D(2*tmp_src.dimy);
+			tmp_src.genIsocontour(0.5, tmp_contour);
+			build_median.add(tmp_contour);
+			
+			//bands
+			file = dir + "band"+"_gridRes_"+grid+"_"+fhr+".csv";
+			tmp_src = new Field(file, samplesx, samplesy, corner, samplesy*spacing, samplesx*spacing);
+			build_bands.add(tmp_src);
+			
+			//envelope
+			file = dir + "envelop"+"_gridRes_"+grid+"_"+fhr+".csv";
+			tmp_src = new Field(file, samplesx, samplesy, corner, samplesy*spacing, samplesx*spacing);
+			build_envelop.add(tmp_src);			
+			
+			//outliers
+			ArrayList < Contour2D > build_outliers_fhr = new ArrayList < Contour2D >();
+			ArrayList<String> list = outlier_filenames.get(i);
+			for (String s: list){
+				file = dir + s;
+				tmp_src = new Field(file, samplesx, samplesy, corner, samplesy*spacing, samplesx*spacing);
+				tmp_contour = new Contour2D(2*tmp_src.dimy);
+				tmp_src.genIsocontour(0.5, tmp_contour);
+				build_outliers_fhr.add(tmp_contour);
+			}
+			build_outliers.add(build_outliers_fhr);
 		
+		}
 		
-		// //700mb TMP
-		// dir = dataDir + "/EnsembleFields/700mb_TMP/";
-		// ensemble = new ArrayList< ArrayList<Field> >(initCapacity);
-		//
-		// for (int i=0; i < models.length; i++){
-		// 	for (int j=0; j < perturbations.length; j++){
-		// 		ArrayList<Field> member = new ArrayList<Field>(30);
-		// 		for (int k=0; k<=87; k+=3){
-		// 			fhr = String.format("%02d", k);
-		// 			String file = dir + "sref_"+ models[i] +".t" + run + "z.pgrb" + grid +"." + perturbations[j] + ".f" + fhr + ".txt";
-		// 			f = new Field(file, samplesx, samplesy, corner, samplesy*spacing, samplesx*spacing);
-		// 			member.add(f);
-		// 		}
-		// 		ensemble.add(member);
-		// 	}
-		// }
-		//
-		// encd = new EnsembleEncoding(ensemble);
-		// encd.setMemberLabels(member_labels);
-		// encd.setIsovalue(283.15);//10 C
-		// // encd.setCachingSP(true);
-		// select = new EnsembleSelect(tabw,tabh,c700mb, encd, "TMP", "700mb", "283.15˚ K");
-		// select.setSingleCopy(true);
-		// library.add(select);
-		//
-		//
-		// encd = new EnsembleEncoding(ensemble);
-		// encd.setMemberLabels(member_labels);
-		// encd.setIsovalue(288.15);//15 C
-		// // encd.setCachingSP(true);
-		// select = new EnsembleSelect(tabw,tabh,c700mb, encd, "TMP", "700mb", "288.15˚ K");
-		// select.setSingleCopy(true);
-		// library.add(select);
+		cbp = new ContourBoxPlot(build_median, build_bands, build_envelop, build_outliers);
 		
+		encd = new EnsembleEncoding(ensemble, cbp);
+		encd.setMemberLabels(member_labels);
+		encd.setIsovalue(288.15);//10 C
+		// encd.setCachingSP(true);
+		select = new EnsembleSelect(tabw,tabh,c700mb, encd, "TMP", "700mb", "288.15˚ K");
+		select.setSingleCopy(true);
+		library.add(select);
+				
 	}
 
 }
