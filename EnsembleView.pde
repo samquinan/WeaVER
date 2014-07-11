@@ -210,41 +210,125 @@ class EnsembleView extends View {
 	
 		if (cbp_switch.isOn())
 		{
-			image(bands0, cornerx, cornery);
+			colorMode(RGB, 255, 255, 255, 100);
 			
-			colorMode(HSB, 360, 100, 100, 100);
-			drawContours(outliers0, 0, 100, 100, 90, 60, 100, 1);
+			boolean someHovering = target2.isHovering() | target1.isHovering() | target0.isHovering();
+			int a;
+			
+			// Target 0
+			if (!target0.isHovering()){
+				
+				if (someHovering){ //grey out
+					a = 40;
+				}
+				else{ //default draw
+					a = 75;
+				}
+				
+				tint(255, a);
+				image(bands0, cornerx, cornery);
+				noTint();
+			
+				colorMode(HSB, 360, 100, 100, 100);
+				drawContours(outliers0, 0, 100, 100, 90, 60, a, 1);
+				colorMode(RGB, 255, 255, 255, 100);
+			
+				strokeWeight(2);
+				stroke(color(40, 40, 121, a));
+				median0.drawContour();
+			}
+						
+			if (!target1.isHovering()){
+				
+				if (someHovering){ //grey out
+					a = 40;
+				}
+				else{ //default draw
+					a = 75;
+				}
+				
+				tint(255, a);
+				image(bands1, cornerx, cornery);
+				noTint();
+			
+				colorMode(HSB, 360, 100, 100, 100);
+				drawContours(outliers1, 200, 100, 100, 90, 60, a, 1);
+				colorMode(RGB, 255, 255, 255, 100);
+			
+				strokeWeight(2);
+				stroke(color(32, 109, 32, a));
+				median1.drawContour();
+			}
+			
+			if (!target2.isHovering()){
+				
+				if (someHovering){ //grey out
+					a = 40;
+				}
+				else{ //default draw
+					a = 75;
+				}
+				
+				tint(255, a);
+				image(bands2, cornerx, cornery);
+				noTint();
+
+				colorMode(HSB, 360, 100, 100, 100);
+				drawContours(outliers2, 33, 60, 40, 55, 40, a, 1);
+				colorMode(RGB, 255, 255, 255, 100);
+
+				strokeWeight(2);
+				stroke(color(121, 40, 40, a));
+				median2.drawContour();
+			}
+			
+			if (someHovering){
+				a = 100;
+				
+				if(target0.isHovering()){
+					tint(255, a);
+					image(bands0, cornerx, cornery);
+					noTint();
+			
+					colorMode(HSB, 360, 100, 100, 100);
+					drawContours(outliers0, 0, 100, 100, 90, 60, a, 1);
+					colorMode(RGB, 255, 255, 255, 100);
+			
+					strokeWeight(2);
+					stroke(color(40, 40, 121,a));
+					median0.drawContour();
+				}
+				else if(target1.isHovering()){
+					tint(255, a);
+					image(bands1, cornerx, cornery);
+					noTint();
+			
+					colorMode(HSB, 360, 100, 100, 100);
+					drawContours(outliers1, 200, 100, 100, 90, 60, a, 1);
+					colorMode(RGB, 255, 255, 255, 100);
+			
+					strokeWeight(2);
+					stroke(color(32, 109, 32,a));
+					median1.drawContour();
+					
+				}
+				else{
+					tint(255, a);
+					image(bands2, cornerx, cornery);
+					noTint();
+
+					colorMode(HSB, 360, 100, 100, 100);
+					drawContours(outliers2, 33, 60, 40, 55, 40, a, 1);
+					colorMode(RGB, 255, 255, 255, 100);
+
+					strokeWeight(2);
+					stroke(color(121, 40, 40, a));
+					median2.drawContour();	
+				}
+					
+			}
+			
 			colorMode(RGB, 255);
-			
-			strokeWeight(2);
-			stroke(color(170,0,70,255));
-			median0.drawContour();
-			
-			
-			image(bands1, cornerx, cornery);
-			
-			colorMode(HSB, 360, 100, 100, 100);
-			drawContours(outliers1, 200, 100, 100, 90, 60, 100, 1);
-			colorMode(RGB, 255);
-			
-			strokeWeight(2);
-			stroke(color(0,110,230,255));
-			median1.drawContour();
-			
-			
-			image(bands2, cornerx, cornery);
-			
-			colorMode(HSB, 360, 100, 100, 100);
-			drawContours(outliers2, 33, 60, 40, 55, 40, 100, 1);
-			colorMode(RGB, 255);
-			
-			strokeWeight(2);
-			stroke(color(90,70,50,255));
-			median2.drawContour();
-			
-			
-			
-		
 		}
 		else {
 			
