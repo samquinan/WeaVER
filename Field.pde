@@ -40,7 +40,12 @@ class Field{
         maxVal = max(maxVal, val);
         minVal = min(minVal, val);
       }
-    } 
+    }
+	
+    if (data.size() != dimx * dimy){
+		println("ERROR creating Field: number of entries in file does not match provided dimensions");
+	}
+	 
   }
   
   Field(FloatList d, float vmax, float vmin, int dx, int dy, PVector offset, float maxh, float maxw){ 
@@ -56,6 +61,11 @@ class Field{
     data = d;
 	maxVal = vmax;
 	minVal = vmin;
+	
+    if (data.size() != dimx * dimy){
+		println("ERROR creating Field: side of provided FloatList does not match provided dimensions");
+	}
+	
 }
   
   float getMin(){

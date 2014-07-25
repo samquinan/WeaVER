@@ -21,6 +21,18 @@ abstract class ScalarTargetBase extends Container implements Target {
 		hover = false;
 	}
 	
+	ScalarTargetBase(float ix, float iy, float dx, float dy, int c, int r) {
+		super(ix, iy, dx, dy, c, r);
+		
+		layer0 = null;
+		layer1 = null;
+		legend = null;
+		qtree = null;
+		timer = null;
+		label = "";
+		hover = false;
+	}
+	
 	void setLabel(String s){
 		label = s;
 	}

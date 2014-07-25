@@ -1,3 +1,5 @@
+import java.util.Iterator;
+
 PFont plotFont;
 
 MenuBar menu;
@@ -7,6 +9,7 @@ DtrmView view_0;
 StatView view_1;
 MNSDView view_2;
 EnsembleView view_3;
+ProbabilityView view_4;
 
 LoadAnimation spinner;
 
@@ -71,6 +74,9 @@ void draw(){
 		case 3:
 			view_3.draw();
 			break;
+		case 4:
+			view_4.draw();
+			break;
 		default:
 	}
 	
@@ -82,12 +88,13 @@ private void populate(){
 	view_1 = loader.getStatView();
 	view_2 = loader.getMNSDView();
 	view_3 = loader.getEnsembleView();
+	view_4 = loader.getProbabilityView();
 	
 	menu.addItem("Deterministic");
 	menu.addItem("Stat Field");
 	menu.addItem("MNSD");
 	menu.addItem("Direct Ensemble");
-	// menu.addItem("Probability");
+	menu.addItem("Probability");
 	mode = menu.getMode();
 	
 	populated = true;
@@ -108,6 +115,9 @@ void mousePressed(){
 			break;
 		case 3:
 			view_3.mousePress(mouseX, mouseY); 
+			break;
+		case 4:
+			view_4.mousePress(mouseX, mouseY); 
 			break;		
 		default:
 	}
@@ -130,6 +140,9 @@ void mouseMoved(){
 		case 3:
 			view_3.mouseMove(mouseX, mouseY); 
 			break;
+		case 4:
+			view_4.mouseMove(mouseX, mouseY); 
+			break;
 		default:
 	}
 		
@@ -151,6 +164,9 @@ void mouseDragged(){
 		case 3:
 			view_3.mouseDrag(mouseX, mouseY); 
 			break;
+		case 4:
+			view_4.mouseDrag(mouseX, mouseY); 
+			break;		
 		default:
 	}
 		
@@ -173,7 +189,10 @@ void mouseReleased() {
 					break;
 				case 3:
 					view_3.haltAnim(); 
-					break;				
+					break;
+				case 4:
+					view_4.haltAnim(); 
+					break;							
 				default:
 			}
 			//swap
@@ -195,6 +214,9 @@ void mouseReleased() {
 		case 3:
 			view_3.mouseRelease(); 
 			break;
+		case 4:
+			view_4.mouseRelease(); 
+			break;
 		default:
 	}
 }
@@ -213,6 +235,9 @@ void keyPressed() {
 		case 3:
 			view_3.keyPress(key, keyCode); 
 			break;
+		case 4:
+			view_4.keyPress(key, keyCode); 
+			break;
 		default:
 	}
 }
@@ -224,6 +249,7 @@ class ViewLoader implements Runnable{
 	private StatView view_1;
 	private MNSDView view_2;
 	private EnsembleView view_3;
+	private ProbabilityView view_4;
 	private boolean finished;
 	
 	public ViewLoader(){
@@ -231,6 +257,7 @@ class ViewLoader implements Runnable{
 		view_1 = null;
 		view_2 = null;
 		view_3 = null;
+		view_4 = null;
 		finished = false;
 	}
 	
@@ -252,6 +279,10 @@ class ViewLoader implements Runnable{
 	
 	public EnsembleView getEnsembleView(){
 		return view_3;
+	}
+	
+	public ProbabilityView getProbabilityView(){
+		return view_4;
 	}
 	
 	public void run() {
@@ -279,7 +310,7 @@ class ViewLoader implements Runnable{
 		//		-- Need to determine what prefs we want to give users
 		//TODO PROPER PROJECTION (!)
 		String dir = "./datasets";
-		int run = 15;
+		int run = 9;
 		
 		// generate view_0		
 		view_0 = new DtrmView(samplesx, samplesy, spacing, cornerx, cornery, tabw, tabh, 32);
@@ -302,6 +333,11 @@ class ViewLoader implements Runnable{
 		view_3 = new EnsembleView(samplesx, samplesy, spacing, cornerx, cornery, tabw, tabh, 12);
 		view_3.setMap(map);
 		view_3.loadData(dir, run);
+		
+		// generate view_4
+		view_4 = new ProbabilityView(samplesx, samplesy, spacing, cornerx, cornery, tabw, tabh, 14);
+		view_4.setMap(map);
+		view_4.loadData(dir, run);
 		
 		finished = true;				
 	}	
