@@ -839,6 +839,20 @@ class Field{
 	  img.updatePixels();
   }
   
+	void TEST_MultiplyProb(Field f){ // NOTE: is cannibalistic
+		if ((dimx != f.dimx) || (dimy != f.dimy) || (data.size() != (f.data).size())){
+			println("TEST_MultiplyProb FAILED: fields not compatible -- either dimensions off");
+			return;
+		}
+
+		for (int i = 0; i < data.size(); i++){
+			float a = data.get(i)/100.0;
+			float b = (f.data).get(i)/100.0;
+			data.set(i, round((a * b)*100));
+		}
+	}
+  
+  
   
   private int getIndex(int x, int y, int N)
   {

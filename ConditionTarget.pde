@@ -4,6 +4,7 @@ class ConditionTarget extends ScalarTargetBase {
 	ColorMapf cmap;
 	boolean bilinear;
 	boolean interpolate;
+	boolean independent;
 	
 	ConditionTarget(float ix, float iy, float dx, float dy) {
 		super(ix, iy, dx, dy);
@@ -14,7 +15,8 @@ class ConditionTarget extends ScalarTargetBase {
 		isovalues = new ArrayList<Float>();
 		
 		bilinear = true;
-		interpolate = false;		
+		interpolate = false;
+		independent = false;		
 	}
 	
 	ConditionTarget(float ix, float iy, float dx, float dy, int c, int r) {
@@ -24,6 +26,10 @@ class ConditionTarget extends ScalarTargetBase {
 		
 		bilinear = true;
 		interpolate = false;		
+	}
+	
+	void treatConditionsAsIndependent(boolean b){
+		independent = b;
 	}
 	
 	void useBilinear(boolean b){
@@ -120,7 +126,7 @@ class ConditionTarget extends ScalarTargetBase {
 		}
 	}
 	
-	private Field generateProbabilityField(){
+	private Field generateProbabilityField(){ //does not treat as independent
 		int fhr = (timer == null) ? 0 : timer.getIndex();
 		Iterator<Selectable> it = entries.iterator();
 		if (it.hasNext()){ // should always pass b/c never called without at least 1 entry
@@ -136,6 +142,34 @@ class ConditionTarget extends ScalarTargetBase {
 		}
 		return null;
 	}
+	
+	private Field generateProbabilityField(boolean treatIndependent){
+		int fhr = (timer == null) ? 0 : timer.getIndex();
+		Iterator<Selectable> it = entries.iterator();
+		if (it.hasNext()){ // should always pass b/c never called without at least 1 entry
+			HandlesConditions select = (HandlesConditions) it.next();
+			if (select != null){
+				if (treatIndependent){
+					Field build = (select.getCondition(fhr)).genProbabilityField();
+					while (it.hasNext()){
+						select = (HandlesConditions) it.next();
+						if (select != null) build.TEST_MultiplyProb((select.getCondition(fhr)).genProbabilityField());
+					}
+					return build;
+				}
+				else {
+					ConditionEnsemble build = select.getConditionCopy(fhr);
+					while (it.hasNext()){
+						select = (HandlesConditions) it.next();
+						if (select != null) build.makeJointWith(select.getCondition(fhr));
+					}
+					return build.genProbabilityField();
+				}				
+			}
+		}
+		return null;
+	}
+	
 
 	private void clearRenderContext(){
 		if (layer0 != null){
@@ -153,7 +187,7 @@ class ConditionTarget extends ScalarTargetBase {
 	}
 	
 	private void noCacheUpdate(){
-		Field current = generateProbabilityField();
+		Field current = generateProbabilityField(independent);
 		if (current != null){
 			//fill
 			if (layer0 != null){
