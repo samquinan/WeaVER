@@ -112,7 +112,7 @@ class ColorMapf {
 		while (imin < imax){
 			int imid = (imin+imax)/2;
 		
-			if(val.get(imid) < v){
+			if(val.get(imid) <= v){
 				imin = imid + 1;
 			}
 			else{
@@ -120,7 +120,7 @@ class ColorMapf {
 			}
 		}
 		
-		if (!continuous) return (color) col.get(imin); //colors interval less than or equal to
+		if (!continuous) return (color) col.get(imin); //colors interval greater than or equal to lower
 		
 		//interpolate
 		float vMin, vMax;
