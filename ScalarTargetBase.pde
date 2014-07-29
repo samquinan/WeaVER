@@ -9,6 +9,8 @@ abstract class ScalarTargetBase extends Container implements Target {
 	String label;
 	boolean hover;
 	
+	String err_out;
+	
 	ScalarTargetBase(float ix, float iy, float dx, float dy) {
 		super(ix, iy, dx, dy, 1, 1);
 		
@@ -19,6 +21,8 @@ abstract class ScalarTargetBase extends Container implements Target {
 		timer = null;
 		label = "";
 		hover = false;
+		
+		err_out = ""; 
 	}
 	
 	ScalarTargetBase(float ix, float iy, float dx, float dy, int c, int r) {
@@ -31,10 +35,16 @@ abstract class ScalarTargetBase extends Container implements Target {
 		timer = null;
 		label = "";
 		hover = false;
+		
+		err_out = "";
 	}
 	
 	void setLabel(String s){
 		label = s;
+	}
+	
+	String getErrorMessage(){
+		return err_out;
 	}
 	
 	void linkImage(PImage img){

@@ -17,13 +17,37 @@ class ScalarEncoding extends EncodingBase implements EncodesScalar{
 		cmap.add(fields.get(0).getMin(), color(0, 0, 0, 0));
 		cmap.add(fields.get(0).getMax(), color(0, 0, 0, 0));
 	}
-			
+	
+	boolean dataIsAvailable(int idx){
+		return fields.get(idx).dataIsAvailable();
+	} 
+	
+	boolean dataIsAvailable(){
+		return fields.get(0).dataIsAvailable();
+	}
+				
 	void genIsovalues(float dv){
 		float intercept = 0;
-		float vmin, vmax;
-		vmin = fields.get(0).getMin();
-		vmax = fields.get(0).getMax();
+		float vmin = 0;
+		float vmax = 0;
+		boolean first = true;
 		
+		Iterator<Field> it = fields.iterator();
+		while (it.hasNext()){
+			Field f = it.next();
+			if (f.dataIsAvailable()){
+				if (first){
+					vmin = f.getMin();
+					vmax = f.getMax();
+					first = false;
+				}
+				else{
+					vmin = min(vmin, f.getMin());
+					vmax = min(vmax, f.getMax());
+				}
+			}
+		}
+				
 		float iso = intercept + floor((vmin - intercept)/dv)*dv;
 		while (iso < vmax){
 			isovalues.add(iso);
@@ -32,9 +56,25 @@ class ScalarEncoding extends EncodingBase implements EncodesScalar{
 	}
 	
 	void genIsovalues(float intercept, float dv){
-		float vmin, vmax;
-		vmin = fields.get(0).getMin();
-		vmax = fields.get(0).getMax();
+		float vmin = 0;
+		float vmax = 0;
+		boolean first = true;
+		
+		Iterator<Field> it = fields.iterator();
+		while (it.hasNext()){
+			Field f = it.next();
+			if (f.dataIsAvailable()){
+				if (first){
+					vmin = f.getMin();
+					vmax = f.getMax();
+					first = false;
+				}
+				else{
+					vmin = min(vmin, f.getMin());
+					vmax = min(vmax, f.getMax());
+				}
+			}
+		}
 		
 		float iso = intercept + floor((vmin - intercept)/dv)*dv;
 		while (iso < vmax){

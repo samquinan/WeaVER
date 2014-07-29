@@ -56,6 +56,10 @@ class EnsembleSelect extends Selectable implements EncodesSP, EncodesCBP{
 	void releaseChild(){
 		child = null;
 	}
+	
+	String getID(){
+		return hgt + " " + var;
+	}
 		
   	void display() {
 		if (this.isVisible()) {

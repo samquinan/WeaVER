@@ -6,11 +6,18 @@ class WindTarget extends Container implements Target{
 	TimeControl timer;
 	String label;
 	
+	String err_out;
+	
 	WindTarget(float ix, float iy, float dx, float dy) {
 		super(ix, iy, dx, dy, 1, 1);
 		layer = null;
 		timer = null;
 		hover = false;
+		err_out = "";
+	}
+	
+	String getErrorMessage(){
+		return err_out;
 	}
 	
 	void setLabel(String s){
@@ -85,6 +92,7 @@ class WindTarget extends Container implements Target{
 	
 	
 	private void clear(){
+		err_out = "";
 		if (layer != null) layer.clear();
 	}
 	
@@ -92,10 +100,18 @@ class WindTarget extends Container implements Target{
 		int fhr = (timer == null) ? 0 : timer.getIndex();
 		//barbs
 		if (layer != null){
+			String id = entries.get(0).getID();
 			layer.clear();
 			EncodesVector s = (EncodesVector) entries.get(0);
 			if (s != null){
-				s.genBarbs(layer, fhr);
+				if (s.dataIsAvailable(fhr)){
+					err_out = "";
+					s.genBarbs(layer, fhr);
+				}
+				else{
+					if ("".equals(id.trim())) err_out = "barbs";
+					else err_out = id;
+				}
 			}
 		}
 	}

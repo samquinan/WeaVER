@@ -11,6 +11,8 @@ abstract class View {
 	int cornerx, cornery;
 	int tabw, tabh;
 	
+	String errmsg;
+		
 	View(int sx, int sy, float ds, int cx, int cy, int tw, int th, int nliby){
 		samplesx = sx;
 		samplesy = sy;
@@ -29,6 +31,8 @@ abstract class View {
 		
 		targets = new ArrayList<Container>();
 		
+		errmsg = "";
+						
 		map = null;
 	}
 	

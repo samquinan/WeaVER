@@ -9,6 +9,8 @@ class Field{
   PVector viewZero;
   float viewHeight, viewWidth;
   
+  boolean dataAvailable;
+  
   Field(String file, int dx, int dy, PVector offset, float maxh, float maxw){ // expects 1 value per line (!) no commas, no lat / long
 	
 	dimx = dx;
@@ -24,25 +26,35 @@ class Field{
     data = new FloatList();
     
     // read data from file
-    String[] lines = loadStrings(file);
-    boolean first = true;  
-    for(String line: lines)
-    {
-      float val = float(line.trim());
-      data.append(val);
-      //track max and min
-      if (first){
-        maxVal = val;
-        minVal = val;
-        first = false;
-      }
-      else{
-        maxVal = max(maxVal, val);
-        minVal = min(minVal, val);
-      }
-    }
+    String[] lines;
+	dataAvailable = true;
 	
-    if (data.size() != dimx * dimy){
+	try{
+		lines = loadStrings(file);
+		
+	    boolean first = true;  
+	    for(String line: lines)
+	    {
+	      float val = float(line.trim());
+	      data.append(val);
+	      //track max and min
+	      if (first){
+	        maxVal = val;
+	        minVal = val;
+	        first = false;
+	      }
+	      else{
+	        maxVal = max(maxVal, val);
+	        minVal = min(minVal, val);
+	      }
+	    }
+	}
+	catch(Exception e){
+		dataAvailable = false;
+        maxVal = 0;
+        minVal = 0;
+	}
+    if (dataAvailable && (data.size() != dimx * dimy)){
 		println("ERROR creating Field: number of entries in file does not match provided dimensions");
 	}
 	 
@@ -61,12 +73,32 @@ class Field{
     data = d;
 	maxVal = vmax;
 	minVal = vmin;
+		
+	dataAvailable = true;
 	
-    if (data.size() != dimx * dimy){
+    if (dataAvailable & (data.size() != dimx * dimy)){
 		println("ERROR creating Field: side of provided FloatList does not match provided dimensions");
 	}
 	
+  }
+  
+  Field(){
+  	dimx = 0;
+    dimy = 0;
+	viewZero = new PVector(0,0);
+	spacing = 0;
+    viewHeight = 0;
+    viewWidth = 0;
+	data = new FloatList();
+	maxVal = 0;
+	minVal = 0;
+	
+	dataAvailable = false;
 }
+    
+  boolean dataIsAvailable(){
+	  return dataAvailable;
+  }
   
   float getMin(){
     return minVal;
@@ -523,6 +555,8 @@ class Field{
 //   
   void genIsocontour(float iso, Contour2D contour){ 
 	
+	if (!dataAvailable) return;
+	
     float incrY = spacing; // regular spacing of points assuming regular grid
     float incrX = spacing; //      -- [TODO] not appropriate for lat/long -- maybe grid small enough that linear sufficient? 
       
@@ -683,6 +717,8 @@ class Field{
   
   void genFillNearestNeighbor(PImage img, ColorMapf cmap, boolean interpolate){
 	  
+	  if (!dataAvailable) return;
+	  
 	  int samplesx = dimx;
 	  int samplesy = dimy;
 	  
@@ -713,6 +749,8 @@ class Field{
   
   //HACK! TODO make so does proper alpha belending rather than binary overwrite on non-zero alpha
   void genFillNearestNeighbor(PImage img, ColorMapf cmap, boolean interpolate, boolean overwriteClear){
+	  
+	  if (!dataAvailable) return;
 	  
 	  int samplesx = dimx;
 	  int samplesy = dimy;
@@ -747,6 +785,8 @@ class Field{
   
   
   void genFillBilinear(PImage img, ColorMapf cmap, boolean interpolate){
+	  
+	  if (!dataAvailable) return;
 	  
 	  int samplesx = dimx;
 	  int samplesy = dimy;
@@ -795,6 +835,8 @@ class Field{
   //HACK! TODO make so does proper alpha belending rather than binary overwrite on non-zero alpha
   void genFillBilinear(PImage img, ColorMapf cmap, boolean interpolate, boolean overwriteClear){
 	  
+	  if (!dataAvailable) return;
+	  
 	  int samplesx = dimx;
 	  int samplesy = dimy;
 	  
@@ -840,8 +882,8 @@ class Field{
   }
   
 	void TEST_MultiplyProb(Field f){ // NOTE: is cannibalistic
-		if ((dimx != f.dimx) || (dimy != f.dimy) || (data.size() != (f.data).size())){
-			println("TEST_MultiplyProb FAILED: fields not compatible -- either dimensions off");
+		if (!dataAvailable || (dimx != f.dimx) || (dimy != f.dimy) || (data.size() != (f.data).size())){
+			println("TEST_MultiplyProb FAILED: fields not compatible -- dimensions off or data missing");
 			return;
 		}
 

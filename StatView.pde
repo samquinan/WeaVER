@@ -141,7 +141,16 @@ class StatView extends View {
 		
 		tracker.display();
 		timer.display();
-	
+		
+		//Error Message		
+	 	buildErrString();
+		if (!errmsg.isEmpty()){
+			textSize(12);
+			textAlign(CENTER, TOP);
+			fill(120, 12, 12);
+			text(errmsg, cornerx+(samplesx*spacing/2), cornery+(samplesy*spacing)+5);
+		}
+		
 		//frame rate for testing
 		textSize(10);
 		textAlign(RIGHT, BOTTOM);
@@ -152,6 +161,34 @@ class StatView extends View {
 		//selection tooltip
 		drawToolTip();
 	}
+	
+	protected void buildErrString(){
+		Set<String> err_set = new HashSet<String>();
+		String err;
+		
+		err = t_cmap.getErrorMessage();		
+		if (!err.isEmpty()) err_set.add(err);
+		
+		err = t_contour.getErrorMessage();
+		if (!err.isEmpty()) err_set.add(err);
+		
+		err = t_barbs.getErrorMessage();
+		if (!err.isEmpty()) err_set.add(err);
+		
+		
+		StringBuilder buff = new StringBuilder();
+		String sep = "";
+		for (String str : err_set) {
+		    buff.append(sep);
+		    buff.append(str);
+		    sep = ", ";
+		}
+		
+		String tmp = buff.toString();
+		if (tmp.isEmpty()) errmsg = tmp;
+		else errmsg = "Data for " + tmp + " unavailable";
+	}
+	
 	
 	protected void drawContours(ArrayList<Contour2D> contours, color select, float weight)
 	{
@@ -431,7 +468,7 @@ class StatView extends View {
 		w_encd.useInterpolation(false);
 		w_encd.setColorMap(wind);
 		w_encd.genIsovalues(0, 10);
-		library.add(new WindSelect(tabw,tabh, c700mb, w_encd, "500mb", deriv));
+		library.add(new WindSelect(tabw,tabh, c700mb, w_encd, "700mb", deriv));
 		
 		
 		
@@ -496,9 +533,12 @@ class StatView extends View {
 		dir = dataDir + "/StatFields/3hr_APCP/";
 		deriv = "max";
 		for (int k=0; k<=87; k+=3){
-			String fhr = String.format("%02d", k);
-			String file = dir + "sref.t" + run + "z.pgrb" + grid + ".f" + fhr + "."+ deriv + ".txt";
-			f = new Field(file, samplesx, samplesy, corner, samplesy*spacing, samplesx*spacing);
+			if (k >= 3){
+				String fhr = String.format("%02d", k);
+				String file = dir + "sref.t" + run + "z.pgrb" + grid + ".f" + fhr + "."+ deriv + ".txt";
+				f = new Field(file, samplesx, samplesy, corner, samplesy*spacing, samplesx*spacing);
+			}
+			else f = new Field();
 			fields.add(f);
 		}
 		

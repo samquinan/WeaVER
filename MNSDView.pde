@@ -78,7 +78,15 @@ class MNSDView extends View {
 		legend.display();
 		tracker.display();
 		timer.display();
-	
+		
+	 	buildErrString();
+		if (!errmsg.isEmpty()){
+			textSize(12);
+			textAlign(CENTER, TOP);
+			fill(120, 12, 12);
+			text(errmsg, cornerx+(samplesx*spacing/2), cornery+(samplesy*spacing)+5);
+		}
+		
 		//frame rate for testing
 		textSize(10);
 		textAlign(RIGHT, BOTTOM);
@@ -89,6 +97,28 @@ class MNSDView extends View {
 		//selection tooltip
 		drawToolTip();
 	}
+	
+	protected void buildErrString(){
+		// Set<String> err_set = new HashSet<String>();
+		String err;
+		
+		err = mnsd_target0.getErrorMessage();		
+		// if (!err.isEmpty()) err_set.add(err);
+		
+		// StringBuilder buff = new StringBuilder();
+		// String sep = "";
+		// for (String str : err_set) {
+		//     buff.append(sep);
+		//     buff.append(str);
+		//     sep = ", ";
+		// }
+		
+		// String tmp = buff.toString();
+		String tmp = err;
+		if (tmp.isEmpty()) errmsg = tmp;
+		else errmsg = "Data for " + tmp + " unavailable";
+	}
+	
 	
 	protected void drawContours(ArrayList<Contour2D> contours, color select, float weight)
 	{

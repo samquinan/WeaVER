@@ -37,6 +37,10 @@ class Selectable {
 		isClone  = false;
 	}
 	
+	String getID(){
+		return "";
+	}
+	
 	Selectable instantiate(){
 		Selectable s = new Selectable(x,y,w,h,color(r,g,b));
 		s.isClone = true;

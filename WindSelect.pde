@@ -34,6 +34,18 @@ class WindSelect extends Selectable implements EncodesScalar, EncodesVector{
 		statop = op;
 	}
 	
+	boolean dataIsAvailable(int idx){
+		return encd.dataIsAvailable(idx);
+	} 
+	
+	boolean dataIsAvailable(){
+		return encd.dataIsAvailable(0);
+	} 	
+	
+	String getID(){
+		return hgt + " " + var;
+	}
+			
   	void display() {
 		if (this.isVisible()) {
 			super.display();

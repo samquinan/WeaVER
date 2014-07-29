@@ -39,6 +39,18 @@ class MNSDSelect extends Selectable implements EncodesScalar{
 		statop = "MNSD";
 	}
 	
+	String getID(){
+		return hgt + " " + var;
+	}
+	
+	boolean dataIsAvailable(int idx){
+		return mean.dataIsAvailable(idx) && stddev.dataIsAvailable(idx);
+	} 
+	
+	boolean dataIsAvailable(){
+		return mean.dataIsAvailable(0) && stddev.dataIsAvailable(0);
+	}
+	
   	void display() {
 		if (this.isVisible()) {
 			super.display();

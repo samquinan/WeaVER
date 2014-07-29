@@ -8,16 +8,22 @@ class WindField extends Field {
 		super(file, dx, dy, offset, maxh, maxw);
 		//load direction in radians
 		data2 = new FloatList();
-	    String[] lines = loadStrings(file2);  
-	    for(String line: lines)
-	    {
-	      float val = float(line.trim());
-	      data2.append(val);
-	    } 	
+		try {
+		    String[] lines = loadStrings(file2);  
+		    for(String line: lines)
+		    {
+		      float val = float(line.trim());
+		      data2.append(val);
+		    }
+		}
+		catch (Exception ex){
+			dataAvailable = false;
+		}
 	}
 	
 	void generateBarbs(ArrayList<Barb> barbs, BarbGlyphList src){
 		if (src == null) return;
+		else if (!dataAvailable) return;
 		
 		int k = ceil(32/spacing);
 		int countx = floor(float(dimx)/k);

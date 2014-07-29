@@ -3,7 +3,7 @@ class DtrmView extends View {
 	
 	ScalarTarget t_cmap, t_contour;
 	WindTarget t_barbs;
-	
+		
 	PImage fill;
 	ArrayList<Contour2D> contours;
 	int member_index;
@@ -29,7 +29,7 @@ class DtrmView extends View {
 		
 			//Barbs
 		barbs = new ArrayList<Barb>();
-		
+				
 		// Initialize Targets
 		t_barbs = new WindTarget(cornerx+10+(2*(tabw+4)),cornery-tabh-10,tabw,tabh);
 		t_barbs.linkBarbs(barbs);
@@ -79,7 +79,7 @@ class DtrmView extends View {
 			fill(210);//fill(247,241,230);
 			shape(map, cornerx+(39*spacing), cornery+(35*spacing), 123*spacing, 75*spacing);
 		}
-	
+		
 		// fill
 		if(t_barbs.isHovering() || t_contour.isHovering()) tint(255, 200);
 		image(fill, cornerx, cornery);
@@ -141,6 +141,15 @@ class DtrmView extends View {
 		
 		tracker.display();
 		timer.display();
+		
+		//Error Message		
+	 	buildErrString();
+		if (!errmsg.isEmpty()){
+			textSize(12);
+			textAlign(CENTER, TOP);
+			fill(120, 12, 12);
+			text(errmsg, cornerx+(samplesx*spacing/2), cornery+(samplesy*spacing)+5);
+		}
 	
 		//frame rate for testing
 		textSize(10);
@@ -151,6 +160,33 @@ class DtrmView extends View {
 		
 		//selection tooltip
 		drawToolTip();
+	}
+	
+	protected void buildErrString(){
+		Set<String> err_set = new HashSet<String>();
+		String err;
+		
+		err = t_cmap.getErrorMessage();		
+		if (!err.isEmpty()) err_set.add(err);
+		
+		err = t_contour.getErrorMessage();
+		if (!err.isEmpty()) err_set.add(err);
+		
+		err = t_barbs.getErrorMessage();
+		if (!err.isEmpty()) err_set.add(err);
+		
+		
+		StringBuilder buff = new StringBuilder();
+		String sep = "";
+		for (String str : err_set) {
+		    buff.append(sep);
+		    buff.append(str);
+		    sep = ", ";
+		}
+		
+		String tmp = buff.toString();
+		if (tmp.isEmpty()) errmsg = tmp;
+		else errmsg = "Data for " + tmp + " unavailable";
 	}
 	
 	protected void drawContours(ArrayList<Contour2D> contours, color select, float weight)
@@ -457,11 +493,15 @@ class DtrmView extends View {
 		dir = dataDir + "/EnsembleFields/3hr_APCP/";
 		deriv = "";
 		for (int k=0; k<=87; k+=3){
-			String fhr = String.format("%02d", k);
-			String file = dir + "sref_"+ model +".t" + run + "z.pgrb" + grid + "." + p + ".f" + fhr + ".txt";
-			f = new Field(file, samplesx, samplesy, corner, samplesy*spacing, samplesx*spacing);
+			if (k >= 3){
+				String fhr = String.format("%02d", k);
+				String file = dir + "sref_"+ model +".t" + run + "z.pgrb" + grid + "." + p + ".f" + fhr + ".txt";
+				f = new Field(file, samplesx, samplesy, corner, samplesy*spacing, samplesx*spacing);
+			}
+			else f = new Field();
 			fields.add(f);
 		}
+		
 		
 		encd = new ScalarEncoding(fields);
 		encd.useBilinear(true);

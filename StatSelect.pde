@@ -34,6 +34,18 @@ class StatSelect extends Selectable implements EncodesScalar{
 		statop = op;
 	}
 	
+	String getID(){
+		return hgt + " " + var;
+	}
+	
+	boolean dataIsAvailable(int idx){
+		return statfield.dataIsAvailable(idx);
+	} 
+	
+	boolean dataIsAvailable(){
+		return statfield.dataIsAvailable(0);
+	}
+			
   	void display() {
 		if (this.isVisible()) {
 			super.display();

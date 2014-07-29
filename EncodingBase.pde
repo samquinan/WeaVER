@@ -2,7 +2,7 @@ abstract class EncodingBase {
 	ColorMapf cmap;
 	ArrayList<Float> isovalues;	
 	boolean bilinear;
-	boolean interpolate;
+	boolean interpolate;	
 	
 	protected EncodingBase(){		
 		cmap = new ColorMapf();		
@@ -11,7 +11,7 @@ abstract class EncodingBase {
 		bilinear = true;
 		interpolate = false;
 	}
-		
+			
 	void useBilinear(boolean b){
 		bilinear = b;
 	}
