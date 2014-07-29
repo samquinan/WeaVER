@@ -200,8 +200,8 @@ class MNSDView extends View {
 		PVector corner = new PVector(cornerx, cornery);
 		
 		color c700mb, c500mb;
-		c500mb = color(83,30,175);
-		c700mb = color(0,116,162);
+		c500mb = color(90, 54, 153);
+		c700mb = color(0, 116, 162);
 	
 		// 700mb tmp
 		ArrayList<Field> fields = new ArrayList<Field>();

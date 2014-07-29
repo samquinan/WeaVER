@@ -365,9 +365,9 @@ class StatView extends View {
 		colorMode(RGB,255);
 		
 		color c700mb, c500mb, cSurface;
-		c500mb = color(83,30,175);
-		c700mb = color(0,116,162);
-		cSurface = color(114,198,46);
+		c500mb = color(90, 54, 153);
+		c700mb = color(0, 116, 162);
+		cSurface = color(86, 149, 36);
 		
 		Field f;
 		ScalarEncoding encd;
