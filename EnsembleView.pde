@@ -195,7 +195,7 @@ class EnsembleView extends View {
 			strokeWeight(2);
 			stroke(255,255,255,255);//stroke(85,46,27,255);
 			fill(210);//fill(247,241,230);
-			shape(map, cornerx+(39*spacing), cornery+(35*spacing), 123*spacing, 75*spacing);
+			shape(map, cornerx+(38*spacing), cornery+(34*spacing), 120*spacing, 74*spacing);
 		}
 		
 		// TODO COLOR FILL or CONDENSE ^|v (?)
@@ -205,7 +205,7 @@ class EnsembleView extends View {
 			strokeWeight(2);
 			stroke(255,255,255,255);//stroke(85,46,27,255);
 			noFill();
-			shape(map, cornerx+(39*spacing), cornery+(35*spacing), 123*spacing, 75*spacing);
+			shape(map, cornerx+(38*spacing), cornery+(34*spacing), 120*spacing, 74*spacing);
 		}	
 	
 		if (cbp_switch.isOn())

@@ -881,7 +881,7 @@ class Field{
 	  img.updatePixels();
   }
   
-	void TEST_MultiplyProb(Field f){ // NOTE: is cannibalistic
+	void test_multiplyProb(Field f){ // NOTE: is cannibalistic
 		if (!dataAvailable || (dimx != f.dimx) || (dimy != f.dimy) || (data.size() != (f.data).size())){
 			println("TEST_MultiplyProb FAILED: fields not compatible -- dimensions off or data missing");
 			return;

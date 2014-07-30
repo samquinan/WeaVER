@@ -49,12 +49,24 @@ class ConditionSelect extends Selectable implements HandlesConditions{
 		thereCanBeOnlyOne = false;
 	}
 	
+	boolean dataIsAvailable(int idx){
+		return conditionSeries.get(idx).dataIsAvailable();
+	} 
+	
+	boolean dataIsAvailable(){
+		return conditionSeries.get(0).dataIsAvailable();
+	}
+	
 	void setSingleCopy(boolean b){
 		thereCanBeOnlyOne = b;
 	}
 	
 	void releaseChild(){
 		child = null;
+	}
+	
+	String getID(){
+		return hgt + " " + var;
 	}
 		
   	void display() {
@@ -88,7 +100,7 @@ class ConditionSelect extends Selectable implements HandlesConditions{
 			fill(0, a);
 			text(var,x+15,y+h/2-2);
 		
-			textSize(10);
+			textSize(9);
 			fill(0, a);
 			textAlign(RIGHT, TOP);
 			text(val, x+w-3, y);

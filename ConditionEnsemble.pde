@@ -3,6 +3,7 @@ class ConditionEnsemble {
 	private int dimx;
 	private int dimy;
 	private int memberCount;
+	boolean dataAvailable;
 	
 	// needed in order to generate probability field 
     PVector viewZero;
@@ -15,6 +16,7 @@ class ConditionEnsemble {
 			dimy = 0;
 			data = new IntList();
 			memberCount = 0;
+			dataAvailable = false;
 			
 			viewZero = offset;
 			maxViewHeight = maxh;
@@ -30,16 +32,24 @@ class ConditionEnsemble {
 			maxViewHeight = maxh;
 			maxViewWidth = maxw;
 			
-		    // read data from file
-		    String[] lines = loadStrings(file);
-			for(String line: lines)
-		    {
-		      int val = int(line.trim());
-		      data.append(val);
-		    } 
+		    String[] lines;
+			dataAvailable = true;
+			try{
+			    // read data from file
+			    lines = loadStrings(file);
+				for(String line: lines)
+			    {
+			      int val = int(line.trim());
+			      data.append(val);
+			    } 
+			}
+			catch(Exception e){
+				dataAvailable = false;
+			}
 			
 		    if (data.size() != dimx * dimy){
 				println("ERROR creating ConditionEnsemble: number of entries in file does not match provided dimensions");
+				dataAvailable = false;
 			}
 		}
 	  
@@ -52,13 +62,14 @@ class ConditionEnsemble {
 			dimy = 0;
 			data = new IntList();
 			memberCount = 0;
+			dataAvailable = false;
 			
 			viewZero = offset;
 			maxViewHeight = maxh;
 			maxViewWidth = maxw;
 		}
 		else {
-			
+			dataAvailable = true;
 			dimx = dx;
 		    dimy = dy;
 		    data = d;
@@ -70,12 +81,28 @@ class ConditionEnsemble {
 		
 		    if (data.size() != dimx * dimy){
 				println("ERROR creating ConditionEnsemble: number of entries in provided IntList does not match provided dimensions");
+				dataAvailable = false;
 			}
 		}
 	}
 	
+	ConditionEnsemble(){
+		dimx = 0;
+		dimy = 0;
+		data = new IntList();
+		memberCount = 0;
+		dataAvailable = false;
+		viewZero = new PVector(0,0);;
+		maxViewHeight = 0;
+		maxViewWidth = 0;
+	}
+	
 	ConditionEnsemble getCopy(){
 		return (new ConditionEnsemble(data.copy(), dimx, dimy, memberCount, viewZero, maxViewHeight, maxViewWidth));
+	}
+	
+	boolean dataIsAvailable(){	  
+		return dataAvailable;  
 	}
 	
 	void makeJointWith(ConditionEnsemble condition){ // NOTE: is cannibalistic

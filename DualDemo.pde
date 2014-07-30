@@ -1,4 +1,7 @@
 import java.util.Iterator;
+import java.util.Set;
+import java.util.HashSet;
+import java.lang.StringBuilder;
 
 PFont plotFont;
 
@@ -105,19 +108,19 @@ void mousePressed(){
 	
 	switch (mode){
 		case 0:
-			view_0.mousePress(mouseX, mouseY); 
+			view_0.mousePress(mouseX, mouseY);
 			break;
 		case 1:
-			view_1.mousePress(mouseX, mouseY); 
+			view_1.mousePress(mouseX, mouseY);
 			break;
 		case 2:
-			view_2.mousePress(mouseX, mouseY); 
+			view_2.mousePress(mouseX, mouseY);
 			break;
 		case 3:
-			view_3.mousePress(mouseX, mouseY); 
+			view_3.mousePress(mouseX, mouseY);
 			break;
 		case 4:
-			view_4.mousePress(mouseX, mouseY); 
+			view_4.mousePress(mouseX, mouseY);
 			break;		
 		default:
 	}
@@ -129,19 +132,19 @@ void mouseMoved(){
 	
 	switch (mode){
 		case 0:
-			view_0.mouseMove(mouseX, mouseY); 
+			view_0.mouseMove(mouseX, mouseY);
 			break;	
 		case 1:
-			view_1.mouseMove(mouseX, mouseY); 
+			view_1.mouseMove(mouseX, mouseY);
 			break;
 		case 2:
-			view_2.mouseMove(mouseX, mouseY); 
+			view_2.mouseMove(mouseX, mouseY);
 			break;
 		case 3:
-			view_3.mouseMove(mouseX, mouseY); 
+			view_3.mouseMove(mouseX, mouseY);
 			break;
 		case 4:
-			view_4.mouseMove(mouseX, mouseY); 
+			view_4.mouseMove(mouseX, mouseY);
 			break;
 		default:
 	}
@@ -153,19 +156,19 @@ void mouseDragged(){
 	
 	switch (mode){
 		case 0:
-			view_0.mouseDrag(mouseX, mouseY); 
+			view_0.mouseDrag(mouseX, mouseY);
 			break;	
 		case 1:
-			view_1.mouseDrag(mouseX, mouseY); 
+			view_1.mouseDrag(mouseX, mouseY);
 			break;
 		case 2:
-			view_2.mouseDrag(mouseX, mouseY); 
+			view_2.mouseDrag(mouseX, mouseY);
 			break;
 		case 3:
-			view_3.mouseDrag(mouseX, mouseY); 
+			view_3.mouseDrag(mouseX, mouseY);
 			break;
 		case 4:
-			view_4.mouseDrag(mouseX, mouseY); 
+			view_4.mouseDrag(mouseX, mouseY);
 			break;		
 		default:
 	}
@@ -179,19 +182,19 @@ void mouseReleased() {
 		if (cur != mode){
 			switch (mode){
 				case 0:
-					view_0.haltAnim(); 
+					view_0.haltAnim();
 					break;	
 				case 1:
-					view_1.haltAnim(); 
+					view_1.haltAnim();
 					break;
 				case 2:
-					view_2.haltAnim(); 
+					view_2.haltAnim();
 					break;
 				case 3:
-					view_3.haltAnim(); 
+					view_3.haltAnim();
 					break;
 				case 4:
-					view_4.haltAnim(); 
+					view_4.haltAnim();
 					break;							
 				default:
 			}
@@ -203,19 +206,19 @@ void mouseReleased() {
 	
 	switch (mode){
 		case 0:
-			view_0.mouseRelease(); 
+			view_0.mouseRelease();
 			break;	
 		case 1:
-			view_1.mouseRelease(); 
+			view_1.mouseRelease();
 			break;
 		case 2:
-			view_2.mouseRelease(); 
+			view_2.mouseRelease();
 			break;
 		case 3:
-			view_3.mouseRelease(); 
+			view_3.mouseRelease();
 			break;
 		case 4:
-			view_4.mouseRelease(); 
+			view_4.mouseRelease();
 			break;
 		default:
 	}
@@ -224,19 +227,19 @@ void mouseReleased() {
 void keyPressed() {
 	switch (mode){
 		case 0:
-			view_0.keyPress(key, keyCode); 
+			view_0.keyPress(key, keyCode);
 			break;	
 		case 1:
-			view_1.keyPress(key, keyCode); 
+			view_1.keyPress(key, keyCode);
 			break;
 		case 2:
-			view_2.keyPress(key, keyCode); 
+			view_2.keyPress(key, keyCode);
 			break;
 		case 3:
-			view_3.keyPress(key, keyCode); 
+			view_3.keyPress(key, keyCode);
 			break;
 		case 4:
-			view_4.keyPress(key, keyCode); 
+			view_4.keyPress(key, keyCode);
 			break;
 		default:
 	}
@@ -268,19 +271,19 @@ class ViewLoader implements Runnable{
 	public DtrmView getDtrmView(){
 		return view_0;
 	}
-	
+
 	public StatView getStatView(){
 		return view_1;
 	}
-	
+
 	public MNSDView getMNSDView(){
 		return view_2;
 	}
-	
+
 	public EnsembleView getEnsembleView(){
 		return view_3;
 	}
-	
+
 	public ProbabilityView getProbabilityView(){
 		return view_4;
 	}
@@ -310,32 +313,32 @@ class ViewLoader implements Runnable{
 		//		-- Need to determine what prefs we want to give users
 		//TODO PROPER PROJECTION (!)
 		String dir = "./datasets";
-		int run = 9;
+		int run = 15;
 		
-		// generate view_0		
+		// generate view_0
 		view_0 = new DtrmView(samplesx, samplesy, spacing, cornerx, cornery, tabw, tabh, 32);
 		view_0.setMap(map);
 		view_0.linkGlyphs(glyphs);
 		view_0.loadData(dir, run);
-		
+
 		// generate view_1
 		view_1 = new StatView(samplesx, samplesy, spacing, cornerx, cornery, tabw, tabh, 32);
 		view_1.setMap(map);
 		view_1.linkGlyphs(glyphs);
 		view_1.loadData(dir, run);
-		
+
 		// generate view_2
 		view_2 = new MNSDView(samplesx, samplesy, spacing, cornerx, cornery, tabw, tabh, 12);
 		view_2.setMap(map);
 		view_2.loadData(dir, run);
-		
+
 		// generate view_3
 		view_3 = new EnsembleView(samplesx, samplesy, spacing, cornerx, cornery, tabw, tabh, 12);
 		view_3.setMap(map);
 		view_3.loadData(dir, run);
-		
+
 		// generate view_4
-		view_4 = new ProbabilityView(samplesx, samplesy, spacing, cornerx, cornery, tabw, tabh, 14);
+		view_4 = new ProbabilityView(samplesx, samplesy, spacing, cornerx, cornery, tabw, tabh, 16);
 		view_4.setMap(map);
 		view_4.loadData(dir, run);
 		

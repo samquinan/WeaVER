@@ -1,7 +1,7 @@
 class ConditionTarget extends ScalarTargetBase {
 	
-	ArrayList<Float> isovalues;	
-	ColorMapf cmap;
+	ArrayList<Float> isovalues, iso_alt;	
+	ColorMapf cmap, cmap_alt;
 	boolean bilinear;
 	boolean interpolate;
 	boolean independent;
@@ -11,8 +11,11 @@ class ConditionTarget extends ScalarTargetBase {
 		cmap = new ColorMapf();
 		cmap.add(0.0, color(0, 0, 0, 0));//TODO hardcoding max min values bad form
 		cmap.add(100.0, color(0, 0, 0, 0));
+		
+		cmap_alt = cmap;
 				
 		isovalues = new ArrayList<Float>();
+		iso_alt = new ArrayList<Float>();
 		
 		bilinear = true;
 		interpolate = false;
@@ -21,11 +24,18 @@ class ConditionTarget extends ScalarTargetBase {
 	
 	ConditionTarget(float ix, float iy, float dx, float dy, int c, int r) {
 		super(ix, iy, dx, dy, c, r);
-		cmap = new ColorMapf();		
+		cmap = new ColorMapf();
+		cmap.add(0.0, color(0, 0, 0, 0));//TODO hardcoding max min values bad form
+		cmap.add(100.0, color(0, 0, 0, 0));
+				
+		cmap_alt = cmap;
+		
 		isovalues = new ArrayList<Float>();
+		iso_alt = new ArrayList<Float>();
 		
 		bilinear = true;
-		interpolate = false;		
+		interpolate = false;
+		independent = false;		
 	}
 	
 	void treatConditionsAsIndependent(boolean b){
@@ -40,26 +50,52 @@ class ConditionTarget extends ScalarTargetBase {
 		interpolate = b;
 	}
 	
-	ColorMapf getColorMap(){
-		return cmap;
-	}
+	// ColorMapf getColorMap(){
+	// 	return cmap;
+	// }
 		
 	void setColorMap(ColorMapf c){
 		cmap = c;
+		cmap_alt = cmap;
+	}
+	
+	void setColorMap(ColorMapf c, ColorMapf alt){
+		cmap = c;
+		cmap_alt = alt;
 	}
 	
 	void addIsovalue(float iso){
 		isovalues.add(iso);
+	}
+	                                                                
+	void addIsovalue(float iso, boolean alt){                       
+		if (alt) iso_alt.add(iso);                                      
+		else isovalues.add(iso);
 	}
 	
 	void addIsovalues(ArrayList<Float> list){
 		isovalues.addAll(list);
 	}
 	
+	void addIsovalues(ArrayList<Float> list, boolean alt){
+		if (alt) iso_alt.addAll(list);
+		else isovalues.addAll(list);
+	}
+	
+	
 	void genIsovalues(float intercept, float dv, float vmin, float vmax){
 		float iso = intercept + floor((vmin - intercept)/dv)*dv;
 		while (iso < vmax){
 			isovalues.add(iso);
+			iso += dv;
+		}	
+	}
+	
+	void genIsovalues(float intercept, float dv, float vmin, float vmax, boolean alt){
+		float iso = intercept + floor((vmin - intercept)/dv)*dv;
+		while (iso < vmax){
+			if (alt) iso_alt.add(iso);
+			else isovalues.add(iso);
 			iso += dv;
 		}	
 	}
@@ -72,6 +108,17 @@ class ConditionTarget extends ScalarTargetBase {
 			iso += dv;
 		}	
 	}
+	
+	void genIsovalues(float dv, float vmin, float vmax, boolean alt){
+		float intercept = 0;
+		float iso = intercept + floor((vmin - intercept)/dv)*dv;
+		while (iso < vmax){
+			if (alt) iso_alt.add(iso);
+			else isovalues.add(iso);
+			iso += dv;
+		}	
+	}
+	
 	
 	void add(Selectable s){
 		if (s instanceof HandlesConditions){
@@ -129,49 +176,91 @@ class ConditionTarget extends ScalarTargetBase {
 	private Field generateProbabilityField(){ //does not treat as independent
 		int fhr = (timer == null) ? 0 : timer.getIndex();
 		Iterator<Selectable> it = entries.iterator();
-		if (it.hasNext()){ // should always pass b/c never called without at least 1 entry
-			HandlesConditions select = (HandlesConditions) it.next();
+		Set<String> err_set = new HashSet<String>();
+		ConditionEnsemble build = null;
+		boolean first = true;
+		while (it.hasNext()){
+			Selectable s = it.next();
+			String id = s.getID();
+			HandlesConditions select = (HandlesConditions) s;
 			if (select != null){
-				ConditionEnsemble build = select.getConditionCopy(fhr);
-				while (it.hasNext()){
-					select = (HandlesConditions) it.next();
-					if (select != null) build.makeJointWith(select.getCondition(fhr));
+				if (select.dataIsAvailable(fhr)){
+					if (first){
+						build = select.getConditionCopy(fhr);
+						first = false;
+					}
+					else if (build != null) build.makeJointWith(select.getCondition(fhr));
 				}
-				return build.genProbabilityField();
+				else{
+					err_set.add(id);
+					build = null;
+				}
 			}
 		}
-		return null;
+		
+		StringBuilder buff = new StringBuilder();
+		String sep = "";
+		for (String str : err_set) {
+		    buff.append(sep);
+		    buff.append(str);
+		    sep = ", ";
+		}
+		err_out = buff.toString();
+		
+		if (build != null) return build.genProbabilityField();
+		return null;		
 	}
 	
 	private Field generateProbabilityField(boolean treatIndependent){
 		int fhr = (timer == null) ? 0 : timer.getIndex();
 		Iterator<Selectable> it = entries.iterator();
-		if (it.hasNext()){ // should always pass b/c never called without at least 1 entry
-			HandlesConditions select = (HandlesConditions) it.next();
+		Set<String> err_set = new HashSet<String>();
+		ConditionEnsemble build = null;
+		Field build2 = null;
+		boolean first = true;
+		while (it.hasNext()){
+			Selectable s = it.next();
+			String id = s.getID();
+			HandlesConditions select = (HandlesConditions) s;
 			if (select != null){
-				if (treatIndependent){
-					Field build = (select.getCondition(fhr)).genProbabilityField();
-					while (it.hasNext()){
-						select = (HandlesConditions) it.next();
-						if (select != null) build.TEST_MultiplyProb((select.getCondition(fhr)).genProbabilityField());
+				if (select.dataIsAvailable(fhr)){
+					if (first){
+						if (treatIndependent) build2 = (select.getCondition(fhr)).genProbabilityField();
+						else build = select.getConditionCopy(fhr);
+						first = false;
 					}
-					return build;
+					else if (build != null) build.makeJointWith(select.getCondition(fhr));
+					else if (build2 != null) build2.test_multiplyProb((select.getCondition(fhr)).genProbabilityField());
 				}
-				else {
-					ConditionEnsemble build = select.getConditionCopy(fhr);
-					while (it.hasNext()){
-						select = (HandlesConditions) it.next();
-						if (select != null) build.makeJointWith(select.getCondition(fhr));
-					}
-					return build.genProbabilityField();
-				}				
+				else{
+					err_set.add(id);
+					build = null;
+					build2 = null;
+					first = false;
+				}
 			}
 		}
+		
+		StringBuilder buff = new StringBuilder();
+		String sep = "";
+		for (String str : err_set) {
+		    buff.append(sep);
+		    buff.append(str);
+		    sep = ", ";
+		}
+		err_out = buff.toString();
+		if (build != null) return build.genProbabilityField();
+		else if (build2 != null) return build2;
 		return null;
 	}
 	
 
 	private void clearRenderContext(){
+		err_out = "";
+		clearDrawables();
+	}
+	
+	private void clearDrawables(){
 		if (layer0 != null){
 			//clear image
 			layer0.loadPixels();
@@ -189,26 +278,29 @@ class ConditionTarget extends ScalarTargetBase {
 	private void noCacheUpdate(){
 		Field current = generateProbabilityField(independent);
 		if (current != null){
+			boolean goAlt = entries.size()>1;
 			//fill
 			if (layer0 != null){
+				ColorMapf cmap_cur = goAlt ? cmap_alt : cmap;
 				//gen fill
 				if (bilinear){
-					current.genFillBilinear(layer0, cmap, interpolate);
+					current.genFillBilinear(layer0, cmap_cur, interpolate);
 				}
 				else{
-					current.genFillNearestNeighbor(layer0, cmap, interpolate);
+					current.genFillNearestNeighbor(layer0, cmap_cur, interpolate);
 				}
 				//update legend		
 				if (legend != null){
-					legend.setColorMap(cmap);
+					legend.setColorMap(cmap_cur);
 				}
 			}
 			//contours
 			if (layer1 != null){
 				layer1.clear();
 				//gen contours
+				ArrayList<Float> iso_cur = (goAlt && (iso_alt.size() > 0)) ? iso_alt : isovalues;
 				Contour2D c;
-				for (Float iso: isovalues){
+				for (Float iso: iso_cur){
 					  c = new Contour2D(2*current.dimy);
 					  current.genIsocontour(iso, c);
 					  c.setID(Float.toString(iso)); 
@@ -219,6 +311,9 @@ class ConditionTarget extends ScalarTargetBase {
 					qtree.clear();
 				}
 			}
+		}
+		else {
+			clearDrawables();
 		}		
 	}
 	
