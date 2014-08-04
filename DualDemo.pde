@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.lang.StringBuilder;
 
 PFont plotFont;
+PFont errFont;
 
 MenuBar menu;
 int mode;
@@ -26,6 +27,7 @@ void setup() {
 	
 	// specify font
   	plotFont = createFont("Georgia", 12);
+	errFont = createFont("Georgia-Bold", 14);
   	textFont(plotFont);
   	
 	// menu bar
@@ -40,6 +42,7 @@ void setup() {
 	populated = false;
 	triggered = false;
 	loader = new ViewLoader();
+	loader.setFonts(plotFont, errFont);
 	loadThread = new Thread(loader);
 	loadThread.start();
 	
@@ -248,6 +251,9 @@ void keyPressed() {
 
 class ViewLoader implements Runnable{
 	
+	private PFont regular;
+	private PFont error;
+	
 	private DtrmView view_0;
 	private StatView view_1;
 	private MNSDView view_2;
@@ -256,6 +262,8 @@ class ViewLoader implements Runnable{
 	private boolean finished;
 	
 	public ViewLoader(){
+		regular = null;
+		error = null;
 		view_0 = null;
 		view_1 = null;
 		view_2 = null;
@@ -263,6 +271,12 @@ class ViewLoader implements Runnable{
 		view_4 = null;
 		finished = false;
 	}
+	
+	public void setFonts(PFont r, PFont e){
+		regular = r;
+		error = e;
+	}
+	
 	
 	public boolean isComplete(){
 		return finished;
@@ -317,28 +331,33 @@ class ViewLoader implements Runnable{
 		
 		// generate view_0
 		view_0 = new DtrmView(samplesx, samplesy, spacing, cornerx, cornery, tabw, tabh, 32);
+		view_0.setFonts(regular, error);
 		view_0.setMap(map);
 		view_0.linkGlyphs(glyphs);
 		view_0.loadData(dir, run);
 
 		// generate view_1
 		view_1 = new StatView(samplesx, samplesy, spacing, cornerx, cornery, tabw, tabh, 32);
+		view_1.setFonts(regular, error);
 		view_1.setMap(map);
 		view_1.linkGlyphs(glyphs);
 		view_1.loadData(dir, run);
 
 		// generate view_2
 		view_2 = new MNSDView(samplesx, samplesy, spacing, cornerx, cornery, tabw, tabh, 12);
+		view_2.setFonts(regular, error);
 		view_2.setMap(map);
 		view_2.loadData(dir, run);
 
 		// generate view_3
 		view_3 = new EnsembleView(samplesx, samplesy, spacing, cornerx, cornery, tabw, tabh, 12);
+		view_3.setFonts(regular, error);
 		view_3.setMap(map);
 		view_3.loadData(dir, run);
 
 		// generate view_4
 		view_4 = new ProbabilityView(samplesx, samplesy, spacing, cornerx, cornery, tabw, tabh, 16);
+		view_4.setFonts(regular, error);
 		view_4.setMap(map);
 		view_4.loadData(dir, run);
 		

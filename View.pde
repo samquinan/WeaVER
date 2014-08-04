@@ -1,4 +1,5 @@
 abstract class View {
+	PFont fReg, fErr;
 	Library library;
 	StateTracker tracker;
 	TimeControl timer;
@@ -32,9 +33,17 @@ abstract class View {
 		targets = new ArrayList<Container>();
 		
 		errmsg = "";
+		fReg = null;
+		fErr = null;
 						
 		map = null;
 	}
+	
+	void setFonts(PFont r, PFont e){
+		fReg = r;
+		fErr = e;
+	}   
+	
 	
 	void setMap(PShape s){
 		map = s;

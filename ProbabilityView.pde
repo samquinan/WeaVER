@@ -110,13 +110,21 @@ class ProbabilityView extends View {
 		tracker.display();
 		timer.display();
 		joint_switch.display();
-		
+				
 		errmsg = target0.getErrorMessage();
 		if (!errmsg.isEmpty()){
-			textSize(12);
+			boolean fontsAvailable = (fReg != null) && (fErr != null);
+			if (fontsAvailable){
+				textFont(fErr);
+				textSize(14);
+			}
+			else textSize(12);
 			textAlign(CENTER, TOP);
 			fill(120, 12, 12);
 			text("Data for " + errmsg + " unavailable", cornerx+(samplesx*spacing/2), cornery+(samplesy*spacing)+5);
+			if (fontsAvailable){
+				textFont(fReg);
+			}
 		}
 		
 		//frame rate for testing

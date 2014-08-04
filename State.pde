@@ -75,6 +75,12 @@ class State {
 						(es.parent).child = null;
 					}
 				}
+				else if (s instanceof ConditionSelect){
+					ConditionSelect es = (ConditionSelect) s;
+					if (es != null){
+						(es.parent).child = null;
+					}
+				}
 			}
 		}
 	}
@@ -87,6 +93,12 @@ class State {
 				for(Selectable s : tmp){
 					if (s instanceof EnsembleSelect){
 						EnsembleSelect es = (EnsembleSelect) s;
+						if (es != null){
+							(es.parent).child = es;
+						}
+					}
+					else if (s instanceof ConditionSelect){
+						ConditionSelect es = (ConditionSelect) s;
 						if (es != null){
 							(es.parent).child = es;
 						}

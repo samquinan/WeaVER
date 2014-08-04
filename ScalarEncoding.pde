@@ -43,7 +43,7 @@ class ScalarEncoding extends EncodingBase implements EncodesScalar{
 				}
 				else{
 					vmin = min(vmin, f.getMin());
-					vmax = min(vmax, f.getMax());
+					vmax = max(vmax, f.getMax());
 				}
 			}
 		}
@@ -71,7 +71,7 @@ class ScalarEncoding extends EncodingBase implements EncodesScalar{
 				}
 				else{
 					vmin = min(vmin, f.getMin());
-					vmax = min(vmax, f.getMax());
+					vmax = max(vmax, f.getMax());
 				}
 			}
 		}

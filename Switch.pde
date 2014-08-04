@@ -103,15 +103,17 @@ class Switch implements Button{
 		
 		noStroke();
 		fill(cBase);
-		rect(x, y, 2*w, h);
+		rect(x+1, y+2, 2*(w-1), h-4);
 						
 		fill((rollover ? cHighlight : cTab));
 		rect(curx,cury,(w-1),(h-2));
 		
+		color cLabelLight = (100 << 24) | (cLabel & 0x00FFFFFF);
 		textSize(textsize);
-		fill(cLabel);
+		fill((on ? cLabelLight : cLabel));
 		textAlign(RIGHT, CENTER);
 		text(label1, x-3, y+(h/2)-2);
+		fill((on ? cLabel : cLabelLight));
 		textAlign(LEFT, CENTER);
 		text(label2, x+2*w+3, y+(h/2)-2);
 	}

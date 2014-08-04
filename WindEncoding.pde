@@ -59,7 +59,7 @@ class WindEncoding extends EncodingBase implements EncodesScalar, EncodesVector{
 				}
 				else{
 					vmin = min(vmin, f.getMin());
-					vmax = min(vmax, f.getMax());
+					vmax = max(vmax, f.getMax());
 				}
 			}
 		}
@@ -87,11 +87,11 @@ class WindEncoding extends EncodingBase implements EncodesScalar, EncodesVector{
 				}
 				else{
 					vmin = min(vmin, f.getMin());
-					vmax = min(vmax, f.getMax());
+					vmax = max(vmax, f.getMax());
 				}
 			}
 		}
-		
+				
 		float iso = intercept + floor((vmin - intercept)/dv)*dv;
 		while (iso < vmax){
 			isovalues.add(iso);

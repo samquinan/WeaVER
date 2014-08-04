@@ -63,6 +63,17 @@ class TimeControl {
 	
 	void setAnimating(boolean b){
 		loop.setState(b);
+		if(loop.isOn()){
+			slider.setActive(false);
+			bFwd.setActive(false);
+			bBack.setActive(false);
+			tPrev = millis();
+			tSum = 0;
+		}
+		else{
+			slider.setActive(true);
+			makeConsistent();
+		}
 	}
 	
 	boolean update(){

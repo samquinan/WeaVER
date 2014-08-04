@@ -145,10 +145,18 @@ class DtrmView extends View {
 		//Error Message		
 	 	buildErrString();
 		if (!errmsg.isEmpty()){
-			textSize(12);
+			boolean fontsAvailable = (fReg != null) && (fErr != null);
+			if (fontsAvailable){
+				textFont(fErr);
+				textSize(14);
+			}
+			else textSize(12);
 			textAlign(CENTER, TOP);
 			fill(120, 12, 12);
 			text(errmsg, cornerx+(samplesx*spacing/2), cornery+(samplesy*spacing)+5);
+			if (fontsAvailable){
+				textFont(fReg);
+			}
 		}
 	
 		//frame rate for testing
