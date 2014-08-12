@@ -1,6 +1,8 @@
 import java.util.Iterator;
 import java.util.Set;
+import java.util.List;
 import java.util.HashSet;
+import java.util.Arrays;
 import java.lang.StringBuilder;
 
 PFont plotFont;

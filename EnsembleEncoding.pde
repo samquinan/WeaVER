@@ -4,7 +4,7 @@ class EnsembleEncoding implements EncodesSP, EncodesCBP {
 	ArrayList< ArrayList<Field> > members;
 	ArrayList< ArrayList<Contour2D> > cached_sp;
 	ArrayList<String> labels;
-	
+	ArrayList<Contour2D> tmp;
 	float vMax, vMin;
 	
 	ContourBoxPlot cbp;
@@ -26,6 +26,7 @@ class EnsembleEncoding implements EncodesSP, EncodesCBP {
 		initComplete = false;
 		cached_sp = null;
 		cacheSPContours();
+		tmp = new ArrayList<Contour2D>();
 		// bilinear = true;
 		// interpolate = false;
 		genMemberLabels();	
@@ -107,6 +108,7 @@ class EnsembleEncoding implements EncodesSP, EncodesCBP {
 			
 	void genSPContours(ArrayList<Contour2D> contours){
 		if (cached_sp == null){
+			tmp.clear();
 			Contour2D c;
 			ArrayList<Field> member;
 			for (int i = 0; i < members.size(); i++){
@@ -115,7 +117,9 @@ class EnsembleEncoding implements EncodesSP, EncodesCBP {
 				c = new Contour2D(2*f.dimy);
 				f.genIsocontour(isovalue, c);
 				c.setID(labels.get(i));
+				c.genPShape();
 				contours.add(c);
+				tmp.add(c);
 			}
 		}
 		else{
@@ -125,6 +129,7 @@ class EnsembleEncoding implements EncodesSP, EncodesCBP {
 	
 	void genSPContours(ArrayList<Contour2D> contours, int idx){
 		if (cached_sp == null){
+			tmp.clear();
 			Contour2D c;
 			ArrayList<Field> member;
 			for (int i = 0; i < members.size(); i++){
@@ -133,7 +138,9 @@ class EnsembleEncoding implements EncodesSP, EncodesCBP {
 				c = new Contour2D(2*f.dimy);
 				f.genIsocontour(isovalue, c);
 				c.setID(labels.get(i));
+				c.genPShape();
 				contours.add(c);
+				tmp.add(c);
 			}
 		}
 		else{
@@ -159,6 +166,7 @@ class EnsembleEncoding implements EncodesSP, EncodesCBP {
 					c = new Contour2D(2*f.dimy);
 					f.genIsocontour(isovalue, c);
 					c.setID(labels.get(i));
+					c.genPShape();
 					contours.add(c);
 				}
 				cached_sp.add(contours);
@@ -172,27 +180,40 @@ class EnsembleEncoding implements EncodesSP, EncodesCBP {
 		if (cached_sp != null) cacheSPContours(); //if cached re-cache
 	}
 	
-	// void setCachingSP(boolean b){
-	// 	if (b){
-	// 		if (cached_sp == null) cacheSPContours(); // if not cached, cache
-	// 	}
-	// 	else{
-	// 		cached_sp = null; // clear cache
-	// 	}
-	// }
+	void setCachingSP(boolean b){
+		if (b){
+			if (cached_sp == null) cacheSPContours(); // if not cached, cache
+		}
+		else{
+			cached_sp = null; // clear cache
+		}
+	}
 	
 	void getCBPmedian(WrappedContour2D wrapper){
 		int member = cbp.getCBPmedianIndex();
-		if(member != -1) wrapper.replaceContour((cached_sp.get(0)).get(member));
-		else wrapper.replaceContour(null);
+		Contour2D c = null;
+		if (cached_sp != null){
+			if(member != -1) c = (cached_sp.get(0)).get(member);
+		}
+		else{
+			if(member != -1) c = tmp.get(member);
+		}
+		wrapper.replaceContour(c);
+		
 		
 		// cbp.getCBPmedian(wrapper);
 	}
 	
 	void getCBPmedian(WrappedContour2D wrapper, int idx){
 		int member = cbp.getCBPmedianIndex();
-		if(member != -1) wrapper.replaceContour((cached_sp.get(idx)).get(member));
-		else wrapper.replaceContour(null);
+		Contour2D c = null;
+		if (cached_sp != null){
+			if(member != -1) c = (cached_sp.get(idx)).get(member);
+		}
+		else{
+			if(member != -1) c = tmp.get(member);
+		}
+		wrapper.replaceContour(c);
 		
 		//cbp.getCBPmedian(wrapper, idx);
 	}
@@ -216,8 +237,14 @@ class EnsembleEncoding implements EncodesSP, EncodesCBP {
 		List<Integer> outlier_idx = cbp.getOutlierIndexList();
 		if (outlier_idx != null){
 			for(Integer i:outlier_idx){
-				Contour2D tmp = (cached_sp.get(0)).get(i);
-				contours.add(tmp);
+				Contour2D c = null;
+				if (cached_sp != null){
+					c = (cached_sp.get(0)).get(i);
+				}
+				else{
+					c = tmp.get(i);
+				}
+				contours.add(c);
 			}
 		}		
 		// cbp.getCBPoutliers(contours);
@@ -227,8 +254,14 @@ class EnsembleEncoding implements EncodesSP, EncodesCBP {
 		List<Integer> outlier_idx = cbp.getOutlierIndexList();
 		if (outlier_idx != null){
 			for(Integer i:outlier_idx){
-				Contour2D tmp = (cached_sp.get(idx)).get(i);
-				contours.add(tmp);
+				Contour2D c = null;
+				if (cached_sp != null){
+					c = (cached_sp.get(idx)).get(i);
+				}
+				else{
+					c = tmp.get(i);
+				}				
+				contours.add(c);
 			}
 		}		
 		//cbp.getCBPoutliers(contours, idx);

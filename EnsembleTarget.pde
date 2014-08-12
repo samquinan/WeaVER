@@ -243,7 +243,20 @@ class EnsembleTarget extends Container implements Target{
     }
 	
 	private void update(){
-		int fhr = (timer == null) ? 0 : timer.getIndex();
+		int fhr = (timer == null) ? 0 : timer.getIndex();		
+		
+		//update SP -- need members in both views but do not need quad tree
+		if (sp_members != null){
+			sp_members.clear();
+			EncodesSP s = (EncodesSP) entries.get(0);
+			if (s != null){
+				s.genSPContours(sp_members, fhr);
+				//quadtree
+				if (sp_qtree != null){
+					sp_qtree.clear();
+				}
+			}
+		}
 		
 		if(cbp.isOn()){
 			//update CBP
@@ -260,19 +273,6 @@ class EnsembleTarget extends Container implements Target{
 			}
 		}
 		
-		
-		//update SP -- need members in both views but do not need quad tree
-		if (sp_members != null){
-			sp_members.clear();
-			EncodesSP s = (EncodesSP) entries.get(0);
-			if (s != null){
-				s.genSPContours(sp_members, fhr);
-				//quadtree
-				if (sp_qtree != null){
-					sp_qtree.clear();
-				}
-			}
-		}
 		
 	}
 	
