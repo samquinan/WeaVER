@@ -724,6 +724,7 @@ class Field{
 	  
 	  if (int(samplesx*spacing) != img.width || int(samplesy*spacing) != img.height){
 		  println("Error in genFill: PImage dims do not match field");
+		  return;
 	  }
 	  
 	  img.loadPixels();
@@ -757,6 +758,7 @@ class Field{
 	  
 	  if (int(samplesx*spacing) != img.width || int(samplesy*spacing) != img.height){
 		  println("Error in genFill: PImage dims do not match field");
+		  return;
 	  }
 	  
 	  img.loadPixels();
@@ -782,7 +784,46 @@ class Field{
 
 	  img.updatePixels();
   }
-  
+    
+  // //HACK! TODO make so does proper alpha belending rather than binary overwrite on non-zero alpha
+  // void genFillNearestNeighbor(PImage img, int[] mask, ColorMapf cmap, boolean interpolate, boolean overwriteClear){
+  //
+  // 	  if (!dataAvailable) return;
+  //
+  // 	  int samplesx = dimx;
+  // 	  int samplesy = dimy;
+  //
+  // 	  if (int(samplesx*spacing) != img.width || int(samplesy*spacing) != img.height){
+  // 		  println("Error in genFill: PImage dims do not match field");
+  // 		  return;
+  // 	  }
+  //
+  // 	  img.loadPixels();
+  // 	  for (int j = 0; j < samplesy; j++){
+  // 		  for (int i = 0; i < samplesx; i++){
+  // 			  //nearest neighbor
+  // 			  float val = data.get(getIndex(i,j,samplesx));//grab data value
+  // 			  color c = cmap.getColor(val, interpolate);
+  //
+  // 			  int idx;
+  // 			  for (int n = 0; n < spacing; n++){
+  // 				idx = getIndex(int(i*spacing), int(((samplesy-1)-j)*spacing)+n, int(samplesx*spacing));
+  // 			  	for (int m = 0; m < spacing; m++){
+  // 	  			  	if (overwriteClear || (((c >> 24) & 0xFF) > 0)){
+  // 						img.pixels[idx] = c;
+  // 						mask[idx] = 255;
+  // 					}
+  // 					else mask[idx] = 0;
+  // 					idx++;
+  // 				}
+  // 			  }
+  //
+  // 		  }
+  // 	  }
+  //
+  // 	  img.updatePixels();
+  // }
+  //
   
   void genFillBilinear(PImage img, ColorMapf cmap, boolean interpolate){
 	  
@@ -793,6 +834,7 @@ class Field{
 	  
 	  if (int(samplesx*spacing) != img.width || int(samplesy*spacing) != img.height){
 		  println("Error in genFill: PImage dims do not match field");
+		  return;
 	  }
 	  
 	  img.loadPixels();
@@ -842,6 +884,7 @@ class Field{
 	  
 	  if (int(samplesx*spacing) != img.width || int(samplesy*spacing) != img.height){
 		  println("Error in genFill: PImage dims do not match field");
+		  return;
 	  }
 	  
 	  img.loadPixels();
@@ -880,6 +923,130 @@ class Field{
 	  }
 	  img.updatePixels();
   }
+  
+  //TODO may want to generalize to other operations
+  void genMaskBilinear(boolean[] union, boolean[] intersection, int w, int h, float isovalue){	  
+	  if (!dataAvailable) return;
+	  
+	  int n = w*h;
+	  if ((int(dimx*spacing) != w) || (int(dimy*spacing) != h) || (union.length != n) || (intersection.length != n)){
+		  println("Error in genMask: input array dims do not match field");
+		  println("\t" + w + "\t"+ h);
+		  println("\t" + dimx*spacing + "\t"+ dimy*spacing);
+		  println("\t" + n);
+		  println("\t" + union.length + "\t"+ intersection.length);
+		  return;
+	  }
+	  
+	  for (int y = 0; y < h; y++){
+	  	  for (int x = 0; x < w; x++){
+			  
+			  int idx = getIndex(x,y,w);
+			  if ((union[idx] == true) && (intersection[idx] == false)) continue; //new value has no effect
+			  
+	  		  //grab 4 nearest data values for interpolation
+	  		  int i0, j0, i1, j1;
+	  		  float ax, ay;
+  		  
+	  		  float tmp = ((2.0*x+1.0)/(2*spacing)) - 0.5;
+	  		  i0 = floor(tmp);
+	  		  i1 = ceil(tmp);
+	  		  ax = tmp - i0;
+  		  		  
+	  		  tmp = ((2.0*((dimy*spacing-1)-y)+1.0)/(2*spacing)) - 0.5;//note: 0,0 is bottom left
+	  		  j0 = floor(tmp);
+	  		  j1 = ceil(tmp);
+	  		  ay = tmp - j0;
+		    		  
+	  		  float v00, v01, v10, v11;
+	  		  v00 = data.get(getIndex(constrain(i0,0,(dimx-1)),constrain(j0,0,(dimy-1)),dimx));
+	  		  v01 = data.get(getIndex(constrain(i0,0,(dimx-1)),constrain(j1,0,(dimy-1)),dimx));
+	  		  v10 = data.get(getIndex(constrain(i1,0,(dimx-1)),constrain(j0,0,(dimy-1)),dimx));
+	  		  v11 = data.get(getIndex(constrain(i1,0,(dimx-1)),constrain(j1,0,(dimy-1)),dimx));
+  		  
+	  		  //bilinear interpolation
+	  		  float v0x, v1x;
+	  		  v0x = map(ax,0.0,1.0,v00,v10);
+	  		  v1x = map(ax,0.0,1.0,v01,v11);
+  		  
+	  		  float v = map(ay,0.0,1.0,v0x,v1x);
+			  boolean pass = (v > isovalue);
+			  
+			  if (pass) union[idx] = pass;
+			  else intersection[idx] = pass; 
+			  
+	  	  }
+	  }
+	  	  
+  }
+  
+  // //HACK! TODO make so does proper alpha belending rather than binary overwrite on non-zero alpha
+  // void genFillBilinear(PImage img, int[] mask, ColorMapf cmap, boolean interpolate, boolean overwriteClear){
+  // 	  // overwriteState
+  // 	  //	0 : overwrites everything
+  // 	  //	1 : overwrites only if new value has non zero-alpha
+  // 	  //	2 : overwrites only if new value has zero-alpha
+  //
+  //
+  // 	  if (!dataAvailable) return;
+  //
+  // 	  int samplesx = dimx;
+  // 	  int samplesy = dimy;
+  //
+  // 	  if (int(samplesx*spacing) != img.width || int(samplesy*spacing) != img.height){
+  // 		  println("Error in genFill: PImage dims do not match field");
+  // 		  return;
+  // 	  }
+  // 	  else if (alpha.length != img.width*img.height){
+  // 		  println("Error in genFill: PImage dims do not match field");
+  // 		  return;
+  // 	  }
+  //
+  // 	  img.loadPixels();
+  // 	  for (int y = 0; y < img.height; y++){
+  // 	  	  for (int x = 0; x < img.width; x++){
+  // 	  		  //grab 4 nearest data values for interpolation
+  // 	  		  int i0, j0, i1, j1;
+  // 	  		  float ax, ay;
+  //
+  // 	  		  float tmp = ((2.0*x+1.0)/(2*spacing)) - 0.5;
+  // 	  		  i0 = floor(tmp);
+  // 	  		  i1 = ceil(tmp);
+  // 	  		  ax = tmp - i0;
+  //
+  // 	  		  tmp = ((2.0*((samplesy*spacing-1)-y)+1.0)/(2*spacing)) - 0.5;//note: 0,0 is bottom left
+  // 	  		  j0 = floor(tmp);
+  // 	  		  j1 = ceil(tmp);
+  // 	  		  ay = tmp - j0;
+  //
+  // 	  		  float v00, v01, v10, v11;
+  // 	  		  v00 = data.get(getIndex(constrain(i0,0,(samplesx-1)),constrain(j0,0,(samplesy-1)),samplesx));
+  // 	  		  v01 = data.get(getIndex(constrain(i0,0,(samplesx-1)),constrain(j1,0,(samplesy-1)),samplesx));
+  // 	  		  v10 = data.get(getIndex(constrain(i1,0,(samplesx-1)),constrain(j0,0,(samplesy-1)),samplesx));
+  // 	  		  v11 = data.get(getIndex(constrain(i1,0,(samplesx-1)),constrain(j1,0,(samplesy-1)),samplesx));
+  //
+  // 	  		  //bilinear interpolation
+  // 	  		  float v0x, v1x;
+  // 	  		  v0x = map(ax,0.0,1.0,v00,v10);
+  // 	  		  v1x = map(ax,0.0,1.0,v01,v11);
+  //
+  // 	  		  float v = map(ay,0.0,1.0,v0x,v1x);
+  // 			  color c = cmap.getColor(v, interpolate);
+  //
+  // 			  if (overwriteClear || (((c >> 24) & 0xFF) > 0)) {
+  // 				  int idx = getIndex(x,y,img.width);
+  // 				  img.pixels[idx] = c;
+  // 				  mask[idx] = 255;
+  // 			  }
+  // 			  else{
+  // 				  mask[idx] = 0;
+  // 			  }
+  //
+  // 	  	  }
+  // 	  }
+  // 	  img.updatePixels();
+  // }
+  
   
 	void test_multiplyProb(Field f){ // NOTE: is cannibalistic
 		if (!dataAvailable || (dimx != f.dimx) || (dimy != f.dimy) || (data.size() != (f.data).size())){

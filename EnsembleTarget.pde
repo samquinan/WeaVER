@@ -45,14 +45,14 @@ class EnsembleTarget extends Container implements Target{
 		tmp = (0 << 24) | (c_band & 0x00FFFFFF);
 		cmap.add(0, tmp);
 		cmap.add(0.49, tmp);
-		cmap.add(0.5, tmp);
+		cmap.add(0.5, c_band);
 		cmap.add(1.0, c_band);
 
 		cmap2 = new ColorMapf();
 		tmp = (0 << 24) | (c_envl & 0x00FFFFFF);
 		cmap2.add(0, tmp);
 		cmap2.add(0.49, tmp);
-		cmap2.add(0.5, tmp);
+		cmap2.add(0.5, c_envl);
 		cmap2.add(1.0, c_envl);
 		
 	}
@@ -255,7 +255,8 @@ class EnsembleTarget extends Container implements Target{
 					cbp_outliers.clear(); //safe
 					s.getCBPoutliers(cbp_outliers, fhr);//null input ignored internally
 				}
-				s.genCBPbands(cbp_bands, cmap, cmap2, fhr);//null input ignored internally
+				//s.genCBPbands(cbp_bands, cmap, cmap2, fhr);//null input ignored internally
+				s.genCBPbands(cbp_bands, c_band, c_envl, fhr);
 			}
 		}
 		

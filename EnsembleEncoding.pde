@@ -5,6 +5,8 @@ class EnsembleEncoding implements EncodesSP, EncodesCBP {
 	ArrayList< ArrayList<Contour2D> > cached_sp;
 	ArrayList<String> labels;
 	
+	float vMax, vMin;
+	
 	ContourBoxPlot cbp;
 	
 	private boolean initComplete;
@@ -23,9 +25,29 @@ class EnsembleEncoding implements EncodesSP, EncodesCBP {
 		cbp = c;
 		initComplete = false;
 		cached_sp = null;
+		cacheSPContours();
 		// bilinear = true;
 		// interpolate = false;
 		genMemberLabels();	
+		
+		
+		vMax = 0;
+		vMin = 0;
+		boolean first = true;
+		for (ArrayList<Field> member : members){
+			for (Field current : member){
+				if (first){
+					vMax = current.getMax();
+					vMin = current.getMin();
+					first = false;
+				}
+				else{
+					vMax = max(vMax, current.getMax());
+					vMin = min(vMin, current.getMin());
+				}
+			}
+		}
+		
 	}
 	
 	EnsembleEncoding(ArrayList< ArrayList<Field> > fields, ContourBoxPlot c, ArrayList<String> member_labels){
@@ -33,6 +55,7 @@ class EnsembleEncoding implements EncodesSP, EncodesCBP {
 		cbp = c;
 		initComplete = false;
 		cached_sp = null;
+		cacheSPContours();
 		// bilinear = true;
 		// interpolate = false;
 		if (members.size() != member_labels.size()){
@@ -40,6 +63,23 @@ class EnsembleEncoding implements EncodesSP, EncodesCBP {
 			genMemberLabels();
 		}
 		else labels = member_labels;
+		
+		vMax = 0;
+		vMin = 0;
+		boolean first = true;
+		for (ArrayList<Field> member : members){
+			for (Field current : member){
+				if (first){
+					vMax = current.getMax();
+					vMin = current.getMin();
+					first = false;
+				}
+				else{
+					vMax = max(vMax, current.getMax());
+					vMin = min(vMin, current.getMin());
+				}
+			}
+		}
 	}
 	
 	private void genMemberLabels(){
@@ -132,21 +172,29 @@ class EnsembleEncoding implements EncodesSP, EncodesCBP {
 		if (cached_sp != null) cacheSPContours(); //if cached re-cache
 	}
 	
-	void setCachingSP(boolean b){
-		if (b){
-			if (cached_sp == null) cacheSPContours(); // if not cached, cache
-		}
-		else{
-			cached_sp = null; // clear cache
-		}
-	}		
+	// void setCachingSP(boolean b){
+	// 	if (b){
+	// 		if (cached_sp == null) cacheSPContours(); // if not cached, cache
+	// 	}
+	// 	else{
+	// 		cached_sp = null; // clear cache
+	// 	}
+	// }
 	
 	void getCBPmedian(WrappedContour2D wrapper){
-		cbp.getCBPmedian(wrapper);
+		int member = cbp.getCBPmedianIndex();
+		if(member != -1) wrapper.replaceContour((cached_sp.get(0)).get(member));
+		else wrapper.replaceContour(null);
+		
+		// cbp.getCBPmedian(wrapper);
 	}
 	
 	void getCBPmedian(WrappedContour2D wrapper, int idx){
-		cbp.getCBPmedian(wrapper, idx);
+		int member = cbp.getCBPmedianIndex();
+		if(member != -1) wrapper.replaceContour((cached_sp.get(idx)).get(member));
+		else wrapper.replaceContour(null);
+		
+		//cbp.getCBPmedian(wrapper, idx);
 	}
 	
 	
@@ -165,18 +213,78 @@ class EnsembleEncoding implements EncodesSP, EncodesCBP {
 	// }
 	
 	void getCBPoutliers(ArrayList<Contour2D> contours){
-		cbp.getCBPoutliers(contours);
+		List<Integer> outlier_idx = cbp.getOutlierIndexList();
+		if (outlier_idx != null){
+			for(Integer i:outlier_idx){
+				Contour2D tmp = (cached_sp.get(0)).get(i);
+				contours.add(tmp);
+			}
+		}		
+		// cbp.getCBPoutliers(contours);
 	}
+	
 	void getCBPoutliers(ArrayList<Contour2D> contours, int idx){
-		cbp.getCBPoutliers(contours, idx);
+		List<Integer> outlier_idx = cbp.getOutlierIndexList();
+		if (outlier_idx != null){
+			for(Integer i:outlier_idx){
+				Contour2D tmp = (cached_sp.get(idx)).get(i);
+				contours.add(tmp);
+			}
+		}		
+		//cbp.getCBPoutliers(contours, idx);
 	}
 	
 	void genCBPbands(PImage img, ColorMapf cmap, ColorMapf cmap2){
-		cbp.genCBPbands(img, cmap, cmap2);	
+		cbp.genCBPbands(img, cmap, cmap2);
 	}
+	
 	void genCBPbands(PImage img, ColorMapf cmap, ColorMapf cmap2, int idx){
 		cbp.genCBPbands(img, cmap, cmap2, idx);
 	}
+	
+	void genCBPbands(PImage img, color c1, color c2, int idx){
+		ArrayList<Integer> ordering = cbp.getOrdering();
+		if (ordering != null){
+			
+			boolean[] union =  new boolean[img.width*img.height];
+			Arrays.fill(union, false);
+			boolean[] intersection =  new boolean[img.width*img.height];
+			Arrays.fill(intersection, true);
+			
+			ArrayList<Field> member;
+			
+			int half = round(ordering.size()/2.0);
+			int whole = ordering.size() - 3;
+
+			for (int i=0; i < half; i++){
+				member = members.get(ordering.get(i));
+				Field f = member.get(idx);
+				f.genMaskBilinear(union, intersection, img.width, img.height, isovalue);
+			}
+
+			boolean[] union_50 = union.clone();
+			boolean[] intersection_50 = intersection.clone();
+
+			for (int i=half; i < whole; i++){
+				member = members.get(ordering.get(i));
+				Field f = member.get(idx);
+				f.genMaskBilinear(union, intersection, img.width, img.height, isovalue);
+			}
+			
+			img.loadPixels();
+			for (int i=0; i < union.length; i++){
+				color c;
+				if (union_50[i] && !intersection_50[i]) c = c1;
+				else if (union[i] && !intersection[i]) c = c2;
+				else c = (0 << 24) | (c2 & 0x00FFFFFF);
+				img.pixels[i] = c;
+			}
+			img.updatePixels();
+		}
+
+	}
+	
+	
 	
 	
 		

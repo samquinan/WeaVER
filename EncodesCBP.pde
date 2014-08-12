@@ -17,6 +17,7 @@ public interface EncodesCBP{
 	
 	void genCBPbands(PImage img, ColorMapf cmap, ColorMapf cmap2);
 	void genCBPbands(PImage img, ColorMapf cmap, ColorMapf cmap2, int idx);
+	void genCBPbands(PImage img, color c1, color c2, int idx);
 	
 	// void genOutliers(ArrayList<Contour2D> contours);
 	// void genOutliers(ArrayList<Contour2D> contours, int idx);

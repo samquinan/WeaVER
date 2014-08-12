@@ -200,7 +200,11 @@ class EnsembleSelect extends Selectable implements EncodesSP, EncodesCBP{
 	}
 	void genCBPbands(PImage img, ColorMapf cmap, ColorMapf cmap2, int idx){
 		encd.genCBPbands(img, cmap, cmap2, idx);
-	}	
+	}
+	
+	void genCBPbands(PImage img, color c1, color c2, int idx){
+		encd.genCBPbands(img,c1,c2,idx);
+	}
 	
 	void setIsovalue(float iso){
 		encd.setIsovalue(iso);

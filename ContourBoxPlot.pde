@@ -1,4 +1,4 @@
-class ContourBoxPlot implements EncodesCBP{
+class ContourBoxPlot {//implements EncodesCBP{
 	// color c_band, c_envl;
 	// ColorMapf cmap, cmap2;
 	boolean bilinear;
@@ -6,37 +6,33 @@ class ContourBoxPlot implements EncodesCBP{
 	
 	ArrayList < Field > bands;
 	ArrayList < Field > envelop;
-	ArrayList < Contour2D > median;
-	ArrayList < ArrayList < Contour2D > > outliers;
+	ArrayList < Integer > ordering;
+	// ArrayList < Contour2D > median;
+	// ArrayList < ArrayList < Contour2D > > outliers;
+	//
+	// ContourBoxPlot(ArrayList < Contour2D > m, ArrayList < Field > b, ArrayList < Field > e, ArrayList < ArrayList < Contour2D > > o){
+	// 	bands = b;
+	// 	envelop = e;
+	//
+	// 	ordering = null;
+	//
+	// 	median = m;
+	// 	outliers = o;
+	//
+	// 	bilinear = true;
+	// 	interpolate = false;
+	// }
 	
-	ContourBoxPlot(ArrayList < Contour2D > m, ArrayList < Field > b, ArrayList < Field > e, ArrayList < ArrayList < Contour2D > > o){
+	ContourBoxPlot(ArrayList < Field > b, ArrayList < Field > e, ArrayList < Integer > o){
 		bands = b;
 		envelop = e;
-		median = m;
-		outliers = o;
-		
-		// color tmp;
-		// c_band = color(140);
-		// c_envl = color(220);
-		//
-		// cmap = new ColorMapf();
-		// tmp = (0 << 24) | (c_band & 0x00FFFFFF);
-		// cmap.add(0, tmp);
-		// cmap.add(0.49, tmp);
-		// cmap.add(0.5, tmp);
-		// cmap.add(1.0, c_band);
-		//
-		// cmap2 = new ColorMapf();
-		// tmp = (0 << 24) | (c_envl & 0x00FFFFFF);
-		// cmap2.add(0, tmp);
-		// cmap2.add(0.49, tmp);
-		// cmap2.add(0.5, tmp);
-		// cmap2.add(1.0, c_envl);
-		
+				
+		ordering = o;
 		
 		bilinear = true;
 		interpolate = false;
 	}
+	
 		
 	void useBilinear(boolean b){
 		bilinear = b;
@@ -79,13 +75,23 @@ class ContourBoxPlot implements EncodesCBP{
 	// 	return median.get(idx);
 	// }
 	
-	void getCBPmedian(WrappedContour2D wrapper){
-		if (wrapper != null) wrapper.replaceContour(median.get(0));
+	int getCBPmedianIndex(){
+		if (ordering != null) return ordering.get(0);
+		else return -1;		
 	}
 	
-	void getCBPmedian(WrappedContour2D wrapper, int idx){
-		if (wrapper != null) wrapper.replaceContour(median.get(idx));
+	ArrayList<Integer> getOrdering(){
+		if (ordering != null) return ordering;
+		else return null;
 	}
+	
+	// void getCBPmedian(WrappedContour2D wrapper){
+	// 	if (wrapper != null && median != null) wrapper.replaceContour(median.get(0));
+	// }
+	//
+	// void getCBPmedian(WrappedContour2D wrapper, int idx){
+	// 	if (wrapper != null && median != null) wrapper.replaceContour(median.get(idx));
+	// }
 	
 	
 	// ArrayList<Contour2D> getCBPoutliers(){
@@ -96,13 +102,19 @@ class ContourBoxPlot implements EncodesCBP{
 	// 	return outliers.get(idx);
 	// }
 	
-	void getCBPoutliers(ArrayList<Contour2D> contours){
-		if (contours != null) contours.addAll(outliers.get(0));
+	List<Integer> getOutlierIndexList(){
+		int n = ordering.size();
+		if (ordering != null) return ordering.subList(n-3, n);
+		else return null;		
 	}
 	
-	void getCBPoutliers(ArrayList<Contour2D> contours, int idx){
-		if (contours != null) contours.addAll(outliers.get(idx));
-	}
+	// void getCBPoutliers(ArrayList<Contour2D> contours){
+	// 	if (contours != null && outliers != null) contours.addAll(outliers.get(0));
+	// }
+	//
+	// void getCBPoutliers(ArrayList<Contour2D> contours, int idx){
+	// 	if (contours != null && outliers != null) contours.addAll(outliers.get(idx));
+	// }
 	
 	
 	void genCBPbands(PImage img, ColorMapf cmap, ColorMapf cmap2){
