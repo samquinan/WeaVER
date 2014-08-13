@@ -268,8 +268,8 @@ class EnsembleTarget extends Container implements Target{
 					cbp_outliers.clear(); //safe
 					s.getCBPoutliers(cbp_outliers, fhr);//null input ignored internally
 				}
-				//s.genCBPbands(cbp_bands, cmap, cmap2, fhr);//null input ignored internally
-				s.genCBPbands(cbp_bands, c_band, c_envl, fhr);
+				s.genCBPbands(cbp_bands, cmap, cmap2, fhr);//null input ignored internally
+				// s.genCBPbands(cbp_bands, c_band, c_envl, fhr);
 			}
 		}
 		
