@@ -605,49 +605,44 @@ class Field{
         /* note: fill requires definition of inside/outside,  *
          *       which we are ignoring for isocontouring      */
         float p1, p2;
-		Segment2D s;
+		Segment2D s = null;
+		Segment2D s2 = null;
         switch (b) {
           case 1:
           case 14:
             p1 = map(iso, val00, val10, val00Pos.y, val10Pos.y);
             p2 = map(iso, val00, val01, val00Pos.x, val01Pos.x);
 			s = new Segment2D(new PVector(val00Pos.x, p1), new PVector(p2, val00Pos.y));
-			contour.addSegment(s);
             break;
           case 2:
           case 13:
             p1 = map(iso, val01, val11, val01Pos.y, val11Pos.y);
             p2 = map(iso, val00, val01, val00Pos.x, val01Pos.x);
 			s = new Segment2D(new PVector(val01Pos.x, p1), new PVector(p2, val01Pos.y));
-			contour.addSegment(s);
             break;
           case 3:
           case 12:
             p1 = map(iso, val00, val10, val00Pos.y, val10Pos.y);
             p2 = map(iso, val01, val11, val01Pos.y, val11Pos.y);
 			s = new Segment2D(new PVector(val00Pos.x, p1), new PVector(val01Pos.x, p2));
-			contour.addSegment(s);
             break;
           case 4:
           case 11:
             p1 = map(iso, val10, val11, val10Pos.x, val11Pos.x);
             p2 = map(iso, val01, val11, val01Pos.y, val11Pos.y);
 			s = new Segment2D(new PVector(p1, val11Pos.y), new PVector(val11Pos.x, p2));
-			contour.addSegment(s);
             break;
           case 6:
           case 9:
             p1 = map(iso, val10, val11, val10Pos.x, val11Pos.x);
             p2 = map(iso, val00, val01, val00Pos.x, val01Pos.x);
 			s = new Segment2D(new PVector(p1, val10Pos.y), new PVector(p2, val00Pos.y));
-			contour.addSegment(s);
             break;
           case 7:
           case 8:
             p1 = map(iso, val00, val10, val00Pos.y, val10Pos.y);
             p2 = map(iso, val10, val11, val10Pos.x, val11Pos.x);
 			s = new Segment2D(new PVector(val00Pos.x, p1), new PVector(p2, val10Pos.y));
-			contour.addSegment(s);
             break;
           case 5:
             /* ambiguous / saddle case
@@ -657,23 +652,19 @@ class Field{
               p1 = map(iso, val00, val10, val00Pos.y, val10Pos.y);
               p2 = map(iso, val10, val11, val10Pos.x, val11Pos.x);
   			  s = new Segment2D(new PVector(val00Pos.x, p1), new PVector(p2, val10Pos.y));
-  			  contour.addSegment(s);
 			  
               p1 = map(iso, val01, val11, val01Pos.y, val11Pos.y);
               p2 = map(iso, val00, val01, val00Pos.x, val01Pos.x);
-  			  s = new Segment2D(new PVector(val01Pos.x, p1), new PVector(p2, val01Pos.y));
-  			  contour.addSegment(s);
+  			  s2 = new Segment2D(new PVector(val01Pos.x, p1), new PVector(p2, val01Pos.y));
             }
             else {
               p1 = map(iso, val00, val10, val00Pos.y, val10Pos.y);
               p2 = map(iso, val00, val01, val00Pos.x, val01Pos.x);
   			  s = new Segment2D(new PVector(val00Pos.x, p1), new PVector(p2, val00Pos.y));
-  			  contour.addSegment(s);
 			  
               p1 = map(iso, val10, val11, val10Pos.x, val11Pos.x);
               p2 = map(iso, val01, val11, val01Pos.y, val11Pos.y);
-  			  s = new Segment2D(new PVector(p1, val11Pos.y), new PVector(val11Pos.x, p2));
-  			  contour.addSegment(s);
+  			  s2 = new Segment2D(new PVector(p1, val11Pos.y), new PVector(val11Pos.x, p2));
             }
             break;
           case 10:
@@ -684,23 +675,19 @@ class Field{
               p1 = map(iso, val00, val10, val00Pos.y, val10Pos.y);
               p2 = map(iso, val00, val01, val00Pos.x, val01Pos.x);
   			  s = new Segment2D(new PVector(val00Pos.x, p1), new PVector(p2, val00Pos.y));
-  			  contour.addSegment(s);
 			  
               p1 = map(iso, val10, val11, val10Pos.x, val11Pos.x);
               p2 = map(iso, val01, val11, val01Pos.y, val11Pos.y);
-  			  s = new Segment2D(new PVector(p1, val11Pos.y), new PVector(val11Pos.x, p2));
-  			  contour.addSegment(s);
+  			  s2 = new Segment2D(new PVector(p1, val11Pos.y), new PVector(val11Pos.x, p2));
             }
             else {
               p1 = map(iso, val00, val10, val00Pos.y, val10Pos.y);
               p2 = map(iso, val10, val11, val10Pos.x, val11Pos.x);
   			  s = new Segment2D(new PVector(val00Pos.x, p1), new PVector(p2, val10Pos.y));
-  			  contour.addSegment(s);
               
               p1 = map(iso, val01, val11, val01Pos.y, val11Pos.y);
               p2 = map(iso, val00, val01, val00Pos.x, val01Pos.x);
-  			  s = new Segment2D(new PVector(val01Pos.x, p1), new PVector(p2, val01Pos.y));
-  			  contour.addSegment(s);
+  			  s2 = new Segment2D(new PVector(val01Pos.x, p1), new PVector(p2, val01Pos.y));
             }
             break;
           case 0:    // no edges
@@ -708,7 +695,10 @@ class Field{
           default:
             break;
         }
-                    
+		
+        if (s != null) contour.addSegment(s);
+		if (s2 != null) contour.addSegment(s2);
+            
       }
     }
 	//hotswap
