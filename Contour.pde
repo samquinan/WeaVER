@@ -70,28 +70,16 @@ class Contour2D {
 		c.strokeWeight(1);
 		c.stroke(0);
 		
-		// for (Segment2D s : members){
-		// 	s.makeVetexCalls(c);
-		// }
-		//
+		for (Segment2D s : members){
+			s.makeVetexCalls(c);
+		}
 		
 		// int count = 0;
 		// for (Segment2D s : members){
 		// 	if (count < 1249) s.makeVetexCalls(c);
 		// 	count++;
 		// }
-		
-		// int count = 0;
-		// boolean on = true;
-		// for (Segment2D s : members){
-		// 	if (on) s.makeVetexCalls(c);
-		// 	count++;
-		// 	if (count > 50){
-		// 		count = 0;
-		// 		on = !on;
-		// 	}
-		// }
-		
+				
 		c.endShape(LINES);
 		c.disableStyle();
 		contour = c;
