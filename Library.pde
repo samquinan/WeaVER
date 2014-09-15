@@ -1,12 +1,12 @@
 class Library extends Container {
-	int k;
+	int lib_idx;
 	ArrayList<Container> targets;
 	String label;
 	
 	Library(float ix, float iy, float dx, float dy, int c, int r) {
 		super(ix, iy, dx, dy, c, r);
 		targets = new ArrayList<Container>();
-		k = 0;
+		lib_idx = 0;
 		label = "";
 	}
 	
@@ -42,7 +42,7 @@ class Library extends Container {
 	void add(Selectable s){ //TODO clean up index assignment
 		if (s.isClone) return;
 		if (s.home == null){
-			s.setLibIndex(k++);
+			s.setLibIndex(lib_idx++);
 			s.setLibrary(this);
 		}
 		super.add(s);
