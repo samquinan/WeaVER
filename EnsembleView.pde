@@ -573,6 +573,11 @@ class EnsembleView extends View {
 	}
 	
 	protected boolean press(int mx, int my){
+		if (highlight != null){
+			String s = highlight.getID();
+			int i = highlight.getMemberCount();
+			println(s + ": " + i + " segments");
+		}
 		return cbp_switch.clicked(mx, my) || super.press(mx,my);
 	}
 		

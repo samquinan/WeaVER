@@ -69,9 +69,17 @@ class Contour2D {
 		c.beginShape(LINES);
 		c.strokeWeight(1);
 		c.stroke(0);
+		
 		for (Segment2D s : members){
 			s.makeVetexCalls(c);
 		}
+		
+		// int count = 0;
+		// for (Segment2D s : members){
+		// 	if (count < 1249) s.makeVetexCalls(c);
+		// 	count++;
+		// }
+				
 		c.endShape(LINES);
 		c.disableStyle();
 		contour = c;
