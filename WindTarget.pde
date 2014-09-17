@@ -50,10 +50,12 @@ class WindTarget extends Container implements Target{
 	}
 	
 	
-	void add(Selectable s){
+	boolean add(Selectable s){
+		boolean b = false;
 		if (s instanceof EncodesVector){
-			super.add(s);	
+			b = super.add(s);	
 		}
+		return b;
 	}
 		
 	boolean isIntersectedAABB(Selectable s){
@@ -64,9 +66,10 @@ class WindTarget extends Container implements Target{
 		return tmp;
 	}
 	
-	void remove(Selectable s){
-		super.remove(s);
-		updateRenderContext();	
+	boolean remove(Selectable s){
+		boolean b = super.remove(s);
+		if (b) updateRenderContext();
+		return b;
 	}	
 	
 	

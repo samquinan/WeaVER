@@ -31,17 +31,18 @@ class Container { //TODO double check threadsafety for all operations, reduce le
 		rect(x,y,w+1,h+1);
 		
 		synchronized(lock){
-			for (Selectable s: entries){ // display everything except current interacting
-				if (s != interacting) s.display();
+			for (Selectable s: entries){ // display everything except if dragging
+				if (!s.dragging) s.display();
+				/*if (s != interacting) s.display();*/
 			}
 		}
    	}
 	
-	void add(Selectable s){
+	boolean add(Selectable s){
 		synchronized(lock){
 		if (entries.size() == rows*cols){
 			println("Error: Attempted to Add Selectable to Full Container!");
-			return;	
+			return false;	
 		}
 		int index;
 		if (this == s.home){
@@ -77,12 +78,13 @@ class Container { //TODO double check threadsafety for all operations, reduce le
 		}
 		}
 		s.current = this;
+		return true;
 	}
 		
-	void remove(Selectable s){
+	boolean remove(Selectable s){
 		synchronized(lock){
 		int index = entries.indexOf(s);
-		if (index == -1) return;
+		if (index == -1) return false;
 		Selectable cur;
 		for (int k=entries.size()-1; k>index; k--){
 			cur = entries.get(k);
@@ -95,6 +97,7 @@ class Container { //TODO double check threadsafety for all operations, reduce le
 		entries.remove(index);
 		}
 		s.current = null;
+		return true;
 	}
 	
 	boolean interact(int mx, int my) {
@@ -144,9 +147,10 @@ class Container { //TODO double check threadsafety for all operations, reduce le
 	}
 	
 	boolean released(){
+		boolean wasHiglighted = highlight;
 		highlight = false;
 		if (interacting != null) return interacting.released();
-		return false;
+		return wasHiglighted;
 	}
 	
 	boolean isIntersectedAABB(Selectable s){
@@ -154,6 +158,42 @@ class Container { //TODO double check threadsafety for all operations, reduce le
 		highlight = tmp && s.dragging;
 		return tmp;
 	}
+	
+	Selectable handoffDragging(){
+		if (interacting.dragging){
+			Selectable s = interacting;
+			interacting = null;
+			return s;
+		}
+		else return null;
+		
+	}
+	
+	float getXPos(){
+		return x;
+	}
+	
+	float getYPos(){
+		return y;
+	}
+	
+	float getWidth(){
+		return w;
+	}
+	
+	float getHeight(){
+		return h;
+	}
+	
+	float getDx(){
+		return w/cols;
+	}
+	float getDy(){
+		return h/rows;
+	}
+	
+	
+	
 	
 	// void updateRenderContext(){}
 	

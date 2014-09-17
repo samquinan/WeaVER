@@ -148,11 +148,13 @@ class EnsembleTarget extends Container implements Target{
 		return hover && (interacting != null);	
 	}
 	
-	void add(Selectable s){
+	boolean add(Selectable s){
+		boolean b = false;
 		if ((s instanceof EncodesSP) && (s instanceof EncodesCBP)){
-			super.add(s);
+			b = super.add(s);
 			if (h_setup && (entries.size()==1) && !generated) generateHoverables();
 		}
+		return b;
 	}
 		
 	boolean isIntersectedAABB(Selectable s){
@@ -163,13 +165,14 @@ class EnsembleTarget extends Container implements Target{
 		return tmp;
 	}
 	
-	void remove(Selectable s){
-		super.remove(s);
+	boolean remove(Selectable s){
+		boolean b = super.remove(s);
 		updateRenderContext();
 		if (h_setup && (entries.size()==0)){
 			sp_hoverables.clear();
 			generated = false;
 		}
+		return b;
 	}	
 	
 	

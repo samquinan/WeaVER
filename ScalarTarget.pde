@@ -4,10 +4,11 @@ class ScalarTarget extends ScalarTargetBase {
 		super(ix, iy, dx, dy);		
 	}
 	
-	void add(Selectable s){
+	boolean add(Selectable s){
 		if (s instanceof EncodesScalar){
-			super.add(s);	
+			return super.add(s);	
 		}
+		else return false;
 	}
 	
 	boolean isIntersectedAABB(Selectable s){

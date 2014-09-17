@@ -9,7 +9,8 @@ class Selectable {
 	int r,g,b; //color
 	float offsetX, offsetY;// mouseclick offset
 	
-	Library home;
+	//Library home;
+	LibCollection home;
 	Container current;
 	int lib_idx; //library index
 	
@@ -92,7 +93,8 @@ class Selectable {
 		return rollover || dragging;
 	}
 	
-	void setLibrary(Library l){ home = l;}
+	//void setLibrary(Library l){ home = l;}
+	void setLibCollection(LibCollection l){ home = l;}
 	void setCurrentContainer(Container c){ current = c;}
 	void setLibIndex(int i){ lib_idx = i;}
 	

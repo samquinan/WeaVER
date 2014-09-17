@@ -1,13 +1,28 @@
-class Library extends Container {
-	int lib_idx;
+class Library {
+	ArrayList<LibCollection> sources;
 	ArrayList<Container> targets;
+	Selectable dragging;
 	String label;
+	float x,y,w,h;
 	
 	Library(float ix, float iy, float dx, float dy, int c, int r) {
-		super(ix, iy, dx, dy, c, r);
+		sources = new ArrayList<LibCollection>();
+		sources.add(new LibCollection(ix, iy, dx, dy, c, r));
 		targets = new ArrayList<Container>();
-		lib_idx = 0;
 		label = "";
+		dragging = null;
+		x = ix;
+		y = iy;
+		w = c*dx;
+		h = r*dy;
+	}
+	
+	PVector getMaxXY(){
+		return new PVector(x+w, y+h);
+	}
+	
+	PVector getMinXY(){
+		return new PVector(x, y);
 	}
 	
 	void setLabel(String s){
@@ -23,29 +38,28 @@ class Library extends Container {
 		targets.remove(t);
 	}
 	
-	void remove(Selectable s){
-		int index = entries.indexOf(s);
-		if (index == -1) return;
-		Selectable cur;
-		for (int k=entries.size()-1; k>index; k--){
-			cur = entries.get(k);
-			int new_idx = k-1;
-			int j = new_idx / cols;
-			int i = new_idx - (cols*j);
-			cur.setRestPos(x+(i*w/cols), y+(j*h/rows));
-			cur.moveToRest();
-		}
-		entries.remove(index);
-		s.current = null;
+	void addCollection(int c, int r){
+		float tmpY,dx,dy;
+		float buffer = 15;
+		LibCollection last = sources.get(sources.size()-1);
+		tmpY = y + h + buffer;
+		dx = last.getDx();
+		dy = last.getDy();
+		h += dy*r + buffer;
+		sources.add(new LibCollection(x, tmpY, dx, dy, c, r));
 	}
 	
-	void add(Selectable s){ //TODO clean up index assignment
-		if (s.isClone) return;
-		if (s.home == null){
-			s.setLibIndex(lib_idx++);
-			s.setLibrary(this);
+	boolean remove(Selectable s){
+		boolean done = false;
+		for (LibCollection c : sources){
+			done = c.remove(s);
+			if (done) break;
 		}
-		super.add(s);
+		return done;
+	}
+	
+	boolean add(Selectable s){
+		return (sources.get(0)).add(s);
 	}
 		
 	void display() {
@@ -54,38 +68,73 @@ class Library extends Container {
 		fill(70);
 		text(label,x+2,y-1);
 		
-		super.display();
+		//super.display();
+		for (LibCollection c: sources){
+			c.display();
+		}
 		for (Container t: targets){
 			t.display();
 		}
-		if (interacting != null) {
-			interacting.display();
+		if (dragging != null) {
+			dragging.display();
 		}
 	}
 	
 	boolean interact(int mx, int my){
 		
+		boolean interacted = false;		
 		// get current interacting
-		if (!(super.interact(mx, my))){ // if this has no interaction, test all targets for interaction
-			for (Container t: targets){
-				if (t.interact(mx,my)){
-					interacting = t.interacting;
-					//break; // need to propogate new interacting back to container of previous interacting -- TODO investigate proper solution, but in meantime this works
+		if (dragging != null){
+			interacted = dragging.interact(mx,my);
+		}
+		else { // check all containers for interaction then, test all targets for interaction
+			for (LibCollection c: sources){
+				if(c.interact(mx,my)){
+					dragging = c.handoffDragging();
+					interacted = true;
+					break;
+				}
+			}
+			if (dragging == null){
+				for (Container t: targets){
+					if (t.interact(mx,my)){
+						dragging = t.handoffDragging();
+						interacted = true;
+						break;
+					}
 				} 
 			}
 		}
-		
+				
 		// handle movement between containers
-		if (interacting != null && interacting.dragging){
+		if (dragging != null){ //dragging.dragging == true, handled in handoff dragging
 			
 			//remove if leaves current
-			if (interacting.current != null){
-				boolean inCurrent = interacting.current.isIntersectedAABB(interacting);
-				if (!inCurrent) interacting.current.remove(interacting);
+			if (dragging.current != null){
+				boolean inCurrent = dragging.current.isIntersectedAABB(dragging);
+				if (!inCurrent) dragging.current.remove(dragging);
 			}
 			
 			//add if possible
-			if (interacting.current == null){
+			if (dragging.current == null){
+				boolean added = false;
+				for (LibCollection c: sources){
+					if(c.isIntersectedAABB(dragging)){
+						added = c.add(dragging);
+						break;
+					}
+				}
+				if (!added){
+					for (Container t: targets){
+						if(t.isIntersectedAABB(dragging)){
+							added = t.add(dragging);
+							break;
+						}
+					}
+				}
+			}
+			
+			/*if (interacting.current == null){
 				if (this.isIntersectedAABB(interacting)) this.add(interacting);
 				else{
 					for (Container t: targets){
@@ -95,10 +144,10 @@ class Library extends Container {
 						}
 					}
 				}
-			}
+			}*/
 		}
 		
-		return (interacting != null);
+		return interacted || (dragging != null);
 	}
 	
 	// boolean drag (int mx, int my){
@@ -129,7 +178,11 @@ class Library extends Container {
 	// }
 	
 	boolean clicked(int mx, int my) {
-		boolean click = super.clicked(mx,my);
+		boolean click = false;
+		for (LibCollection c: sources){
+			click = click || c.clicked(mx,my);
+			if (click) break;
+		}
 		if (!click){
 			for (Container t: targets){
 				click = click || t.clicked(mx,my);
@@ -140,10 +193,17 @@ class Library extends Container {
 	}
 	
 	boolean released(){
-		boolean r = super.released();
+		boolean r = false;
+		if (dragging != null){
+			r = dragging.released();
+			dragging = null;
+		} //TODO better propogation of highlight disable (only thing release is really doing at the moment) than individual test
+		for (LibCollection c: sources){
+				r = r || c.released();
+		}
 		for (Container t: targets){
 			r = r || t.released();	
 		}
-		return r;
+		return r;		
 	}
 }

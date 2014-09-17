@@ -12,9 +12,9 @@ MenuBar menu;
 int mode;
 
 DtrmView view_0;
-StatView view_1;
+/*StatView view_1;
 MNSDView view_2;
-EnsembleView view_3;
+EnsembleView view_3;*/
 ProbabilityView view_4;
 
 LoadAnimation spinner;
@@ -73,7 +73,7 @@ void draw(){
 		case 0:
 			view_0.draw();
 			break;
-		case 1:
+		/*case 1:
 			view_1.draw();
 			break;
 		case 2:
@@ -81,7 +81,7 @@ void draw(){
 			break;
 		case 3:
 			view_3.draw();
-			break;
+			break;*/
 		case 4:
 			view_4.draw();
 			break;
@@ -93,9 +93,9 @@ void draw(){
 private void populate(){
 	// pull in loaded views
 	view_0 = loader.getDtrmView();
-	view_1 = loader.getStatView();
+	/*view_1 = loader.getStatView();
 	view_2 = loader.getMNSDView();
-	view_3 = loader.getEnsembleView();
+	view_3 = loader.getEnsembleView();*/
 	view_4 = loader.getProbabilityView();
 	
 	menu.addItem("Deterministic");
@@ -115,7 +115,7 @@ void mousePressed(){
 		case 0:
 			view_0.mousePress(mouseX, mouseY);
 			break;
-		case 1:
+		/*case 1:
 			view_1.mousePress(mouseX, mouseY);
 			break;
 		case 2:
@@ -123,10 +123,10 @@ void mousePressed(){
 			break;
 		case 3:
 			view_3.mousePress(mouseX, mouseY);
-			break;
+			break;*/
 		case 4:
 			view_4.mousePress(mouseX, mouseY);
-			break;		
+			break;
 		default:
 	}
 	
@@ -139,7 +139,7 @@ void mouseMoved(){
 		case 0:
 			view_0.mouseMove(mouseX, mouseY);
 			break;	
-		case 1:
+		/*case 1:
 			view_1.mouseMove(mouseX, mouseY);
 			break;
 		case 2:
@@ -147,7 +147,7 @@ void mouseMoved(){
 			break;
 		case 3:
 			view_3.mouseMove(mouseX, mouseY);
-			break;
+			break;*/
 		case 4:
 			view_4.mouseMove(mouseX, mouseY);
 			break;
@@ -163,7 +163,7 @@ void mouseDragged(){
 		case 0:
 			view_0.mouseDrag(mouseX, mouseY);
 			break;	
-		case 1:
+		/*case 1:
 			view_1.mouseDrag(mouseX, mouseY);
 			break;
 		case 2:
@@ -171,10 +171,10 @@ void mouseDragged(){
 			break;
 		case 3:
 			view_3.mouseDrag(mouseX, mouseY);
-			break;
+			break;*/
 		case 4:
 			view_4.mouseDrag(mouseX, mouseY);
-			break;		
+			break;
 		default:
 	}
 		
@@ -189,7 +189,7 @@ void mouseReleased() {
 				case 0:
 					view_0.haltAnim();
 					break;	
-				case 1:
+				/*case 1:
 					view_1.haltAnim();
 					break;
 				case 2:
@@ -197,10 +197,10 @@ void mouseReleased() {
 					break;
 				case 3:
 					view_3.haltAnim();
-					break;
+					break;*/
 				case 4:
 					view_4.haltAnim();
-					break;							
+					break;
 				default:
 			}
 			//swap
@@ -213,7 +213,7 @@ void mouseReleased() {
 		case 0:
 			view_0.mouseRelease();
 			break;	
-		case 1:
+		/*case 1:
 			view_1.mouseRelease();
 			break;
 		case 2:
@@ -221,7 +221,7 @@ void mouseReleased() {
 			break;
 		case 3:
 			view_3.mouseRelease();
-			break;
+			break;*/
 		case 4:
 			view_4.mouseRelease();
 			break;
@@ -234,7 +234,7 @@ void keyPressed() {
 		case 0:
 			view_0.keyPress(key, keyCode);
 			break;	
-		case 1:
+		/*case 1:
 			view_1.keyPress(key, keyCode);
 			break;
 		case 2:
@@ -242,7 +242,7 @@ void keyPressed() {
 			break;
 		case 3:
 			view_3.keyPress(key, keyCode);
-			break;
+			break;*/
 		case 4:
 			view_4.keyPress(key, keyCode);
 			break;
@@ -257,9 +257,9 @@ class ViewLoader implements Runnable{
 	private PFont error;
 	
 	private DtrmView view_0;
-	private StatView view_1;
+	/*private StatView view_1;
 	private MNSDView view_2;
-	private EnsembleView view_3;
+	private EnsembleView view_3;*/
 	private ProbabilityView view_4;
 	private boolean finished;
 	
@@ -267,9 +267,9 @@ class ViewLoader implements Runnable{
 		regular = null;
 		error = null;
 		view_0 = null;
-		view_1 = null;
+		/*view_1 = null;
 		view_2 = null;
-		view_3 = null;
+		view_3 = null;*/
 		view_4 = null;
 		finished = false;
 	}
@@ -288,7 +288,7 @@ class ViewLoader implements Runnable{
 		return view_0;
 	}
 
-	public StatView getStatView(){
+	/*public StatView getStatView(){
 		return view_1;
 	}
 
@@ -298,7 +298,7 @@ class ViewLoader implements Runnable{
 
 	public EnsembleView getEnsembleView(){
 		return view_3;
-	}
+	}*/
 
 	public ProbabilityView getProbabilityView(){
 		return view_4;
@@ -338,7 +338,7 @@ class ViewLoader implements Runnable{
 		view_0.linkGlyphs(glyphs);
 		view_0.loadData(dir, run);
 
-		// generate view_1
+		/*// generate view_1
 		view_1 = new StatView(samplesx, samplesy, spacing, cornerx, cornery, tabw, tabh, 32);
 		view_1.setFonts(regular, error);
 		view_1.setMap(map);
@@ -355,7 +355,7 @@ class ViewLoader implements Runnable{
 		view_3 = new EnsembleView(samplesx, samplesy, spacing, cornerx, cornery, tabw, tabh, 12);
 		view_3.setFonts(regular, error);
 		view_3.setMap(map);
-		view_3.loadData(dir, run);
+		view_3.loadData(dir, run);*/
 
 		// generate view_4
 		view_4 = new ProbabilityView(samplesx, samplesy, spacing, cornerx, cornery, tabw, tabh, 16);

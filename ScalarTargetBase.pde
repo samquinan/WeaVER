@@ -80,9 +80,10 @@ abstract class ScalarTargetBase extends Container implements Target {
 		return super.interact(mx,my);
 	}
 	
-	void remove(Selectable s){
-		super.remove(s);
-		updateRenderContext();	
+	boolean remove(Selectable s){
+		boolean b = super.remove(s);
+		if (b) updateRenderContext();	
+		return b;
 	}
 	
 	boolean isHovering(){

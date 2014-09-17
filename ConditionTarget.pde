@@ -120,10 +120,11 @@ class ConditionTarget extends ScalarTargetBase {
 	}
 	
 	
-	void add(Selectable s){
+	boolean add(Selectable s){
 		if (s instanceof HandlesConditions){
-			super.add(s);
+			return super.add(s);
 		}
+		else return false;
 	}
 	
 	boolean isIntersectedAABB(Selectable s){
