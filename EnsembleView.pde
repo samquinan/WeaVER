@@ -44,6 +44,9 @@ class EnsembleView extends View {
 	EnsembleView(int sx, int sy, float ds, int cx, int cy, int tw, int th, int libsize){
 		super(sx, sy, ds, cx, cy, tw, th, ceil(libsize/2.0));
 		
+		//add collections to library
+		//library.addCollection(2,2);
+		
 		int n = 50;
 		
 		// Controls

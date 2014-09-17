@@ -40,7 +40,7 @@ class Library {
 	
 	void addCollection(int c, int r){
 		float tmpY,dx,dy;
-		float buffer = 15;
+		float buffer = 7;
 		LibCollection last = sources.get(sources.size()-1);
 		tmpY = y + h + buffer;
 		dx = last.getDx();
@@ -60,6 +60,14 @@ class Library {
 	
 	boolean add(Selectable s){
 		return (sources.get(0)).add(s);
+	}
+	
+	boolean add(Selectable s, int collection_index){
+		LibCollection c = sources.get(collection_index);
+		if (c != null){
+			return c.add(s);
+		}
+		return false;
 	}
 		
 	void display() {
@@ -118,12 +126,12 @@ class Library {
 			//add if possible
 			if (dragging.current == null){
 				boolean added = false;
-				for (LibCollection c: sources){
+				/*for (LibCollection c: sources){
 					if(c.isIntersectedAABB(dragging)){
 						added = c.add(dragging);
 						break;
 					}
-				}
+				}*/
 				if (!added){
 					for (Container t: targets){
 						if(t.isIntersectedAABB(dragging)){

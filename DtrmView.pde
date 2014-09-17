@@ -16,6 +16,9 @@ class DtrmView extends View {
 		super(sx, sy, ds, cx, cy, tw, th, ceil(libsize/2.0));
 		glyphs = null;
 		
+		//add collections to library
+		library.addCollection(2,2);
+		
 		// Initialize Render State
 			//Color Map
 		fill = createImage(int(samplesx*spacing), int(samplesy*spacing), ARGB);
@@ -440,7 +443,7 @@ class DtrmView extends View {
 		encd.useInterpolation(false);
 		encd.setColorMap(tmp_3c);
 		encd.genIsovalues(273.15, 2);
-		library.add(new StatSelect(tabw,tabh,c700mb, encd, "TMP", "700mb", deriv));
+		library.add(new StatSelect(tabw,tabh,c700mb, encd, "TMP", "700mb", deriv),1);
 		
 		// 700mb RH
 		fields = new ArrayList<Field>();
@@ -458,7 +461,7 @@ class DtrmView extends View {
 		encd.useInterpolation(false);
 		encd.setColorMap(rh);
 		encd.genIsovalues(0, 10);
-		library.add(new StatSelect(tabw,tabh,c700mb, encd, "RH", "700mb", deriv));		
+		library.add(new StatSelect(tabw,tabh,c700mb, encd, "RH", "700mb", deriv),1);		
 		
 		// 500mb TMP
 		fields = new ArrayList<Field>();

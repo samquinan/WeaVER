@@ -41,7 +41,7 @@ class Container { //TODO double check threadsafety for all operations, reduce le
 	boolean add(Selectable s){
 		synchronized(lock){
 		if (entries.size() == rows*cols){
-			println("Error: Attempted to Add Selectable to Full Container!");
+			//println("Error: Attempted to Add Selectable to Full Container!");
 			return false;	
 		}
 		int index;
