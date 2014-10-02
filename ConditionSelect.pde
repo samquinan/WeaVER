@@ -5,6 +5,52 @@ class ConditionSelect extends Selectable implements HandlesConditions{
 	ConditionSelect parent;
 	ConditionSelect child;
 	
+	ConditionSelect(float ix, float iy, float iw, float ih, ArrayList<ConditionEnsemble> e){
+		super(ix, iy, iw, ih);
+		conditionSeries = e;
+		var = "";
+		hgt = "";
+		val = "";
+		parent = null;
+		child = null;
+		thereCanBeOnlyOne = false;
+	}
+	
+	ConditionSelect(float ix, float iy, float iw, float ih, ArrayList<ConditionEnsemble> e, String v, String h, String i){
+		super(ix, iy, iw, ih);
+		conditionSeries = e;
+		var = v;
+		hgt = h;
+		val = i;
+		parent = null;
+		child = null;
+		thereCanBeOnlyOne = false;
+	}
+	
+	ConditionSelect(float iw, float ih, ArrayList<ConditionEnsemble> e){
+		super(0, 0, iw, ih);
+		conditionSeries = e;
+		var = "";
+		hgt = "";
+		val = "";
+		parent = null;
+		child = null;
+		thereCanBeOnlyOne = false;
+	}
+	
+	ConditionSelect(float iw, float ih, ArrayList<ConditionEnsemble> e, String v, String h, String i){
+		super(0, 0, iw, ih);
+		conditionSeries = e;
+		var = v;
+		hgt = h;
+		val = i;
+		parent = null;
+		child = null;
+		thereCanBeOnlyOne = false;
+	}
+	
+	
+	//DEPRECATED
 	ConditionSelect(float ix, float iy, float iw, float ih, color rgb, ArrayList<ConditionEnsemble> e){
 		super(ix, iy, iw, ih, rgb);
 		conditionSeries = e;
@@ -79,9 +125,9 @@ class ConditionSelect extends Selectable implements HandlesConditions{
 			noStroke();
 			fill(color(225,226,227,a));
 			rect(x,y,w,h);
-		
-			fill(color(r,g,b,a));
-			rect(x+6,y,7,h);
+
+/*			fill(color(r,g,b,a));
+			rect(x+6,y,7,h);*/
 		
 			noFill();
 			if (rollover && !(thereCanBeOnlyOne && (child != null))) {
@@ -98,7 +144,8 @@ class ConditionSelect extends Selectable implements HandlesConditions{
 			textSize(11);
 			textAlign(LEFT, CENTER);
 			fill(0, a);
-			text(var,x+15,y+h/2-2);
+			//text(var,x+15,y+h/2-2);
+			text(var,x+6,y+h/2-2);
 		
 			textSize(9);
 			fill(0, a);
@@ -112,7 +159,7 @@ class ConditionSelect extends Selectable implements HandlesConditions{
 	}
 	
 	ConditionSelect instantiate(){
-		ConditionSelect s = new ConditionSelect(x,y,w,h,color(r,g,b), conditionSeries, var, hgt, val);
+		ConditionSelect s = new ConditionSelect(x,y,w,h, conditionSeries, var, hgt, val);
 		s.isClone = true;
 		s.thereCanBeOnlyOne = thereCanBeOnlyOne;
 		if (this.isClone) s = null;

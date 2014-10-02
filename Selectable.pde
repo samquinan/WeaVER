@@ -14,6 +14,31 @@ class Selectable {
 	Container current;
 	int lib_idx; //library index
 	
+	Selectable(float ix, float iy, float iw, float ih) {
+	    x = ix;
+		restx = ix;
+	    y = iy;
+		resty = iy;
+	    w = iw;
+	    h = ih;
+	    offsetX = 0;
+	    offsetY = 0;
+		
+		r = int(0); 
+		g = int(0);
+		b = int(0);
+		
+		home = null;
+		current = null;
+		lib_idx = -1;
+		
+		visible  = true;
+		dragging = false;
+		rollover = false;
+		isClone  = false;
+	}
+	
+	
 	Selectable(float ix, float iy, float iw, float ih, color rgb) {
 	    x = ix;
 		restx = ix;
@@ -43,7 +68,7 @@ class Selectable {
 	}
 	
 	Selectable instantiate(){
-		Selectable s = new Selectable(x,y,w,h,color(r,g,b));
+		Selectable s = new Selectable(x,y,w,h);
 		s.isClone = true;
 		return s;
 	}
@@ -61,8 +86,8 @@ class Selectable {
 			fill(color(225,226,227,a));
 			rect(x,y,w,h);
 		
-			fill(color(r,g,b,a));
-			rect(x+6,y,7,h);
+			/*fill(color(r,g,b,a));
+			rect(x+6,y,7,h);*/
 		
 			noFill();
 			if (rollover) {

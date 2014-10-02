@@ -5,6 +5,53 @@ class EnsembleSelect extends Selectable implements EncodesSP, EncodesCBP{
 	EnsembleSelect parent;
 	EnsembleSelect child;
 	
+	EnsembleSelect(float ix, float iy, float iw, float ih, EnsembleEncoding e){
+		super(ix, iy, iw, ih);
+		encd = e;
+		var = "";
+		hgt = "";
+		val = "";
+		parent = null;
+		child = null;
+		thereCanBeOnlyOne = false;
+	}
+	
+	EnsembleSelect(float ix, float iy, float iw, float ih, EnsembleEncoding e, String v, String h, String i){
+		super(ix, iy, iw, ih);
+		encd = e;
+		var = v;
+		hgt = h;
+		val = i;
+		parent = null;
+		child = null;
+		thereCanBeOnlyOne = false;
+	}
+	
+	EnsembleSelect(float iw, float ih, EnsembleEncoding e){
+		super(0, 0, iw, ih);
+		encd = e;
+		var = "";
+		hgt = "";
+		val = "";
+		parent = null;
+		child = null;
+		thereCanBeOnlyOne = false;
+	}
+	
+	EnsembleSelect(float iw, float ih, EnsembleEncoding e, String v, String h, String i){
+		super(0, 0, iw, ih);
+		encd = e;
+		var = v;
+		hgt = h;
+		val = i;
+		parent = null;
+		child = null;
+		thereCanBeOnlyOne = false;
+	}
+	
+	
+	
+	//DEPRECATED
 	EnsembleSelect(float ix, float iy, float iw, float ih, color rgb, EnsembleEncoding e){
 		super(ix, iy, iw, ih, rgb);
 		encd = e;
@@ -72,8 +119,8 @@ class EnsembleSelect extends Selectable implements EncodesSP, EncodesCBP{
 			fill(color(225,226,227,a));
 			rect(x,y,w,h);
 		
-			fill(color(r,g,b,a));
-			rect(x+6,y,7,h);
+			/*fill(color(r,g,b,a));
+			rect(x+6,y,7,h);*/
 		
 			noFill();
 			if (rollover && !(thereCanBeOnlyOne && (child != null))) {
@@ -90,7 +137,8 @@ class EnsembleSelect extends Selectable implements EncodesSP, EncodesCBP{
 			textSize(11);
 			textAlign(LEFT, CENTER);
 			fill(0, a);
-			text(var,x+15,y+h/2-2);
+			/*text(var,x+15,y+h/2-2);*/
+			text(var,x+6,y+h/2-2);
 		
 			textSize(10);
 			fill(0, a);
@@ -104,7 +152,7 @@ class EnsembleSelect extends Selectable implements EncodesSP, EncodesCBP{
 	}
 	
 	EnsembleSelect instantiate(){
-		EnsembleSelect s = new EnsembleSelect(x,y,w,h,color(r,g,b), encd, var, hgt, val);
+		EnsembleSelect s = new EnsembleSelect(x,y,w,h, encd, var, hgt, val);
 		s.isClone = true;
 		s.thereCanBeOnlyOne = thereCanBeOnlyOne;
 		if (this.isClone) s = null;

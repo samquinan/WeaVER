@@ -3,6 +3,43 @@ class MNSDSelect extends Selectable implements EncodesScalar{
 	ScalarEncoding mean;
 	ScalarEncoding stddev;
 	
+	MNSDSelect(float ix, float iy, float iw, float ih, ScalarEncoding mn, ScalarEncoding sd){
+		super(ix, iy, iw, ih);
+		mean = mn;
+		stddev = sd;
+		var = "";
+		hgt = "";
+		statop = "MNSD";
+	}
+	
+	MNSDSelect(float ix, float iy, float iw, float ih, ScalarEncoding mn, ScalarEncoding sd, String v, String h){
+		super(ix, iy, iw, ih);
+		mean = mn;
+		stddev = sd;
+		var = v;
+		hgt = h;
+		statop = "MNSD";
+	}
+	
+	MNSDSelect(float iw, float ih, ScalarEncoding mn, ScalarEncoding sd){
+		super(0, 0, iw, ih);
+		mean = mn;
+		stddev = sd;
+		var = "";
+		hgt = "";
+		statop = "MNSD";
+	}
+	
+	MNSDSelect(float iw, float ih, ScalarEncoding mn, ScalarEncoding sd, String v, String h){
+		super(0, 0, iw, ih);
+		mean = mn;
+		stddev = sd;
+		var = v;
+		hgt = h;
+		statop = "MNSD";
+	}
+	
+	//Deprecated
 	MNSDSelect(float ix, float iy, float iw, float ih, color rgb, ScalarEncoding mn, ScalarEncoding sd){
 		super(ix, iy, iw, ih, rgb);
 		mean = mn;
@@ -57,7 +94,8 @@ class MNSDSelect extends Selectable implements EncodesScalar{
 			textSize(11);
 			textAlign(LEFT, CENTER);
 			fill(0);
-			text(var,x+15,y+h/2-2);
+			//text(var,x+15,y+h/2-2);
+			text(var,x+6,y+h/2-2);
 		
 			textSize(9);
 			fill(0);
@@ -70,7 +108,7 @@ class MNSDSelect extends Selectable implements EncodesScalar{
 	}
 	
 	MNSDSelect instantiate(){
-		MNSDSelect s = new MNSDSelect(x,y,w,h,color(r,g,b), mean, stddev, var, hgt);
+		MNSDSelect s = new MNSDSelect(x,y,w,h, mean, stddev, var, hgt);
 		s.isClone = true;
 		return s;
 	}

@@ -2,6 +2,40 @@ class WindSelect extends Selectable implements EncodesScalar, EncodesVector{
 	String var, hgt, statop;
 	WindEncoding encd;
 	
+	WindSelect(float ix, float iy, float iw, float ih, WindEncoding e){
+		super(ix, iy, iw, ih);
+		encd = e;
+		var = "";
+		hgt = "";
+		statop = "";
+	}
+	
+	WindSelect(float ix, float iy, float iw, float ih, WindEncoding e, String h, String op){
+		super(ix, iy, iw, ih);
+		encd = e;
+		var = "WIND";
+		hgt = h;
+		statop = op;
+	}
+	
+	WindSelect(float iw, float ih, WindEncoding e){
+		super(0, 0, iw, ih);
+		encd = e;
+		var = "";
+		hgt = "";
+		statop = "";
+	}
+	
+	WindSelect(float iw, float ih, WindEncoding e, String h, String op){
+		super(0, 0, iw, ih);
+		encd = e;
+		var = "WIND";
+		hgt = h;
+		statop = op;
+	}
+	
+	
+	//Deprecated
 	WindSelect(float ix, float iy, float iw, float ih, color rgb, WindEncoding e){
 		super(ix, iy, iw, ih, rgb);
 		encd = e;
@@ -33,6 +67,7 @@ class WindSelect extends Selectable implements EncodesScalar, EncodesVector{
 		hgt = h;
 		statop = op;
 	}
+		
 	
 	boolean dataIsAvailable(int idx){
 		return encd.dataIsAvailable(idx);
@@ -52,7 +87,9 @@ class WindSelect extends Selectable implements EncodesScalar, EncodesVector{
 			textSize(11);
 			textAlign(LEFT, CENTER);
 			fill(0);
-			text(var,x+15,y+h/2-2);
+			/*text(var,x+15,y+h/2-2);*/
+			text(var,x+6,y+h/2-2);
+			
 		
 			textSize(9);
 			fill(0);

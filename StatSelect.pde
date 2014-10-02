@@ -2,6 +2,7 @@ class StatSelect extends Selectable implements EncodesScalar{
 	String var, hgt, statop;
 	ScalarEncoding statfield;
 	
+	/*deprecated*/
 	StatSelect(float ix, float iy, float iw, float ih, color rgb, ScalarEncoding f){
 		super(ix, iy, iw, ih, rgb);
 		statfield = f;
@@ -10,6 +11,15 @@ class StatSelect extends Selectable implements EncodesScalar{
 		statop = "";
 	}
 	
+	StatSelect(float ix, float iy, float iw, float ih, ScalarEncoding f){
+		super(ix, iy, iw, ih);
+		statfield = f;
+		var = "";
+		hgt = "";
+		statop = "";
+	}
+	
+	/*deprecated*/
 	StatSelect(float ix, float iy, float iw, float ih, color rgb, ScalarEncoding f, String v, String h, String op){
 		super(ix, iy, iw, ih, rgb);
 		statfield = f;
@@ -18,6 +28,15 @@ class StatSelect extends Selectable implements EncodesScalar{
 		statop = op;
 	}
 	
+	StatSelect(float ix, float iy, float iw, float ih, ScalarEncoding f, String v, String h, String op){
+		super(ix, iy, iw, ih);
+		statfield = f;
+		var = v;
+		hgt = h;
+		statop = op;
+	}
+	
+	/*deprecated*/
 	StatSelect(float iw, float ih, color rgb, ScalarEncoding f){
 		super(0, 0, iw, ih, rgb);
 		statfield = f;
@@ -26,6 +45,15 @@ class StatSelect extends Selectable implements EncodesScalar{
 		statop = "";
 	}
 	
+	StatSelect(float iw, float ih, ScalarEncoding f){
+		super(0, 0, iw, ih);
+		statfield = f;
+		var = "";
+		hgt = "";
+		statop = "";
+	}
+	
+	/*deprecated*/
 	StatSelect(float iw, float ih, color rgb, ScalarEncoding f, String v, String h, String op){
 		super(0, 0, iw, ih, rgb);
 		statfield = f;
@@ -33,6 +61,15 @@ class StatSelect extends Selectable implements EncodesScalar{
 		hgt = h;
 		statop = op;
 	}
+	
+	StatSelect(float iw, float ih, ScalarEncoding f, String v, String h, String op){
+		super(0, 0, iw, ih);
+		statfield = f;
+		var = v;
+		hgt = h;
+		statop = op;
+	}
+	
 	
 	String getID(){
 		return hgt + " " + var;
@@ -52,7 +89,8 @@ class StatSelect extends Selectable implements EncodesScalar{
 			textSize(11);
 			textAlign(LEFT, CENTER);
 			fill(0);
-			text(var,x+15,y+h/2-2);
+			//text(var,x+15,y+h/2-2);
+			text(var,x+6,y+h/2-2);
 		
 			textSize(9);
 			fill(0);
@@ -65,7 +103,7 @@ class StatSelect extends Selectable implements EncodesScalar{
 	}
 	
 	StatSelect instantiate(){
-		StatSelect s = new StatSelect(x,y,w,h,color(r,g,b),statfield, var, hgt, statop);
+		StatSelect s = new StatSelect(x,y,w,h,statfield, var, hgt, statop);
 		s.isClone = true;
 		return s;
 	}
