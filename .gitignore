@@ -7,3 +7,6 @@ build/
 #ignore processing/{data,curated}
 /processing/data/
 /processing/curated/
+
+#ignore wgrib2
+wgrib2
