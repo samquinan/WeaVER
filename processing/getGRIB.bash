@@ -30,7 +30,7 @@ PERTLIST="ctl n1 p1 n2 p2 n3 p3"
 NGRID=212
 #FRCSTH=12
 
-WGRIB=./wgrib2
+WGRIB=wgrib2
 DATADIR=./'data'/'grib'/$TDATE
 TXTDIR=./data/fields/$DATE
 

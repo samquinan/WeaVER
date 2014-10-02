@@ -11,7 +11,7 @@ echo "Converting grib2 format to text"
 DATE="$1"
 MCYCLE=`printf "%02d" ${2#0}`
 
-WGRIB=./wgrib2
+WGRIB=wgrib2
 DATADIR=./data/grib/$DATE
 TXTDIR=./data/fields/$DATE
 
