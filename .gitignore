@@ -1,13 +1,7 @@
 #ignore any and all datasets
-
 datasets/
-
 #ignore any and all build directories
-
-build/ 
-
+build/
 #ignore processing/{data,curated}
-
 /processing/data/
-
 /processing/curated/
