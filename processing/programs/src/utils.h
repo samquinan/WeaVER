@@ -10,6 +10,9 @@
 #include <iomanip>
 #include <string>
 #include <limits>
+#include <functional>
+#include <algorithm>
+
 
 template<typename T>
 bool readFileToVector(const char *fname, std::vector<T> &data) {
