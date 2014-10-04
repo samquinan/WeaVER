@@ -26,12 +26,24 @@ bool readFileToVector(const char *fname, std::vector<T> &data) {
 		std::cerr << "Error opening file: " << fname << std::endl;
 		return false;
 	}
-	
-	std::istream_iterator<T> itr(in), eof;
-	
+
+	T val;
+	try{
+		while(in >> val){
+			data.push_back(val);
+		}
+	}
+	catch(std::ifstream::failure e){
+		if( in.bad() || (in.fail() && !in.eof()) ){
+			std::cerr << "Error reading file: " << fname << std::endl;
+			return false;
+		}
+	}	
+/*	std::istream_iterator<T> itr(in), eof;
 	std::copy (	itr,   	 					// start of source
 	      		eof,    					// end of source
 	      	  	std::back_inserter(data));  // destination
+*/	
 	in.close();
     return true;
 }
