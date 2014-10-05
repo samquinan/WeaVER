@@ -92,7 +92,7 @@ find ./data/fields/$DATE/200mb_TMP -maxdepth 1 -mindepth 1 -name '*em.t'$MCYCLE'
 # Contour Box Plots
 mkdir -p ./curated/CBP/500mb_HGT/
 
-find ./data/cbp/20141001/09/500mb_HGT -type d -maxdepth 1 -mindepth 1 | xargs -I{} cp -r {} ./curated/CBP/500mb_HGT/
+find ./data/cbp/$DATE/$MCYCLE/500mb_HGT -maxdepth 1 -mindepth 1 -type d | xargs -I{} cp -r {} ./curated/CBP/500mb_HGT/
 
 # Probability
 mkdir -p ./curated/Probabilities/2m_RH/
