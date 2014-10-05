@@ -28,12 +28,12 @@ void setup() {
 	smooth(8);
 	
 	// specify font
-  	plotFont = createFont("Georgia", 12);
-	errFont = createFont("Georgia-Bold", 14);
+  	plotFont = createFont("Charter", 12);
+	errFont = createFont("Charter-Bold", 14);
   	textFont(plotFont);
   	
 	// menu bar
-	menu = new MenuBar(0,0,width,12);
+	menu = new MenuBar(0,0,width,14);
 	mode = menu.getMode();
 	
 	//spinner	
