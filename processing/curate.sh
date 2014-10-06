@@ -104,8 +104,13 @@ find ./data/fields/$DATE/10m_Wind/prob 		 	-name '*.t'$MCYCLE'z*' -type f | xarg
 find ./data/fields/$DATE/surface_APCP/12hr/prob -name '*.t'$MCYCLE'z*' -type f | xargs -I{} cp {} ./curated/Probabilities/12hr_APCP/
 
 
-# move
+# blow away previous
+rm -rf ../datasets
+rm -f ../dataset.properties
+
+# move new into place
 mv ./curated ../datasets
+echo run=$MCYCLE > ../dataset.properties
 
 
 
