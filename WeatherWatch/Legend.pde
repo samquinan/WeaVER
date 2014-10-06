@@ -5,7 +5,9 @@ class Legend {
 	boolean convert;
 	float x,y;
 	int w,h;
-	int m,n;	
+	int m,n;
+	
+	Converter cc;	
 	
 	Legend(float ix, float iy, int iw, int ih){
 		x = ix;
@@ -22,6 +24,8 @@ class Legend {
 		
 		interpolate=false;
 		convert = false;
+		
+		cc = new Converter();
 	}
 	
 	void useInterpolation(boolean b){
@@ -59,7 +63,7 @@ class Legend {
 			float val = cmap.val.get(i);
 			float tag_y = map(val, vmax, vmin, 0, h);
 			//line(x-10, y+tag_y, x-5, y+tag_y);
-			if (convert) val = val - 273.15;
+			if (convert) val = cc.K_to_C(val);
 			text(Float.toString(val), x-3, y-2+tag_y);
 		}
 		
