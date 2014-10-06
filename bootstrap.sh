@@ -7,7 +7,6 @@ git pull
 # TODO check smarter way to handle updates without wiping the entire build
 mkdir -p ./processing/programs/build/
 cd processing/programs/build/
-rm -rf ./*
 cmake ../src
 make
 cd -
@@ -15,7 +14,6 @@ cd -
 # TODO check smarter way to handle updates without wiping the entire build
 mkdir -p ./processing/cbp/build/
 cd processing/cbp/build/
-rm -rf ./*
 cmake ../src
 make
 cd -
