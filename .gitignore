@@ -1,5 +1,7 @@
 #ignore any and all datasets
 datasets/
+#ignore dataset properties
+dataset.properties
 #ignore any and all build directories
 build/
 #ignore processing/{data,curated}
