@@ -10,7 +10,7 @@ class MNSDView extends View {
 	Contour2D highlight;
 	
 	MNSDView(int sx, int sy, float ds, int cx, int cy, int tw, int th, int libsize){
-		super(sx, sy, ds, cx, cy, tw, th, ceil(libsize/2.0));
+		super(sx, sy, ds, cx, cy, tw, th, libsize);
 		
 		// Initialize Render State
 			//Color Map

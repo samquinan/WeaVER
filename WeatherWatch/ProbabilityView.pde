@@ -11,7 +11,7 @@ class ProbabilityView extends View {
 	Switch joint_switch;
 	
 	ProbabilityView(int sx, int sy, float ds, int cx, int cy, int tw, int th, int libsize){
-		super(sx, sy, ds, cx, cy, tw, th, ceil(libsize/2.0));
+		super(sx, sy, ds, cx, cy, tw, th, libsize);
 		
 		joint_switch = new Switch(cornerx+(samplesx*spacing)-120, cornery-tabh-10, 16, 14);
 		joint_switch.setColors(color(170), color(110), color(70));

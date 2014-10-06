@@ -12,9 +12,18 @@ class StatView extends View {
 	Contour2D highlight;
 	ArrayList<Barb> barbs;
 	
+	//these really should go into seperate structure
+	ColorMapf wind, rh, tmp_5c;//tmp_3c
+	
 	StatView(int sx, int sy, float ds, int cx, int cy, int tw, int th, int libsize){
-		super(sx, sy, ds, cx, cy, tw, th, ceil(libsize/2.0));
+		super(sx, sy, ds, cx, cy, tw, th, libsize);
 		glyphs = null;
+		
+		//add collections to library
+		library.addCollection(3,4);
+		library.addCollection(3,4);
+		library.addCollection(3,4);
+		library.addCollection(3,4);		
 		
 		// Initialize Render State
 			//Color Map
@@ -288,16 +297,43 @@ class StatView extends View {
 	void loadData(String dataDir, int run_input){
 	
 		// TMP : increments of 5 degrees C
-		ColorMapf tmp_5c = new ColorMapf();
+		tmp_5c = new ColorMapf();
 		colorMode(HSB, 360, 100, 100, 100);
-		tmp_5c.add(228.15, color(270, 100,  29) );
+		tmp_5c.add(213.15, color(270,  100,  29));
+		tmp_5c.add(218.15, color(260,   91,  40));
+		tmp_5c.add(223.15, color(250,   83,  47));
+		tmp_5c.add(228.15, color(240,   75,  53));
+		tmp_5c.add(233.15, color(230,   67,  59));
+		tmp_5c.add(238.15, color(220,   59,  63));
+		tmp_5c.add(243.15, color(210,   50,  67));
+		tmp_5c.add(248.15, color(200,   42,  71));
+		tmp_5c.add(253.15, color(190,   34,  75));
+		tmp_5c.add(258.15, color(180,   26,  78));
+		tmp_5c.add(263.15, color(170,   18,  81));
+		tmp_5c.add(268.15, color(160,   10,  84));
+		tmp_5c.add(273.15, color(145,    0,  84));
+		tmp_5c.add(278.15, color(110,   10,  84));
+		tmp_5c.add(283.15, color(100,   18,  81));
+		tmp_5c.add(288.15, color( 90,   26,  78));
+		tmp_5c.add(293.15, color( 80,   34,  75));
+		tmp_5c.add(298.15, color( 70,   42,  71));
+		tmp_5c.add(303.15, color( 60,   50,  67));
+		tmp_5c.add(308.15, color( 50,   59,  63));
+		tmp_5c.add(313.15, color( 40,   67,  59));
+		tmp_5c.add(318.15, color( 30,   75,  53));
+		tmp_5c.add(323.15, color( 20,   83,  47));
+		tmp_5c.add(328.15, color( 10,   91,  40));
+		tmp_5c.add(333.15, color(  0,  100,  29));
+		colorMode(RGB,255);
+		
+		/*tmp_5c.add(228.15, color(270, 100,  29) );
 		tmp_5c.add(233.15, color(256,  88,  43) );
-		tmp_5c.add(238.15, color(242,  77,  52) ); 
-		tmp_5c.add(243.15, color(228,  66,  59) ); 
-		tmp_5c.add(248.15, color(215,  55,  65) ); 
-		tmp_5c.add(253.15, color(201,  43,  71) ); 
-		tmp_5c.add(258.15, color(187,  32,  76) ); 
-		tmp_5c.add(263.15, color(173,  21,  80) ); 
+		tmp_5c.add(238.15, color(242,  77,  52) );
+		tmp_5c.add(243.15, color(228,  66,  59) );
+		tmp_5c.add(248.15, color(215,  55,  65) );
+		tmp_5c.add(253.15, color(201,  43,  71) );
+		tmp_5c.add(258.15, color(187,  32,  76) );
+		tmp_5c.add(263.15, color(173,  21,  80) );
 		tmp_5c.add(268.15, color(160,  10,  84) );
 		tmp_5c.add(273.15, color(145,   0,  84) );
 		tmp_5c.add(278.15, color(110,  10,  84) );
@@ -308,11 +344,11 @@ class StatView extends View {
 		tmp_5c.add(303.15, color( 41,  66,  59) );
 		tmp_5c.add(308.15, color( 27,  77,  52) );
 		tmp_5c.add(313.15, color( 13,  88,  43) );
-		tmp_5c.add(318.15, color(  0, 100,  29) );
-		colorMode(RGB,255);
+		tmp_5c.add(318.15, color(  0, 100,  29) );*/
+		
 
-		// TMP : increments of 3 degrees C
-		ColorMapf tmp_3c = new ColorMapf();
+		/*// TMP : increments of 3 degrees C
+		tmp_3c = new ColorMapf();
 		colorMode(HSB, 360, 100, 100, 100);
 		tmp_3c.add(228.15, color(270, 100,  29));
 		tmp_3c.add(231.15, color(262,  93,  38));
@@ -345,10 +381,10 @@ class StatView extends View {
 		tmp_3c.add(312.15, color( 15,  87,  44));
 		tmp_3c.add(315.15, color(  7,  93,  38));
 		tmp_3c.add(318.15, color(  0, 100,  29));
-		colorMode(RGB,255);
+		colorMode(RGB,255);*/
 		
 		// RH : increments of 3 degrees C
-		ColorMapf rh = new ColorMapf();
+		rh = new ColorMapf();
 	    // rh.add(0, color(255, 255, 255, 0));
 	    // rh.add(69, color(255, 255, 255, 0));
 	    // rh.add(70, color(93, 180, 80, 255));
@@ -357,11 +393,11 @@ class StatView extends View {
 	    // rh.add(100, color(9, 49, 3, 255));
 		colorMode(HSB, 360, 100, 100, 100);
 		rh.add(   0, color(180, 25, 29,   0));
-		rh.add(  69, color(77,  49, 70,   0));	
-		rh.add( 100, color(163, 29, 41, 100));
-		rh.add(  90, color(129, 37, 55, 100));
-		rh.add(  80, color(95,  45, 65, 100));
+		rh.add(69.9999, color(77,  49, 70,   0));	
 		rh.add(  70, color(77,  49, 70, 100));
+		rh.add(  80, color(95,  45, 65, 100));
+		rh.add(  90, color(129, 37, 55, 100));
+		rh.add( 100, color(163, 29, 41, 100));
 		colorMode(RGB,255);
 	
 		// // testing wind isotachs
@@ -375,10 +411,10 @@ class StatView extends View {
 		// test.add(80, color( 41,  66,  59, 100));
 		// test.add(90, color( 13,  88,  43, 100));
 		// colorMode(RGB,255);
-		ColorMapf wind = new ColorMapf();
+		wind = new ColorMapf();
 		colorMode(HSB, 360, 100, 100, 100);
 		wind.add(   0, color(180, 25, 29,   0));	
-		wind.add(49.9, color(180, 25, 29,   0));	
+		wind.add(49.9999, color(180, 25, 29,   0));	
 		wind.add(  50, color(180, 25, 29, 100));
 		wind.add(  60, color(163, 29, 41, 100));
 		wind.add(  70, color(146, 33, 49, 100));
@@ -392,7 +428,7 @@ class StatView extends View {
 		wind.add( 150, color(10,  65, 84, 100));
 		colorMode(RGB,255);
 		
-		ColorMapf precip = new ColorMapf();
+		/*ColorMapf precip = new ColorMapf();
 		colorMode(HSB, 360, 100, 100, 100);
 		precip.add(    4*25.4,  color(230,  65,  29, 100));
 		precip.add(    3*25.4,  color(223,  60,  41, 100));
@@ -407,19 +443,63 @@ class StatView extends View {
 		// precip.add( 0.01*25.4,  color(167,  20,  81,   0));
 		// precip.add(0.019*25.4,  color(160,  15,  84,   0));
 		precip.add(         0,  color(160,  15,  84,   0));
-		colorMode(RGB,255);
+		colorMode(RGB,255);*/
 		
-		color c700mb, c500mb, cSurface;
+		/*color c700mb, c500mb, cSurface;
 		c500mb = color(90, 54, 153);
 		c700mb = color(0, 116, 162);
-		cSurface = color(86, 149, 36);
+		cSurface = color(86, 149, 36);*/
 		
-		Field f;
-		ScalarEncoding encd;
 		// StatSelect entry;
-		PVector corner = new PVector(cornerx, cornery);
-	
-		// 700mb tmp
+		
+		String hgt;
+		hgt = "200mb";
+		addStatSelectRH(  dataDir, run_input, hgt, "mean", 0);
+		addStatSelectRH(  dataDir, run_input, hgt,  "max", 0);
+		addStatSelectRH(  dataDir, run_input, hgt,  "min", 0);
+		
+		
+		hgt = "300mb";
+		addStatSelectRH(  dataDir, run_input, hgt, "mean", 1);
+		addStatSelectRH(  dataDir, run_input, hgt,  "max", 1);
+		addStatSelectRH(  dataDir, run_input, hgt,  "min", 1);
+		
+		
+		hgt = "500mb";
+		addStatSelectRH(  dataDir, run_input, hgt, "mean", 2);
+		addStatSelectRH(  dataDir, run_input, hgt,  "max", 2);
+		addStatSelectRH(  dataDir, run_input, hgt,  "min", 2);
+		
+		addStatSelectTMP( dataDir, run_input, hgt, "mean", 2);
+		addStatSelectTMP( dataDir, run_input, hgt,  "max", 2);
+		addStatSelectTMP( dataDir, run_input, hgt,  "min", 2);
+		
+		
+		hgt = "700mb";
+		addStatSelectRH(  dataDir, run_input, hgt, "mean", 3);
+		addStatSelectRH(  dataDir, run_input, hgt,  "max", 3);
+		addStatSelectRH(  dataDir, run_input, hgt,  "min", 3);
+		
+		addStatSelectTMP( dataDir, run_input, hgt, "mean", 3);
+		addStatSelectTMP( dataDir, run_input, hgt,  "max", 3);
+		addStatSelectTMP( dataDir, run_input, hgt,  "min", 3);
+		
+		
+		hgt = "850mb";
+		addStatSelectRH(  dataDir, run_input, hgt, "mean", 4);
+		addStatSelectRH(  dataDir, run_input, hgt,  "max", 4);
+		addStatSelectRH(  dataDir, run_input, hgt,  "min", 4);
+		
+		addStatSelectTMP( dataDir, run_input, hgt, "mean", 4);
+		addStatSelectTMP( dataDir, run_input, hgt,  "max", 4);
+		addStatSelectTMP( dataDir, run_input, hgt,  "min", 4);
+		
+		
+		
+		
+		
+		
+		/*// 700mb tmp
 		ArrayList<Field> fields = new ArrayList<Field>();
 		String dir = dataDir + "/StatFields/700mb_TMP/";
 		String run = String.format("%02d", run_input);
@@ -431,14 +511,14 @@ class StatView extends View {
 			f = new Field(file, samplesx, samplesy, corner, samplesy*spacing, samplesx*spacing);
 			fields.add(f);
 		}
-	
+
 		encd = new ScalarEncoding(fields);
 		encd.useBilinear(true);
 		encd.useInterpolation(false);
 		encd.setColorMap(tmp_3c);
 		encd.genIsovalues(273.15, 2);
 		library.add(new StatSelect(tabw,tabh,c700mb, encd, "TMP", "700mb", deriv));
-		
+
 		// 700mb RH
 		fields = new ArrayList<Field>();
 		dir = dataDir + "/StatFields/700mb_RH/";
@@ -449,14 +529,14 @@ class StatView extends View {
 			f = new Field(file, samplesx, samplesy, corner, samplesy*spacing, samplesx*spacing);
 			fields.add(f);
 		}
-		
+
 		encd = new ScalarEncoding(fields);
 		encd.useBilinear(true);
 		encd.useInterpolation(false);
 		encd.setColorMap(rh);
 		encd.genIsovalues(0, 10);
 		library.add(new StatSelect(tabw,tabh,c700mb, encd, "RH", "700mb", deriv));
-		
+
 		// 700mb Wind
 		WindField wf;
 		WindEncoding w_encd;
@@ -470,16 +550,16 @@ class StatView extends View {
 			wf = new WindField(file, file2, samplesx, samplesy, corner, samplesy*spacing, samplesx*spacing);
 			wfields.add(wf);
 		}
-			
+
 		w_encd = new WindEncoding(wfields, glyphs);
 		w_encd.useBilinear(true);
 		w_encd.useInterpolation(false);
 		w_encd.setColorMap(wind);
 		w_encd.genIsovalues(0, 10);
 		library.add(new WindSelect(tabw,tabh, c700mb, w_encd, "700mb", deriv));
-		
-		
-		
+
+
+
 		// 500mb TMP
 		fields = new ArrayList<Field>();
 		dir = dataDir + "/StatFields/500mb_TMP/";
@@ -490,14 +570,14 @@ class StatView extends View {
 			f = new Field(file, samplesx, samplesy, corner, samplesy*spacing, samplesx*spacing);
 			fields.add(f);
 		}
-		
+
 		encd = new ScalarEncoding(fields);
 		encd.useBilinear(true);
 		encd.useInterpolation(false);
 		encd.setColorMap(tmp_3c);
 		encd.genIsovalues(273.15, 2);
 		library.add(new StatSelect(tabw,tabh,c500mb, encd, "TMP", "500mb", deriv));
-		
+
 		// 500mb RH
 		fields = new ArrayList<Field>();
 		dir = dataDir + "/StatFields/500mb_RH/";
@@ -508,15 +588,15 @@ class StatView extends View {
 			f = new Field(file, samplesx, samplesy, corner, samplesy*spacing, samplesx*spacing);
 			fields.add(f);
 		}
-		
+
 		encd = new ScalarEncoding(fields);
 		encd.useBilinear(true);
 		encd.useInterpolation(false);
 		encd.setColorMap(rh);
 		encd.genIsovalues(0, 10);
 		library.add(new StatSelect(tabw,tabh,c500mb, encd, "RH", "500mb", deriv));
-		
-	
+
+
 		// 500mb Wind
 		wfields = new ArrayList<WindField>();
 		dir = dataDir + "/StatFields/500mb_Wind/";
@@ -528,15 +608,15 @@ class StatView extends View {
 			wf = new WindField(file, file2, samplesx, samplesy, corner, samplesy*spacing, samplesx*spacing);
 			wfields.add(wf);
 		}
-			
+
 		w_encd = new WindEncoding(wfields, glyphs);
 		w_encd.useBilinear(true);
 		w_encd.useInterpolation(false);
 		w_encd.setColorMap(wind);
 		w_encd.genIsovalues(0, 10);
-		library.add(new WindSelect(tabw,tabh, c500mb, w_encd, "500mb", deriv));
+		library.add(new WindSelect(tabw,tabh, c500mb, w_encd, "500mb", deriv));*/
 		
-		// Surface APCP
+		/*// Surface APCP
 		fields = new ArrayList<Field>();
 		dir = dataDir + "/StatFields/3hr_APCP/";
 		deriv = "max";
@@ -549,7 +629,7 @@ class StatView extends View {
 			else f = new Field();
 			fields.add(f);
 		}
-		
+
 		encd = new ScalarEncoding(fields);
 		encd.useBilinear(true);
 		encd.useInterpolation(false);
@@ -564,8 +644,59 @@ class StatView extends View {
 		encd.addIsovalue( 0.1*25.4);
 		// encd.addIsovalue(0.05*25.4);
 		// encd.addIsovalue(0.01*25.4);
-		
-		library.add(new StatSelect(tabw,tabh,cSurface, encd, "APCP", "surface", "3hr "+deriv));
+
+		library.add(new StatSelect(tabw,tabh,cSurface, encd, "APCP", "surface", "3hr "+deriv));*/
 	}
+	
+	private void addStatSelectRH(String dataDir, int run_input, String hgt, String deriv, int libIndex){
+		String var = "RH";
+		String dir = dataDir + "/StatFields/"+hgt+"_"+var+"/";
+		PVector corner = new PVector(cornerx, cornery);
+		String run = String.format("%02d", run_input);
+		String grid = "212";
+		
+		Field f;	
+		ArrayList<Field> fields = new ArrayList<Field>();
+		for (int k=0; k<=87; k+=3){
+			String fhr = String.format("%02d", k);
+			String file = dir + "sref.t" + run + "z.pgrb" + grid + ".f" + fhr + "."+ deriv + ".txt";
+			f = new Field(file, samplesx, samplesy, corner, samplesy*spacing, samplesx*spacing);
+			fields.add(f);
+		}
+
+		ScalarEncoding encd = new ScalarEncoding(fields);
+		encd.useBilinear(true);
+		encd.useInterpolation(false);
+		encd.setColorMap(rh);
+		encd.genIsovalues(0, 10);
+		library.add(new StatSelect(tabw, tabh, encd, var, hgt, deriv), libIndex);
+	}
+	
+	private void addStatSelectTMP(String dataDir, int run_input, String hgt, String deriv, int libIndex){
+		String var = "TMP";
+		String dir = dataDir + "/StatFields/"+hgt+"_"+var+"/";
+		PVector corner = new PVector(cornerx, cornery);
+		String run = String.format("%02d", run_input);
+		String grid = "212";
+		
+		Field f;		
+		ArrayList<Field> fields = new ArrayList<Field>();
+		for (int k=0; k<=87; k+=3){
+			String fhr = String.format("%02d", k);
+			String file = dir + "sref.t" + run + "z.pgrb" + grid + ".f" + fhr + "."+ deriv + ".txt";
+			f = new Field(file, samplesx, samplesy, corner, samplesy*spacing, samplesx*spacing);
+			fields.add(f);
+		}
+
+		ScalarEncoding encd = new ScalarEncoding(fields);
+		encd.useBilinear(true);
+		encd.useInterpolation(false);
+		encd.setColorMap(tmp_5c);
+		encd.genIsovalues(273.15, 5);
+		library.add(new StatSelect(tabw, tabh, encd, var, hgt, deriv), libIndex);
+	}
+	
+	
+	
 
 }

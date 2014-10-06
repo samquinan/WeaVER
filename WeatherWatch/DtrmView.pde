@@ -13,11 +13,14 @@ class DtrmView extends View {
 	ArrayList<Barb> barbs;
 	
 	DtrmView(int sx, int sy, float ds, int cx, int cy, int tw, int th, int libsize){
-		super(sx, sy, ds, cx, cy, tw, th, ceil(libsize/2.0));
+		super(sx, sy, ds, cx, cy, tw, th, libsize);
 		glyphs = null;
 		
 		//add collections to library
-		library.addCollection(2,2);
+		library.addCollection(3,2);
+		library.addCollection(3,2);
+		library.addCollection(3,2);
+		library.addCollection(3,2);
 		
 		// Initialize Render State
 			//Color Map
