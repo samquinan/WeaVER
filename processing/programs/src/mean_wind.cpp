@@ -79,6 +79,7 @@ int main(int argc, char* argv[])
 		//CALCULATE DERIVED FIELDS
 		std::vector <double> meanSpeed;
 		std::vector <double> meanDir;
+				
 		
 		for (int i=0; i < s; i++){
 		
@@ -109,7 +110,51 @@ int main(int argc, char* argv[])
 			
 			tmp = atan2(mean_U, mean_V); //+ M_PI //rotation in in radians
 			meanDir.push_back(tmp);
+		}
+		
+		//TODO separate walkthrough inefficient; fix.
+		std::vector <double> maxSpeed;
+		std::vector <double> maxDirection;
+		
+		std::vector <double> minSpeed;
+		std::vector <double> minDirection;
+		for (int i=0; i < s; i++){
+		
+			double tmpU, tmpV, tmpSpd, tmpDir, maxSpd, maxDir, minSpd, minDir;
+			
+			tmpU = (dataU[0])[i];
+			tmpV = (dataV[0])[i];
+			tmpSpd = (sqrt(pow(tmpU, 2.0) + pow(tmpV, 2.0))) * 1.9438444924406;//converts to KTs
+			tmpDir = atan2(tmpU, tmpV);
+			
+			maxSpd = tmpSpd;
+			maxDir = tmpDir;
+			minSpd = tmpSpd;
+			minDir = tmpDir;
+			
+			for(int m=1; m < dataU.size(); m++){
+				tmpU = (dataU[m])[i];
+				tmpV = (dataV[m])[i];
+				tmpSpd = (sqrt(pow(tmpU, 2.0) + pow(tmpV, 2.0))) * 1.9438444924406;//converts to KTs
+				tmpDir = atan2(tmpU, tmpV);
+				
+				if (tmpSpd > maxSpd){
+					maxSpd = tmpSpd;
+					maxDir = tmpDir;
+				}
+				else if (tmpSpd < minSpd){
+					minSpd = tmpSpd;
+					minDir = tmpDir;
+				}
+			}
+			
+			maxSpeed.push_back(maxSpd);
+			maxDirection.push_back(maxDir);
+			minSpeed.push_back(minSpd);
+			minDirection.push_back(minDir);
+			
 		}	
+			
 			
 		// WRITE OUT	
 		std::ostringstream file;
@@ -120,6 +165,26 @@ int main(int argc, char* argv[])
 		file.str(std::string());
 		file << outDir << "sref" << ".t" << run << "z.pgrb212" << ".f" << fhr << ".WDIR.mean.txt";
 		writeVectorToFile(file.str().c_str(), meanDir);
+		
+		file.clear();
+		file.str(std::string());
+		file << outDir << "sref" << ".t" << run << "z.pgrb212" << ".f" << fhr << ".WSPD.max.txt";
+		writeVectorToFile(file.str().c_str(), maxSpeed);
+	
+		file.clear();
+		file.str(std::string());
+		file << outDir << "sref" << ".t" << run << "z.pgrb212" << ".f" << fhr << ".WDIR.max.txt";
+		writeVectorToFile(file.str().c_str(), maxDirection);
+		
+		file.clear();
+		file.str(std::string());
+		file << outDir << "sref" << ".t" << run << "z.pgrb212" << ".f" << fhr << ".WSPD.min.txt";
+		writeVectorToFile(file.str().c_str(), minSpeed);
+	
+		file.clear();
+		file.str(std::string());
+		file << outDir << "sref" << ".t" << run << "z.pgrb212" << ".f" << fhr << ".WDIR.min.txt";
+		writeVectorToFile(file.str().c_str(), minDirection);
 	
 	}
 	

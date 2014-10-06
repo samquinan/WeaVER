@@ -23,7 +23,8 @@ class StatView extends View {
 		library.addCollection(3,3);
 		library.addCollection(3,4);
 		library.addCollection(3,4);
-		library.addCollection(3,4);		
+		library.addCollection(3,4);
+		/*library.addCollection(3,1);		*/
 		
 		// Initialize Render State
 			//Color Map
@@ -412,10 +413,12 @@ class StatView extends View {
 		// test.add(80, color( 41,  66,  59, 100));
 		// test.add(90, color( 13,  88,  43, 100));
 		// colorMode(RGB,255);
+		
 		wind = new ColorMapf();
-		colorMode(HSB, 360, 100, 100, 100);
-		wind.add(   0, color(180, 25, 29,   0));	
-		wind.add(49.9999, color(180, 25, 29,   0));	
+		
+		/*colorMode(HSB, 360, 100, 100, 100);
+		wind.add(   0, color(180, 25, 29,   0));
+		wind.add(49.9999, color(180, 25, 29,   0));
 		wind.add(  50, color(180, 25, 29, 100));
 		wind.add(  60, color(163, 29, 41, 100));
 		wind.add(  70, color(146, 33, 49, 100));
@@ -427,7 +430,26 @@ class StatView extends View {
 		wind.add( 130, color(44,  57, 77, 100));
 		wind.add( 140, color(27,  61, 81, 100));
 		wind.add( 150, color(10,  65, 84, 100));
-		colorMode(RGB,255);
+		colorMode(RGB,255);*/
+		
+		colorMode(HSB, 360, 100, 100, 100);
+		wind.add(  0, color(180,  25,  29, 0));//color(110, 35, 29,0));
+		wind.add(29.99999, color(180,  25,  29, 0));//color(110, 35, 29,0));
+		wind.add( 30, color(180,  25,  29));//color(110, 35, 29)); 
+		wind.add( 40, color(165,  29,  39));//color(100, 38, 39)); 
+		wind.add( 50, color(150,  33,  46));//color( 91, 41, 46)); 
+		wind.add( 60, color(135,  37,  52));//color( 82, 45, 52)); 
+		wind.add( 70, color(120,  41,  57));//color( 73, 48, 57)); 
+		wind.add( 80, color(105,  45,  61));//color( 64, 51, 61)); 
+		wind.add( 90, color( 90,  50,  65));//color( 55, 55, 65)); 
+		wind.add(100, color( 75,  54,  69));//color( 45, 58, 69)); 
+		wind.add(110, color( 60,  58,  72));//color( 36, 61, 72)); 
+		wind.add(120, color( 45,  62,  76));//color( 27, 65, 76)); 
+		wind.add(130, color( 30,  66,  78));//color( 18, 68, 78)); 
+		wind.add(140, color( 15,  70,  81));//color(  9, 71, 81)); 
+		wind.add(150, color(  0,  75,  84));//color(  0, 75, 84)); 
+		colorMode(RGB,255);		
+		
 		
 		/*ColorMapf precip = new ColorMapf();
 		colorMode(HSB, 360, 100, 100, 100);
@@ -459,17 +481,30 @@ class StatView extends View {
 		addStatSelectRH(  dataDir, run_input, hgt,  "max", 0);
 		addStatSelectRH(  dataDir, run_input, hgt,  "min", 0);
 		
+		addStatSelectWIND(dataDir, run_input, hgt, "mean", 0);
+		addStatSelectWIND(dataDir, run_input, hgt,  "max", 0);
+		addStatSelectWIND(dataDir, run_input, hgt,  "min", 0);
+		
 		
 		hgt = "300mb";
 		addStatSelectRH(  dataDir, run_input, hgt, "mean", 1);
 		addStatSelectRH(  dataDir, run_input, hgt,  "max", 1);
 		addStatSelectRH(  dataDir, run_input, hgt,  "min", 1);
 		
+		addStatSelectWIND(dataDir, run_input, hgt, "mean", 1);
+		addStatSelectWIND(dataDir, run_input, hgt,  "max", 1);
+		addStatSelectWIND(dataDir, run_input, hgt,  "min", 1);
+		
+		
 		
 		hgt = "500mb";
 		addStatSelectRH(  dataDir, run_input, hgt, "mean", 2);
 		addStatSelectRH(  dataDir, run_input, hgt,  "max", 2);
 		addStatSelectRH(  dataDir, run_input, hgt,  "min", 2);
+				
+		addStatSelectWIND(dataDir, run_input, hgt, "mean", 2);
+		addStatSelectWIND(dataDir, run_input, hgt,  "max", 2);
+		addStatSelectWIND(dataDir, run_input, hgt,  "min", 2);
 		
 		addStatSelectTMP( dataDir, run_input, hgt, "mean", 2);
 		addStatSelectTMP( dataDir, run_input, hgt,  "max", 2);
@@ -480,6 +515,10 @@ class StatView extends View {
 		addStatSelectRH(  dataDir, run_input, hgt, "mean", 3);
 		addStatSelectRH(  dataDir, run_input, hgt,  "max", 3);
 		addStatSelectRH(  dataDir, run_input, hgt,  "min", 3);
+				
+		addStatSelectWIND(dataDir, run_input, hgt, "mean", 3);
+		addStatSelectWIND(dataDir, run_input, hgt,  "max", 3);
+		addStatSelectWIND(dataDir, run_input, hgt,  "min", 3);
 		
 		addStatSelectTMP( dataDir, run_input, hgt, "mean", 3);
 		addStatSelectTMP( dataDir, run_input, hgt,  "max", 3);
@@ -490,11 +529,20 @@ class StatView extends View {
 		addStatSelectRH(  dataDir, run_input, hgt, "mean", 4);
 		addStatSelectRH(  dataDir, run_input, hgt,  "max", 4);
 		addStatSelectRH(  dataDir, run_input, hgt,  "min", 4);
+				
+		addStatSelectWIND(dataDir, run_input, hgt, "mean", 4);
+		addStatSelectWIND(dataDir, run_input, hgt,  "max", 4);
+		addStatSelectWIND(dataDir, run_input, hgt,  "min", 4);
 		
 		addStatSelectTMP( dataDir, run_input, hgt, "mean", 4);
 		addStatSelectTMP( dataDir, run_input, hgt,  "max", 4);
 		addStatSelectTMP( dataDir, run_input, hgt,  "min", 4);
 		
+		
+		/*hgt = "10m";
+		addStatSelectWIND(dataDir, run_input, hgt, "mean", 5);
+		addStatSelectWIND(dataDir, run_input, hgt,  "max", 5);
+		addStatSelectWIND(dataDir, run_input, hgt,  "min", 5);*/
 		
 		
 		
@@ -697,6 +745,32 @@ class StatView extends View {
 		encd.convert_K2C();
 		library.add(new StatSelect(tabw, tabh, encd, var, hgt, deriv), libIndex);
 	}
+	
+	private void addStatSelectWIND(String dataDir, int run_input, String hgt, String deriv, int libIndex){
+		String var = "Wind";
+		String dir = dataDir + "/StatFields/"+hgt+"_"+var+"/";;
+		PVector corner = new PVector(cornerx, cornery);
+		String run = String.format("%02d", run_input);
+		String grid = "212";
+		
+		WindField wf;
+		ArrayList<WindField> wfields = new ArrayList<WindField>();
+		for (int k=0; k<=87; k+=3){
+			String fhr = String.format("%02d", k);
+			String file  = dir + "sref.t" + run + "z.pgrb" + grid + ".f" + fhr + ".WSPD."+ deriv + ".txt";
+			String file2 = dir + "sref.t" + run + "z.pgrb" + grid + ".f" + fhr + ".WDIR."+ deriv + ".txt";
+			wf = new WindField(file, file2, samplesx, samplesy, corner, samplesy*spacing, samplesx*spacing);
+			wfields.add(wf);
+		}
+
+		WindEncoding w_encd = new WindEncoding(wfields, glyphs);
+		w_encd.useBilinear(true);
+		w_encd.useInterpolation(false);
+		w_encd.setColorMap(wind);
+		w_encd.genIsovalues(0, 10);
+		library.add(new WindSelect(tabw,tabh, w_encd, hgt, deriv), libIndex);
+	}
+	
 	
 	
 	
