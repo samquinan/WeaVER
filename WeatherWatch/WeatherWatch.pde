@@ -11,7 +11,7 @@ PFont errFont;
 MenuBar menu;
 int mode;
 
-/*DtrmView view_0;*/
+DtrmView view_0;
 StatView view_1;
 /*MNSDView view_2;
 EnsembleView view_3;
@@ -75,7 +75,7 @@ void draw(){
 	
 	switch (mode){
 		case 0:
-			/*view_0.draw();*/
+			view_0.draw();
 			break;
 		case 1:
 			view_1.draw();
@@ -96,7 +96,7 @@ void draw(){
 
 private void populate(){
 	// pull in loaded views
-	/*view_0 = loader.getDtrmView();*/
+	view_0 = loader.getDtrmView();
 	view_1 = loader.getStatView();
 	/*view_2 = loader.getMNSDView();*/
 	/*view_3 = loader.getEnsembleView();*/
@@ -117,7 +117,7 @@ void mousePressed(){
 	
 	switch (mode){
 		case 0:
-			/*view_0.mousePress(mouseX, mouseY);*/
+			view_0.mousePress(mouseX, mouseY);
 			break;
 		case 1:
 			view_1.mousePress(mouseX, mouseY);
@@ -141,7 +141,7 @@ void mouseMoved(){
 	
 	switch (mode){
 		case 0:
-			/*view_0.mouseMove(mouseX, mouseY);*/
+			view_0.mouseMove(mouseX, mouseY);
 			break;	
 		case 1:
 			view_1.mouseMove(mouseX, mouseY);
@@ -165,7 +165,7 @@ void mouseDragged(){
 	
 	switch (mode){
 		case 0:
-			/*view_0.mouseDrag(mouseX, mouseY);*/
+			view_0.mouseDrag(mouseX, mouseY);
 			break;	
 		case 1:
 			view_1.mouseDrag(mouseX, mouseY);
@@ -191,7 +191,7 @@ void mouseReleased() {
 		if (cur != mode){
 			switch (mode){
 				case 0:
-					/*view_0.haltAnim();*/
+					view_0.haltAnim();
 					break;	
 				case 1:
 					view_1.haltAnim();
@@ -215,7 +215,7 @@ void mouseReleased() {
 	
 	switch (mode){
 		case 0:
-			/*view_0.mouseRelease();*/
+			view_0.mouseRelease();
 			break;	
 		case 1:
 			view_1.mouseRelease();
@@ -236,7 +236,7 @@ void mouseReleased() {
 void keyPressed() {
 	switch (mode){
 		case 0:
-			/*view_0.keyPress(key, keyCode);*/
+			view_0.keyPress(key, keyCode);
 			break;	
 		case 1:
 			view_1.keyPress(key, keyCode);
@@ -335,12 +335,12 @@ class ViewLoader implements Runnable{
 		String dir = "../datasets";
 		int run = prop_d.getRun();
 		
-		/*// generate view_0
-		view_0 = new DtrmView(samplesx, samplesy, spacing, cornerx, cornery, tabw, tabh, 6);
+		// generate view_0
+		view_0 = new DtrmView(samplesx, samplesy, spacing, cornerx, cornery, tabw, tabh, 3);
 		view_0.setFonts(regular, error);
 		view_0.setMap(map);
 		view_0.linkGlyphs(glyphs);
-		view_0.loadData(dir, run);*/
+		view_0.loadData(dir, run);
 
 		// generate view_1
 		view_1 = new StatView(samplesx, samplesy, spacing, cornerx, cornery, tabw, tabh, 9);

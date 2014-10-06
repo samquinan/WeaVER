@@ -78,11 +78,11 @@ class ColorMapf {
 	color getColor(float v){ //defaults to continuous mapping
 		
 		if (v < val.get(0)){
-			println("WARNING in ColorMapf 'getColor': Out of bounds request");
+			/*println("WARNING in ColorMapf 'getColor': Out of bounds request");*/
 			return (color) col.get(0);
 		}
 		else if (v > val.get(val.size()-1)){
-			println("WARNING in ColorMapf 'getColor': Out of bounds request");
+			/*println("WARNING in ColorMapf 'getColor': Out of bounds request");*/
 			return (color) col.get(val.size()-1);
 		}
 		
@@ -124,11 +124,11 @@ class ColorMapf {
 	color getColor(float v, boolean continuous){
 		
 		if (v < val.get(0)){
-			println("WARNING in ColorMapf 'getColor': Out of bounds request");
+			/*println("WARNING in ColorMapf 'getColor': Out of bounds request");*/
 			return (color) col.get(0);
 		}
 		else if (v > val.get(val.size()-1)){
-			println("WARNING in ColorMapf 'getColor': Out of bounds request");
+			/*println("WARNING in ColorMapf 'getColor': Out of bounds request");*/
 			return (color) col.get(val.size()-1);
 		}
 		

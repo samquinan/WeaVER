@@ -89,6 +89,20 @@ find ./data/fields/$DATE/200mb_HGT -maxdepth 1 -mindepth 1 -name '*em.t'$MCYCLE'
 find ./data/fields/$DATE/200mb_RH  -maxdepth 1 -mindepth 1 -name '*em.t'$MCYCLE'z.*.ctl.*.txt' -type f | xargs -I{} cp {} ./curated/EnsembleFields/200mb_RH/
 find ./data/fields/$DATE/200mb_TMP -maxdepth 1 -mindepth 1 -name '*em.t'$MCYCLE'z.*.ctl.*.txt' -type f | xargs -I{} cp {} ./curated/EnsembleFields/200mb_TMP/
 
+
+mkdir -p ./curated/EnsembleFields/850mb_Wind/
+mkdir -p ./curated/EnsembleFields/700mb_Wind/
+mkdir -p ./curated/EnsembleFields/500mb_Wind/
+mkdir -p ./curated/EnsembleFields/300mb_Wind/
+mkdir -p ./curated/EnsembleFields/200mb_Wind/
+
+find ./data/fields/$DATE/850mb_Wind/dtrm -name '*em.t'$MCYCLE'z.*.ctl.*.txt' -type f | xargs -I{} cp {} ./curated/EnsembleFields/850mb_Wind/
+find ./data/fields/$DATE/700mb_Wind/dtrm -name '*em.t'$MCYCLE'z.*.ctl.*.txt' -type f | xargs -I{} cp {} ./curated/EnsembleFields/700mb_Wind/
+find ./data/fields/$DATE/500mb_Wind/dtrm -name '*em.t'$MCYCLE'z.*.ctl.*.txt' -type f | xargs -I{} cp {} ./curated/EnsembleFields/500mb_Wind/
+find ./data/fields/$DATE/300mb_Wind/dtrm -name '*em.t'$MCYCLE'z.*.ctl.*.txt' -type f | xargs -I{} cp {} ./curated/EnsembleFields/300mb_Wind/
+find ./data/fields/$DATE/200mb_Wind/dtrm -name '*em.t'$MCYCLE'z.*.ctl.*.txt' -type f | xargs -I{} cp {} ./curated/EnsembleFields/200mb_Wind/
+
+
 # Contour Box Plots
 mkdir -p ./curated/CBP/500mb_HGT/
 

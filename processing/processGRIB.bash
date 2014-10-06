@@ -45,6 +45,8 @@ mkdir -p $TXTDIR/'850mb_Wind'/'UGRD'/
 mkdir -p $TXTDIR/'850mb_Wind'/'VGRD'/
 mkdir -p $TXTDIR/'850mb_Wind'/'WSPD'/
 mkdir -p $TXTDIR/'850mb_Wind'/'derived'/
+mkdir -p $TXTDIR/'850mb_Wind'/'dtrm'/
+
 
 mkdir -p $TXTDIR/'700mb_HGT'/'derived'/
 mkdir -p $TXTDIR/'700mb_RH'/'derived'/
@@ -54,6 +56,8 @@ mkdir -p $TXTDIR/'700mb_Wind'/'UGRD'/
 mkdir -p $TXTDIR/'700mb_Wind'/'VGRD'/
 mkdir -p $TXTDIR/'700mb_Wind'/'WSPD'/
 mkdir -p $TXTDIR/'700mb_Wind'/'derived'/
+mkdir -p $TXTDIR/'700mb_Wind'/'dtrm'/
+
 
 mkdir -p $TXTDIR/'500mb_HGT'/'derived'/
 mkdir -p $TXTDIR/'500mb_RH'/'derived'/
@@ -62,6 +66,8 @@ mkdir -p $TXTDIR/'500mb_Wind'/'UGRD'/
 mkdir -p $TXTDIR/'500mb_Wind'/'VGRD'/
 mkdir -p $TXTDIR/'500mb_Wind'/'WSPD'/
 mkdir -p $TXTDIR/'500mb_Wind'/'derived'/
+mkdir -p $TXTDIR/'500mb_Wind'/'dtrm'/
+
 
 mkdir -p $TXTDIR/'300mb_HGT'/'derived'/
 mkdir -p $TXTDIR/'300mb_RH'/'derived'/
@@ -70,6 +76,8 @@ mkdir -p $TXTDIR/'300mb_Wind'/'UGRD'/
 mkdir -p $TXTDIR/'300mb_Wind'/'VGRD'/
 mkdir -p $TXTDIR/'300mb_Wind'/'WSPD'/
 mkdir -p $TXTDIR/'300mb_Wind'/'derived'/
+mkdir -p $TXTDIR/'300mb_Wind'/'dtrm'/
+
 
 mkdir -p $TXTDIR/'200mb_HGT'/'derived'/
 mkdir -p $TXTDIR/'200mb_RH'/'derived'/
@@ -78,6 +86,7 @@ mkdir -p $TXTDIR/'200mb_Wind'/'UGRD'/
 mkdir -p $TXTDIR/'200mb_Wind'/'VGRD'/
 mkdir -p $TXTDIR/'200mb_Wind'/'WSPD'/
 mkdir -p $TXTDIR/'200mb_Wind'/'derived'/
+mkdir -p $TXTDIR/'200mb_Wind'/'dtrm'/
 
 
 

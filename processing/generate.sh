@@ -40,13 +40,18 @@ MCYCLE=`printf "%02d" ${2#0}`
 ./programs/build/genStats data/fields/$DATE/200mb_RH/  $MCYCLE data/fields/$DATE/200mb_RH/derived/
 ./programs/build/genStats data/fields/$DATE/200mb_TMP/ $MCYCLE data/fields/$DATE/200mb_TMP/derived/
 
-# TODO FIX WIND
+# WIND
 ./programs/build/meanWind data/fields/$DATE/850mb_Wind/UGRD/ data/fields/$DATE/850mb_Wind/VGRD/ $MCYCLE data/fields/$DATE/850mb_Wind/derived/
 ./programs/build/meanWind data/fields/$DATE/700mb_Wind/UGRD/ data/fields/$DATE/700mb_Wind/VGRD/ $MCYCLE data/fields/$DATE/700mb_Wind/derived/
 ./programs/build/meanWind data/fields/$DATE/500mb_Wind/UGRD/ data/fields/$DATE/500mb_Wind/VGRD/ $MCYCLE data/fields/$DATE/500mb_Wind/derived/
 ./programs/build/meanWind data/fields/$DATE/300mb_Wind/UGRD/ data/fields/$DATE/300mb_Wind/VGRD/ $MCYCLE data/fields/$DATE/300mb_Wind/derived/
 ./programs/build/meanWind data/fields/$DATE/200mb_Wind/UGRD/ data/fields/$DATE/200mb_Wind/VGRD/ $MCYCLE data/fields/$DATE/200mb_Wind/derived/
 
+./programs/build/dtrmWind data/fields/$DATE/850mb_Wind/UGRD/ data/fields/$DATE/850mb_Wind/VGRD/ $MCYCLE em ctl data/fields/$DATE/850mb_Wind/dtrm/ -kt
+./programs/build/dtrmWind data/fields/$DATE/700mb_Wind/UGRD/ data/fields/$DATE/700mb_Wind/VGRD/ $MCYCLE em ctl data/fields/$DATE/700mb_Wind/dtrm/ -kt
+./programs/build/dtrmWind data/fields/$DATE/500mb_Wind/UGRD/ data/fields/$DATE/500mb_Wind/VGRD/ $MCYCLE em ctl data/fields/$DATE/500mb_Wind/dtrm/ -kt
+./programs/build/dtrmWind data/fields/$DATE/300mb_Wind/UGRD/ data/fields/$DATE/300mb_Wind/VGRD/ $MCYCLE em ctl data/fields/$DATE/300mb_Wind/dtrm/ -kt
+./programs/build/dtrmWind data/fields/$DATE/200mb_Wind/UGRD/ data/fields/$DATE/200mb_Wind/VGRD/ $MCYCLE em ctl data/fields/$DATE/200mb_Wind/dtrm/ -kt
 
 # Probabilities
 ./programs/build/genProb data/fields/$DATE/2m_RH/ $MCYCLE -le 15 data/fields/$DATE/2m_RH/prob/

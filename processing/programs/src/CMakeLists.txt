@@ -22,6 +22,9 @@ add_executable(meanWind ${mean_wind_SRCS})
 SET(member_wind_SRCS gen_wind_speed.cpp utils.h)
 add_executable(perMemberWindSpeed ${member_wind_SRCS})
 
+SET(dtrm_wind_SRCS gen_wind_member.cpp utils.h)
+add_executable(dtrmWind ${dtrm_wind_SRCS})
+
 SET(prob_SRCS probability.cpp utils.h)
 add_executable(genProb ${prob_SRCS})
 
