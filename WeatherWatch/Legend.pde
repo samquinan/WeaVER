@@ -2,12 +2,12 @@ class Legend {
 	PImage img;
 	ColorMapf cmap;
 	boolean interpolate;
-	boolean convert;
+	/*boolean convert;*/
 	float x,y;
 	int w,h;
 	int m,n;
 	
-	Converter cc;	
+	Converter convert;	
 	
 	Legend(float ix, float iy, int iw, int ih){
 		x = ix;
@@ -23,9 +23,9 @@ class Legend {
 		img = createImage(int(w), int(h), ARGB);
 		
 		interpolate=false;
-		convert = false;
+		/*convert = false;*/
 		
-		cc = new Converter();
+		convert = new Converter();
 	}
 	
 	void useInterpolation(boolean b){
@@ -38,9 +38,9 @@ class Legend {
 		update();
 	}
 	
-	void convertToCelcius(boolean b){
+	/*void convertToCelcius(boolean b){
 		convert = b;
-	}
+	}*/
 	
 	void display(){
 		
@@ -62,8 +62,25 @@ class Legend {
 		for(int i=n; i<=m; i++){
 			float val = cmap.val.get(i);
 			float tag_y = map(val, vmax, vmin, 0, h);
+			int cstate = cmap.getConversionState();
+			switch (cstate){
+				case 1:
+					val = convert.K_to_C(val);
+					break;
+				case 2:
+					val = convert.K_to_F(val);
+					break;				
+				case 3:
+					val = convert.mps_to_mph(val);
+					break;
+				case 4:
+					val = convert.mps_to_kt(val);
+					break;						
+				default:
+					break;
+			}
 			//line(x-10, y+tag_y, x-5, y+tag_y);
-			if (convert) val = cc.K_to_C(val);
+			//if (convert) val = cc.K_to_C(val);
 			text(Float.toString(val), x-3, y-2+tag_y);
 		}
 		

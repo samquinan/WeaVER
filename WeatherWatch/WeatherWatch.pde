@@ -343,7 +343,7 @@ class ViewLoader implements Runnable{
 		view_0.loadData(dir, run);*/
 
 		// generate view_1
-		view_1 = new StatView(samplesx, samplesy, spacing, cornerx, cornery, tabw, tabh, 12);
+		view_1 = new StatView(samplesx, samplesy, spacing, cornerx, cornery, tabw, tabh, 9);
 		view_1.setFonts(regular, error);
 		view_1.setMap(map);
 		view_1.linkGlyphs(glyphs);

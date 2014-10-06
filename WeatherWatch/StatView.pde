@@ -20,7 +20,7 @@ class StatView extends View {
 		glyphs = null;
 		
 		//add collections to library
-		library.addCollection(3,4);
+		library.addCollection(3,3);
 		library.addCollection(3,4);
 		library.addCollection(3,4);
 		library.addCollection(3,4);		
@@ -325,6 +325,7 @@ class StatView extends View {
 		tmp_5c.add(328.15, color( 10,   91,  40));
 		tmp_5c.add(333.15, color(  0,  100,  29));
 		colorMode(RGB,255);
+		tmp_5c.convert_K2C();
 		
 		/*tmp_5c.add(228.15, color(270, 100,  29) );
 		tmp_5c.add(233.15, color(256,  88,  43) );
@@ -693,6 +694,7 @@ class StatView extends View {
 		encd.useInterpolation(false);
 		encd.setColorMap(tmp_5c);
 		encd.genIsovalues(273.15, 5);
+		encd.convert_K2C();
 		library.add(new StatSelect(tabw, tabh, encd, var, hgt, deriv), libIndex);
 	}
 	

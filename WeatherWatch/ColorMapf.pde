@@ -1,4 +1,5 @@
 class ColorMapf {
+	int conversionState;
 	
 	ArrayList<Float> val;
 	ArrayList<Integer> col;
@@ -6,11 +7,37 @@ class ColorMapf {
 	ColorMapf(){
 		val = new ArrayList<Float>();
 		col = new ArrayList<Integer>();
+		conversionState = 0;
 	}
 	
 	ColorMapf(int initalCapacity){
 		val = new ArrayList<Float>(initalCapacity);
 		col = new ArrayList<Integer>(initalCapacity);
+		conversionState = 0;
+	}
+	
+	void convert_none(){
+		conversionState = 0;
+	}
+	
+	void convert_K2C(){
+		conversionState = 1;
+	}
+	
+	void convert_K2F(){
+		conversionState = 2;
+	}
+	
+	void convert_mps2mph(){
+		conversionState = 3;
+	}
+	
+	void convert_mps2kts(){
+		conversionState = 4;
+	}
+	
+	int getConversionState(){
+		return conversionState;
 	}
 	
 	void add(float v, int c){
