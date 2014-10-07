@@ -50,7 +50,7 @@ do
 		do
 			FNAME='sref_'$MODEL'.t'$MCYCLE'z.pgrb'$NGRID'.'$PERT'.f'$FRCSTH'.grib2'			
 			#echo "$DURL$FNAME$DURL2"
-			curl "$DURL$FNAME$DURL2" -o $DATADIR/$FNAME
+			curl -f "$DURL$FNAME$DURL2" -o $DATADIR/$FNAME
 		done
 	done
 done
