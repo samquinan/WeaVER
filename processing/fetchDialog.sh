@@ -26,15 +26,20 @@ if [[ $REPLY =~ ^[Yy]$ ]]
 then
     DATE=$DATE_CUR
 	RUN=$RUN_CUR
-else
+elif [[ $REPLY =~ ^[Nn]$ ]]
+then
 	read -p "Choose Date [YYYYMMDD]: "
 	DATE=$REPLY
 	read -p "Choose Run [03,09,15,21]: "
 	echo
 	RUN=$REPLY
+else
+	echo Unrecognized input. Exiting...
+	sleep 2
+	exit
 fi
 echo
 
 # RUN
-./getData $DATE $RUN
+./getData.sh $DATE $RUN
 
