@@ -474,26 +474,36 @@ class DtrmView extends View {
 		hgt = "200mb";
 		addDtrmRH(  dataDir, run_input, hgt, "em", "ctl", 0);
 		addDtrmWIND(dataDir, run_input, hgt, "em", "ctl", 0);
+		addDtrmHGT( dataDir, run_input, hgt, "em", "ctl", 0);
+		
 		
 		hgt = "300mb";
 		addDtrmRH(  dataDir, run_input, hgt, "em", "ctl", 1);
 		addDtrmWIND(dataDir, run_input, hgt, "em", "ctl", 1);
+		addDtrmHGT( dataDir, run_input, hgt, "em", "ctl", 1);
+		
 		
 		hgt = "500mb";
 		addDtrmRH(  dataDir, run_input, hgt, "em", "ctl", 2);
-		addDtrmTMP( dataDir, run_input, hgt, "em", "ctl", 2);
 		addDtrmWIND(dataDir, run_input, hgt, "em", "ctl", 2);
+		addDtrmHGT( dataDir, run_input, hgt, "em", "ctl", 2);
+		addDtrmTMP( dataDir, run_input, hgt, "em", "ctl", 2);
+		
 		
 		
 		hgt = "700mb";
 		addDtrmRH(  dataDir, run_input, hgt, "em", "ctl", 3);
-		addDtrmTMP( dataDir, run_input, hgt, "em", "ctl", 3);
 		addDtrmWIND(dataDir, run_input, hgt, "em", "ctl", 3);
+		addDtrmHGT( dataDir, run_input, hgt, "em", "ctl", 3);
+		addDtrmTMP( dataDir, run_input, hgt, "em", "ctl", 3);
+		
 		
 		hgt = "850mb";
 		addDtrmRH(  dataDir, run_input, hgt, "em", "ctl", 4);
-		addDtrmTMP( dataDir, run_input, hgt, "em", "ctl", 4);
 		addDtrmWIND(dataDir, run_input, hgt, "em", "ctl", 4);
+		addDtrmHGT( dataDir, run_input, hgt, "em", "ctl", 4);
+		addDtrmTMP( dataDir, run_input, hgt, "em", "ctl", 4);
+		
 		
 			
 		
@@ -669,6 +679,31 @@ class DtrmView extends View {
 		library.add(new StatSelect(tabw, tabh, encd, var, hgt, deriv), libIndex);		
 	}
 	
+	private void addDtrmHGT(String dataDir, int run_input, String hgt, String model, String p, int libIndex){
+		String var = "HGT";
+		String deriv = "";
+		String dir = dataDir + "/EnsembleFields/"+hgt+"_"+var+"/";
+		PVector corner = new PVector(cornerx, cornery);
+		String run = String.format("%02d", run_input);
+		String grid = "212";
+		
+		Field f;		
+		ArrayList<Field> fields = new ArrayList<Field>();
+		for (int k=0; k<=87; k+=3){
+			String fhr = String.format("%02d", k);
+			String file = dir + "sref_"+ model +".t" + run + "z.pgrb" + grid + "." + p + ".f" + fhr + ".txt";
+			f = new Field(file, samplesx, samplesy, corner, samplesy*spacing, samplesx*spacing);
+			fields.add(f);
+		}
+
+		ContourEncoding encd = new ContourEncoding(fields);
+		encd.useBilinear(true);
+		encd.useInterpolation(false);
+		encd.genIsovalues(0, 60);
+		library.add(new ContourSelect(tabw, tabh, encd, var, hgt, deriv), libIndex);
+	}
+	
+	
 	private void addDtrmWIND(String dataDir, int run_input, String hgt, String model, String p, int libIndex){
 		String var = "Wind";
 		String deriv = "";
@@ -695,7 +730,6 @@ class DtrmView extends View {
 		library.add(new WindSelect(tabw,tabh, w_encd, hgt, deriv), libIndex);
 		
 	}
-	
 	
 	
 	/*private void addStatSelectWIND(String dataDir, int run_input, String hgt, String deriv, int libIndex){

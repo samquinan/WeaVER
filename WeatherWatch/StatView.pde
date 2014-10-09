@@ -485,6 +485,11 @@ class StatView extends View {
 		addStatSelectWIND(dataDir, run_input, hgt,  "max", 0);
 		addStatSelectWIND(dataDir, run_input, hgt,  "min", 0);
 		
+		addStatSelectHGT( dataDir, run_input, hgt, "mean", 0);
+		addStatSelectHGT( dataDir, run_input, hgt,  "max", 0);
+		addStatSelectHGT( dataDir, run_input, hgt,  "min", 0);
+		
+		
 		
 		hgt = "300mb";
 		addStatSelectRH(  dataDir, run_input, hgt, "mean", 1);
@@ -494,6 +499,10 @@ class StatView extends View {
 		addStatSelectWIND(dataDir, run_input, hgt, "mean", 1);
 		addStatSelectWIND(dataDir, run_input, hgt,  "max", 1);
 		addStatSelectWIND(dataDir, run_input, hgt,  "min", 1);
+		
+		addStatSelectHGT( dataDir, run_input, hgt, "mean", 1);
+		addStatSelectHGT( dataDir, run_input, hgt,  "max", 1);
+		addStatSelectHGT( dataDir, run_input, hgt,  "min", 1);
 		
 		
 		
@@ -505,6 +514,10 @@ class StatView extends View {
 		addStatSelectWIND(dataDir, run_input, hgt, "mean", 2);
 		addStatSelectWIND(dataDir, run_input, hgt,  "max", 2);
 		addStatSelectWIND(dataDir, run_input, hgt,  "min", 2);
+		
+		addStatSelectHGT( dataDir, run_input, hgt, "mean", 2);
+		addStatSelectHGT( dataDir, run_input, hgt,  "max", 2);
+		addStatSelectHGT( dataDir, run_input, hgt,  "min", 2);
 		
 		addStatSelectTMP( dataDir, run_input, hgt, "mean", 2);
 		addStatSelectTMP( dataDir, run_input, hgt,  "max", 2);
@@ -520,6 +533,10 @@ class StatView extends View {
 		addStatSelectWIND(dataDir, run_input, hgt,  "max", 3);
 		addStatSelectWIND(dataDir, run_input, hgt,  "min", 3);
 		
+		addStatSelectHGT( dataDir, run_input, hgt, "mean", 3);
+		addStatSelectHGT( dataDir, run_input, hgt,  "max", 3);
+		addStatSelectHGT( dataDir, run_input, hgt,  "min", 3);
+		
 		addStatSelectTMP( dataDir, run_input, hgt, "mean", 3);
 		addStatSelectTMP( dataDir, run_input, hgt,  "max", 3);
 		addStatSelectTMP( dataDir, run_input, hgt,  "min", 3);
@@ -533,6 +550,10 @@ class StatView extends View {
 		addStatSelectWIND(dataDir, run_input, hgt, "mean", 4);
 		addStatSelectWIND(dataDir, run_input, hgt,  "max", 4);
 		addStatSelectWIND(dataDir, run_input, hgt,  "min", 4);
+		
+		addStatSelectHGT( dataDir, run_input, hgt, "mean", 4);
+		addStatSelectHGT( dataDir, run_input, hgt,  "max", 4);
+		addStatSelectHGT( dataDir, run_input, hgt,  "min", 4);
 		
 		addStatSelectTMP( dataDir, run_input, hgt, "mean", 4);
 		addStatSelectTMP( dataDir, run_input, hgt,  "max", 4);
@@ -745,6 +766,30 @@ class StatView extends View {
 		encd.convert_K2C();
 		library.add(new StatSelect(tabw, tabh, encd, var, hgt, deriv), libIndex);
 	}
+	
+	private void addStatSelectHGT(String dataDir, int run_input, String hgt, String deriv, int libIndex){
+		String var = "HGT";
+		String dir = dataDir + "/StatFields/"+hgt+"_"+var+"/";
+		PVector corner = new PVector(cornerx, cornery);
+		String run = String.format("%02d", run_input);
+		String grid = "212";
+		
+		Field f;		
+		ArrayList<Field> fields = new ArrayList<Field>();
+		for (int k=0; k<=87; k+=3){
+			String fhr = String.format("%02d", k);
+			String file = dir + "sref.t" + run + "z.pgrb" + grid + ".f" + fhr + "."+ deriv + ".txt";
+			f = new Field(file, samplesx, samplesy, corner, samplesy*spacing, samplesx*spacing);
+			fields.add(f);
+		}
+
+		ContourEncoding encd = new ContourEncoding(fields);
+		encd.useBilinear(true);
+		encd.useInterpolation(false);
+		encd.genIsovalues(0, 60);
+		library.add(new ContourSelect(tabw, tabh, encd, var, hgt, deriv), libIndex);
+	}
+	
 	
 	private void addStatSelectWIND(String dataDir, int run_input, String hgt, String deriv, int libIndex){
 		String var = "Wind";

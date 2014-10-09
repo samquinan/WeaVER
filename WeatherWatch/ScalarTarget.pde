@@ -5,7 +5,7 @@ class ScalarTarget extends ScalarTargetBase {
 	}
 	
 	boolean add(Selectable s){
-		if (s instanceof EncodesScalar){
+		if ((layer0 != null)?(s instanceof EncodesScalar):(s instanceof EncodesContour)){
 			return super.add(s);	
 		}
 		else return false;
@@ -13,7 +13,7 @@ class ScalarTarget extends ScalarTargetBase {
 	
 	boolean isIntersectedAABB(Selectable s){
 		boolean tmp = super.isIntersectedAABB(s);
-		highlight = highlight && (s instanceof EncodesScalar);
+		highlight = highlight && ((layer0 != null)?(s instanceof EncodesScalar):(s instanceof EncodesContour));
 		hover = hover && !highlight;
 		return tmp;
 	}
@@ -107,7 +107,7 @@ class ScalarTarget extends ScalarTargetBase {
 		//contours
 		if (layer1 != null){
 			layer1.clear();
-			EncodesScalar s = (EncodesScalar) entries.get(0);
+			EncodesContour s = (EncodesContour) entries.get(0);
 			if (s != null){
 				if (s.dataIsAvailable(fhr)){
 					err_out = "";
