@@ -237,10 +237,6 @@ class MNSDView extends View {
 		ScalarEncoding encd, encd2;
 		PVector corner = new PVector(cornerx, cornery);
 		
-		color c700mb, c500mb;
-		c500mb = color(90, 54, 153);
-		c700mb = color(0, 116, 162);
-	
 		// 700mb tmp
 		ArrayList<Field> fields = new ArrayList<Field>();
 		String dir = dataDir + "/StatFields/700mb_TMP/";
@@ -284,7 +280,7 @@ class MNSDView extends View {
 		encd2.addIsovalue(20);
 		
 		// Create Selectable 
-		library.add(new MNSDSelect(tabw,tabh,c700mb, encd, encd2, "TMP", "700mb"));
+		library.add(new MNSDSelect(tabw,tabh, encd, encd2, "TMP", "700mb"));
 		
 		//500mb tmp 
 		fields = new ArrayList<Field>();
@@ -325,7 +321,7 @@ class MNSDView extends View {
 		encd2.addIsovalue(15);
 		encd2.addIsovalue(20);
 		
-		library.add(new MNSDSelect(tabw,tabh,c500mb, encd, encd2, "TMP", "500mb"));
+		library.add(new MNSDSelect(tabw,tabh, encd, encd2, "TMP", "500mb"));
 		
 	}
 
