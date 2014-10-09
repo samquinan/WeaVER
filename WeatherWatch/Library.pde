@@ -40,7 +40,7 @@ class Library {
 	
 	void addCollection(int c, int r){
 		float tmpY,dx,dy;
-		float buffer = 7;
+		float buffer = 12;
 		LibCollection last = sources.get(sources.size()-1);
 		tmpY = y + h + buffer;
 		dx = last.getDx();
