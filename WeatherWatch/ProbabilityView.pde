@@ -248,7 +248,7 @@ class ProbabilityView extends View {
 		addProbSelect( dataDir+"/Probabilities/2m_RH/", run_input,    "le.15",   "RH",  "2m",     "≤ 10%", 0);
 		addProbSelect( dataDir+"/Probabilities/2m_RH/", run_input,    "ge.30",   "RH",  "2m",     "≥ 30%", 0);
 		addProbSelect( dataDir+"/Probabilities/10m_WSPD/", run_input,    "ge.20", "WSPD", "20m",   "≥ 20mph", 0);
-		addProbSelect( dataDir+"/Probabilities/12hr_APCP/", run_input, "le.0.254", "APCP", "12hr", "≤ 0.01in", 0);
+		addProbSelect( dataDir+"/Probabilities/12hr_APCP/", run_input, "le.0.254", 12, "APCP", "12hr", "≤ 0.01in", 0);
 		
 		/*ConditionEnsemble f;
 		ConditionSelect c;
@@ -493,7 +493,7 @@ class ProbabilityView extends View {
 	}
 	
 	private void addProbSelect(String dataDir, int run_input, String deriv, String vlabel, String hlabel, String dlabel, int libIndex){
-				
+		
 		PVector corner = new PVector(cornerx, cornery);
 		String run = String.format("%02d", run_input);
 		String grid = "212";
@@ -509,7 +509,33 @@ class ProbabilityView extends View {
 		ConditionSelect c = new ConditionSelect(tabw, tabh, fields, vlabel, hlabel, dlabel);
 		c.setSingleCopy(true);
 		library.add(c,libIndex);
+		
 	}
+	
+	private void addProbSelect(String dataDir, int run_input, String deriv, int dne_below_fhr, String vlabel, String hlabel, String dlabel, int libIndex){
+				
+		PVector corner = new PVector(cornerx, cornery);
+		String run = String.format("%02d", run_input);
+		String grid = "212";
+		
+		ConditionEnsemble f;
+		ArrayList<ConditionEnsemble> fields = new ArrayList<ConditionEnsemble>();
+		for (int k=0; k<=87; k+=3){
+			if (k < dne_below_fhr){
+				f = new ConditionEnsemble();
+			}
+			else{
+				String fhr = String.format("%02d", k);
+				String file = dataDir + "sref.t" + run + "z.pgrb" + grid + ".f" + fhr + "."+ deriv + ".txt";
+				f = new ConditionEnsemble(file, samplesx, samplesy, 21, corner, samplesy*spacing, samplesx*spacing);
+			}
+			fields.add(f);
+		}
+		ConditionSelect c = new ConditionSelect(tabw, tabh, fields, vlabel, hlabel, dlabel);
+		c.setSingleCopy(true);
+		library.add(c,libIndex);
+	}
+	
 	
 
 }
