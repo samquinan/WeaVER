@@ -245,20 +245,21 @@ class ProbabilityView extends View {
 	
 	void loadData(String dataDir, int run_input){
 		
-		ConditionEnsemble f;
-		ConditionSelect c;
-		PVector corner = new PVector(cornerx, cornery);
+		addProbSelect( dataDir+"/Probabilities/2m_RH/", run_input,    "le.15",   "RH",  "2m",     "≤ 10%", 0);
+		addProbSelect( dataDir+"/Probabilities/2m_RH/", run_input,    "ge.30",   "RH",  "2m",     "≥ 30%", 0);
+		addProbSelect( dataDir+"/Probabilities/10m_WSPD/", run_input,    "ge.20", "WSPD", "20m",   "≥ 20mph", 0);
+		addProbSelect( dataDir+"/Probabilities/12hr_APCP/", run_input, "le.0.254", "APCP", "12hr", "≤ 0.01in", 0);
 		
-		color c2m, c10m, cSurface;
-		c2m = color(189, 101, 8);
-		c10m = color(147, 32, 39);
-		cSurface = color(86, 149, 36);	
+		/*ConditionEnsemble f;
+		ConditionSelect c;
+		PVector corner = new PVector(cornerx, cornery);*/
+		
 	
-		// 2m_RH
+		/*// 2m_RH
 		String dir = dataDir + "/Probabilities/2m_RH/";
 		String run = String.format("%02d", run_input);
 		String grid = "212";
-		
+
 		String deriv = "le.10";
 		ArrayList<ConditionEnsemble> fields = new ArrayList<ConditionEnsemble>();
 		for (int k=0; k<=87; k+=3){
@@ -270,7 +271,7 @@ class ProbabilityView extends View {
 		c = new ConditionSelect(tabw,tabh,c2m, fields, "RH", "2m", "≤ 10%");
 		c.setSingleCopy(true);
 		library.add(c);
-		
+
 		deriv = "le.15";
 		fields = new ArrayList<ConditionEnsemble>();
 		for (int k=0; k<=87; k+=3){
@@ -282,7 +283,7 @@ class ProbabilityView extends View {
 		c = new ConditionSelect(tabw,tabh,c2m, fields, "RH", "2m", "≤ 15%");
 		c.setSingleCopy(true);
 		library.add(c);
-		
+
 		deriv = "le.20";
 		fields = new ArrayList<ConditionEnsemble>();
 		for (int k=0; k<=87; k+=3){
@@ -294,7 +295,7 @@ class ProbabilityView extends View {
 		c = new ConditionSelect(tabw,tabh,c2m, fields, "RH", "2m", "≤ 20%");
 		c.setSingleCopy(true);
 		library.add(c);
-		
+
 		deriv = "le.25";
 		fields = new ArrayList<ConditionEnsemble>();
 		for (int k=0; k<=87; k+=3){
@@ -306,7 +307,7 @@ class ProbabilityView extends View {
 		c = new ConditionSelect(tabw,tabh,c2m, fields, "RH", "2m", "≤ 25%");
 		c.setSingleCopy(true);
 		library.add(c);
-		
+
 		deriv = "le.30";
 		fields = new ArrayList<ConditionEnsemble>();
 		for (int k=0; k<=87; k+=3){
@@ -318,11 +319,11 @@ class ProbabilityView extends View {
 		c = new ConditionSelect(tabw,tabh,c2m, fields, "RH", "2m", "≤ 30%");
 		c.setSingleCopy(true);
 		library.add(c);
-		
-				
+
+
 		// 2m_TMP
 		dir = dataDir + "/Probabilities/2m_TMP/";
-		
+
 		deriv = "ge.288.706";
 		fields = new ArrayList<ConditionEnsemble>();
 		for (int k=0; k<=87; k+=3){
@@ -334,11 +335,11 @@ class ProbabilityView extends View {
 		c = new ConditionSelect(tabw,tabh,c2m, fields, "TMP", "2m", "≥ 60F");
 		c.setSingleCopy(true);
 		library.add(c);
-				
+
 
 		// 10m_WSPD
 		dir = dataDir + "/Probabilities/10m_WSPD/";
-		
+
 		deriv = "ge.10";
 		fields = new ArrayList<ConditionEnsemble>();
 		for (int k=0; k<=87; k+=3){
@@ -351,7 +352,7 @@ class ProbabilityView extends View {
 		c.setSingleCopy(true);
 		library.add(c);
 
-		
+
 		deriv = "ge.15";
 		fields = new ArrayList<ConditionEnsemble>();
 		for (int k=0; k<=87; k+=3){
@@ -363,8 +364,8 @@ class ProbabilityView extends View {
 		c = new ConditionSelect(tabw,tabh,c10m, fields, "WSPD", "10m", "≥ 15mph");
 		c.setSingleCopy(true);
 		library.add(c);
-		
-		
+
+
 		deriv = "ge.20";
 		fields = new ArrayList<ConditionEnsemble>();
 		for (int k=0; k<=87; k+=3){
@@ -376,7 +377,7 @@ class ProbabilityView extends View {
 		c = new ConditionSelect(tabw,tabh,c10m, fields, "WSPD", "10m", "≥ 20mph");
 		c.setSingleCopy(true);
 		library.add(c);
-		
+
 		deriv = "ge.30";
 		fields = new ArrayList<ConditionEnsemble>();
 		for (int k=0; k<=87; k+=3){
@@ -388,11 +389,11 @@ class ProbabilityView extends View {
 		c = new ConditionSelect(tabw,tabh,c10m, fields, "WSPD", "10m", "≥ 30mph");
 		c.setSingleCopy(true);
 		library.add(c);
-		
+
 
 		// 3hr_APCP
 		dir = dataDir + "/Probabilities/3hr_APCP/";
-		
+
 		deriv = "le.0.254";
 		fields = new ArrayList<ConditionEnsemble>();
 		for (int k=0; k<=87; k+=3){
@@ -407,8 +408,8 @@ class ProbabilityView extends View {
 		c = new ConditionSelect(tabw,tabh,cSurface, fields, "APCP", "3hr", "≤ 0.01in");
 		c.setSingleCopy(true);
 		library.add(c);
-		
-		
+
+
 		deriv = "le.1.27";
 		fields = new ArrayList<ConditionEnsemble>();
 		for (int k=0; k<=87; k+=3){
@@ -423,8 +424,8 @@ class ProbabilityView extends View {
 		c = new ConditionSelect(tabw,tabh,cSurface, fields, "APCP", "3hr", "≤ 0.05in");
 		c.setSingleCopy(true);
 		library.add(c);
-		
-		
+
+
 		deriv = "le.2.54";
 		fields = new ArrayList<ConditionEnsemble>();
 		for (int k=0; k<=87; k+=3){
@@ -439,7 +440,7 @@ class ProbabilityView extends View {
 		c = new ConditionSelect(tabw,tabh,cSurface, fields, "APCP", "3hr", "≤ 0.1in");
 		c.setSingleCopy(true);
 		library.add(c);
-		
+
 		//12hr_APCP
 		dir = dataDir + "/Probabilities/12hr_APCP/";
 
@@ -457,7 +458,7 @@ class ProbabilityView extends View {
 		c = new ConditionSelect(tabw,tabh,cSurface, fields, "APCP", "12hr", "≤ 0.01in");
 		c.setSingleCopy(true);
 		library.add(c);
-		
+
 		deriv = "le.2.54";
 		fields = new ArrayList<ConditionEnsemble>();
 		for (int k=0; k<=87; k+=3){
@@ -471,7 +472,7 @@ class ProbabilityView extends View {
 		}
 		c = new ConditionSelect(tabw,tabh,cSurface, fields, "APCP", "12hr", "≤ 0.1in");
 		c.setSingleCopy(true);
-		library.add(c);
+		library.add(c);*/
 		
 		// //TEST
 		// fields = new ArrayList<ConditionEnsemble>();
@@ -490,5 +491,25 @@ class ProbabilityView extends View {
 		// library.add(new ConditionSelect(tabw,tabh,c2m, fields, "TEST", "2", "COND"));
 		
 	}
+	
+	private void addProbSelect(String dataDir, int run_input, String deriv, String vlabel, String hlabel, String dlabel, int libIndex){
+				
+		PVector corner = new PVector(cornerx, cornery);
+		String run = String.format("%02d", run_input);
+		String grid = "212";
+		
+		ConditionEnsemble f;
+		ArrayList<ConditionEnsemble> fields = new ArrayList<ConditionEnsemble>();
+		for (int k=0; k<=87; k+=3){
+			String fhr = String.format("%02d", k);
+			String file = dataDir + "sref.t" + run + "z.pgrb" + grid + ".f" + fhr + "."+ deriv + ".txt";
+			f = new ConditionEnsemble(file, samplesx, samplesy, 21, corner, samplesy*spacing, samplesx*spacing);
+			fields.add(f);
+		}
+		ConditionSelect c = new ConditionSelect(tabw, tabh, fields, vlabel, hlabel, dlabel);
+		c.setSingleCopy(true);
+		library.add(c,libIndex);
+	}
+	
 
 }

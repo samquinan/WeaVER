@@ -14,8 +14,8 @@ int mode;
 DtrmView view_0;
 StatView view_1;
 MNSDView view_2;
-/*EnsembleView view_3;
-ProbabilityView view_4;*/
+/*EnsembleView view_3;*/
+ProbabilityView view_4;
 
 LoadAnimation spinner;
 
@@ -87,7 +87,7 @@ void draw(){
 			/*view_3.draw();*/
 			break;
 		case 4:
-			/*view_4.draw();*/
+			view_4.draw();
 			break;
 		default:
 	}
@@ -100,7 +100,7 @@ private void populate(){
 	view_1 = loader.getStatView();
 	view_2 = loader.getMNSDView();
 	/*view_3 = loader.getEnsembleView();*/
-	/*view_4 = loader.getProbabilityView();*/
+	view_4 = loader.getProbabilityView();
 	
 	menu.addItem("Deterministic");
 	menu.addItem("Stat Field");
@@ -129,7 +129,7 @@ void mousePressed(){
 			/*view_3.mousePress(mouseX, mouseY);*/
 			break;
 		case 4:
-			/*view_4.mousePress(mouseX, mouseY);*/
+			view_4.mousePress(mouseX, mouseY);
 			break;
 		default:
 	}
@@ -153,7 +153,7 @@ void mouseMoved(){
 			/*view_3.mouseMove(mouseX, mouseY);*/
 			break;
 		case 4:
-			/*view_4.mouseMove(mouseX, mouseY);*/
+			view_4.mouseMove(mouseX, mouseY);
 			break;
 		default:
 	}
@@ -177,7 +177,7 @@ void mouseDragged(){
 			/*view_3.mouseDrag(mouseX, mouseY);*/
 			break;
 		case 4:
-			/*view_4.mouseDrag(mouseX, mouseY);*/
+			view_4.mouseDrag(mouseX, mouseY);
 			break;
 		default:
 	}
@@ -203,7 +203,7 @@ void mouseReleased() {
 					/*view_3.haltAnim();*/
 					break;
 				case 4:
-					/*view_4.haltAnim();*/
+					view_4.haltAnim();
 					break;
 				default:
 			}
@@ -227,7 +227,7 @@ void mouseReleased() {
 			/*view_3.mouseRelease();*/
 			break;
 		case 4:
-			/*view_4.mouseRelease();*/
+			view_4.mouseRelease();
 			break;
 		default:
 	}
@@ -248,7 +248,7 @@ void keyPressed() {
 			/*view_3.keyPress(key, keyCode);*/
 			break;
 		case 4:
-			/*view_4.keyPress(key, keyCode);*/
+			view_4.keyPress(key, keyCode);
 			break;
 		default:
 	}
@@ -361,11 +361,11 @@ class ViewLoader implements Runnable{
 		view_3.setMap(map);
 		view_3.loadData(dir, run);*/
 
-		/*// generate view_4
+		// generate view_4
 		view_4 = new ProbabilityView(samplesx, samplesy, spacing, cornerx, cornery, tabw, tabh, 16);
 		view_4.setFonts(regular, error);
 		view_4.setMap(map);
-		view_4.loadData(dir, run);*/
+		view_4.loadData(dir, run);
 		
 		finished = true;				
 	}	
