@@ -47,7 +47,7 @@ class ConditionEnsemble {
 				dataAvailable = false;
 			}
 			
-		    if (data.size() != dimx * dimy){
+		    if (dataAvailable &&(data.size() != dimx * dimy)){
 				println("ERROR creating ConditionEnsemble: number of entries in file does not match provided dimensions");
 				dataAvailable = false;
 			}

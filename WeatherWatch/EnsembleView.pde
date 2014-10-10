@@ -717,47 +717,67 @@ class EnsembleView extends View {
 	
 	void loadData(String dataDir, int run_input){
 		
+		String[] models = {"em", "nmb", "nmm"};
+		String[] perturbations = {"ctl", "n1", "n2", "n3", "p1", "p2", "p3"};
 		
-		Field f;
+		ArrayList<String> member_labels = genMemberLabels(models,perturbations);
+		ArrayList< ArrayList<Field> > ensemble = getEnsemble(dataDir + "/EnsembleFields/500mb_HGT/", run_input, models, perturbations);
+		 
+		addEnsembleSelect(ensemble, member_labels, getCBP(dataDir+"/CBP/500mb_HGT/5100/", run_input), 5100, "HGT", "500mb", "5100", 0);
+		addEnsembleSelect(ensemble, member_labels, getCBP(dataDir+"/CBP/500mb_HGT/5160/", run_input), 5160, "HGT", "500mb", "5160", 0);
+		addEnsembleSelect(ensemble, member_labels, getCBP(dataDir+"/CBP/500mb_HGT/5220/", run_input), 5220, "HGT", "500mb", "5220", 0);
+		addEnsembleSelect(ensemble, member_labels, getCBP(dataDir+"/CBP/500mb_HGT/5280/", run_input), 5280, "HGT", "500mb", "5280", 0);
+		addEnsembleSelect(ensemble, member_labels, getCBP(dataDir+"/CBP/500mb_HGT/5340/", run_input), 5340, "HGT", "500mb", "5340", 0);
+		addEnsembleSelect(ensemble, member_labels, getCBP(dataDir+"/CBP/500mb_HGT/5400/", run_input), 5400, "HGT", "500mb", "5400", 0);
+		addEnsembleSelect(ensemble, member_labels, getCBP(dataDir+"/CBP/500mb_HGT/5520/", run_input), 5520, "HGT", "500mb", "5520", 0);
+		addEnsembleSelect(ensemble, member_labels, getCBP(dataDir+"/CBP/500mb_HGT/5580/", run_input), 5580, "HGT", "500mb", "5580", 0);
+		addEnsembleSelect(ensemble, member_labels, getCBP(dataDir+"/CBP/500mb_HGT/5640/", run_input), 5640, "HGT", "500mb", "5640", 0);
+		addEnsembleSelect(ensemble, member_labels, getCBP(dataDir+"/CBP/500mb_HGT/5700/", run_input), 5700, "HGT", "500mb", "5700", 0);
+		addEnsembleSelect(ensemble, member_labels, getCBP(dataDir+"/CBP/500mb_HGT/5760/", run_input), 5760, "HGT", "500mb", "5760", 0);
+		addEnsembleSelect(ensemble, member_labels, getCBP(dataDir+"/CBP/500mb_HGT/5820/", run_input), 5820, "HGT", "500mb", "5820", 0);
+		addEnsembleSelect(ensemble, member_labels, getCBP(dataDir+"/CBP/500mb_HGT/5100/", run_input), 5100, "HGT", "500mb", "5100", 0);
+		
+		
+		/*Field f;
 		EnsembleEncoding encd;
 		EnsembleSelect select;
 		PVector corner = new PVector(cornerx, cornery);
-		
+
 		color c700mb, c500mb;
 		c500mb = color(90, 54, 153);
 		c700mb = color(0, 116, 162);
-		
+
 		String fhr;
 		String dir = dataDir + "/EnsembleFields/500mb_TMP/";
 		String run = String.format("%02d", run_input);
 		String grid = "212";
 		String[] models = {"em", "nmb", "nmm"};
 		String[] perturbations = {"ctl", "n1", "n2", "n3", "p1", "p2", "p3"};
-		
+
 		int initCapacity = models.length*perturbations.length;
 		ArrayList<String> member_labels = new ArrayList<String>(initCapacity);
-		
+
 		FilenameFilter outlierFilter = new FilenameFilter() {
 		  public boolean accept(File dir, String name) {
 		    return name.toLowerCase().contains("outlier");
 		  }
 		};
-		
-		
+
+
 		ArrayList < Field > build_bands;
 		ArrayList < Field > build_envelop;
-		
+
 		ArrayList< Integer > ordering;
 		ArrayList< ArrayList<String> > outlier_filenames;
-		
+
 		ArrayList < Contour2D > build_median;
 		ArrayList < ArrayList < Contour2D > > build_outliers;
-		
+
 		ContourBoxPlot cbp;
-		
+
 		//500mb TMP
 		ArrayList< ArrayList<Field> > ensemble = new ArrayList< ArrayList<Field> >(initCapacity);
-		
+
 		for (int i=0; i < models.length; i++){
 			for (int j=0; j < perturbations.length; j++){
 				ArrayList<Field> member = new ArrayList<Field>(30);
@@ -1015,30 +1035,30 @@ class EnsembleView extends View {
 		if (ordering.size() != 21){
 			println("ERROR getting CBP ordering data"); //TODO proper error handling
 		}
-						
+
 		// load CBP data
 		build_bands = new ArrayList<Field>();
 		build_envelop = new ArrayList<Field>();
-		
+
 		for (int i=0; i < 30; i++){
 			fhr = "f"+String.format("%02d", i*3);
-			
+
 			String file;
 			Field tmp_src;
 			Contour2D tmp_contour;
-						
+
 			//bands
 			file = dir + "band"+"_gridRes_"+grid+"_"+fhr+".csv";
 			tmp_src = new Field(file, samplesx, samplesy, corner, samplesy*spacing, samplesx*spacing);
 			build_bands.add(tmp_src);
-			
+
 			//envelope
 			file = dir + "envelop"+"_gridRes_"+grid+"_"+fhr+".csv";
 			tmp_src = new Field(file, samplesx, samplesy, corner, samplesy*spacing, samplesx*spacing);
-			build_envelop.add(tmp_src);			
-					
+			build_envelop.add(tmp_src);
+
 		}
-		
+
 		cbp = new ContourBoxPlot(build_bands, build_envelop, ordering);
 
 		encd = new EnsembleEncoding(ensemble, cbp);
@@ -1058,30 +1078,30 @@ class EnsembleView extends View {
 		if (ordering.size() != 21){
 			println("ERROR getting CBP ordering data"); //TODO proper error handling
 		}
-						
+
 		// load CBP data
 		build_bands = new ArrayList<Field>();
 		build_envelop = new ArrayList<Field>();
-		
+
 		for (int i=0; i < 30; i++){
 			fhr = "f"+String.format("%02d", i*3);
-			
+
 			String file;
 			Field tmp_src;
 			Contour2D tmp_contour;
-						
+
 			//bands
 			file = dir + "band"+"_gridRes_"+grid+"_"+fhr+".csv";
 			tmp_src = new Field(file, samplesx, samplesy, corner, samplesy*spacing, samplesx*spacing);
 			build_bands.add(tmp_src);
-			
+
 			//envelope
 			file = dir + "envelop"+"_gridRes_"+grid+"_"+fhr+".csv";
 			tmp_src = new Field(file, samplesx, samplesy, corner, samplesy*spacing, samplesx*spacing);
-			build_envelop.add(tmp_src);			
-					
+			build_envelop.add(tmp_src);
+
 		}
-		
+
 		cbp = new ContourBoxPlot(build_bands, build_envelop, ordering);
 
 		encd = new EnsembleEncoding(ensemble, cbp);
@@ -1090,8 +1110,91 @@ class EnsembleView extends View {
 		// encd.setCachingSP(true);
 		select = new EnsembleSelect(tabw,tabh,c700mb, encd, "TMP", "700mb", "288.15˚ K");
 		select.setSingleCopy(true);
-		library.add(select);
+		library.add(select);*/
 				
+	}
+	
+	
+	private ArrayList< ArrayList<Field> > getEnsemble(String dir, int run_input, String[] models, String[] perturbations){
+		String run = String.format("%02d", run_input);
+		String grid = "212";
+		PVector corner = new PVector(cornerx, cornery);
+		
+		ArrayList< ArrayList<Field> > ensemble = new ArrayList< ArrayList<Field> >(models.length*perturbations.length);
+		for (int i=0; i < models.length; i++){
+			for (int j=0; j < perturbations.length; j++){
+				ArrayList<Field> member = new ArrayList<Field>(30);
+				for (int k=0; k<=87; k+=3){
+					String fhr = String.format("%02d", k);
+					String file = dir + "sref_"+ models[i] +".t" + run + "z.pgrb" + grid +"." + perturbations[j] + ".f" + fhr + ".txt";
+					Field f = new Field(file, samplesx, samplesy, corner, samplesy*spacing, samplesx*spacing);
+					member.add(f);
+				}
+				ensemble.add(member);
+			}
+		}
+		
+		return ensemble;
+	}
+	
+	private ContourBoxPlot getCBP(String dir, int run_input){
+		String run = String.format("%02d", run_input);
+		String grid = "212";
+		PVector corner = new PVector(cornerx, cornery);
+		
+		//get ordering
+		ArrayList<Integer> ordering = new ArrayList<Integer>(21);
+		getAnalysisOrder(dir+"analysis.txt", ordering);
+		if (ordering.size() != 21){//TODO proper error handling
+			println("ERROR getting CBP ordering data"); 
+		}
+
+		// load CBP data
+		ArrayList<Field> build_bands = new ArrayList<Field>();
+		ArrayList<Field> build_envelop = new ArrayList<Field>();
+
+		for (int i=0; i < 30; i++){
+			String fhr = "f"+String.format("%02d", i*3);
+
+			String file;
+			Field tmp_src;
+
+			//bands
+			file = dir + "band"+"_gridRes_"+grid+"_"+fhr+".csv";
+			tmp_src = new Field(file, samplesx, samplesy, corner, samplesy*spacing, samplesx*spacing);
+			build_bands.add(tmp_src);
+
+			//envelope
+			file = dir + "envelop"+"_gridRes_"+grid+"_"+fhr+".csv";
+			tmp_src = new Field(file, samplesx, samplesy, corner, samplesy*spacing, samplesx*spacing);
+			build_envelop.add(tmp_src);
+			
+		}
+
+		ContourBoxPlot cbp = new ContourBoxPlot(build_bands, build_envelop, ordering);
+		return cbp;
+		
+	}
+	
+	private ArrayList<String> genMemberLabels(String[] models, String[] perturbations){
+		ArrayList<String> member_labels = new ArrayList<String>(models.length*perturbations.length);
+		for (int i=0; i < models.length; i++){
+			for (int j=0; j < perturbations.length; j++){
+				member_labels.add( models[i] + " " + perturbations[j] );
+			}
+		}
+		return member_labels;
+	}
+	
+	private void addEnsembleSelect(ArrayList< ArrayList<Field> > ensemble, ArrayList<String> member_labels, ContourBoxPlot cbp, float iso, String vlabel, String hlabel, String dlabel, int libIndex){
+		EnsembleEncoding encd = new EnsembleEncoding(ensemble, cbp);
+		encd.setMemberLabels(member_labels);
+		encd.setIsovalue(iso);//15 C
+		// encd.setCachingSP(true);
+		EnsembleSelect select = new EnsembleSelect(tabw,tabh, encd, vlabel, hlabel, dlabel);
+		select.setSingleCopy(true);
+		library.add(select, libIndex);
+		
 	}
 	
 	private void getAnalysisOrder(String filename, ArrayList<Integer> ordering){
