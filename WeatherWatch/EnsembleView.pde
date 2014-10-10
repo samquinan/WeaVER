@@ -735,7 +735,6 @@ class EnsembleView extends View {
 		addEnsembleSelect(ensemble, member_labels, getCBP(dataDir+"/CBP/500mb_HGT/5700/", run_input), 5700, "HGT", "500mb", "5700", 0);
 		addEnsembleSelect(ensemble, member_labels, getCBP(dataDir+"/CBP/500mb_HGT/5760/", run_input), 5760, "HGT", "500mb", "5760", 0);
 		addEnsembleSelect(ensemble, member_labels, getCBP(dataDir+"/CBP/500mb_HGT/5820/", run_input), 5820, "HGT", "500mb", "5820", 0);
-		addEnsembleSelect(ensemble, member_labels, getCBP(dataDir+"/CBP/500mb_HGT/5100/", run_input), 5100, "HGT", "500mb", "5100", 0);
 		
 		
 		/*Field f;

@@ -362,7 +362,7 @@ class ViewLoader implements Runnable{
 		view_3.loadData(dir, run);
 
 		// generate view_4
-		view_4 = new ProbabilityView(samplesx, samplesy, spacing, cornerx, cornery, tabw, tabh, 16);
+		view_4 = new ProbabilityView(samplesx, samplesy, spacing, cornerx, cornery, tabw, tabh, 6);
 		view_4.setFonts(regular, error);
 		view_4.setMap(map);
 		view_4.loadData(dir, run);
