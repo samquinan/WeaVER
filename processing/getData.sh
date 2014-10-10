@@ -21,3 +21,6 @@ echo "generating contour box plots..."
 
 echo "consolidating..."
  ./curate.sh $DATE $MCYCLE
+ 
+echo "cleanup: deleting data not modified within the last 10 days..."
+[[ $(pwd) = */weatherwatchdemo/* ]] && find ./data  -maxdepth 2 -mindepth 1  -type d -ctime +10 -exec rm -rf {} +
