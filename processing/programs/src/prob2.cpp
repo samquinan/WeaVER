@@ -56,7 +56,7 @@ int main(int argc, char* argv[])
 		}
 	}
 	else{
-	    std::cerr << "Usage: " << argv[0] << " DATA_DIR RUN OP1 VAL OP2 VAL [-h START_HR] OUT_DIR" << std::endl;
+	    std::cerr << "Usage: " << argv[0] << " DATA_DIR RUN OP1 VAL OP2 VAL2 [-h START_HR] OUT_DIR" << std::endl;
 		std::cerr << "\t where OP1, OP2 takes one of: -gt, -lt, -ge, -le" << std::endl;
 		std::cerr << "\t '-h' flag optionally begins processing at "<< std::endl <<"\t specified forecast hour instead of 0" << std::endl;
         return 1;
@@ -116,7 +116,7 @@ int main(int argc, char* argv[])
 		op2 = le;
 	}
 	else {
-		std::cerr << "OP " << argv[5] << " not one of: -gt, -lt, -ge, -le" << std::endl;
+		std::cerr << "OP2 " << argv[5] << " not one of: -gt, -lt, -ge, -le" << std::endl;
 		return 1;
 	}
 	op_flag2.erase(0, 1);
@@ -178,7 +178,7 @@ int main(int argc, char* argv[])
 
 			std::vector< std::vector<double> >::iterator it = data.begin();
 			tmp = (*it)[i];
-			binaryEnsemble.set(pos, op(tmp,compare_val));
+			binaryEnsemble.set(pos, (op(tmp,compare_val) && op2(tmp,compare_val2)));
 
 			for(++it, ++pos; it != data.end(); ++it, ++pos){
 				tmp = (*it)[i];
