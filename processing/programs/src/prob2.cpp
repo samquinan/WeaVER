@@ -31,33 +31,33 @@ int main(int argc, char* argv[])
 	
 	std::string outDir = "";
 	int startHr = 0;
-	if (argc == 6) {
-		outDir = argv[5];
-	}
-	else if (argc == 8){
+	if (argc == 8) {
 		outDir = argv[7];
-		std::string time_flag = argv[5];
+	}
+	else if (argc == 10){
+		outDir = argv[9];
+		std::string time_flag = argv[7];
 		if (time_flag != "-h"){
-		    std::cerr << "Usage: " << argv[0] << " DATA_DIR RUN OP VAL [-h START_HR] OUT_DIR" << std::endl;
-			std::cerr << "\t where OP takes one of: -gt, -lt, -ge, -le" << std::endl;
+		    std::cerr << "Usage: " << argv[0] << " DATA_DIR RUN OP1 VAL OP2 VAL [-h START_HR] OUT_DIR" << std::endl;
+			std::cerr << "\t where OP1, OP2 takes one of: -gt, -lt, -ge, -le" << std::endl;
 			std::cerr << "\t '-h' flag optionally begins processing at "<< std::endl <<"\t specified forecast hour instead of 0" << std::endl;
 			return 1;
 		}
 		try{
-			startHr = std::stoi(argv[6]);
+			startHr = std::stoi(argv[8]);
 			if ((startHr < 0) || (startHr > 87) || ((startHr % 3)!=0)){
-				std::cerr << argv[6] << " is not a valid integer multiple of 3 between 0 and 87" << std::endl;
+				std::cerr << argv[8] << " is not a valid integer multiple of 3 between 0 and 87" << std::endl;
 				return 1;
 			} 
 		}
 		catch(std::invalid_argument&){
-			std::cerr << argv[6] << " is not a valid integer multiple of 3 between 0 and 87" << std::endl;
+			std::cerr << argv[8] << " is not a valid integer multiple of 3 between 0 and 87" << std::endl;
 			return 1;
 		}
 	}
 	else{
-	    std::cerr << "Usage: " << argv[0] << " DATA_DIR RUN OP VAL [-h START_HR] OUT_DIR" << std::endl;
-		std::cerr << "\t where OP takes one of: -gt, -lt, -ge, -le" << std::endl;
+	    std::cerr << "Usage: " << argv[0] << " DATA_DIR RUN OP1 VAL OP2 VAL [-h START_HR] OUT_DIR" << std::endl;
+		std::cerr << "\t where OP1, OP2 takes one of: -gt, -lt, -ge, -le" << std::endl;
 		std::cerr << "\t '-h' flag optionally begins processing at "<< std::endl <<"\t specified forecast hour instead of 0" << std::endl;
         return 1;
 	}
@@ -70,6 +70,7 @@ int main(int argc, char* argv[])
 	sstmp << std::setw(2) << std::setfill('0') << atoi(argv[2]); //TODO switch to strtol call that handles error checking
 	std::string run = sstmp.str();
 			
+	//OP1
 	std::string op_flag = argv[3];
 	std::transform(op_flag.begin(), op_flag.end(), op_flag.begin(), to_lower());
 	std::function<bool (double, double)> op;
@@ -86,15 +87,44 @@ int main(int argc, char* argv[])
 		op = le;
 	}
 	else {
-		std::cerr << "OP " << argv[3] << " not one of: -gt, -lt, -ge, -le" << std::endl;
+		std::cerr << "OP1 " << argv[3] << " not one of: -gt, -lt, -ge, -le" << std::endl;
 		return 1;
 	}
-	op_flag.erase(0, 1);
+	op_flag.erase(0, 1);	
 	
 	char *end;
 	double compare_val = std::strtod(argv[4], &end);
 	if (*end != '\0'){
 		std::cerr << "VAL " << argv[4] << " not a valid number" << std::endl;
+		return 1;
+	}
+	
+	//OP2
+	std::string op_flag2 = argv[5];
+	std::transform(op_flag2.begin(), op_flag2.end(), op_flag2.begin(), to_lower());
+	std::function<bool (double, double)> op2;
+	if (op_flag2 == "-gt"){
+		op2 = gt;
+	}
+	else if (op_flag2 == "-lt"){
+		op2 = lt;
+	}
+	else if (op_flag2 == "-ge"){
+		op2 = ge;
+	}
+	else if (op_flag2 == "-le"){
+		op2 = le;
+	}
+	else {
+		std::cerr << "OP " << argv[5] << " not one of: -gt, -lt, -ge, -le" << std::endl;
+		return 1;
+	}
+	op_flag2.erase(0, 1);
+	
+	char *end2;
+	double compare_val2 = std::strtod(argv[6], &end2);
+	if (*end2 != '\0'){
+		std::cerr << "VAL " << argv[6] << " not a valid number" << std::endl;
 		return 1;
 	}
 	
@@ -152,7 +182,7 @@ int main(int argc, char* argv[])
 
 			for(++it, ++pos; it != data.end(); ++it, ++pos){
 				tmp = (*it)[i];
-				binaryEnsemble.set(pos, op(tmp,compare_val));
+				binaryEnsemble.set(pos, (op(tmp,compare_val) && op2(tmp,compare_val2)));
 			}
 
 			probability.push_back((int)binaryEnsemble.to_ulong());
@@ -160,7 +190,7 @@ int main(int argc, char* argv[])
 		
 		// WRITE OUT
 		std::ostringstream file;
-		file << outDir << "sref" << ".t" << run << "z.pgrb212" << ".f" << fhr << "."<< op_flag << "." << compare_val << ".txt";
+		file << outDir << "sref" << ".t" << run << "z.pgrb212" << ".f" << fhr << "." << op_flag << "." << compare_val << "." << op_flag2 << "." << compare_val2 << ".txt";
 		writeVectorToFile(file.str().c_str(), probability);
 		
 	}
