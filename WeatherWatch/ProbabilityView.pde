@@ -59,7 +59,6 @@ class ProbabilityView extends View {
 		target0.genIsovalues(10.0, 20.0, 0.0, 100.0, false);
 		target0.genIsovalues(10.0, 20.0, 0.0, 100.0, true);//alt
 		target0.addIsovalue(5, true);//alt
-		target0.addIsovalue(1, true);//alt
 		target0.setColorMap(test, test2);
 		library.linkTarget(target0);
 		targets.add(target0);
@@ -216,6 +215,11 @@ class ProbabilityView extends View {
 	}
 	
 	boolean keyPress(char key, int code) {
+		if (key == 'p'){
+			
+		}
+		
+		
 		boolean changed = false;
 	  	if (key == CODED) {
 	  	  	if (code == LEFT) {
@@ -248,6 +252,10 @@ class ProbabilityView extends View {
 		addProbSelect( dataDir+"/Probabilities/2m_RH/", run_input,    "le.15",   "RH",  "2m",     "≤ 10%", 0);
 		addProbSelect( dataDir+"/Probabilities/2m_RH/", run_input,    "ge.30",   "RH",  "2m",     "≥ 30%", 0);
 		addProbSelect( dataDir+"/Probabilities/10m_WSPD/", run_input,    "ge.20", "WSPD", "20m",   "≥ 20mph", 0);
+		
+		addProbSelect( dataDir+"/Probabilities/Haines/High/", run_input, "ge.5", "Haines", "High", "5 or 6", 0);
+		addProbSelect( dataDir+"/Probabilities/Haines/High/", run_input, "ge.3.le.4", "Haines", "High", "3 or 4", 0);
+		
 		addProbSelect( dataDir+"/Probabilities/12hr_APCP/", run_input, "le.0.254", 12, "APCP", "12hr", "≤ 0.01in", 0);
 		
 		/*ConditionEnsemble f;

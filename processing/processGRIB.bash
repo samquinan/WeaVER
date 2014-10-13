@@ -88,6 +88,12 @@ mkdir -p $TXTDIR/'200mb_Wind'/'WSPD'/
 mkdir -p $TXTDIR/'200mb_Wind'/'derived'/
 mkdir -p $TXTDIR/'200mb_Wind'/'dtrm'/
 
+mkdir -p $TXTDIR/'Haines'/'Low'/'derived'
+mkdir -p $TXTDIR/'Haines'/'Med'/'derived'
+mkdir -p $TXTDIR/'Haines'/'High'/'derived'
+mkdir -p $TXTDIR/'Haines'/'High'/'prob'
+
+
 
 
 #FILE=../bash_dl/Data/sref_em.t03z.pgrb212.ctl.f03.grib2

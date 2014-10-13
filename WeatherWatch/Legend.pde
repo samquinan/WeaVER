@@ -59,7 +59,8 @@ class Legend {
 		
 		fill(0);
 		textAlign(RIGHT, CENTER);
-		for(int i=n; i<=m; i++){
+		int end = cmap.getCategorical() ? m-1 : m;
+		for(int i=n; i<=end; i++){
 			float val = cmap.val.get(i);
 			float tag_y = map(val, vmax, vmin, 0, h);
 			int cstate = cmap.getConversionState();

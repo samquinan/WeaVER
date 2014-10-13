@@ -122,7 +122,7 @@ class ConditionEnsemble {
 		
 		FloatList probData = new FloatList(data.size());
 		for (int i = 0; i < data.size(); i++){
-			probData.append(float(Integer.bitCount(data.get(i)))*100/memberCount);
+			probData.append(Integer.bitCount(data.get(i))*100.0/memberCount);
 		}
 		
 		return (new Field(probData, 100.0, 0.0, dimx, dimy, viewZero, maxViewHeight, maxViewWidth));

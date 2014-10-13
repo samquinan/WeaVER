@@ -49,7 +49,7 @@ bool readFileToVector(const char *fname, std::vector<T> &data) {
 }
 
 template<typename T>
-bool writeVectorToFile(const char *fname, std::vector<T> &data) {
+bool writeVectorToFile(const char *fname, std::vector<T> &data) { //TODO add proper error checking like read
 	std::ofstream out(fname);
 	out.precision(std::numeric_limits<T>::digits10);
 	std::ostringstream endline;

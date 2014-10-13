@@ -1,5 +1,6 @@
 class ColorMapf {
 	int conversionState;
+	boolean categorical;
 	
 	ArrayList<Float> val;
 	ArrayList<Integer> col;
@@ -8,12 +9,22 @@ class ColorMapf {
 		val = new ArrayList<Float>();
 		col = new ArrayList<Integer>();
 		conversionState = 0;
+		categorical = false;
 	}
 	
 	ColorMapf(int initalCapacity){
 		val = new ArrayList<Float>(initalCapacity);
 		col = new ArrayList<Integer>(initalCapacity);
 		conversionState = 0;
+		categorical = false;
+	}
+	
+	void setCategorical(boolean b){
+		categorical = b;
+	}
+	
+	boolean getCategorical(){
+		return categorical;
 	}
 	
 	void convert_none(){
@@ -93,7 +104,7 @@ class ColorMapf {
 		while (imin < imax){
 			int imid = (imin+imax)/2;
 		
-			if(val.get(imid) < v){
+			if(val.get(imid) <= v){
 				imin = imid + 1;
 			}
 			else{

@@ -31,5 +31,9 @@ add_executable(genProb ${prob_SRCS})
 SET(prob2_SRCS prob2.cpp utils.h)
 add_executable(prob2 ${prob2_SRCS})
 
+SET(haines_SRCS haines.cpp utils.h)
+add_executable(haines ${haines_SRCS})
+
+
 
 

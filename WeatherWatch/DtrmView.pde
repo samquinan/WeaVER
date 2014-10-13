@@ -12,7 +12,7 @@ class DtrmView extends View {
 	Contour2D highlight;
 	ArrayList<Barb> barbs;
 	
-	ColorMapf wind, rh, tmp_5c;
+	ColorMapf wind, rh, tmp_5c, haines;
 	
 	DtrmView(int sx, int sy, float ds, int cx, int cy, int tw, int th, int libsize){
 		super(sx, sy, ds, cx, cy, tw, th, libsize);
@@ -23,6 +23,7 @@ class DtrmView extends View {
 		library.addCollection(3,2);
 		library.addCollection(3,2);
 		library.addCollection(3,2);
+		library.addCollection(3,1);
 		
 		// Initialize Render State
 			//Color Map
@@ -470,6 +471,18 @@ class DtrmView extends View {
 		precip.add(         0,  color(160,  15,  84,   0));
 		colorMode(RGB,255);*/
 		
+		haines = new ColorMapf();
+		haines.add(1, color( 126, 200, 178 ));
+		haines.add(2, color( 126, 200, 178 ));
+		haines.add(3, color(  59, 164, 133 ));
+		haines.add(4, color( 217, 165,  49 ));
+		haines.add(5, color( 189, 101,   8 ));
+		haines.add(6, color( 191,  69,  69 ));
+		haines.add(7, color( 145,  31,  31 ));
+		haines.setCategorical(true);
+		
+		
+		
 		String hgt;
 		hgt = "200mb";
 		addDtrmRH(  dataDir, run_input, hgt, "em", "ctl", 0);
@@ -503,6 +516,10 @@ class DtrmView extends View {
 		addDtrmWIND(dataDir, run_input, hgt, "em", "ctl", 4);
 		addDtrmHGT( dataDir, run_input, hgt, "em", "ctl", 4);
 		addDtrmTMP( dataDir, run_input, hgt, "em", "ctl", 4);
+		
+		addDtrmHaines(dataDir, run_input, "High", "em", "ctl", 5);
+		addDtrmHaines(dataDir, run_input,  "Med", "em", "ctl", 5);
+		addDtrmHaines(dataDir, run_input,  "Low", "em", "ctl", 5);
 		
 		
 			
@@ -730,6 +747,37 @@ class DtrmView extends View {
 		library.add(new WindSelect(tabw,tabh, w_encd, hgt, deriv), libIndex);
 		
 	}
+	
+	private void addDtrmHaines(String dataDir, int run_input, String level, String model, String p, int libIndex){
+		String var = "Haines";
+		String deriv = "";
+		String dir = dataDir + "/EnsembleFields/Haines/"+level+"/";
+		PVector corner = new PVector(cornerx, cornery);
+		String run = String.format("%02d", run_input);
+		String grid = "212";
+		
+		Field f;		
+		ArrayList<Field> fields = new ArrayList<Field>();
+		for (int k=0; k<=87; k+=3){
+			String fhr = String.format("%02d", k);
+			String file = dir + "sref_"+ model +".t" + run + "z.pgrb" + grid + "." + p + ".f" + fhr + ".txt";
+			f = new Field(file, samplesx, samplesy, corner, samplesy*spacing, samplesx*spacing);
+			fields.add(f);
+		}
+
+		ScalarEncoding encd = new ScalarEncoding(fields);
+		encd.useBilinear(true);
+		encd.useInterpolation(false);
+		encd.setColorMap(haines);
+		/*encd.genIsovalues(0, 1);*/
+		encd.addIsovalue(2.0);
+		encd.addIsovalue(3.0);
+		encd.addIsovalue(4.0);
+		encd.addIsovalue(5.0);
+		encd.addIsovalue(6.0);
+		library.add(new StatSelect(tabw, tabh, encd, var, level, deriv), libIndex);
+	}
+	
 	
 	
 	/*private void addStatSelectWIND(String dataDir, int run_input, String hgt, String deriv, int libIndex){

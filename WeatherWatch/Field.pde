@@ -834,12 +834,12 @@ class Field{
 	  		  int i0, j0, i1, j1;
 	  		  float ax, ay;
   		  
-	  		  float tmp = ((2.0*x+1.0)/(2*spacing)) - 0.5;
+	  		  float tmp = (x-(0.5*spacing))/spacing;//((2.0*x+1.0)/(2*spacing)) - 0.5;
 	  		  i0 = floor(tmp);
 	  		  i1 = ceil(tmp);
 	  		  ax = tmp - i0;
   		  		  
-	  		  tmp = ((2.0*((samplesy*spacing-1)-y)+1.0)/(2*spacing)) - 0.5;//note: 0,0 is bottom left
+	  		  tmp = (((samplesy*spacing-1)-y)-(0.5*spacing))/spacing;//((2.0*((samplesy*spacing-1)-y)+1.0)/(2*spacing)) - 0.5;//note: 0,0 is bottom left
 	  		  j0 = floor(tmp);
 	  		  j1 = ceil(tmp);
 	  		  ay = tmp - j0;
@@ -861,6 +861,8 @@ class Field{
 	  		  img.pixels[getIndex(x,y,img.width)] = c; 
 	  	  }
 	  }
+	  
+	  
 	  img.updatePixels();
   }
   
@@ -884,12 +886,12 @@ class Field{
 	  		  int i0, j0, i1, j1;
 	  		  float ax, ay;
   		  
-	  		  float tmp = ((2.0*x+1.0)/(2*spacing)) - 0.5;
+	  		  float tmp = (x-(0.5*spacing))/spacing;//((2.0*x+1.0)/(2*spacing)) - 0.5;
 	  		  i0 = floor(tmp);
 	  		  i1 = ceil(tmp);
 	  		  ax = tmp - i0;
   		  		  
-	  		  tmp = ((2.0*((samplesy*spacing-1)-y)+1.0)/(2*spacing)) - 0.5;//note: 0,0 is bottom left
+	  		  tmp = (((samplesy*spacing-1)-y)-(0.5*spacing))/spacing;//((2.0*((samplesy*spacing-1)-y)+1.0)/(2*spacing)) - 0.5;//note: 0,0 is bottom left
 	  		  j0 = floor(tmp);
 	  		  j1 = ceil(tmp);
 	  		  ay = tmp - j0;
@@ -938,12 +940,12 @@ class Field{
 	  		  int i0, j0, i1, j1;
 	  		  float ax, ay;
   		  
-	  		  float tmp = ((2.0*x+1.0)/(2*spacing)) - 0.5;
+	  		  float tmp = (x-(0.5*spacing))/spacing;//((2.0*x+1.0)/(2*spacing)) - 0.5;
 	  		  i0 = floor(tmp);
 	  		  i1 = ceil(tmp);
 	  		  ax = tmp - i0;
   		  		  
-	  		  tmp = ((2.0*((dimy*spacing-1)-y)+1.0)/(2*spacing)) - 0.5;//note: 0,0 is bottom left
+	  		  tmp = (((dimy*spacing-1)-y)-(0.5*spacing))/spacing;//((2.0*((dimy*spacing-1)-y)+1.0)/(2*spacing)) - 0.5;//note: 0,0 is bottom left
 	  		  j0 = floor(tmp);
 	  		  j1 = ceil(tmp);
 	  		  ay = tmp - j0;
