@@ -274,6 +274,7 @@ class ConditionTarget extends ScalarTargetBase {
 		if (legend != null) legend.setColorMap(null);
 		if (layer1 != null) layer1.clear();
 		if (qtree != null) qtree.clear();
+		if (labels != null) labels.clear();
 	}
 	
 	private void noCacheUpdate(){
@@ -306,6 +307,13 @@ class ConditionTarget extends ScalarTargetBase {
 					  current.genIsocontour(iso, c);
 					  c.setID(Float.toString(iso)); 
 				   	  layer1.add(c);
+				}
+				for (StickyLabel l : labels){
+					int i = l.getMemberIndex();
+					c = layer1.get(i);
+					if (c != null){
+						l.update(c);
+					}
 				}
 				//quadtree
 				if (qtree != null){

@@ -35,11 +35,11 @@ class EnsembleView extends View {
 	ArrayList<Contour2D> outliers1;
 	ArrayList<Contour2D> outliers2;
 	
-	
-	
 	Contour2D highlight;
 	int target_index;
 	int member_index;
+	QuadTree_Node<Segment2D> ctooltip;
+	PVector tooltipPos;
 	
 	EnsembleView(int sx, int sy, float ds, int cx, int cy, int tw, int th, int libsize){
 		super(sx, sy, ds, cx, cy, tw, th, libsize);
@@ -71,6 +71,8 @@ class EnsembleView extends View {
 		highlight = null;
 		target_index = -1;
 		member_index = -2;
+		tooltipPos = null;
+		ctooltip = null;
 				
 		c0 = color(64, 56, 118, 200);
 		c1 = color(47, 110, 53, 200);
@@ -179,6 +181,11 @@ class EnsembleView extends View {
 					highlight = (member_index < contours_2.size()) ? contours_2.get(member_index) : null;
 					break;
 				default:
+			}
+			if (ctooltip != null){
+				ctooltip = new QuadTree_Node<Segment2D>(cornerx, cornery, cornerx+samplesx*spacing, cornery+samplesy*spacing, 7);
+				highlight.addAllSegmentsToQuadTree(ctooltip);
+				tooltipPos = ctooltip.getClosestPoint(tooltipPos.x,tooltipPos.y);
 			}
 		}
 	}
@@ -567,21 +574,31 @@ class EnsembleView extends View {
 			String s = highlight.getID();
 			fill(255,179);
 			noStroke();
-			rect(mouseX - textWidth(s)/2 -2, mouseY-textAscent()-textDescent()-5, textWidth(s)+4, textAscent()+textDescent());
+			float x, y;
+			x = (tooltipPos != null) ? tooltipPos.x : mouseX;
+			y = (tooltipPos != null) ? tooltipPos.y+2 : mouseY-5;
+			rect(x - textWidth(s)/2 -2, y-textAscent()-textDescent(), textWidth(s)+4, textAscent()+textDescent());
 			fill(0);
 			textAlign(CENTER,BOTTOM);
 			textSize(10);
-			text(s, mouseX, mouseY-5);
+			text(s, x, y);
 		}
 	}
 	
-	protected boolean press(int mx, int my){
-		if (highlight != null){
+	protected boolean press(int mx, int my, int clickCount){
+		/*if (highlight != null){
 			String s = highlight.getID();
 			int i = highlight.getMemberCount();
 			println(s + ": " + i + " segments");
+		}*/
+		if (cbp_switch.clicked(mx, my) || super.press(mx,my,clickCount)) return true;
+		else if (highlight != null){
+			ctooltip = new QuadTree_Node<Segment2D>(cornerx, cornery, cornerx+samplesx*spacing, cornery+samplesy*spacing, 7);
+			highlight.addAllSegmentsToQuadTree(ctooltip);
+			tooltipPos = ctooltip.getClosestPoint(mx,my);
+			return true;
 		}
-		return cbp_switch.clicked(mx, my) || super.press(mx,my);
+		return false;
 	}
 		
 	protected boolean move(int mx, int my){
@@ -600,7 +617,14 @@ class EnsembleView extends View {
 	}
 	
 	protected boolean drag(int mx, int my){
-		return cbp_switch.interact(mx, my) || super.drag(mx,my);
+		if (cbp_switch.interact(mx, my) || super.drag(mx,my)) return true;
+		else if (highlight != null){
+			tooltipPos = ctooltip.getClosestPoint(mx,my);
+			if (tooltipPos == null) highlight = null;
+			return true;
+		}		
+		return false;	
+		
 	}
 	
 	protected boolean release(){
@@ -617,7 +641,14 @@ class EnsembleView extends View {
 			}
 			return true;
 		}
-		else return super.release();
+		else if (super.release()) return true;
+		else if (ctooltip != null){
+			//end tool-tip
+			ctooltip = null;
+			tooltipPos = null;
+			return true;
+		}
+		return false;
 	}
 	
 	private boolean selectHighlight(){

@@ -84,10 +84,10 @@ void draw(){
 			view_2.draw();
 			break;
 		case 3:
-			/*view_3.draw();*/
+			view_3.draw();
 			break;
 		case 4:
-			/*view_4.draw();*/
+			view_4.draw();
 			break;
 		default:
 	}
@@ -126,10 +126,10 @@ void mousePressed(){
 			view_2.mousePress(mouseX, mouseY, mouseEvent.getClickCount());
 			break;
 		case 3:
-			/*view_3.mousePress(mouseX, mouseY);*/
+			view_3.mousePress(mouseX, mouseY, mouseEvent.getClickCount());
 			break;
 		case 4:
-			/*view_4.mousePress(mouseX, mouseY);*/
+			view_4.mousePress(mouseX, mouseY, mouseEvent.getClickCount());
 			break;
 		default:
 	}
@@ -150,10 +150,10 @@ void mouseMoved(){
 			view_2.mouseMove(mouseX, mouseY);
 			break;
 		case 3:
-			/*view_3.mouseMove(mouseX, mouseY);*/
+			view_3.mouseMove(mouseX, mouseY);
 			break;
 		case 4:
-			/*view_4.mouseMove(mouseX, mouseY);*/
+			view_4.mouseMove(mouseX, mouseY);
 			break;
 		default:
 	}
@@ -174,10 +174,10 @@ void mouseDragged(){
 			view_2.mouseDrag(mouseX, mouseY);
 			break;
 		case 3:
-			/*view_3.mouseDrag(mouseX, mouseY);*/
+			view_3.mouseDrag(mouseX, mouseY);
 			break;
 		case 4:
-			/*view_4.mouseDrag(mouseX, mouseY);*/
+			view_4.mouseDrag(mouseX, mouseY);
 			break;
 		default:
 	}
@@ -200,10 +200,10 @@ void mouseReleased() {
 					view_2.haltAnim();
 					break;
 				case 3:
-					/*view_3.haltAnim();*/
+					view_3.haltAnim();
 					break;
 				case 4:
-					/*view_4.haltAnim();*/
+					view_4.haltAnim();
 					break;
 				default:
 			}
@@ -224,10 +224,10 @@ void mouseReleased() {
 			view_2.mouseRelease();
 			break;
 		case 3:
-			/*view_3.mouseRelease();*/
+			view_3.mouseRelease();
 			break;
 		case 4:
-			/*view_4.mouseRelease();*/
+			view_4.mouseRelease();
 			break;
 		default:
 	}
@@ -245,10 +245,10 @@ void keyPressed() {
 			view_2.keyPress(key, keyCode);
 			break;
 		case 3:
-			/*view_3.keyPress(key, keyCode);*/
+			view_3.keyPress(key, keyCode);
 			break;
 		case 4:
-			/*view_4.keyPress(key, keyCode);*/
+			view_4.keyPress(key, keyCode);
 			break;
 		default:
 	}
@@ -355,17 +355,17 @@ class ViewLoader implements Runnable{
 		view_2.setMap(map);
 		view_2.loadData(dir, run);
 
-		/*// generate view_3
+		// generate view_3
 		view_3 = new EnsembleView(samplesx, samplesy, spacing, cornerx, cornery, tabw, tabh, 12);
 		view_3.setFonts(regular, error);
 		view_3.setMap(map);
-		view_3.loadData(dir, run);*/
+		view_3.loadData(dir, run);
 
-		/*// generate view_4
+		// generate view_4
 		view_4 = new ProbabilityView(samplesx, samplesy, spacing, cornerx, cornery, tabw, tabh, 6);
 		view_4.setFonts(regular, error);
 		view_4.setMap(map);
-		view_4.loadData(dir, run);*/
+		view_4.loadData(dir, run);
 		
 		finished = true;				
 	}	
