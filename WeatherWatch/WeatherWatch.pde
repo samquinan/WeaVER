@@ -78,10 +78,10 @@ void draw(){
 			view_0.draw();
 			break;
 		case 1:
-			/*view_1.draw();*/
+			view_1.draw();
 			break;
 		case 2:
-			/*view_2.draw();*/
+			view_2.draw();
 			break;
 		case 3:
 			/*view_3.draw();*/
@@ -120,10 +120,10 @@ void mousePressed(){
 			view_0.mousePress(mouseX, mouseY, mouseEvent.getClickCount());
 			break;
 		case 1:
-			/*view_1.mousePress(mouseX, mouseY);*/
+			view_1.mousePress(mouseX, mouseY, mouseEvent.getClickCount());
 			break;
 		case 2:
-			/*view_2.mousePress(mouseX, mouseY);*/
+			view_2.mousePress(mouseX, mouseY, mouseEvent.getClickCount());
 			break;
 		case 3:
 			/*view_3.mousePress(mouseX, mouseY);*/
@@ -144,10 +144,10 @@ void mouseMoved(){
 			view_0.mouseMove(mouseX, mouseY);
 			break;	
 		case 1:
-			/*view_1.mouseMove(mouseX, mouseY);*/
+			view_1.mouseMove(mouseX, mouseY);
 			break;
 		case 2:
-			/*view_2.mouseMove(mouseX, mouseY);*/
+			view_2.mouseMove(mouseX, mouseY);
 			break;
 		case 3:
 			/*view_3.mouseMove(mouseX, mouseY);*/
@@ -168,10 +168,10 @@ void mouseDragged(){
 			view_0.mouseDrag(mouseX, mouseY);
 			break;	
 		case 1:
-			/*view_1.mouseDrag(mouseX, mouseY);*/
+			view_1.mouseDrag(mouseX, mouseY);
 			break;
 		case 2:
-			/*view_2.mouseDrag(mouseX, mouseY);*/
+			view_2.mouseDrag(mouseX, mouseY);
 			break;
 		case 3:
 			/*view_3.mouseDrag(mouseX, mouseY);*/
@@ -194,10 +194,10 @@ void mouseReleased() {
 					view_0.haltAnim();
 					break;	
 				case 1:
-					/*view_1.haltAnim();*/
+					view_1.haltAnim();
 					break;
 				case 2:
-					/*view_2.haltAnim();*/
+					view_2.haltAnim();
 					break;
 				case 3:
 					/*view_3.haltAnim();*/
@@ -218,10 +218,10 @@ void mouseReleased() {
 			view_0.mouseRelease();
 			break;	
 		case 1:
-			/*view_1.mouseRelease();*/
+			view_1.mouseRelease();
 			break;
 		case 2:
-			/*view_2.mouseRelease();*/
+			view_2.mouseRelease();
 			break;
 		case 3:
 			/*view_3.mouseRelease();*/
@@ -239,10 +239,10 @@ void keyPressed() {
 			view_0.keyPress(key, keyCode);
 			break;	
 		case 1:
-			/*view_1.keyPress(key, keyCode);*/
+			view_1.keyPress(key, keyCode);
 			break;
 		case 2:
-			/*view_2.keyPress(key, keyCode);*/
+			view_2.keyPress(key, keyCode);
 			break;
 		case 3:
 			/*view_3.keyPress(key, keyCode);*/
@@ -342,18 +342,18 @@ class ViewLoader implements Runnable{
 		view_0.linkGlyphs(glyphs);
 		view_0.loadData(dir, run);
 
-		/*// generate view_1
+		// generate view_1
 		view_1 = new StatView(samplesx, samplesy, spacing, cornerx, cornery, tabw, tabh, 9);
 		view_1.setFonts(regular, error);
 		view_1.setMap(map);
 		view_1.linkGlyphs(glyphs);
-		view_1.loadData(dir, run);*/
+		view_1.loadData(dir, run);
 
-		/*// generate view_2
+		// generate view_2
 		view_2 = new MNSDView(samplesx, samplesy, spacing, cornerx, cornery, tabw, tabh, 12);
 		view_2.setFonts(regular, error);
 		view_2.setMap(map);
-		view_2.loadData(dir, run);*/
+		view_2.loadData(dir, run);
 
 		/*// generate view_3
 		view_3 = new EnsembleView(samplesx, samplesy, spacing, cornerx, cornery, tabw, tabh, 12);

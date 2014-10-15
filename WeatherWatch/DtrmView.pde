@@ -44,6 +44,7 @@ class DtrmView extends View {
 		ctooltip = null; 
 		member_index = -2;
 		tooltipPos = null;
+		ctooltip = null;
 		labels = new ArrayList<StickyLabel>();
 		l_cur = null;
 		

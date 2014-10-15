@@ -12,6 +12,12 @@ class StatView extends View {
 	Contour2D highlight;
 	ArrayList<Barb> barbs;
 	
+	ArrayList<StickyLabel> labels;
+	StickyLabel l_cur;
+	
+	QuadTree_Node<Segment2D> ctooltip;
+	PVector tooltipPos;
+	
 	//these really should go into seperate structure
 	ColorMapf wind, rh, tmp_5c, haines;//tmp_3c
 	
@@ -38,6 +44,11 @@ class StatView extends View {
 		highlight = null;
 		member_index = -2;
 		
+		tooltipPos = null;
+		ctooltip = null;
+		labels = new ArrayList<StickyLabel>();
+		l_cur = null;
+		
 			//Barbs
 		barbs = new ArrayList<Barb>();
 		
@@ -53,6 +64,7 @@ class StatView extends View {
 		t_contour.linkContours(contours);
 		t_contour.linkQuadTree(cselect);
 		t_contour.linkTimeControl(timer);
+		t_contour.linkLabels(labels);
 		t_contour.setLabel("CONTOUR");
 		library.linkTarget(t_contour);
 		targets.add(t_contour);
@@ -141,6 +153,11 @@ class StatView extends View {
 		stroke(clr);
 		for(Barb barb : barbs){
 			barb.draw();
+		}
+		
+		//labels
+		for (StickyLabel l : labels){
+			l.display();	
 		}
 	
 		// draw controls
@@ -238,23 +255,38 @@ class StatView extends View {
 
 	
 	protected void drawToolTip(){
-		if ((highlight != null)){// && trigger){		
+		if ((highlight != null) && (l_cur == null)){// && trigger){		
 			String s = highlight.getID();
 			fill(255,179);
 			noStroke();
-			rect(mouseX - textWidth(s)/2 -2, mouseY-textAscent()-textDescent()-5, textWidth(s)+4, textAscent()+textDescent());
+			float x, y;
+			x = (tooltipPos != null) ? tooltipPos.x : mouseX;
+			y = (tooltipPos != null) ? tooltipPos.y+2 : mouseY-5;
+			rect(x - textWidth(s)/2 -2, y-textAscent()-textDescent(), textWidth(s)+4, textAscent()+textDescent());
 			fill(0);
 			textAlign(CENTER,BOTTOM);
 			textSize(10);
-			text(s, mouseX, mouseY-5);
+			text(s, x, y);
 		}
 	}
 		
 	protected boolean move(int mx, int my){
 		if (super.move(mx,my)){
 			return true;
-		} 
+		}
 		else {
+			if (!timer.isAnimating()){
+				for (StickyLabel l : labels){
+					if (l.interact(mx,my)){
+						l_cur = l;
+						highlight = l.getContour();
+						member_index = l.getMemberIndex();
+						return true;
+					}
+				}
+			}
+			// if no label selected
+			l_cur = null;
 			Segment2D selection = cselect.select(mouseX, mouseY, 4);
 			if (selection != null){
 				highlight = selection.getSrcContour();
@@ -268,6 +300,56 @@ class StatView extends View {
 			}
 		}
 	}
+	
+	protected boolean drag(int mx, int my){
+		if (super.drag(mx,my)) return true;
+		else if (l_cur != null){
+			l_cur.reposition(mx,my);
+			return true;
+		}
+		else if (highlight != null){
+			tooltipPos = ctooltip.getClosestPoint(mx,my);
+			if (tooltipPos == null) highlight = null;
+			return true;
+		}		
+		return false;	
+	}	
+		
+	protected boolean press(int mx, int my, int clickCount){
+		if (super.press(mx,my,clickCount)) return true;
+		else if (l_cur != null){
+			if (clickCount > 1){
+				labels.remove(l_cur);
+				highlight = null;
+				member_index = -2;				
+				return true;
+			}		
+		}
+		else if (highlight != null){
+			ctooltip = new QuadTree_Node<Segment2D>(cornerx, cornery, cornerx+samplesx*spacing, cornery+samplesy*spacing, 7);
+			highlight.addAllSegmentsToQuadTree(ctooltip);
+			tooltipPos = ctooltip.getClosestPoint(mx,my);
+			return true;
+		}
+		
+		return false;	
+	}
+	
+	protected boolean release(){
+		if (super.release()) return true;
+		else if (ctooltip != null){
+			//add sticky label
+			l_cur = new StickyLabel(tooltipPos, ctooltip, highlight, member_index);
+			labels.add(l_cur);
+			//end tool-tip
+			ctooltip = null;
+			tooltipPos = null;
+			return true;
+		}
+		return false;	
+		
+	}	
+	
 	
 	boolean keyPress(char key, int code) {
 		boolean changed = false;
@@ -291,8 +373,20 @@ class StatView extends View {
 	}		
 	
 	private void updateHighlight(){
+		for (StickyLabel l : labels){
+			int i = l.getMemberIndex();
+			Contour2D c = contours.get(i);
+			if (c != null){
+				l.update(c);
+			}
+		}
 		if (highlight != null){
 			highlight = contours.get(member_index);
+			if (ctooltip != null){
+				ctooltip = new QuadTree_Node<Segment2D>(cornerx, cornery, cornerx+samplesx*spacing, cornery+samplesy*spacing, 7);
+				highlight.addAllSegmentsToQuadTree(ctooltip);
+				tooltipPos = ctooltip.getClosestPoint(tooltipPos.x,tooltipPos.y);
+			}
 		}
 	}
 	

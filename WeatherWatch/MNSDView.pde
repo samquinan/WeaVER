@@ -9,6 +9,13 @@ class MNSDView extends View {
 	QuadTree_Node<Segment2D> cselect;
 	Contour2D highlight;
 	
+	ArrayList<StickyLabel> labels;
+	StickyLabel l_cur;
+	
+	QuadTree_Node<Segment2D> ctooltip;
+	PVector tooltipPos;
+	
+	
 	MNSDView(int sx, int sy, float ds, int cx, int cy, int tw, int th, int libsize){
 		super(sx, sy, ds, cx, cy, tw, th, libsize);
 		
@@ -22,6 +29,11 @@ class MNSDView extends View {
 		cselect = new QuadTree_Node<Segment2D>(cornerx, cornery, cornerx+samplesx*spacing, cornery+samplesy*spacing, 21);
 		highlight = null;
 		member_index = -2;
+		tooltipPos = null;
+		ctooltip = null;
+		labels = new ArrayList<StickyLabel>();
+		l_cur = null;
+		
 				
 		// Initialize Targets
 			
@@ -30,6 +42,7 @@ class MNSDView extends View {
 		mnsd_target0.linkLegend(legend);
 		mnsd_target0.linkContours(contours);
 		mnsd_target0.linkQuadTree(cselect);
+		mnsd_target0.linkLabels(labels);
 		mnsd_target0.linkTimeControl(timer);
 		mnsd_target0.setLabel("COLOR / CONTOUR");
 		library.linkTarget(mnsd_target0);
@@ -72,6 +85,11 @@ class MNSDView extends View {
 		drawContours(contours, color(0,0,0), (mnsd_target0.isHovering() ? 1.0 : 2.0));
 		strokeCap(ROUND);
 		colorMode(RGB,255);	
+		
+		//labels
+		for (StickyLabel l : labels){
+			l.display();	
+		}
 		
 		// draw controls
 		library.display();
@@ -156,15 +174,18 @@ class MNSDView extends View {
 	}
 
 	protected void drawToolTip(){
-		if ((highlight != null)){// && trigger){		
+		if ((highlight != null) && (l_cur == null)){// && trigger){		
 			String s = highlight.getID();
 			fill(255,179);
 			noStroke();
-			rect(mouseX - textWidth(s)/2 -2, mouseY-textAscent()-textDescent()-5, textWidth(s)+4, textAscent()+textDescent());
+			float x, y;
+			x = (tooltipPos != null) ? tooltipPos.x : mouseX;
+			y = (tooltipPos != null) ? tooltipPos.y+2 : mouseY-5;
+			rect(x - textWidth(s)/2 -2, y-textAscent()-textDescent(), textWidth(s)+4, textAscent()+textDescent());
 			fill(0);
 			textAlign(CENTER,BOTTOM);
 			textSize(10);
-			text(s, mouseX, mouseY-5);
+			text(s, x, y);
 		}
 	}
 		
@@ -173,6 +194,18 @@ class MNSDView extends View {
 			return true;
 		} 
 		else {
+			if (!timer.isAnimating()){
+				for (StickyLabel l : labels){
+					if (l.interact(mx,my)){
+						l_cur = l;
+						highlight = l.getContour();
+						member_index = l.getMemberIndex();
+						return true;
+					}
+				}
+			}
+			// if no label selected
+			l_cur = null;
 			Segment2D selection = cselect.select(mouseX, mouseY, 4);
 			if (selection != null){
 				highlight = selection.getSrcContour();
@@ -186,6 +219,53 @@ class MNSDView extends View {
 			}
 		}
 	}
+	
+	protected boolean drag(int mx, int my){
+		if (super.drag(mx,my)) return true;
+		else if (l_cur != null){
+			l_cur.reposition(mx,my);
+			return true;
+		}
+		else if (highlight != null){
+			tooltipPos = ctooltip.getClosestPoint(mx,my);
+			if (tooltipPos == null) highlight = null;
+			return true;
+		}		
+		return false;	
+	}	
+	
+	protected boolean press(int mx, int my, int clickCount){
+		if (super.press(mx,my,clickCount)) return true;
+		else if (l_cur != null){
+			if (clickCount > 1){
+				labels.remove(l_cur);
+				highlight = null;
+				member_index = -2;				
+				return true;
+			}		
+		}
+		else if (highlight != null){
+			ctooltip = new QuadTree_Node<Segment2D>(cornerx, cornery, cornerx+samplesx*spacing, cornery+samplesy*spacing, 7);
+			highlight.addAllSegmentsToQuadTree(ctooltip);
+			tooltipPos = ctooltip.getClosestPoint(mx,my);
+			return true;
+		}
+		return false;	
+	}
+	
+	protected boolean release(){
+		if (super.release()) return true;
+		else if (ctooltip != null){
+			//add sticky label
+			l_cur = new StickyLabel(tooltipPos, ctooltip, highlight, member_index);
+			labels.add(l_cur);
+			//end tool-tip
+			ctooltip = null;
+			tooltipPos = null;
+			return true;
+		}
+		return false;	
+	}	
 	
 	boolean keyPress(char key, int code) {
 		boolean changed = false;
@@ -209,11 +289,22 @@ class MNSDView extends View {
 	}		
 	
 	private void updateHighlight(){
+		for (StickyLabel l : labels){
+			int i = l.getMemberIndex();
+			Contour2D c = contours.get(i);
+			if (c != null){
+				l.update(c);
+			}
+		}
 		if (highlight != null){
 			highlight = contours.get(member_index);
+			if (ctooltip != null){
+				ctooltip = new QuadTree_Node<Segment2D>(cornerx, cornery, cornerx+samplesx*spacing, cornery+samplesy*spacing, 7);
+				highlight.addAllSegmentsToQuadTree(ctooltip);
+				tooltipPos = ctooltip.getClosestPoint(tooltipPos.x,tooltipPos.y);
+			}
 		}
-	}
-			
+	}			
 	
 	void loadData(String dataDir, int run_input){
 		
@@ -253,6 +344,7 @@ class MNSDView extends View {
 		encd = new ScalarEncoding(fields);
 		encd.useBilinear(true);
 		encd.useInterpolation(false);
+		encd.convert_K2C();
 		encd.genIsovalues(273.15, 2);
 		
 		// LOAD STDDEV
@@ -296,6 +388,7 @@ class MNSDView extends View {
 		encd = new ScalarEncoding(fields);
 		encd.useBilinear(true);
 		encd.useInterpolation(false);
+		encd.convert_K2C();
 		encd.genIsovalues(273.15, 2);		
 		
 		fields2 = new ArrayList<Field>();
