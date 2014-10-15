@@ -6,6 +6,7 @@ class State {
 	String s;
 	int textsize;
 	ArrayList< ArrayList<Selectable> > dtargetEntries;
+	ArrayList< ArrayList<StickyLabel> > dtargetLabels;
 		
 	State(float x0, float y0, float side, String ss){
 	    x=x0;
@@ -16,6 +17,7 @@ class State {
 		textsize = 12;
 		
 		dtargetEntries = new ArrayList< ArrayList<Selectable> >();
+		dtargetLabels = new ArrayList< ArrayList<StickyLabel> >();
 		// dtargetEntries.add(new ArrayList<Selectable>());
 		// dtargetEntries.add(new ArrayList<Selectable>());
 		// dtargetEntries.add(new ArrayList<Selectable>());
@@ -63,11 +65,15 @@ class State {
 	// 	t3.entries = dtargetEntries.get(2);
 	// }
 	
-	void saveState(ArrayList<Container> targets){
+	void saveState(ArrayList<TargetBase> targets){
 		dtargetEntries.clear();
+		dtargetLabels.clear();
 		for (int i = 0; i < targets.size(); i++){
 			ArrayList<Selectable> tmp = new ArrayList<Selectable>((targets.get(i)).entries);
 			dtargetEntries.add(tmp);
+			ArrayList<StickyLabel> tmp2 = (targets.get(i)).labels;
+			if (tmp2 != null) dtargetLabels.add(new ArrayList<StickyLabel>(tmp2));
+			else dtargetLabels.add(null);
 			for(Selectable s : tmp){
 				if (s instanceof EnsembleSelect){
 					EnsembleSelect es = (EnsembleSelect) s;
@@ -85,11 +91,18 @@ class State {
 		}
 	}
 	
-	void restoreState(ArrayList<Container> targets){
+	void restoreState(ArrayList<TargetBase> targets){
 		for (int i = 0; i < targets.size(); i++){
 			if (i < dtargetEntries.size()){ 
 				ArrayList<Selectable> tmp = dtargetEntries.get(i);
+				ArrayList<StickyLabel> tmp2 = dtargetLabels.get(i);
 				(targets.get(i)).entries = tmp;
+				if ((targets.get(i)).labels != null){
+					((targets.get(i)).labels).clear();
+					if (tmp2 != null){
+						((targets.get(i)).labels).addAll(tmp2);
+					}
+				}
 				for(Selectable s : tmp){
 					if (s instanceof EnsembleSelect){
 						EnsembleSelect es = (EnsembleSelect) s;
@@ -105,7 +118,9 @@ class State {
 					}
 				}
 			}
-			else (targets.get(i)).entries = new ArrayList<Selectable>();
+			else {
+				(targets.get(i)).entries = new ArrayList<Selectable>();
+			}
 		}		
 	}
 	

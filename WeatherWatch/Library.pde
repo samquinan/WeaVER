@@ -1,6 +1,6 @@
 class Library {
 	ArrayList<LibCollection> sources;
-	ArrayList<Container> targets;
+	ArrayList<TargetBase> targets;
 	Selectable dragging;
 	String label;
 	float x,y,w,h;
@@ -8,7 +8,7 @@ class Library {
 	Library(float ix, float iy, float dx, float dy, int c, int r) {
 		sources = new ArrayList<LibCollection>();
 		sources.add(new LibCollection(ix, iy, dx, dy, c, r));
-		targets = new ArrayList<Container>();
+		targets = new ArrayList<TargetBase>();
 		label = "";
 		dragging = null;
 		x = ix;
@@ -29,12 +29,12 @@ class Library {
 		label = s;
 	}
 	
-	void linkTarget(Container t){
+	void linkTarget(TargetBase t){
 		if (t instanceof Target) targets.add(t);
 		else println("Error: attempted to link container that does not implement 'Target' interface");
 	}
 	
-	void unlinkTarget(Container t){
+	void unlinkTarget(TargetBase t){
 		targets.remove(t);
 	}
 	
@@ -80,7 +80,7 @@ class Library {
 		for (LibCollection c: sources){
 			c.display();
 		}
-		for (Container t: targets){
+		for (TargetBase t: targets){
 			t.display();
 		}
 		if (dragging != null) {
@@ -104,7 +104,7 @@ class Library {
 				}
 			}
 			if (dragging == null){
-				for (Container t: targets){
+				for (TargetBase t: targets){
 					if (t.interact(mx,my)){
 						dragging = t.handoffDragging();
 						interacted = true;
@@ -133,7 +133,7 @@ class Library {
 					}
 				}*/
 				if (!added){
-					for (Container t: targets){
+					for (TargetBase t: targets){
 						if(t.isIntersectedAABB(dragging)){
 							added = t.add(dragging);
 							break;
@@ -145,7 +145,7 @@ class Library {
 			/*if (interacting.current == null){
 				if (this.isIntersectedAABB(interacting)) this.add(interacting);
 				else{
-					for (Container t: targets){
+					for (TargetBase t: targets){
 						if(t.isIntersectedAABB(interacting)){
 							t.add(interacting);
 							break;
@@ -172,7 +172,7 @@ class Library {
 	// 		if (interacting.current == null){
 	// 			if (this.isIntersectedAABB(interacting)) this.add(interacting);
 	// 			else{
-	// 				for (Container t: targets){
+	// 				for (TargetBase t: targets){
 	// 					if(t.isIntersectedAABB(interacting)){
 	// 						t.add(interacting);
 	// 						break;
@@ -192,7 +192,7 @@ class Library {
 			if (click) break;
 		}
 		if (!click){
-			for (Container t: targets){
+			for (TargetBase t: targets){
 				click = click || t.clicked(mx,my);
 				if (click) break;
 			}
@@ -209,7 +209,7 @@ class Library {
 		for (LibCollection c: sources){
 				r = r || c.released();
 		}
-		for (Container t: targets){
+		for (TargetBase t: targets){
 			r = r || t.released();	
 		}
 		return r;		

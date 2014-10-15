@@ -118,7 +118,7 @@ class StateTracker {
 	// 	idxPrev = idxActive;
 	// }
 	
-	void update(ArrayList<Container> targets){
+	void update(ArrayList<TargetBase> targets){
 		if (idxPrev < states.size()) (states.get(idxPrev)).saveState(targets);
 		(states.get(idxActive)).restoreState(targets);
 		

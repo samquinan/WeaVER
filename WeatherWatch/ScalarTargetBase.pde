@@ -1,4 +1,4 @@
-abstract class ScalarTargetBase extends Container implements Target {
+abstract class ScalarTargetBase extends TargetBase {
 	PImage layer0;
 	Legend legend;
 	
@@ -58,7 +58,7 @@ abstract class ScalarTargetBase extends Container implements Target {
 	void linkQuadTree(QuadTree_Node<Segment2D> q){
 		qtree = q;
 	}
-	
+		
 	void linkLegend(Legend l){ 
 		legend = l;
 	}

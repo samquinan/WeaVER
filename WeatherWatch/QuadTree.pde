@@ -20,6 +20,12 @@ class QuadTree_Node<E extends QuadTreeElement> {
 		members = new ArrayList<E>(k);
 	}
 	
+	float getMinX(){return minAABBx;}
+	float getMaxX(){return maxAABBx;}
+	float getMinY(){return minAABBy;}
+	float getMaxY(){return maxAABBy;}
+	int getMaxMembers(){return maxMembers;}
+	
 	public void clear(){
 		tr = null;//no need for recursive clear -- exiting scope will trigger garbage collection
 		tl = null;
@@ -69,6 +75,83 @@ class QuadTree_Node<E extends QuadTreeElement> {
 		return selection;
 	}
 	
+	public PVector getClosestPoint(float x, float y){
+		return getClosestPointHelper(x,y,true);
+	}
+	private PVector getClosestPointHelper(float x, float y, boolean first){
+		
+		PVector closest = null;
+		PVector current = null;
+		if (tr != null){ // not leaf, recurse, recurse!
+			if (first){
+				float midx = (minAABBx + maxAABBx)/2.0;
+				float midy = (minAABBy + maxAABBy)/2.0;
+			
+				//drill down and test appropriate leaf		
+				if (x >= midx && x <= maxAABBx && y >= midy && y <= maxAABBy){
+					closest = tr.getClosestPointHelper(x,y,first);
+					if(closest == null){//if leaf empty, test all other leaves in parent
+						current = tl.getClosestPointHelper(x,y,false);
+						if ((current != null) && ((closest == null) || (current.z < closest.z))) closest = current;
+						current = br.getClosestPointHelper(x,y,false);
+						if ((current != null) && ((closest == null) || (current.z < closest.z))) closest = current;
+						current = bl.getClosestPointHelper(x,y,false);
+						if ((current != null) && ((closest == null) || (current.z < closest.z))) closest = current;
+					}
+				}
+				else if (x >= minAABBx && x < midx && y >= midy && y <= maxAABBy){
+					closest = tl.getClosestPointHelper(x,y,first);
+					if(closest == null){//if leaf empty, test all other leaves in parent
+						current = tr.getClosestPointHelper(x,y,false);
+						if ((current != null) && ((closest == null) || (current.z < closest.z))) closest = current;
+						current = br.getClosestPointHelper(x,y,false);
+						if ((current != null) && ((closest == null) || (current.z < closest.z))) closest = current;
+						current = bl.getClosestPointHelper(x,y,false);
+						if ((current != null) && ((closest == null) || (current.z < closest.z))) closest = current;
+					}
+				}
+				else if (x >= midx && x <= maxAABBx && y >= minAABBy && y < midy){
+					closest = br.getClosestPointHelper(x,y,first);
+					if(closest == null){//if leaf empty, test all other leaves in parent
+						current = tl.getClosestPointHelper(x,y,false);
+						if ((current != null) && ((closest == null) || (current.z < closest.z))) closest = current;
+						current = tr.getClosestPointHelper(x,y,false);
+						if ((current != null) && ((closest == null) || (current.z < closest.z))) closest = current;
+						current = bl.getClosestPointHelper(x,y,false);
+						if ((current != null) && ((closest == null) || (current.z < closest.z))) closest = current;
+					}
+				}
+				else if (x >= minAABBx && x < midx && y >= minAABBy && y < midy){
+					closest = bl.getClosestPointHelper(x,y,first);
+					if(closest == null){//if leaf empty, test all other leaves in parent
+						current = tl.getClosestPointHelper(x,y,false);
+						if ((current != null) && ((closest == null) || (current.z < closest.z))) closest = current;
+						current = tr.getClosestPointHelper(x,y,false);
+						if ((current != null) && ((closest == null) || (current.z < closest.z))) closest = current;
+						current = br.getClosestPointHelper(x,y,false);
+						if ((current != null) && ((closest == null) || (current.z < closest.z))) closest = current;
+					}
+				}
+			}
+			else {//searches all children
+				current = tl.getClosestPointHelper(x,y,first);
+				if ((current != null) && ((closest == null) || (current.z < closest.z))) closest = current;
+				current = tr.getClosestPointHelper(x,y,first);
+				if ((current != null) && ((closest == null) || (current.z < closest.z))) closest = current;
+				current = br.getClosestPointHelper(x,y,first);
+				if ((current != null) && ((closest == null) || (current.z < closest.z))) closest = current;
+				current = bl.getClosestPointHelper(x,y,first);
+				if ((current != null) && ((closest == null) || (current.z < closest.z))) closest = current;
+			}			
+		}
+		else{ // search leaf
+			for (E m: members){
+				current = m.getClosestPoint(x,y);
+				if ((closest == null) || (current.z < closest.z)) closest = current;
+			}
+		}
+		return closest;
+	}
 	
 	
 	protected boolean subdivide(){

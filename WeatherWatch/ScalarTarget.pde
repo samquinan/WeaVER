@@ -72,6 +72,7 @@ class ScalarTarget extends ScalarTargetBase {
 		if (legend != null) legend.setColorMap(null);
 		if (layer1 != null) layer1.clear();
 		if (qtree != null) qtree.clear();
+		if (labels != null) labels.clear();
 	}
 		
 	private void noCacheUpdate(){
@@ -112,6 +113,13 @@ class ScalarTarget extends ScalarTargetBase {
 				if (s.dataIsAvailable(fhr)){
 					err_out = "";
 					s.genContours(layer1, fhr);
+					for (StickyLabel l : labels){
+						int i = l.getMemberIndex();
+						Contour2D c = layer1.get(i);
+						if (c != null){
+							l.update(c);
+						}
+					}
 					//quadtree
 					if (qtree != null){
 						qtree.clear();

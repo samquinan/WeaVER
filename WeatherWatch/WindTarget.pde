@@ -1,4 +1,4 @@
-class WindTarget extends Container implements Target{
+class WindTarget extends TargetBase{
 	
 	ArrayList<Barb> layer;
 	boolean hover;

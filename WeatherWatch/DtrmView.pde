@@ -12,6 +12,12 @@ class DtrmView extends View {
 	Contour2D highlight;
 	ArrayList<Barb> barbs;
 	
+	ArrayList<StickyLabel> labels;
+	StickyLabel l_cur;
+	
+	QuadTree_Node<Segment2D> ctooltip;
+	PVector tooltipPos;
+	
 	ColorMapf wind, rh, tmp_5c, haines;
 	
 	DtrmView(int sx, int sy, float ds, int cx, int cy, int tw, int th, int libsize){
@@ -24,6 +30,7 @@ class DtrmView extends View {
 		library.addCollection(3,2);
 		library.addCollection(3,2);
 		library.addCollection(3,1);
+		/*library.addCollection(3,1);*/
 		
 		// Initialize Render State
 			//Color Map
@@ -34,7 +41,11 @@ class DtrmView extends View {
 		contours = new ArrayList<Contour2D>();
 		cselect = new QuadTree_Node<Segment2D>(cornerx, cornery, cornerx+samplesx*spacing, cornery+samplesy*spacing, 21);
 		highlight = null;
+		ctooltip = null; 
 		member_index = -2;
+		tooltipPos = null;
+		labels = new ArrayList<StickyLabel>();
+		l_cur = null;
 		
 			//Barbs
 		barbs = new ArrayList<Barb>();
@@ -50,6 +61,7 @@ class DtrmView extends View {
 		t_contour = new ScalarTarget(cornerx+10+(1*(tabw+4)),cornery-tabh-10,tabw,tabh);
 		t_contour.linkContours(contours);
 		t_contour.linkQuadTree(cselect);
+		t_contour.linkLabels(labels);
 		t_contour.linkTimeControl(timer);
 		t_contour.setLabel("CONTOUR");
 		library.linkTarget(t_contour);
@@ -139,6 +151,11 @@ class DtrmView extends View {
 		stroke(clr);
 		for(Barb barb : barbs){
 			barb.draw();
+		}
+		
+		//labels
+		for (StickyLabel l : labels){
+			l.display();	
 		}
 	
 		// draw controls
@@ -235,23 +252,38 @@ class DtrmView extends View {
 
 	
 	protected void drawToolTip(){
-		if ((highlight != null)){// && trigger){		
+		if ((highlight != null) && (l_cur == null)){// && trigger){		
 			String s = highlight.getID();
 			fill(255,179);
 			noStroke();
-			rect(mouseX - textWidth(s)/2 -2, mouseY-textAscent()-textDescent()-5, textWidth(s)+4, textAscent()+textDescent());
+			float x, y;
+			x = (tooltipPos != null) ? tooltipPos.x : mouseX;
+			y = (tooltipPos != null) ? tooltipPos.y+2 : mouseY-5;
+			rect(x - textWidth(s)/2 -2, y-textAscent()-textDescent(), textWidth(s)+4, textAscent()+textDescent());
 			fill(0);
 			textAlign(CENTER,BOTTOM);
 			textSize(10);
-			text(s, mouseX, mouseY-5);
+			text(s, x, y);
 		}
 	}
 		
 	protected boolean move(int mx, int my){
 		if (super.move(mx,my)){
 			return true;
-		} 
+		}
 		else {
+			if (!timer.isAnimating()){
+				for (StickyLabel l : labels){
+					if (l.interact(mx,my)){
+						l_cur = l;
+						highlight = l.getContour();
+						member_index = l.getMemberIndex();
+						return true;
+					}
+				}
+			}
+			// if no label selected
+			l_cur = null;
 			Segment2D selection = cselect.select(mouseX, mouseY, 4);
 			if (selection != null){
 				highlight = selection.getSrcContour();
@@ -285,13 +317,80 @@ class DtrmView extends View {
 		}
 		
 		return changed;
-	}		
+	}	
+	
+	protected boolean drag(int mx, int my){
+		if (super.drag(mx,my)) return true;
+		else if (l_cur != null){
+			l_cur.reposition(mx,my);
+			return true;
+		}
+		else if (highlight != null){
+			tooltipPos = ctooltip.getClosestPoint(mx,my);
+			if (tooltipPos == null) highlight = null;
+			return true;
+		}		
+		return false;	
+	}	
+		
+	protected boolean press(int mx, int my, int clickCount){
+		if (super.press(mx,my,clickCount)) return true;
+		else if (l_cur != null){
+			if (clickCount > 1){
+				labels.remove(l_cur);
+				highlight = null;
+				member_index = -2;				
+				return true;
+			}		
+		}
+		else if (highlight != null){
+			ctooltip = new QuadTree_Node<Segment2D>(cornerx, cornery, cornerx+samplesx*spacing, cornery+samplesy*spacing, 7);
+			highlight.addAllSegmentsToQuadTree(ctooltip);
+			tooltipPos = ctooltip.getClosestPoint(mx,my);
+			return true;
+		}
+		
+		return false;	
+	}
+	
+	/*protected boolean press(int mx, int my){
+		return press(mx,my,1);
+	}*/
+		
+	protected boolean release(){
+		if (super.release()) return true;
+		else if (ctooltip != null){
+			//add sticky label
+			l_cur = new StickyLabel(tooltipPos, ctooltip, highlight, member_index);
+			labels.add(l_cur);
+			//end tool-tip
+			ctooltip = null;
+			tooltipPos = null;
+			return true;
+		}
+		return false;	
+		
+	}	
 	
 	private void updateHighlight(){
+		for (StickyLabel l : labels){
+			int i = l.getMemberIndex();
+			Contour2D c = contours.get(i);
+			if (c != null){
+				l.update(c);
+			}
+		}
 		if (highlight != null){
 			highlight = contours.get(member_index);
+			if (ctooltip != null){
+				ctooltip = new QuadTree_Node<Segment2D>(cornerx, cornery, cornerx+samplesx*spacing, cornery+samplesy*spacing, 7);
+				highlight.addAllSegmentsToQuadTree(ctooltip);
+				tooltipPos = ctooltip.getClosestPoint(tooltipPos.x,tooltipPos.y);
+			}
 		}
 	}
+	
+	
 			
 			
 	
@@ -522,7 +621,40 @@ class DtrmView extends View {
 		addDtrmHaines(dataDir, run_input,  "Low", "em", "ctl", 5);
 		
 		
-			
+		/*PVector corner = new PVector(cornerx, cornery);
+
+		Field f = new Field(dataDir+"/circle100_cont.txt", samplesx, samplesy, corner, samplesy*spacing, samplesx*spacing);
+		ScalarEncoding encd = new ScalarEncoding(f);
+		encd.useBilinear(true);
+		encd.useInterpolation(false);
+		encd.setColorMap(rh);
+		encd.genIsovalues(0, 10);
+		library.add(new StatSelect(tabw, tabh, encd, "TEST", "cont", ""), 6);
+
+		f = new Field(dataDir+"/circle6.txt", samplesx, samplesy, corner, samplesy*spacing, samplesx*spacing);
+		encd = new ScalarEncoding(f);
+		encd.useBilinear(true);
+		encd.useInterpolation(false);
+		encd.setColorMap(haines);
+		encd.addIsovalue(2.0);
+		encd.addIsovalue(3.0);
+		encd.addIsovalue(4.0);
+		encd.addIsovalue(5.0);
+		encd.addIsovalue(6.0);
+		library.add(new StatSelect(tabw, tabh, encd, "TEST", "discr", ""), 6);
+
+		f = new Field(dataDir+"/circle6_smooth.txt", samplesx, samplesy, corner, samplesy*spacing, samplesx*spacing);
+		encd = new ScalarEncoding(f);
+		encd.useBilinear(true);
+		encd.useInterpolation(false);
+		encd.setColorMap(haines);
+		encd.addIsovalue(2.0);
+		encd.addIsovalue(3.0);
+		encd.addIsovalue(4.0);
+		encd.addIsovalue(5.0);
+		encd.addIsovalue(6.0);
+		library.add(new StatSelect(tabw, tabh, encd, "TEST", "discr", "smooth"), 6);
+		*/
 		
 		
 /*		color c700mb, c500mb, cSurface;
@@ -720,7 +852,6 @@ class DtrmView extends View {
 		library.add(new ContourSelect(tabw, tabh, encd, var, hgt, deriv), libIndex);
 	}
 	
-	
 	private void addDtrmWIND(String dataDir, int run_input, String hgt, String model, String p, int libIndex){
 		String var = "Wind";
 		String deriv = "";
@@ -776,34 +907,6 @@ class DtrmView extends View {
 		encd.addIsovalue(5.0);
 		encd.addIsovalue(6.0);
 		library.add(new StatSelect(tabw, tabh, encd, var, level, deriv), libIndex);
-	}
-	
-	
-	
-	/*private void addStatSelectWIND(String dataDir, int run_input, String hgt, String deriv, int libIndex){
-		String var = "Wind";
-		String dir = dataDir + "/StatFields/"+hgt+"_"+var+"/";;
-		PVector corner = new PVector(cornerx, cornery);
-		String run = String.format("%02d", run_input);
-		String grid = "212";
-
-		WindField wf;
-		ArrayList<WindField> wfields = new ArrayList<WindField>();
-		for (int k=0; k<=87; k+=3){
-			String fhr = String.format("%02d", k);
-			String file  = dir + "sref.t" + run + "z.pgrb" + grid + ".f" + fhr + ".WSPD."+ deriv + ".txt";
-			String file2 = dir + "sref.t" + run + "z.pgrb" + grid + ".f" + fhr + ".WDIR."+ deriv + ".txt";
-			wf = new WindField(file, file2, samplesx, samplesy, corner, samplesy*spacing, samplesx*spacing);
-			wfields.add(wf);
-		}
-
-		WindEncoding w_encd = new WindEncoding(wfields, glyphs);
-		w_encd.useBilinear(true);
-		w_encd.useInterpolation(false);
-		w_encd.setColorMap(wind);
-		w_encd.genIsovalues(0, 10);
-		library.add(new WindSelect(tabw,tabh, w_encd, hgt, deriv), libIndex);
-	}*/
-	
+	}	
 
 }

@@ -1,4 +1,4 @@
-class EnsembleTarget extends Container implements Target{
+class EnsembleTarget extends TargetBase{
 	
 	ArrayList<Contour2D> sp_members;
 	QuadTree_Node<Segment2D> sp_qtree;

@@ -78,16 +78,16 @@ void draw(){
 			view_0.draw();
 			break;
 		case 1:
-			view_1.draw();
+			/*view_1.draw();*/
 			break;
 		case 2:
-			view_2.draw();
+			/*view_2.draw();*/
 			break;
 		case 3:
-			view_3.draw();
+			/*view_3.draw();*/
 			break;
 		case 4:
-			view_4.draw();
+			/*view_4.draw();*/
 			break;
 		default:
 	}
@@ -117,19 +117,19 @@ void mousePressed(){
 	
 	switch (mode){
 		case 0:
-			view_0.mousePress(mouseX, mouseY);
+			view_0.mousePress(mouseX, mouseY, mouseEvent.getClickCount());
 			break;
 		case 1:
-			view_1.mousePress(mouseX, mouseY);
+			/*view_1.mousePress(mouseX, mouseY);*/
 			break;
 		case 2:
-			view_2.mousePress(mouseX, mouseY);
+			/*view_2.mousePress(mouseX, mouseY);*/
 			break;
 		case 3:
-			view_3.mousePress(mouseX, mouseY);
+			/*view_3.mousePress(mouseX, mouseY);*/
 			break;
 		case 4:
-			view_4.mousePress(mouseX, mouseY);
+			/*view_4.mousePress(mouseX, mouseY);*/
 			break;
 		default:
 	}
@@ -144,16 +144,16 @@ void mouseMoved(){
 			view_0.mouseMove(mouseX, mouseY);
 			break;	
 		case 1:
-			view_1.mouseMove(mouseX, mouseY);
+			/*view_1.mouseMove(mouseX, mouseY);*/
 			break;
 		case 2:
-			view_2.mouseMove(mouseX, mouseY);
+			/*view_2.mouseMove(mouseX, mouseY);*/
 			break;
 		case 3:
-			view_3.mouseMove(mouseX, mouseY);
+			/*view_3.mouseMove(mouseX, mouseY);*/
 			break;
 		case 4:
-			view_4.mouseMove(mouseX, mouseY);
+			/*view_4.mouseMove(mouseX, mouseY);*/
 			break;
 		default:
 	}
@@ -168,16 +168,16 @@ void mouseDragged(){
 			view_0.mouseDrag(mouseX, mouseY);
 			break;	
 		case 1:
-			view_1.mouseDrag(mouseX, mouseY);
+			/*view_1.mouseDrag(mouseX, mouseY);*/
 			break;
 		case 2:
-			view_2.mouseDrag(mouseX, mouseY);
+			/*view_2.mouseDrag(mouseX, mouseY);*/
 			break;
 		case 3:
-			view_3.mouseDrag(mouseX, mouseY);
+			/*view_3.mouseDrag(mouseX, mouseY);*/
 			break;
 		case 4:
-			view_4.mouseDrag(mouseX, mouseY);
+			/*view_4.mouseDrag(mouseX, mouseY);*/
 			break;
 		default:
 	}
@@ -194,16 +194,16 @@ void mouseReleased() {
 					view_0.haltAnim();
 					break;	
 				case 1:
-					view_1.haltAnim();
+					/*view_1.haltAnim();*/
 					break;
 				case 2:
-					view_2.haltAnim();
+					/*view_2.haltAnim();*/
 					break;
 				case 3:
-					view_3.haltAnim();
+					/*view_3.haltAnim();*/
 					break;
 				case 4:
-					view_4.haltAnim();
+					/*view_4.haltAnim();*/
 					break;
 				default:
 			}
@@ -218,16 +218,16 @@ void mouseReleased() {
 			view_0.mouseRelease();
 			break;	
 		case 1:
-			view_1.mouseRelease();
+			/*view_1.mouseRelease();*/
 			break;
 		case 2:
-			view_2.mouseRelease();
+			/*view_2.mouseRelease();*/
 			break;
 		case 3:
-			view_3.mouseRelease();
+			/*view_3.mouseRelease();*/
 			break;
 		case 4:
-			view_4.mouseRelease();
+			/*view_4.mouseRelease();*/
 			break;
 		default:
 	}
@@ -239,16 +239,16 @@ void keyPressed() {
 			view_0.keyPress(key, keyCode);
 			break;	
 		case 1:
-			view_1.keyPress(key, keyCode);
+			/*view_1.keyPress(key, keyCode);*/
 			break;
 		case 2:
-			view_2.keyPress(key, keyCode);
+			/*view_2.keyPress(key, keyCode);*/
 			break;
 		case 3:
-			view_3.keyPress(key, keyCode);
+			/*view_3.keyPress(key, keyCode);*/
 			break;
 		case 4:
-			view_4.keyPress(key, keyCode);
+			/*view_4.keyPress(key, keyCode);*/
 			break;
 		default:
 	}
@@ -342,30 +342,30 @@ class ViewLoader implements Runnable{
 		view_0.linkGlyphs(glyphs);
 		view_0.loadData(dir, run);
 
-		// generate view_1
+		/*// generate view_1
 		view_1 = new StatView(samplesx, samplesy, spacing, cornerx, cornery, tabw, tabh, 9);
 		view_1.setFonts(regular, error);
 		view_1.setMap(map);
 		view_1.linkGlyphs(glyphs);
-		view_1.loadData(dir, run);
+		view_1.loadData(dir, run);*/
 
-		// generate view_2
+		/*// generate view_2
 		view_2 = new MNSDView(samplesx, samplesy, spacing, cornerx, cornery, tabw, tabh, 12);
 		view_2.setFonts(regular, error);
 		view_2.setMap(map);
-		view_2.loadData(dir, run);
+		view_2.loadData(dir, run);*/
 
-		// generate view_3
+		/*// generate view_3
 		view_3 = new EnsembleView(samplesx, samplesy, spacing, cornerx, cornery, tabw, tabh, 12);
 		view_3.setFonts(regular, error);
 		view_3.setMap(map);
-		view_3.loadData(dir, run);
+		view_3.loadData(dir, run);*/
 
-		// generate view_4
+		/*// generate view_4
 		view_4 = new ProbabilityView(samplesx, samplesy, spacing, cornerx, cornery, tabw, tabh, 6);
 		view_4.setFonts(regular, error);
 		view_4.setMap(map);
-		view_4.loadData(dir, run);
+		view_4.loadData(dir, run);*/
 		
 		finished = true;				
 	}	

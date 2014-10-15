@@ -35,6 +35,10 @@ class TimeControl {
 		tTotal = 500;
 	}
 	
+	boolean isAnimating(){
+		return loop.isOn();
+	}
+	
 	int getIndex(){
 		return cur;
 	}

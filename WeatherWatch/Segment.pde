@@ -16,9 +16,13 @@ class Segment2D implements QuadTreeElement {
     parent = c;
   }
   
-  Contour2D getSrcContour(){
+  Contour2D getSrcContour(){ // TODO refactor so don't have two identical methods
     return parent;
   }
+  
+  /*Contour2D getSource(){
+	  return parent;
+  }*/
   
   void drawSegment(){
     line(p0.x, p0.y, p1.x, p1.y);
@@ -70,5 +74,12 @@ class Segment2D implements QuadTreeElement {
     if (projO <= minO || projO >= maxO) return false;    
     
     return true;
+  }
+  
+  PVector getClosestPoint(float x, float y){ // preforms comparasion on squared euclidean distance b/c faster given that sqrt is strictly monotonic and we only care about relative
+	  float sqDist0 = sq(x - p0.x) + sq(y - p0.y);
+	  float sqDist1 = sq(x - p1.x) + sq(y - p1.y);
+	  if (sqDist0 <= sqDist1) return new PVector(p0.x, p0.y, sqDist0);
+	  else return new PVector(p1.x, p1.y, sqDist1);
   }
 }

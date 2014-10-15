@@ -3,7 +3,7 @@ abstract class View {
 	Library library;
 	StateTracker tracker;
 	TimeControl timer;
-	ArrayList<Container> targets;
+	ArrayList<TargetBase> targets;
 	
 	PShape map;
 	
@@ -30,7 +30,7 @@ abstract class View {
 	    timer = new TimeControl(cornerx+samplesx*spacing + 20, cornery+samplesy*spacing - 50, tabw*3, 30);
 		timer.setLabel("FORECAST HOUR");
 		
-		targets = new ArrayList<Container>();
+		targets = new ArrayList<TargetBase>();
 		
 		errmsg = "";
 		fReg = null;
@@ -58,7 +58,7 @@ abstract class View {
 	
 	void updateAnim(){
 		if(timer.update()){
-			for (Container c : targets){
+			for (TargetBase c : targets){
 				Target tmp = (Target) c;
 				if (tmp != null){
 					tmp.updateRenderContext(false); //double update of targets that do not require caching on release -- TODO revisit
@@ -71,11 +71,15 @@ abstract class View {
 		timer.setAnimating(false);
 	}
 	
-	void mousePress(int mx, int my){
-		press(mx, my);
+	void mousePress(int mx, int my, int clickCount){
+		press(mx, my, clickCount);
 	}
 	
-	protected boolean press(int mx, int my){
+	void mousePress(int mx, int my){
+		press(mx, my, 1);
+	}
+	
+	protected boolean press(int mx, int my, int clickCount){
 		if(library.clicked(mx, my)) return true;
 		else if (tracker.clicked(mx, my)){
 			if(tracker.changed()) tracker.update(targets);
@@ -85,14 +89,37 @@ abstract class View {
 		else return false;
 	}
 	
+	protected boolean press(int mx, int my){
+		return press(mx,my,1);
+	}
+	
+	
+	/*void mousePress(int mx, int my, int clickCount){
+		press(mx, my, clickCount);
+	}
+
+	protected boolean press(int mx, int my, int clickCount){
+		if(library.clicked(mx, my)) return true;
+		else if (tracker.clicked(mx, my)){
+			if(tracker.changed()) tracker.update(targets);
+			return true;
+		}
+		else if(timer.clicked(mx, my)) return true;
+		else return false;
+	}
+
+	protected boolean press(int mx, int my){
+		return press(mx,my,1);
+	}*/
+	
 	void mouseMove(int mx, int my){
 		move(mx,my);
 	}
 	
 	protected boolean move(int mx, int my){
-		if (library.interact(mouseX,mouseY)) return true;
-		else if (tracker.interact(mouseX,mouseY)) return true;
-		else if (timer.interact(mouseX, mouseY)) return true;
+		if (library.interact(mx,my)) return true;
+		else if (tracker.interact(mx,my)) return true;
+		else if (timer.interact(mx, my)) return true;
 		else return false;
 	}
 	
@@ -101,9 +128,9 @@ abstract class View {
 	}
 	
 	protected boolean drag(int mx, int my){ 
-		if (library.interact(mouseX,mouseY)) return true;
-		else if (timer.drag(mouseX, mouseY)){
-			for (Container c : targets){
+		if (library.interact(mx,my)) return true;
+		else if (timer.drag(mx, my)){
+			for (TargetBase c : targets){
 				Target tmp = (Target) c;
 				if (tmp != null){
 					tmp.updateRenderContext(false); //double update of targets that do not require caching on release -- TODO revisit
@@ -122,7 +149,7 @@ abstract class View {
 		if (library.released()) return true;
 		else if (tracker.released()) return true;
 		else if (timer.released()){
-			for (Container c : targets){
+			for (TargetBase c : targets){
 				Target tmp = (Target) c;
 				if (tmp != null) tmp.updateRenderContext(true); //double update of targets that do not require caching -- TODO revisit
 			}
@@ -142,7 +169,7 @@ abstract class View {
 	  	}
 		
 		if (changed){
-			for (Container c : targets){
+			for (TargetBase c : targets){
 				Target tmp = (Target) c;
 				if (tmp != null) tmp.updateRenderContext(true);
 			}
