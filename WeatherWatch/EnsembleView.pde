@@ -164,7 +164,17 @@ class EnsembleView extends View {
 			}
 			updateHighlight();
 		}
-		
+		else if (tracker.keyPress(key, code)){
+			if (tracker.changed()){
+				highlight = null;
+				member_index = -2;
+				ctooltip = null;
+				tooltipPos = null;
+								
+				tracker.update(targets);
+				changed = true;
+			}
+		}
 		return changed;
 	}		
 	

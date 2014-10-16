@@ -308,7 +308,6 @@ class DtrmView extends View {
 	  	  		changed = changed || timer.increment();
 	  	  	} 
 	  	}
-		
 		if (changed){
 			for (Container c : targets){
 				Target tmp = (Target) c;
@@ -316,7 +315,17 @@ class DtrmView extends View {
 			}
 			updateHighlight();
 		}
-		
+		else if (tracker.keyPress(key, code)){
+			if (tracker.changed()){
+				highlight = null;
+				member_index = -2;
+				ctooltip = null;
+				tooltipPos = null;
+								
+				tracker.update(targets);
+				changed = true;
+			}
+		}
 		return changed;
 	}	
 	

@@ -65,6 +65,40 @@ class StateTracker {
 		return interacted;
 	}
 	
+	boolean keyPress(char key, int code) {
+		int i = -1;
+	    switch (key) {
+	      case '8':
+	        i++;
+	      case '7':
+	        i++; 
+	      case '6':
+	        i++;     
+  	      case '5':
+  	        i++;     
+  	      case '4':
+  	        i++;     
+  	      case '3':
+  	        i++;     
+  	      case '2':
+  	        i++;;     
+  	      case '1':
+  	        i++;     
+	      default:  
+	        break;
+	    }
+		
+		if((i > -1) && (i < states.size())){
+			State s = states.get(i);
+			(states.get(idxActive)).setActive(false);
+			s.setActive(true);
+			idxPrev = idxActive;
+			idxActive = i;
+			return true;
+		}
+		else return false;
+	}
+	
 	boolean clicked(int mx, int my) {
 		boolean retval = false;
 		if (plus.clicked(mx,my)){

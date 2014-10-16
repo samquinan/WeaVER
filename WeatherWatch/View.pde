@@ -167,14 +167,18 @@ abstract class View {
 	  	  		changed = changed || timer.increment();
 	  	  	} 
 	  	}
-		
 		if (changed){
 			for (TargetBase c : targets){
 				Target tmp = (Target) c;
 				if (tmp != null) tmp.updateRenderContext(true);
 			}
 		}
-		
+		else if (tracker.keyPress(key, code)){
+			if (tracker.changed()){
+				tracker.update(targets);
+				changed = true;
+			}
+		}
 		return changed;
 	}
 	
