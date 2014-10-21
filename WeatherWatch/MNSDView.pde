@@ -112,13 +112,20 @@ class MNSDView extends View {
 				textFont(fReg);
 			}
 		}
+		else{ //Default Label
+			textSize(11);
+			textAlign(CENTER, TOP);
+			fill(70);
+			String full_label = (origin == null) ? "" : origin.getDateString(timer.getValue()); 
+			text(full_label, cornerx+(samplesx*spacing/2), cornery+(samplesy*spacing)+5);
+		}
 		
-		//frame rate for testing
+		/*//frame rate for testing
 		textSize(10);
 		textAlign(RIGHT, BOTTOM);
 		fill(70);
 		text(frameRate, width-3, height-3);
-		textSize(10);
+		textSize(10);*/
 		
 		//selection tooltip
 		drawToolTip();
@@ -355,7 +362,7 @@ class MNSDView extends View {
 		encd.useBilinear(true);
 		encd.useInterpolation(false);
 		encd.convert_K2C();
-		encd.genIsovalues(273.15, 2);
+		encd.genIsovalues(273.15, 5);
 		
 		// LOAD STDDEV
 		ArrayList<Field> fields2 = new ArrayList<Field>();
@@ -399,7 +406,7 @@ class MNSDView extends View {
 		encd.useBilinear(true);
 		encd.useInterpolation(false);
 		encd.convert_K2C();
-		encd.genIsovalues(273.15, 2);		
+		encd.genIsovalues(273.15, 5);		
 		
 		fields2 = new ArrayList<Field>();
 		deriv = "stddev";

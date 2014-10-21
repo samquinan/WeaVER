@@ -4,6 +4,7 @@ abstract class View {
 	StateTracker tracker;
 	TimeControl timer;
 	ArrayList<TargetBase> targets;
+	DateTime origin;
 	
 	PShape map;
 	
@@ -37,6 +38,7 @@ abstract class View {
 		fErr = null;
 						
 		map = null;
+		origin = null;
 	}
 	
 	void setFonts(PFont r, PFont e){
@@ -51,6 +53,14 @@ abstract class View {
 	
 	PShape getMap(){
 		return map;
+	}
+	
+	void setDateTimeOrigin(DateTime o){
+		origin = o;
+	}
+	
+	DateTime getDateTimeOrigin(){
+		return origin;
 	}
 	
 	abstract void loadData(String dataDir, int run_input);

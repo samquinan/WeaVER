@@ -39,6 +39,10 @@ class TimeControl {
 		return loop.isOn();
 	}
 	
+	int getValue(){
+		return cur*3;
+	}
+	
 	int getIndex(){
 		return cur;
 	}
