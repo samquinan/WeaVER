@@ -334,7 +334,8 @@ class ViewLoader implements Runnable{
 		//TODO PROPER PROJECTION (!)
 		String dir = "../datasets";
 		int run = prop_d.getRun();
-		DateTime cur_dt = new DateTime(prop_d.getDate(), run);
+		String date_string = prop_d.getDate();
+	 	DateTime cur_dt = (!date_string.isEmpty()) ? new DateTime(date_string, run) : null;
 		
 		// generate view_0
 		view_0 = new DtrmView(samplesx, samplesy, spacing, cornerx, cornery, tabw, tabh, 3);
@@ -350,21 +351,21 @@ class ViewLoader implements Runnable{
 		view_1.setMap(map);
 		view_1.setDateTimeOrigin(cur_dt);
 		view_1.linkGlyphs(glyphs);
-		view_1.loadData(dir, run);
+		/*view_1.loadData(dir, run);*/
 
 		// generate view_2
 		view_2 = new MNSDView(samplesx, samplesy, spacing, cornerx, cornery, tabw, tabh, 12);
 		view_2.setFonts(regular, error);
 		view_2.setMap(map);
 		view_2.setDateTimeOrigin(cur_dt);
-		view_2.loadData(dir, run);
+		/*view_2.loadData(dir, run);*/
 
 		// generate view_3
 		view_3 = new EnsembleView(samplesx, samplesy, spacing, cornerx, cornery, tabw, tabh, 12);
 		view_3.setFonts(regular, error);
 		view_3.setMap(map);
 		view_3.setDateTimeOrigin(cur_dt);
-		view_3.loadData(dir, run);
+		/*view_3.loadData(dir, run);*/
 
 		// generate view_4
 		view_4 = new ProbabilityView(samplesx, samplesy, spacing, cornerx, cornery, tabw, tabh, 6);
