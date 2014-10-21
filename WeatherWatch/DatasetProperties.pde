@@ -7,6 +7,7 @@ import java.util.Properties;
 
 public class DatasetProperties {
 	int run = -1;
+	String date = "";
 	
 	DatasetProperties(String relative_path){
 		
@@ -23,9 +24,10 @@ public class DatasetProperties {
 			// get the property values
 			String value;
 			value = prop.getProperty("run");
-			
 			if (value != null) run = Integer.parseInt(value);
 			
+			value = prop.getProperty("date");
+			if (value != null) date = value;
  
 		} catch (IOException ex) {
 			ex.printStackTrace();
@@ -44,4 +46,9 @@ public class DatasetProperties {
 	int getRun(){
 		return run;
 	}
+	
+	String getDate(){
+		return date;
+	}
+	
 }

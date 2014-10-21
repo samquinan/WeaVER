@@ -145,6 +145,7 @@ rm -f ../dataset.properties
 # move new into place
 mv ./curated ../datasets
 echo run=$MCYCLE > ../dataset.properties
+echo date=$DATE >> ../dataset.properties
 
 
 
