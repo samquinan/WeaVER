@@ -192,6 +192,7 @@ class ConditionSelect extends Selectable implements HandlesConditions{
 	boolean released(){
 		if (dragging = false) return false;
 		dragging = false;
+		rollover = false;
 		
 		if(current == null){
 			if (!isClone) home.add(this);
