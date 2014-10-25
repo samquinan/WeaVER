@@ -349,7 +349,7 @@ class ProbabilityView extends View {
 		
 		addProbSelect( dataDir+"/Probabilities/2m_RH/", run_input,    "le.15",   "RH",  "2m",     "≤ 10%", 0);
 		addProbSelect( dataDir+"/Probabilities/2m_RH/", run_input,    "ge.30",   "RH",  "2m",     "≥ 30%", 0);
-		addProbSelect( dataDir+"/Probabilities/10m_WSPD/", run_input,    "ge.20", "WSPD", "20m",   "≥ 20mph", 0);
+		addProbSelect( dataDir+"/Probabilities/10m_WSPD/", run_input,    "ge.20", "WSPD", "10m",   "≥ 20mph", 0);
 		
 		addProbSelect( dataDir+"/Probabilities/Haines/High/", run_input, "ge.5", "Haines", "High", "5 or 6", 0);
 		addProbSelect( dataDir+"/Probabilities/Haines/High/", run_input, "ge.3.le.4", "Haines", "High", "3 or 4", 0);
