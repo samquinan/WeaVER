@@ -1,7 +1,7 @@
 #!/bin/bash
 
 H_CUR=$(date +"%H")
-RUN_CUR=$[$[$[$[$[$[$H_CUR-3]+24]%24]/6]*6]+3]
+RUN_CUR=$[$[$[$[$[$[10#$H_CUR-3]+24]%24]/6]*6]+3]
 
 if [ $H_CUR -lt 3 ] 
 then
