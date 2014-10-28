@@ -363,7 +363,7 @@ class ViewLoader implements Runnable{
 		view_1.setMap(map);
 		view_1.setDateTimeOrigin(cur_dt);
 		view_1.linkGlyphs(glyphs);
-		/*view_1.loadData(dir, run);*/
+		view_1.loadData(dir, run);
 
 		// generate view_2
 		view_2 = new MNSDView(samplesx, samplesy, spacing, cornerx, cornery, tabw, tabh, 12);
