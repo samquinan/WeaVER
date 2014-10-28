@@ -26,7 +26,7 @@ boolean populated, triggered;
 DatasetProperties prop_d;
 
 void setup() {
-  	size(1315, 815, P2D);
+  	/*size(displayWidth, displayHeight, P2D);*/
 	smooth(8);
 	
 	prop_d = new DatasetProperties("../dataset.properties");
@@ -52,6 +52,18 @@ void setup() {
 	loadThread = new Thread(loader);
 	loadThread.start();
 	
+}
+
+public int sketchWidth() {
+  return 1315;//displayWidth;
+}
+
+public int sketchHeight() {
+  return 815;
+}
+
+public String sketchRenderer() {
+  return P2D; 
 }
 
 void draw(){
@@ -351,7 +363,7 @@ class ViewLoader implements Runnable{
 		view_1.setMap(map);
 		view_1.setDateTimeOrigin(cur_dt);
 		view_1.linkGlyphs(glyphs);
-		view_1.loadData(dir, run);
+		/*view_1.loadData(dir, run);*/
 
 		// generate view_2
 		view_2 = new MNSDView(samplesx, samplesy, spacing, cornerx, cornery, tabw, tabh, 12);

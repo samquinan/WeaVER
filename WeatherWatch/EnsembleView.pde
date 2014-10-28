@@ -100,7 +100,7 @@ class EnsembleView extends View {
 		target0.setBandColors(color(136,136,187), color(187,187,255));
 		target0.linkTimeControl(timer);
 		target0.linkSwitch(cbp_switch);
-		target0.linkSPHoverables(member_select0, (library.getMinXY()).x+15, (library.getMaxXY()).y + 45);
+		target0.linkSPHoverables(member_select0, (library.getMinXY()).x+55, (library.getMaxXY()).y + 45);
 		target0.setLabel("CONTOURS");
 		target0.setColor(c0);
 		library.linkTarget(target0);
@@ -115,7 +115,7 @@ class EnsembleView extends View {
 		target1.setBandColors(color(136,187,136), color(187,255,187));
 		target1.linkTimeControl(timer);
 		target1.linkSwitch(cbp_switch);
-		target1.linkSPHoverables(member_select1, (library.getMinXY()).x+75, (library.getMaxXY()).y + 45);
+		target1.linkSPHoverables(member_select1, (library.getMinXY()).x+125, (library.getMaxXY()).y + 45);
 		target1.setLabel("CONTOURS");
 		target1.setColor(c1);
 		library.linkTarget(target1);
@@ -130,7 +130,7 @@ class EnsembleView extends View {
 		target2.setBandColors(color(187,136,136), color(255,187,187));
 		target2.linkTimeControl(timer);
 		target2.linkSwitch(cbp_switch);
-		target2.linkSPHoverables(member_select2, (library.getMinXY()).x+135, (library.getMaxXY()).y + 45);
+		target2.linkSPHoverables(member_select2, (library.getMinXY()).x+195, (library.getMaxXY()).y + 45);
 		target2.setLabel("CONTOURS");
 		target2.setColor(c2);
 		library.linkTarget(target2);
@@ -179,24 +179,36 @@ class EnsembleView extends View {
 	}		
 	
 	private void updateHighlight(){
-		if (highlight != null){
-			switch (target_index){
-				case 0:
-					highlight = (member_index < contours_0.size()) ? contours_0.get(member_index) : null;
-					break;
-				case 1:
-					highlight = (member_index < contours_1.size()) ? contours_1.get(member_index) : null;
-					break;
-				case 2:
-					highlight = (member_index < contours_2.size()) ? contours_2.get(member_index) : null;
-					break;
-				default:
+		try{
+			if (highlight != null){
+				switch (target_index){
+					case 0:
+						highlight = (member_index < contours_0.size()) ? contours_0.get(member_index) : null;
+						break;
+					case 1:
+						highlight = (member_index < contours_1.size()) ? contours_1.get(member_index) : null;
+						break;
+					case 2:
+						highlight = (member_index < contours_2.size()) ? contours_2.get(member_index) : null;
+						break;
+					default:
+				}
+				if ((ctooltip != null) & (highlight != null)){
+					ctooltip.clear();
+					highlight.addAllSegmentsToQuadTree(ctooltip);
+					tooltipPos = ctooltip.getClosestPoint(tooltipPos.x,tooltipPos.y);
+				}
 			}
-			if (ctooltip != null){
-				ctooltip = new QuadTree_Node<Segment2D>(cornerx, cornery, cornerx+samplesx*spacing, cornery+samplesy*spacing, 7);
-				highlight.addAllSegmentsToQuadTree(ctooltip);
-				tooltipPos = ctooltip.getClosestPoint(tooltipPos.x,tooltipPos.y);
-			}
+		}
+		catch(NullPointerException e){
+			e.printStackTrace(System.out);
+			if (contours_0 == null) println("contours_0 is null");
+			if (contours_1 == null) println("contours_1 is null");
+			if (contours_2 == null) println("contours_2 is null");
+			if (tooltipPos == null) println("tooltipPos is null");
+			if (highlight == null) println("highlight is null -- acceptable state");
+			if (ctooltip == null) println("ctooltip is null -- acceptable state");	
+			exit();		
 		}
 	}
 	
@@ -462,7 +474,7 @@ class EnsembleView extends View {
 		if (target0.hasSelectable()){
 			// group label
 			float tmpx, tmpy;
-			tmpx = (library.getMinXY()).x + 15;
+			tmpx = (library.getMinXY()).x + 55;
 			tmpy = (library.getMaxXY()).y + 42;
 			
 			textSize(8);
@@ -488,7 +500,7 @@ class EnsembleView extends View {
 		if (target1.hasSelectable()){
 			// group label
 			float tmpx, tmpy;
-			tmpx = (library.getMinXY()).x + 75;
+			tmpx = (library.getMinXY()).x + 125;
 			tmpy = (library.getMaxXY()).y + 42;
 			
 			textSize(8);
@@ -514,7 +526,7 @@ class EnsembleView extends View {
 		if (target2.hasSelectable()){
 			// group label
 			float tmpx, tmpy;
-			tmpx = (library.getMinXY()).x + 135;
+			tmpx = (library.getMinXY()).x + 195;
 			tmpy = (library.getMaxXY()).y + 42;
 			
 			textSize(8);

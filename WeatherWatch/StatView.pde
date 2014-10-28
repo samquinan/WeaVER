@@ -400,7 +400,7 @@ class StatView extends View {
 		if (highlight != null){
 			highlight = contours.get(member_index);
 			if (ctooltip != null){
-				ctooltip = new QuadTree_Node<Segment2D>(cornerx, cornery, cornerx+samplesx*spacing, cornery+samplesy*spacing, 7);
+				ctooltip.clear();
 				highlight.addAllSegmentsToQuadTree(ctooltip);
 				tooltipPos = ctooltip.getClosestPoint(tooltipPos.x,tooltipPos.y);
 			}
