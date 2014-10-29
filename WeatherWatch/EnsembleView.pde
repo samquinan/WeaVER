@@ -71,8 +71,8 @@ class EnsembleView extends View {
 		highlight = null;
 		target_index = -1;
 		member_index = -2;
+		ctooltip = new QuadTree_Node<Segment2D>(cornerx, cornery, cornerx+samplesx*spacing, cornery+samplesy*spacing, 7);
 		tooltipPos = null;
-		ctooltip = null;
 				
 		c0 = color(64, 56, 118, 200);
 		c1 = color(47, 110, 53, 200);
@@ -193,7 +193,7 @@ class EnsembleView extends View {
 						break;
 					default:
 				}
-				if ((ctooltip != null) & (highlight != null)){
+				if ((tooltipPos != null)&&(highlight != null)){
 					ctooltip.clear();
 					highlight.addAllSegmentsToQuadTree(ctooltip);
 					tooltipPos = ctooltip.getClosestPoint(tooltipPos.x,tooltipPos.y);
@@ -207,7 +207,7 @@ class EnsembleView extends View {
 			if (contours_2 == null) println("contours_2 is null");
 			if (tooltipPos == null) println("tooltipPos is null");
 			if (highlight == null) println("highlight is null -- acceptable state");
-			if (ctooltip == null) println("ctooltip is null -- acceptable state");	
+			if (ctooltip == null) println("ctooltip is null");	
 			exit();		
 		}
 	}
@@ -622,7 +622,7 @@ class EnsembleView extends View {
 		}*/
 		if (cbp_switch.clicked(mx, my) || super.press(mx,my,clickCount)) return true;
 		else if (highlight != null){
-			ctooltip = new QuadTree_Node<Segment2D>(cornerx, cornery, cornerx+samplesx*spacing, cornery+samplesy*spacing, 7);
+			ctooltip.clear();
 			highlight.addAllSegmentsToQuadTree(ctooltip);
 			tooltipPos = ctooltip.getClosestPoint(mx,my);
 			return true;
@@ -671,9 +671,8 @@ class EnsembleView extends View {
 			return true;
 		}
 		else if (super.release()) return true;
-		else if (ctooltip != null){
+		else if (tooltipPos != null){
 			//end tool-tip
-			ctooltip = null;
 			tooltipPos = null;
 			return true;
 		}

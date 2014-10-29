@@ -45,7 +45,7 @@ class StatView extends View {
 		member_index = -2;
 		
 		tooltipPos = null;
-		ctooltip = null;
+		ctooltip = new QuadTree_Node<Segment2D>(cornerx, cornery, cornerx+samplesx*spacing, cornery+samplesy*spacing, 7);
 		labels = new ArrayList<StickyLabel>();
 		l_cur = null;
 		
@@ -333,7 +333,7 @@ class StatView extends View {
 			}		
 		}
 		else if (highlight != null){
-			ctooltip = new QuadTree_Node<Segment2D>(cornerx, cornery, cornerx+samplesx*spacing, cornery+samplesy*spacing, 7);
+			ctooltip.clear();
 			highlight.addAllSegmentsToQuadTree(ctooltip);
 			tooltipPos = ctooltip.getClosestPoint(mx,my);
 			return true;
@@ -344,12 +344,12 @@ class StatView extends View {
 	
 	protected boolean release(){
 		if (super.release()) return true;
-		else if (ctooltip != null){
+		else if (tooltipPos != null){
 			//add sticky label
 			l_cur = new StickyLabel(tooltipPos, ctooltip, highlight, member_index);
 			labels.add(l_cur);
 			//end tool-tip
-			ctooltip = null;
+			ctooltip =  new QuadTree_Node<Segment2D>(cornerx, cornery, cornerx+samplesx*spacing, cornery+samplesy*spacing, 7); //new base obj
 			tooltipPos = null;
 			return true;
 		}
@@ -379,7 +379,7 @@ class StatView extends View {
 			if (tracker.changed()){
 				highlight = null;
 				member_index = -2;
-				ctooltip = null;
+				ctooltip.clear();
 				tooltipPos = null;
 								
 				tracker.update(targets);
@@ -399,7 +399,7 @@ class StatView extends View {
 		}
 		if (highlight != null){
 			highlight = contours.get(member_index);
-			if (ctooltip != null){
+			if ((tooltipPos != null)&&(highlight != null)){
 				ctooltip.clear();
 				highlight.addAllSegmentsToQuadTree(ctooltip);
 				tooltipPos = ctooltip.getClosestPoint(tooltipPos.x,tooltipPos.y);
