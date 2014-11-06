@@ -25,6 +25,8 @@ boolean populated, triggered;
 
 DatasetProperties prop_d;
 
+private int mHeight;
+
 void setup() {
   	/*size(displayWidth, displayHeight, P2D);*/
 	smooth(8);
@@ -37,7 +39,8 @@ void setup() {
   	textFont(plotFont);
   	
 	// menu bar
-	menu = new MenuBar(0,0,width,14);
+	mHeight = 14;
+	menu = new MenuBar(0,0,width,mHeight);
 	mode = menu.getMode();
 	
 	//spinner	
@@ -55,11 +58,11 @@ void setup() {
 }
 
 public int sketchWidth() {
-  return 1315;//displayWidth;
+  return displayWidth;//1315;//displayWidth;
 }
 
 public int sketchHeight() {
-  return 815;
+  return displayHeight;//800;//displayHeight;
 }
 
 public String sketchRenderer() {
@@ -332,14 +335,22 @@ class ViewLoader implements Runnable{
 	    PShape map = loadShape("roughUS.svg");
 		map.disableStyle();
 	
-	    int spacing =    5;
 	    int samplesx = 185;
 	    int samplesy = 129;
-	
-		int cornerx = 60;
-		int cornery = 80;
+		
 		int tabw = 90;
 		int tabh = 22;
+		
+		int addY = 60 + tabh; //TODO  smarter solution than manual analysis of view controls
+		int addX = 100 + 3*tabw; //TODO  smarter solution than manual analysis of view controls
+		
+	    int spacing = min(floor((sketchHeight()-mHeight-addY)/samplesy), floor((sketchWidth()-addX)/samplesx));
+		int cornerx = 55 + (sketchWidth() - (samplesx*spacing + addX))/2;
+		int cornery = mHeight + tabh + 26 + (sketchHeight()-mHeight - (samplesy*spacing + addY))/2;
+		
+	    /*int spacing =  5;
+		int cornerx = 60;
+		int cornery = 80;*/
 		
 		//TODO place into data structure with colormaps, projection, other user defined preferences from config file
 		//		-- Need to determine what prefs we want to give users

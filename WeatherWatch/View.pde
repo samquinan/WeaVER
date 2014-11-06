@@ -24,10 +24,10 @@ abstract class View {
 		tabw 	 = tw;
 		tabh 	 = th;
 		
-		library = new Library(cornerx+(samplesx*spacing) + 20,45,tabw,tabh,3, ceil(libsize/3.0));
+		library = new Library(cornerx+(samplesx*spacing) + 20,cornery-(10+tabh)/2,tabw,tabh,3, ceil(libsize/3.0));
 		library.setLabel("FIELDS");
 		
-		tracker = new StateTracker(cornerx+20,cornery+samplesy*spacing+30,"VIEWS");
+		tracker = new StateTracker(cornerx+20,cornery+samplesy*spacing+20,"VIEWS");
 	    timer = new TimeControl(cornerx+samplesx*spacing + 20, cornery+samplesy*spacing - 50, tabw*3, 30);
 		timer.setLabel("FORECAST HOUR");
 		

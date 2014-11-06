@@ -12,9 +12,9 @@ class StateTracker {
 	    x=x0;
 		y=y0;
 		
-		minus = new CharButton(x,y,13,'-');
+		minus = new CharButton(x,y-2,13,'-');
 		minus.setCharSize(14);
-		plus = new CharButton(x+15,y,13,'+');
+		plus = new CharButton(x+15,y-2,13,'+');
 		
 		textsize = 10;
 		label = s;
@@ -43,7 +43,7 @@ class StateTracker {
 		textAlign(CENTER,BOTTOM);
 		textSize(textsize);
 		fill(30);
-		text(label, x+15, y-5);
+		text(label, x+14, y-2);
 		
 		plus.display();
 		minus.display();
