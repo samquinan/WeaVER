@@ -100,7 +100,7 @@ class DtrmView extends View {
 			fill(210);//fill(247,241,230);
 			shape(map, cornerx+(38*spacing), cornery+(34*spacing), 120*spacing, 74*spacing);
 		}
-		
+				
 		// fill
 		if(t_barbs.isHovering() || t_contour.isHovering()) tint(255, 200);
 		image(fill, cornerx, cornery);
@@ -112,7 +112,17 @@ class DtrmView extends View {
 			stroke(255,255,255,255);//stroke(85,46,27,255);
 			noFill();
 			shape(map, cornerx+(38*spacing), cornery+(34*spacing), 120*spacing, 74*spacing);
-		}	
+		}
+		
+		/*//grid
+		fill(150);
+		noStroke();
+	    for (int j=0; j < samplesy; j++){ //simulate 2D array
+	      for (int i=0; i < samplesx; i++) {
+	        PVector val00Pos = new PVector (round(cornerx+(i+0.5)*spacing), round(cornery+samplesy*spacing-((j+0.5)*spacing)));
+	        ellipse(val00Pos.x, val00Pos.y, 3, 3);
+	      }
+	    }*/
 		
 		color clr;
 		float weight;
@@ -587,15 +597,16 @@ class DtrmView extends View {
 		colorMode(RGB,255);*/
 		
 		haines = new ColorMapf();
-		haines.add(1, color( 126, 200, 178 ));
-		haines.add(2, color( 126, 200, 178 ));
-		haines.add(3, color(  59, 164, 133 ));
-		haines.add(4, color( 217, 165,  49 ));
-		haines.add(5, color( 189, 101,   8 ));
-		haines.add(6, color( 191,  69,  69 ));
-		haines.add(7, color( 145,  31,  31 ));
+		/*haines.add(0.5, color( 126, 200, 178 ));  //1*/
+		haines.add(1.5, color( 126, 200, 178 ));  //2
+		haines.add(2.5, color( 126, 200, 178 ));  //2
+		haines.add(3.5, color(  59, 164, 133 ));  //3
+		haines.add(4.5, color( 217, 165,  49 ));  //4
+		/*haines.add(4.5, color( 189, 101,   8 ));  //5*/
+		haines.add(5.5, color( 191,  69,  69 ));  //6
+		haines.add(6.5, color( 145,  31,  31 ));  //7
+		haines.convert_fakeHaines();
 		haines.setCategorical(true);
-		
 		
 		
 		String hgt;
@@ -916,12 +927,13 @@ class DtrmView extends View {
 		encd.useBilinear(true);
 		encd.useInterpolation(false);
 		encd.setColorMap(haines);
-		/*encd.genIsovalues(0, 1);*/
-		encd.addIsovalue(2.0);
-		encd.addIsovalue(3.0);
-		encd.addIsovalue(4.0);
-		encd.addIsovalue(5.0);
-		encd.addIsovalue(6.0);
+		/*encd.genIsovalues(0.5, 1);*/
+		encd.convert_fakeHaines();
+		encd.addIsovalue(1.5);
+		encd.addIsovalue(2.5);
+		encd.addIsovalue(3.5);
+		encd.addIsovalue(4.5);
+		encd.addIsovalue(5.5);
 		library.add(new StatSelect(tabw, tabh, encd, var, level, deriv), libIndex);
 	}	
 

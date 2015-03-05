@@ -76,7 +76,10 @@ class Legend {
 					break;
 				case 4:
 					val = convert.mps_to_kt(val);
-					break;						
+					break;
+				case 5:
+					val = convert.fakeHaines(val);
+					break;							
 				default:
 					break;
 			}

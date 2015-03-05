@@ -65,6 +65,11 @@ abstract class EncodingBase {
 		if(convert == null) convert = new Converter();
 	}
 	
+	void convert_fakeHaines(){
+		conversionState = 5;
+		if(convert == null) convert = new Converter();
+	}
+	
 	int getConversionState(){
 		return conversionState;
 	}

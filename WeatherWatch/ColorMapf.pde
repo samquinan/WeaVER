@@ -47,6 +47,10 @@ class ColorMapf {
 		conversionState = 4;
 	}
 	
+	void convert_fakeHaines(){
+		conversionState = 5;
+	}
+	
 	int getConversionState(){
 		return conversionState;
 	}
