@@ -38,13 +38,13 @@ class WindField extends Field {
 		
 		for (int i=0; i < countx; i++){
 			for(int j=0; j < county; j++){
-				int x = x_start + round(k/2.0) + i*k; 
-				int y = y_start + round(k/2.0) + j*k;
+				int x = x_start + floor(k/2.0) + i*k; 
+				int y = y_start + floor(k/2.0) + j*k;
 				int idx = (y*dimx)+x;
 				float tmp = data.get(idx);
 				
 				barbs.add(new Barb(viewZero.x+(x+0.5)*spacing, viewZero.y+viewHeight-((y+0.5)*spacing), tmp, data2.get(idx), src.getBarbGlyph(tmp)));
 			}
-		}	
+		}		
 	}
 }
