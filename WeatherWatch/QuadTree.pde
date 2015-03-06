@@ -27,7 +27,15 @@ class QuadTree_Node<E extends QuadTreeElement> {
 	int getMaxMembers(){return maxMembers;}
 	
 	public void clear(){
-		tr = null;//no need for recursive clear -- exiting scope will trigger garbage collection
+		if (tr != null){
+			tr.clear();
+			tl.clear();
+			br.clear();
+			bl.clear();
+		}
+		
+		tr = null;//should not need recursive clear -- 
+				  // exiting scope will trigger garbage collection, but timing could be issue
 		tl = null;
 		br = null;
 		bl = null;
