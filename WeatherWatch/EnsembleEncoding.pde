@@ -275,17 +275,17 @@ class EnsembleEncoding implements EncodesSP, EncodesCBP {
 		cbp.genCBPbands(img, cmap, cmap2, idx);
 	}
 	
-	void genCBPbands(PImage img, color c1, color c2, int idx){
+	/*void genCBPbands(PImage img, color c1, color c2, int idx){
 		ArrayList<Integer> ordering = cbp.getOrdering();
 		if (ordering != null){
-			
+
 			boolean[] union =  new boolean[img.width*img.height];
 			Arrays.fill(union, false);
 			boolean[] intersection =  new boolean[img.width*img.height];
 			Arrays.fill(intersection, true);
-			
+
 			ArrayList<Field> member;
-			
+
 			int half = round(ordering.size()/2.0);
 			int whole = ordering.size() - 3;
 
@@ -303,7 +303,7 @@ class EnsembleEncoding implements EncodesSP, EncodesCBP {
 				Field f = member.get(idx);
 				f.genMaskBilinear(union, intersection, img.width, img.height, isovalue);
 			}
-			
+
 			img.loadPixels();
 			for (int i=0; i < union.length; i++){
 				color c;
@@ -314,8 +314,58 @@ class EnsembleEncoding implements EncodesSP, EncodesCBP {
 			}
 			img.updatePixels();
 		}
+	}*/
+	
+	void genCBPbands(PImage img, color c1, color c2, int idx){
+		ArrayList<Integer> ordering = cbp.getOrdering();
+		if (ordering != null){
 
+			int n = img.width*img.height;
+			BitSet union =  new BitSet(n); // contructor initializes all bits to false
+			BitSet intersection =  new BitSet(n);
+			intersection.flip(0,intersection.size()-1);// flip all to true
+
+			//println("n =" + n);
+			//println("size: \t" + union.size() + "\t" + intersection.size());
+			//println("length: \t" + union.length() + "\t" + intersection.length());
+
+			ArrayList<Field> member;
+
+			int half = round(ordering.size()/2.0);
+			int whole = ordering.size() - 3;
+
+			for (int i=0; i < half; i++){
+				member = members.get(ordering.get(i));
+				Field f = member.get(idx);
+				f.genMaskBilinear(union, intersection, img.width, img.height, isovalue);
+			}
+
+			BitSet union_50 = (BitSet) union.clone();
+			BitSet intersection_50 = (BitSet) intersection.clone();
+
+			for (int i=half; i < whole; i++){
+				member = members.get(ordering.get(i));
+				Field f = member.get(idx);
+				f.genMaskBilinear(union, intersection, img.width, img.height, isovalue);
+			}
+
+			img.loadPixels();
+
+
+			union_50.andNot(intersection_50); //union50 is band
+			union.andNot(intersection);//union is envelope
+			for (int i=0; i < n; i++){
+				color c;
+				if (union_50.get(i)) c = c1;
+				else if (union.get(i)) c = c2;
+				else c = (0 << 24) | (c2 & 0x00FFFFFF);
+				img.pixels[i] = c;
+			}
+			img.updatePixels();
+		}
 	}
+	
+	
 	
 	
 	
