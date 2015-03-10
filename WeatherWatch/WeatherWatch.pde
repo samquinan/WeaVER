@@ -63,7 +63,7 @@ public int sketchWidth() {
 }
 
 public int sketchHeight() {
-  return displayHeight-15;//800;//displayHeight;
+  return displayHeight;//800;//displayHeight;
 }
 
 public String sketchRenderer() {
@@ -389,7 +389,10 @@ class ViewLoader implements Runnable{
 		view_3.setFonts(regular, error);
 		view_3.setMap(map);
 		view_3.setDateTimeOrigin(cur_dt);
+		long startTime = System.currentTimeMillis();
 		view_3.loadData(dir, run);
+		long endTime = System.currentTimeMillis();
+		println("load: " + ((endTime-startTime)/1000.0) + " seconds");
 
 		// generate view_4
 		view_4 = new ProbabilityView(samplesx, samplesy, spacing, cornerx, cornery, tabw, tabh, 6);

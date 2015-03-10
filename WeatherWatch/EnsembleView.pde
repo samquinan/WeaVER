@@ -815,7 +815,6 @@ class EnsembleView extends View {
 		
 		
 		
-		
 		/*Field f;
 		EnsembleEncoding encd;
 		EnsembleSelect select;
@@ -1255,7 +1254,6 @@ class EnsembleView extends View {
 	}
 	
 	private ContourBoxPlot getCBP(String dir, int run_input, boolean orderOnly){
-		
 		//get ordering
 		ArrayList<Integer> ordering = new ArrayList<Integer>(21);
 		getAnalysisOrder(dir+"analysis.txt", ordering);
@@ -1268,6 +1266,7 @@ class EnsembleView extends View {
 			cbp = new ContourBoxPlot(ordering);
 		}
 		else{
+			println("loading low res");
 			String run = String.format("%02d", run_input);
 			String grid = "212";
 			PVector corner = new PVector(cornerx, cornery);

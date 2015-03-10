@@ -930,43 +930,65 @@ class Field{
 		  return;
 	  }
 	  
+	  int idx;
 	  for (int y = 0; y < h; y++){
 	  	  for (int x = 0; x < w; x++){
 			  
-			  int idx = getIndex(x,y,w);
+			  idx = getIndex(x,y,w);
 			  if ((union[idx] == true) && (intersection[idx] == false)) continue; //new value has no effect
 			  
 	  		  //grab 4 nearest data values for interpolation
-	  		  int i0, j0, i1, j1;
+	  		  int i, i0, j0, i1, j1;
 	  		  float ax, ay;
   		  
-	  		  float tmp = ((2.0*x+1.0)/(2*spacing)) - 0.5;//(x-(0.5*spacing))/spacing;//
-	  		  i0 = floor(tmp);
-	  		  i1 = ceil(tmp);
+	  		  float tmp = (x+0.5)/spacing - 0.5;//((2.0*x+1.0)/(2*spacing)) - 0.5;
+	  		  i = floor(tmp);
+			  i0 = constrain(i,0,(dimx-1));
+	  		  i1 = constrain(i+1,0,(dimx-1));
 	  		  ax = tmp - i0;
   		  		  
-	  		  tmp = ((2.0*((dimy*spacing-1)-y)+1.0)/(2*spacing)) - 0.5;//(((dimy*spacing-1)-y)-(0.5*spacing))/spacing;//note: 0,0 is bottom left
-	  		  j0 = floor(tmp);
-	  		  j1 = ceil(tmp);
+	  		  tmp = (h-y-0.5)/spacing - 0.5;//note: 0,0 is bottom left
+	  		  i = floor(tmp);
+			  j0 = constrain(i,0,(dimy-1));
+	  		  j1 = constrain(i+1,0,(dimy-1));
 	  		  ay = tmp - j0;
 		    		  
 	  		  float v00, v01, v10, v11;
-	  		  v00 = data.get(getIndex(constrain(i0,0,(dimx-1)),constrain(j0,0,(dimy-1)),dimx));
-	  		  v01 = data.get(getIndex(constrain(i0,0,(dimx-1)),constrain(j1,0,(dimy-1)),dimx));
-	  		  v10 = data.get(getIndex(constrain(i1,0,(dimx-1)),constrain(j0,0,(dimy-1)),dimx));
-	  		  v11 = data.get(getIndex(constrain(i1,0,(dimx-1)),constrain(j1,0,(dimy-1)),dimx));
-  		  
+			  i = getIndex(i0,j0,dimx);
+	  		  v00 = data.get(i);
+	  		  v10 = data.get(i+1);
+			  i = getIndex(i0,j1,dimx);
+	  		  v01 = data.get(i);
+	  		  v11 = data.get(i+1);
+			  
 	  		  //bilinear interpolation
-	  		  float v0x, v1x;
-	  		  v0x = map(ax,0.0,1.0,v00,v10);
-	  		  v1x = map(ax,0.0,1.0,v01,v11);
-  		  
-	  		  float v = map(ay,0.0,1.0,v0x,v1x);
+	  		  float v = map(ay,0.0,1.0,map(ax,0.0,1.0,v00,v10),map(ax,0.0,1.0,v01,v11));			  
 			  boolean pass = (v > isovalue);
 			  
 			  if (pass) union[idx] = pass;
 			  else intersection[idx] = pass; 
 			  
+	  		  /*float tmp = ((2.0*x+1.0)/(2*spacing)) - 0.5;//(x-(0.5*spacing))/spacing;//
+	  		  i0 = floor(tmp);
+	  		  i1 = ceil(tmp);
+	  		  ax = tmp - i0;
+
+	  		  tmp = ((2.0*((dimy*spacing-1)-y)+1.0)/(2*spacing)) - 0.5;//(((dimy*spacing-1)-y)-(0.5*spacing))/spacing;//note: 0,0 is bottom left
+	  		  j0 = floor(tmp);
+	  		  j1 = ceil(tmp);
+	  		  ay = tmp - j0;
+
+	  		  float v00, v01, v10, v11;
+	  		  v00 = data.get(getIndex(constrain(i0,0,(dimx-1)),constrain(j0,0,(dimy-1)),dimx));
+	  		  v01 = data.get(getIndex(constrain(i0,0,(dimx-1)),constrain(j1,0,(dimy-1)),dimx));
+	  		  v10 = data.get(getIndex(constrain(i1,0,(dimx-1)),constrain(j0,0,(dimy-1)),dimx));
+	  		  v11 = data.get(getIndex(constrain(i1,0,(dimx-1)),constrain(j1,0,(dimy-1)),dimx));
+
+	  		  //bilinear interpolation
+	  		  float v0x, v1x;
+	  		  v0x = map(ax,0.0,1.0,v00,v10);
+	  		  v1x = map(ax,0.0,1.0,v01,v11);
+	  		  float v = map(ay,0.0,1.0,v0x,v1x);*/
 	  	  }
 	  }
 	  	  
@@ -1023,6 +1045,57 @@ class Field{
 	  	  }
 	  }
 	  	  
+  }
+  
+  void genMaskBilinear(BitSet mask, int w, int h, float isovalue){
+	  int n = w*h;
+	  boolean[] bmask = new boolean[n];
+	  if ((int(dimx*spacing) != w) || (int(dimy*spacing) != h)){
+		  println("Error in genMask: dimensions wrong");
+		  println("\t" + w + "\t"+ h);
+		  println("\t" + dimx*spacing + "\t"+ dimy*spacing);
+		  return;
+	  }
+	  
+	  int idx;
+	  for (int y = 0; y < h; y++){
+	  	  for (int x = 0; x < w; x++){
+			  idx = getIndex(x,y,w);
+			    
+	  		  //grab 4 nearest data values for interpolation
+	  		  int i, i0, j0, i1, j1;
+	  		  float ax, ay;
+  		  
+	  		  float tmp = (x+0.5)/spacing - 0.5;//((2.0*x+1.0)/(2*spacing)) - 0.5;
+	  		  i = floor(tmp);
+			  i0 = constrain(i,0,(dimx-1));
+	  		  i1 = constrain(i+1,0,(dimx-1));
+	  		  ax = tmp - i0;
+  		  		  
+	  		  tmp = (h-y-0.5)/spacing - 0.5;//note: 0,0 is bottom left
+	  		  i = floor(tmp);
+			  j0 = constrain(i,0,(dimy-1));
+	  		  j1 = constrain(i+1,0,(dimy-1));
+	  		  ay = tmp - j0;
+		    		  
+	  		  float v00, v01, v10, v11;
+			  i = getIndex(i0,j0,dimx);
+	  		  v00 = data.get(i);
+	  		  v10 = data.get(i+1);
+			  i = getIndex(i0,j1,dimx);
+	  		  v01 = data.get(i);
+	  		  v11 = data.get(i+1);
+  		  
+	  		  //bilinear interpolation  		  
+	  		  float v = map(ay,0.0,1.0,map(ax,0.0,1.0,v00,v10),map(ax,0.0,1.0,v01,v11));
+			  bmask[idx]=(v > isovalue);
+	  	  }
+	  }
+	  
+	  for (int i=0; i < n; i++){
+		mask.set(i,bmask[i]);
+	  }
+	  
   }
   
   
@@ -1107,12 +1180,9 @@ class Field{
 		}
 	}
   
-  
-  
   private int getIndex(int x, int y, int N)
   {
-     int idx = (y*N)+x;
-     return idx;
+     return (y*N)+x;
   }
   
   

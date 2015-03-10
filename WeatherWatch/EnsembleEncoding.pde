@@ -336,39 +336,57 @@ class EnsembleEncoding implements EncodesSP, EncodesCBP {
 			ArrayList<Integer> ordering = cbp.getOrdering();
 			if (ordering != null){
 
-				BitSet union =  new BitSet(n); // contructor initializes all bits to false
+				/*BitSet union =  new BitSet(n); // contructor initializes all bits to false
 				BitSet intersection =  new BitSet(n);
 				intersection.flip(0,intersection.size()-1);// flip all to true
-
-				//println("n =" + n);
-				//println("size: \t" + union.size() + "\t" + intersection.size());
-				//println("length: \t" + union.length() + "\t" + intersection.length());
+				BitSet mask = new BitSet(n);*/
+				
+				boolean[] union =  new boolean[n];
+				Arrays.fill(union, false);
+				boolean[] intersection =  new boolean[n];
+				Arrays.fill(intersection, true);
 
 				ArrayList<Field> member;
-
+				
 				int half = round(ordering.size()/2.0);
 				int whole = ordering.size() - 3;
 
 				for (int i=0; i < half; i++){
 					member = members.get(ordering.get(i));
 					Field f = member.get(idx);
+					/*f.genMaskBilinear(mask, w, h, isovalue);
+					union.or(mask);
+					intersection.and(mask);*/
 					f.genMaskBilinear(union, intersection, img.width, img.height, isovalue);
 				}
 
-				BitSet union_50 = (BitSet) union.clone();
-				BitSet intersection_50 = (BitSet) intersection.clone();
+				/*BitSet union_50 = (BitSet) union.clone();
+				BitSet intersection_50 = (BitSet) intersection.clone();*/
+				boolean[] union_50 = union.clone();
+				boolean[] intersection_50 = intersection.clone();
+				
 
 				for (int i=half; i < whole; i++){
 					member = members.get(ordering.get(i));
 					Field f = member.get(idx);
+					/*f.genMaskBilinear(mask, w, h, isovalue);
+					union.or(mask);
+					intersection.and(mask);*/
 					f.genMaskBilinear(union, intersection, img.width, img.height, isovalue);
 				}
 				
-				union_50.andNot(intersection_50); //union50 is band
+				/*union_50.andNot(intersection_50); //union50 is band
 				union.andNot(intersection);//union is envelope
-				
+
 				band = union_50;
-				envelope = union;
+				envelope = union;*/
+				
+				band = new BitSet(n);
+				envelope = new BitSet(n);
+				for (int i=0; i < n; i++){
+					band.set(i,(union_50[i] & !intersection_50[i]));
+					envelope.set(i,(union[i] & !intersection[i]));
+				}
 			}
 		}
 		

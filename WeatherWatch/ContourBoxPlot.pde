@@ -208,9 +208,17 @@ class ContourBoxPlot {//implements EncodesCBP{
 		env_gen = new ArrayList< BitSet >(maxIdx);
 		
 		for (int idx=0; idx < maxIdx; idx++){
-			BitSet union =  new BitSet(n);
-			BitSet intersection =  new BitSet(n);
+			long startTime = System.currentTimeMillis();
+					
+			boolean[] union =  new boolean[n];
+			Arrays.fill(union, false);
+			boolean[] intersection =  new boolean[n];
+			Arrays.fill(intersection, true);
+			
+			/*BitSet union = new BitSet(n);
+			BitSet intersection = new BitSet(n);
 			intersection.flip(0,intersection.size()-1);// flip all to true
+			BitSet mask = new BitSet(n);*/
 			
 			for (int i=0; i < half; i++){
 				member = members.get(ordering.get(i));
@@ -223,10 +231,15 @@ class ContourBoxPlot {//implements EncodesCBP{
 				}
 				Field f = member.get(idx);
 				f.genMaskBilinear(union, intersection, w, h, isovalue);
+				/*f.genMaskBilinear(mask, w, h, isovalue);
+				union.or(mask);
+				intersection.and(mask);*/
 			}
 			
-			BitSet union_50 = (BitSet) union.clone();
-			BitSet intersection_50 = (BitSet) intersection.clone();
+			boolean[] union_50 = union.clone();
+			boolean[] intersection_50 = intersection.clone();
+			/*BitSet union_50 = (BitSet) union.clone();
+			BitSet intersection_50 = (BitSet) intersection.clone();*/
 			
 			for (int i=half; i < whole; i++){
 				member = members.get(ordering.get(i));
@@ -239,14 +252,30 @@ class ContourBoxPlot {//implements EncodesCBP{
 				}
 				Field f = member.get(idx);
 				f.genMaskBilinear(union, intersection, w, h, isovalue);
+				/*f.genMaskBilinear(mask, w, h, isovalue);
+				union.or(mask);
+				intersection.and(mask);*/
 			}
 			
-			union_50.andNot(intersection_50); // is band
+			long midTime = System.currentTimeMillis();			
+			
+			BitSet band = new BitSet(n);
+			BitSet env = new BitSet(n);
+			for (int i=0; i < n; i++){
+				band.set(i,(union_50[i] & !intersection_50[i]));
+				env.set(i,(union[i] & !intersection[i]));
+			}
+			bands_gen.add(band);
+			env_gen.add(env);
+						
+			/*union_50.andNot(intersection_50); // is band
 			union.andNot(intersection);// is envelope
-			
+
 			bands_gen.add(union_50);
-			env_gen.add(union);
+			env_gen.add(union);*/
 			
+			long endTime = System.currentTimeMillis();			
+			println("cbp: " + ((midTime-startTime)/1000.0) + " s \t" + ((endTime-midTime)/1000.0) + "s");
 		}
 	}
 		
