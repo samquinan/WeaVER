@@ -215,6 +215,13 @@ class EnsembleSelect extends Selectable implements EncodesSP, EncodesCBP{
 		encd.genSPContours(contours, time);
 	}
 	
+	boolean ignoreLowRes(){
+		return encd.ignoreLowRes();
+	}
+	void setIgnoreLowRes(boolean b){
+		encd.setIgnoreLowRes(b);
+	}
+	
 	void getCBPmedian(WrappedContour2D wrapper){
 		encd.getCBPmedian(wrapper);
 	}

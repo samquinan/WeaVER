@@ -372,8 +372,8 @@ class EnsembleView extends View {
 			stroke(0,0,15,100);
 			strokeCap(SQUARE);
 			
-			// Target 2
-			if (!target2.isHovering()){
+			// Target 0
+			if (!target0.isHovering()){
 				if (someHovering){ //grey out
 					s_1 = 0;
 					s_2 = 12;
@@ -388,9 +388,9 @@ class EnsembleView extends View {
 					b_2 = 50;
 					a = 100;
 				}
-				drawContours(contours_2,   0, s_1, s_2, b_1, b_2, a, 1.5);
+				drawContours(contours_0, 239, s_1, s_2, b_1, b_2, a, 1.5);
 			}
-			
+						
 			// Target 1
 			if (!target1.isHovering()){
 				if (someHovering){ //grey out
@@ -410,8 +410,8 @@ class EnsembleView extends View {
 				drawContours(contours_1, 119, s_1, s_2, b_1, b_2, a, 1.5);
 			}
 			
-			// Target 0
-			if (!target0.isHovering()){
+			// Target 2
+			if (!target2.isHovering()){
 				if (someHovering){ //grey out
 					s_1 = 0;
 					s_2 = 12;
@@ -426,7 +426,7 @@ class EnsembleView extends View {
 					b_2 = 50;
 					a = 100;
 				}
-				drawContours(contours_0, 239, s_1, s_2, b_1, b_2, a, 1.5);
+				drawContours(contours_2,   0, s_1, s_2, b_1, b_2, a, 1.5);
 			}
 			
 			// Hover over Top
@@ -781,19 +781,39 @@ class EnsembleView extends View {
 		
 		ArrayList<String> member_labels = genMemberLabels(models,perturbations);
 		ArrayList< ArrayList<Field> > ensemble = getEnsemble(dataDir + "/EnsembleFields/500mb_HGT/", run_input, models, perturbations);
-		 
-		addEnsembleSelect(ensemble, member_labels, getCBP(dataDir+"/CBP/500mb_HGT/5100/", run_input), 5100, "HGT", "500mb", "5100", 0);
-		addEnsembleSelect(ensemble, member_labels, getCBP(dataDir+"/CBP/500mb_HGT/5160/", run_input), 5160, "HGT", "500mb", "5160", 0);
-		addEnsembleSelect(ensemble, member_labels, getCBP(dataDir+"/CBP/500mb_HGT/5220/", run_input), 5220, "HGT", "500mb", "5220", 0);
-		addEnsembleSelect(ensemble, member_labels, getCBP(dataDir+"/CBP/500mb_HGT/5280/", run_input), 5280, "HGT", "500mb", "5280", 0);
-		addEnsembleSelect(ensemble, member_labels, getCBP(dataDir+"/CBP/500mb_HGT/5340/", run_input), 5340, "HGT", "500mb", "5340", 0);
-		addEnsembleSelect(ensemble, member_labels, getCBP(dataDir+"/CBP/500mb_HGT/5400/", run_input), 5400, "HGT", "500mb", "5400", 0);
-		addEnsembleSelect(ensemble, member_labels, getCBP(dataDir+"/CBP/500mb_HGT/5520/", run_input), 5520, "HGT", "500mb", "5520", 0);
-		addEnsembleSelect(ensemble, member_labels, getCBP(dataDir+"/CBP/500mb_HGT/5580/", run_input), 5580, "HGT", "500mb", "5580", 0);
-		addEnsembleSelect(ensemble, member_labels, getCBP(dataDir+"/CBP/500mb_HGT/5640/", run_input), 5640, "HGT", "500mb", "5640", 0);
-		addEnsembleSelect(ensemble, member_labels, getCBP(dataDir+"/CBP/500mb_HGT/5700/", run_input), 5700, "HGT", "500mb", "5700", 0);
-		addEnsembleSelect(ensemble, member_labels, getCBP(dataDir+"/CBP/500mb_HGT/5760/", run_input), 5760, "HGT", "500mb", "5760", 0);
-		addEnsembleSelect(ensemble, member_labels, getCBP(dataDir+"/CBP/500mb_HGT/5820/", run_input), 5820, "HGT", "500mb", "5820", 0);
+		boolean skipLowRes = false;//low res: if false and no cache
+		boolean cacheMe = false;//if true, always uses high-res cache
+		
+		println("HGT"); 
+		addEnsembleSelect(ensemble, member_labels, getCBP(dataDir+"/CBP/500mb_HGT/5100/", run_input, skipLowRes), cacheMe, 5100, "HGT", "500mb", "5100", 0);
+		addEnsembleSelect(ensemble, member_labels, getCBP(dataDir+"/CBP/500mb_HGT/5160/", run_input, skipLowRes), cacheMe, 5160, "HGT", "500mb", "5160", 0);
+		addEnsembleSelect(ensemble, member_labels, getCBP(dataDir+"/CBP/500mb_HGT/5220/", run_input, skipLowRes), cacheMe, 5220, "HGT", "500mb", "5220", 0);
+		addEnsembleSelect(ensemble, member_labels, getCBP(dataDir+"/CBP/500mb_HGT/5280/", run_input, skipLowRes), cacheMe, 5280, "HGT", "500mb", "5280", 0);
+		addEnsembleSelect(ensemble, member_labels, getCBP(dataDir+"/CBP/500mb_HGT/5340/", run_input, skipLowRes), cacheMe, 5340, "HGT", "500mb", "5340", 0);
+		addEnsembleSelect(ensemble, member_labels, getCBP(dataDir+"/CBP/500mb_HGT/5400/", run_input, skipLowRes), cacheMe, 5400, "HGT", "500mb", "5400", 0);
+		addEnsembleSelect(ensemble, member_labels, getCBP(dataDir+"/CBP/500mb_HGT/5520/", run_input, skipLowRes), cacheMe, 5520, "HGT", "500mb", "5520", 0);
+		addEnsembleSelect(ensemble, member_labels, getCBP(dataDir+"/CBP/500mb_HGT/5580/", run_input, skipLowRes), cacheMe, 5580, "HGT", "500mb", "5580", 0);
+		addEnsembleSelect(ensemble, member_labels, getCBP(dataDir+"/CBP/500mb_HGT/5640/", run_input, skipLowRes), cacheMe, 5640, "HGT", "500mb", "5640", 0);
+		addEnsembleSelect(ensemble, member_labels, getCBP(dataDir+"/CBP/500mb_HGT/5700/", run_input, skipLowRes), cacheMe, 5700, "HGT", "500mb", "5700", 0);
+		addEnsembleSelect(ensemble, member_labels, getCBP(dataDir+"/CBP/500mb_HGT/5760/", run_input, skipLowRes), cacheMe, 5760, "HGT", "500mb", "5760", 0);
+		addEnsembleSelect(ensemble, member_labels, getCBP(dataDir+"/CBP/500mb_HGT/5820/", run_input, skipLowRes), cacheMe, 5820, "HGT", "500mb", "5820", 0);
+		addEnsembleSelect(ensemble, member_labels, getCBP(dataDir+"/CBP/500mb_HGT/5820/", run_input, skipLowRes), cacheMe, 5820, "HGT", "500mb", "5820", 0);
+		
+		println("WIND");
+		ensemble = getEnsemble(dataDir + "/EnsembleFields/500mb_WIND/ensemble/", run_input, models, perturbations);
+		addEnsembleSelect(ensemble, member_labels, getCBP(dataDir+"/CBP/500mb_WIND/50/", run_input, skipLowRes), cacheMe, 50, "WIND", "500mb", "50", 0);
+		addEnsembleSelect(ensemble, member_labels, getCBP(dataDir+"/CBP/500mb_WIND/60/", run_input, skipLowRes), cacheMe, 60, "WIND", "500mb", "60", 0);
+		addEnsembleSelect(ensemble, member_labels, getCBP(dataDir+"/CBP/500mb_WIND/70/", run_input, skipLowRes), cacheMe, 70, "WIND", "500mb", "70", 0);
+		
+		println("TMP");
+		ensemble = getEnsemble(dataDir + "/EnsembleFields/500mb_TMP/", run_input, models, perturbations);
+		addEnsembleSelect(ensemble, member_labels, getCBP(dataDir+"/CBP/500mb_TMP/258_15/", run_input, skipLowRes), cacheMe, 258.15, "TMP", "500mb", "-15", 0);
+		addEnsembleSelect(ensemble, member_labels, getCBP(dataDir+"/CBP/500mb_TMP/253_15/", run_input, skipLowRes), cacheMe, 253.15, "TMP", "500mb", "-20", 0);
+		addEnsembleSelect(ensemble, member_labels, getCBP(dataDir+"/CBP/500mb_TMP/248_15/", run_input, skipLowRes), cacheMe, 248.15, "TMP", "500mb", "-25", 0);
+		addEnsembleSelect(ensemble, member_labels, getCBP(dataDir+"/CBP/500mb_TMP/238_15/", run_input, skipLowRes), cacheMe, 238.15, "TMP", "500mb", "-35", 0);
+		
+		
+		
 		
 		
 		/*Field f;
@@ -1234,6 +1254,53 @@ class EnsembleView extends View {
 		
 	}
 	
+	private ContourBoxPlot getCBP(String dir, int run_input, boolean orderOnly){
+		
+		//get ordering
+		ArrayList<Integer> ordering = new ArrayList<Integer>(21);
+		getAnalysisOrder(dir+"analysis.txt", ordering);
+		if (ordering.size() != 21){//TODO proper error handling
+			println("ERROR getting CBP ordering data"); 
+		}
+		
+		ContourBoxPlot cbp;
+		if (orderOnly){
+			cbp = new ContourBoxPlot(ordering);
+		}
+		else{
+			String run = String.format("%02d", run_input);
+			String grid = "212";
+			PVector corner = new PVector(cornerx, cornery);
+
+			// load CBP data
+			ArrayList<Field> build_bands = new ArrayList<Field>();
+			ArrayList<Field> build_envelop = new ArrayList<Field>();
+
+			for (int i=0; i < 30; i++){
+				String fhr = "f"+String.format("%02d", i*3);
+
+				String file;
+				Field tmp_src;
+
+				//bands
+				file = dir + "band"+"_gridRes_"+grid+"_"+fhr+".csv";
+				tmp_src = new Field(file, samplesx, samplesy, corner, samplesy*spacing, samplesx*spacing);
+				build_bands.add(tmp_src);
+
+				//envelope
+				file = dir + "envelop"+"_gridRes_"+grid+"_"+fhr+".csv";
+				tmp_src = new Field(file, samplesx, samplesy, corner, samplesy*spacing, samplesx*spacing);
+				build_envelop.add(tmp_src);
+			
+			}
+			cbp = new ContourBoxPlot(build_bands, build_envelop, ordering);
+		}
+		
+		return cbp;
+		
+	}
+	
+	
 	private ArrayList<String> genMemberLabels(String[] models, String[] perturbations){
 		ArrayList<String> member_labels = new ArrayList<String>(models.length*perturbations.length);
 		for (int i=0; i < models.length; i++){
@@ -1248,12 +1315,26 @@ class EnsembleView extends View {
 		EnsembleEncoding encd = new EnsembleEncoding(ensemble, cbp);
 		encd.setMemberLabels(member_labels);
 		encd.setIsovalue(iso);//15 C
+		/*encd.cacheCBPbands(int(samplesx*spacing), int(samplesy*spacing));*/
 		// encd.setCachingSP(true);
 		EnsembleSelect select = new EnsembleSelect(tabw,tabh, encd, vlabel, hlabel, dlabel);
 		select.setSingleCopy(true);
 		library.add(select, libIndex);
-		
 	}
+	
+	private void addEnsembleSelect(ArrayList< ArrayList<Field> > ensemble, ArrayList<String> member_labels, ContourBoxPlot cbp, boolean cache, float iso, String vlabel, String hlabel, String dlabel, int libIndex){
+		EnsembleEncoding encd = new EnsembleEncoding(ensemble, cbp);
+		encd.setMemberLabels(member_labels);
+		encd.setIsovalue(iso);//15 C
+		if (cache){
+			encd.cacheCBPbands(int(samplesx*spacing), int(samplesy*spacing));
+			// encd.setCachingSP(true);
+		}
+		EnsembleSelect select = new EnsembleSelect(tabw,tabh, encd, vlabel, hlabel, dlabel);
+		select.setSingleCopy(true);
+		library.add(select, libIndex);
+	}
+	
 	
 	private void getAnalysisOrder(String filename, ArrayList<Integer> ordering){
 	    String[] lines;	

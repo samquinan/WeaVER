@@ -7,6 +7,12 @@ class ContourBoxPlot {//implements EncodesCBP{
 	ArrayList < Field > bands;
 	ArrayList < Field > envelop;
 	ArrayList < Integer > ordering;
+	
+	private boolean ignoreLowRes;
+	private boolean cacheAuto;
+	ArrayList < BitSet > bands_gen;
+	ArrayList < BitSet > env_gen;
+	
 	// ArrayList < Contour2D > median;
 	// ArrayList < ArrayList < Contour2D > > outliers;
 	//
@@ -24,6 +30,7 @@ class ContourBoxPlot {//implements EncodesCBP{
 	// }
 	
 	ContourBoxPlot(ArrayList < Field > b, ArrayList < Field > e, ArrayList < Integer > o){
+		ignoreLowRes = false;
 		bands = b;
 		envelop = e;
 				
@@ -31,7 +38,27 @@ class ContourBoxPlot {//implements EncodesCBP{
 		
 		bilinear = true;
 		interpolate = false;
+		
+		cacheAuto = false;
+		bands_gen = null;
+		env_gen = null;
 	}
+	
+	ContourBoxPlot(ArrayList < Integer > o){
+		ignoreLowRes = true;
+		bands = null;
+		envelop = null;
+				
+		ordering = o;
+		
+		bilinear = true;
+		interpolate = false;
+		
+		cacheAuto = false;
+		bands_gen = null;
+		env_gen = null;
+	}
+	
 	
 		
 	void useBilinear(boolean b){
@@ -41,6 +68,15 @@ class ContourBoxPlot {//implements EncodesCBP{
 	void useInterpolation(boolean b){
 		interpolate = b;
 	}
+	
+	void setIgnoreLowRes(boolean b){
+		ignoreLowRes = b;
+	}
+	
+	boolean ignoreLowRes(){
+		return (cacheAuto || ignoreLowRes);
+	}
+	
 	
 	// ColorMapf getColorMap(){
 	// 	return cmap;
@@ -118,7 +154,7 @@ class ContourBoxPlot {//implements EncodesCBP{
 	
 	
 	void genCBPbands(PImage img, ColorMapf cmap, ColorMapf cmap2){
-		if (img != null){
+		if ((img != null) && (bands != null) && (envelop!=null)){
 			if (bilinear){
 				(envelop.get(0)).genFillBilinear(img, cmap2, interpolate, true);
 				(bands.get(0)).genFillBilinear(img, cmap, interpolate, false);
@@ -128,11 +164,12 @@ class ContourBoxPlot {//implements EncodesCBP{
 				(bands.get(0)).genFillNearestNeighbor(img, cmap, interpolate, false);
 			}
 		}
+		else println("ERROR: [genCBPbands] either image null, or low res masks not loaded");
 		return;
 	}
 
 	void genCBPbands(PImage img, ColorMapf cmap, ColorMapf cmap2, int idx){
-		if (img != null){
+		if ((img != null) && (bands != null) && (envelop!=null)){
 			if (bilinear){
 				(envelop.get(idx)).genFillBilinear(img, cmap2, interpolate, true);
 				(bands.get(idx)).genFillBilinear(img, cmap, interpolate, false);
@@ -142,7 +179,80 @@ class ContourBoxPlot {//implements EncodesCBP{
 				(bands.get(idx)).genFillNearestNeighbor(img, cmap, interpolate, false);
 			}
 		}
+		else println("ERROR: [genCBPbands] either image null, or low res masks not loaded");
 		return;
-	}	
+	}
+	
+	boolean isBandCached(){
+		return cacheAuto;
+	}
+	
+	BitSet getCachedBand(int idx){
+		return bands_gen.get(idx);
+	}
+	
+	BitSet getCachedEnvelope(int idx){
+		return env_gen.get(idx);
+	}
+	
+	void cacheCBPbands(ArrayList< ArrayList<Field> > members, int w, int h, float isovalue){
+		cacheAuto = true;		
+		
+		ArrayList<Field> member = members.get(0);
+		int maxIdx = member.size();
+		int n = w*h;
+		int half = round(ordering.size()/2.0);
+		int whole = ordering.size() - 3;
+		
+		bands_gen = new ArrayList< BitSet >(maxIdx);
+		env_gen = new ArrayList< BitSet >(maxIdx);
+		
+		for (int idx=0; idx < maxIdx; idx++){
+			BitSet union =  new BitSet(n);
+			BitSet intersection =  new BitSet(n);
+			intersection.flip(0,intersection.size()-1);// flip all to true
+			
+			for (int i=0; i < half; i++){
+				member = members.get(ordering.get(i));
+				if ((idx==0) && (member.size() != maxIdx)){ //fail gracefully
+					println("ERROR: inconsistent timesteps in members supplied to cacheCBPbands");
+					cacheAuto = false;
+					bands_gen = null;
+					env_gen = null;
+					return;
+				}
+				Field f = member.get(idx);
+				f.genMaskBilinear(union, intersection, w, h, isovalue);
+			}
+			
+			BitSet union_50 = (BitSet) union.clone();
+			BitSet intersection_50 = (BitSet) intersection.clone();
+			
+			for (int i=half; i < whole; i++){
+				member = members.get(ordering.get(i));
+				if ((idx==0) && (member.size() != maxIdx)){ //fail gracefully
+					println("ERROR: inconsistent timesteps in members supplied to cacheCBPbands");
+					cacheAuto = false;
+					bands_gen = null;
+					env_gen = null;
+					return;
+				}
+				Field f = member.get(idx);
+				f.genMaskBilinear(union, intersection, w, h, isovalue);
+			}
+			
+			union_50.andNot(intersection_50); // is band
+			union.andNot(intersection);// is envelope
+			
+			bands_gen.add(union_50);
+			env_gen.add(union);
+			
+		}
+	}
+		
+
+		
+
+
 		
 }

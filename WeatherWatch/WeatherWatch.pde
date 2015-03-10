@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.HashSet;
 import java.util.Arrays;
 import java.lang.StringBuilder;
+import java.util.BitSet;
 
 PFont plotFont;
 PFont errFont;
@@ -62,7 +63,7 @@ public int sketchWidth() {
 }
 
 public int sketchHeight() {
-  return displayHeight;//800;//displayHeight;
+  return displayHeight-15;//800;//displayHeight;
 }
 
 public String sketchRenderer() {
@@ -384,7 +385,7 @@ class ViewLoader implements Runnable{
 		view_2.loadData(dir, run);
 
 		// generate view_3
-		view_3 = new EnsembleView(samplesx, samplesy, spacing, cornerx, cornery, tabw, tabh, 12);
+		view_3 = new EnsembleView(samplesx, samplesy, spacing, cornerx, cornery, tabw, tabh, 20);//12
 		view_3.setFonts(regular, error);
 		view_3.setMap(map);
 		view_3.setDateTimeOrigin(cur_dt);

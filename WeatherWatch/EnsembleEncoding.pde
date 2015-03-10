@@ -189,6 +189,13 @@ class EnsembleEncoding implements EncodesSP, EncodesCBP {
 		}
 	}
 	
+	boolean ignoreLowRes(){
+		return cbp.ignoreLowRes();
+	}
+	void setIgnoreLowRes(boolean b){
+		cbp.setIgnoreLowRes(b);
+	}
+	
 	void getCBPmedian(WrappedContour2D wrapper){
 		int member = cbp.getCBPmedianIndex();
 		Contour2D c = null;
@@ -317,58 +324,80 @@ class EnsembleEncoding implements EncodesSP, EncodesCBP {
 	}*/
 	
 	void genCBPbands(PImage img, color c1, color c2, int idx){
-		ArrayList<Integer> ordering = cbp.getOrdering();
-		if (ordering != null){
+		BitSet band = null;
+		BitSet envelope = null;
+		int n = img.width*img.height;
+		
+		if (cbp.isBandCached()){
+			band = cbp.getCachedBand(idx);
+			envelope = cbp.getCachedEnvelope(idx);
+		}
+		else{
+			ArrayList<Integer> ordering = cbp.getOrdering();
+			if (ordering != null){
 
-			int n = img.width*img.height;
-			BitSet union =  new BitSet(n); // contructor initializes all bits to false
-			BitSet intersection =  new BitSet(n);
-			intersection.flip(0,intersection.size()-1);// flip all to true
+				BitSet union =  new BitSet(n); // contructor initializes all bits to false
+				BitSet intersection =  new BitSet(n);
+				intersection.flip(0,intersection.size()-1);// flip all to true
 
-			//println("n =" + n);
-			//println("size: \t" + union.size() + "\t" + intersection.size());
-			//println("length: \t" + union.length() + "\t" + intersection.length());
+				//println("n =" + n);
+				//println("size: \t" + union.size() + "\t" + intersection.size());
+				//println("length: \t" + union.length() + "\t" + intersection.length());
 
-			ArrayList<Field> member;
+				ArrayList<Field> member;
 
-			int half = round(ordering.size()/2.0);
-			int whole = ordering.size() - 3;
+				int half = round(ordering.size()/2.0);
+				int whole = ordering.size() - 3;
 
-			for (int i=0; i < half; i++){
-				member = members.get(ordering.get(i));
-				Field f = member.get(idx);
-				f.genMaskBilinear(union, intersection, img.width, img.height, isovalue);
+				for (int i=0; i < half; i++){
+					member = members.get(ordering.get(i));
+					Field f = member.get(idx);
+					f.genMaskBilinear(union, intersection, img.width, img.height, isovalue);
+				}
+
+				BitSet union_50 = (BitSet) union.clone();
+				BitSet intersection_50 = (BitSet) intersection.clone();
+
+				for (int i=half; i < whole; i++){
+					member = members.get(ordering.get(i));
+					Field f = member.get(idx);
+					f.genMaskBilinear(union, intersection, img.width, img.height, isovalue);
+				}
+				
+				union_50.andNot(intersection_50); //union50 is band
+				union.andNot(intersection);//union is envelope
+				
+				band = union_50;
+				envelope = union;
 			}
+		}
+		
+		img.loadPixels();
 
-			BitSet union_50 = (BitSet) union.clone();
-			BitSet intersection_50 = (BitSet) intersection.clone();
-
-			for (int i=half; i < whole; i++){
-				member = members.get(ordering.get(i));
-				Field f = member.get(idx);
-				f.genMaskBilinear(union, intersection, img.width, img.height, isovalue);
-			}
-
-			img.loadPixels();
-
-
-			union_50.andNot(intersection_50); //union50 is band
-			union.andNot(intersection);//union is envelope
+		if ((band != null) && (envelope != null) && (band.size() >= n) && (envelope.size() >= n) ){
 			for (int i=0; i < n; i++){
 				color c;
-				if (union_50.get(i)) c = c1;
-				else if (union.get(i)) c = c2;
+				if (band.get(i)) c = c1;
+				else if (envelope.get(i)) c = c2;
 				else c = (0 << 24) | (c2 & 0x00FFFFFF);
 				img.pixels[i] = c;
 			}
-			img.updatePixels();
 		}
+		else { //clear image -- fail gracefully
+			println("ERROR: [genCBPbands] either band/envelope is either null or of insufficient size for image");
+			color c = (0 << 24) | (c2 & 0x00FFFFFF);
+			for (int i=0; i < n; i++){
+				img.pixels[i] = c;
+			}
+		}
+		
+		img.updatePixels();
+		
 	}
 	
-	
-	
-	
-	
-	
+	void cacheCBPbands(int w, int h){
+		if (initComplete) cbp.cacheCBPbands(members, w, h, isovalue);
+		else println("ERROR: cannot run cacheCBPbands until init is complete");
+	}
 		
 }
