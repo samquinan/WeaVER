@@ -285,9 +285,14 @@ class EnsembleTarget extends TargetBase{
 		
 		if(cbp.isOn()){ //TODO PShapes will persist because contours not being deleted and generated on the fly -- expands memory usage -- do up front?
 			//update CBP 
-			if (cbp_median != null) cbp_median.genPShape();
+			sp_qtree.clear();
+			if (cbp_median != null){
+				cbp_median.addAllSegmentsToQuadTree(sp_qtree);
+				cbp_median.genPShape();
+				} 
 			if (cbp_outliers != null){
 				for (Contour2D c: cbp_outliers){
+					c.addAllSegmentsToQuadTree(sp_qtree);
 					c.genPShape();
 				}
 			}

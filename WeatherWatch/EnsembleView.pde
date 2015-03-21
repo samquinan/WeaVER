@@ -35,9 +35,8 @@ class EnsembleView extends View {
 	ArrayList<Contour2D> outliers1;
 	ArrayList<Contour2D> outliers2;
 	
-	Contour2D highlight;
- 	/*Contour2D highlight2;
-	Contour2D highlight3;*/
+	Contour2D highlight; 
+	
 	int target_index;
 	int member_index;
 	QuadTree_Node<Segment2D> ctooltip;
@@ -71,8 +70,6 @@ class EnsembleView extends View {
 		cselect_2 = new QuadTree_Node<Segment2D>(cornerx, cornery, cornerx+samplesx*spacing, cornery+samplesy*spacing, n);
 		
 		highlight = null;
-		/*highlight2 = null;
-		highlight3 = null;*/
 		
 		target_index = -1;
 		member_index = -2;
@@ -453,7 +450,7 @@ class EnsembleView extends View {
 		
 		//draw highlight in either SP or CBP mode
 		colorMode(HSB, 360, 100, 100, 100);
-		color hcolor; 
+		/*color hcolor;
 		switch(target_index){
 			case 0:
 				hcolor = color(239,50,37,100);
@@ -467,7 +464,8 @@ class EnsembleView extends View {
 			default:
 				hcolor = color(0,0);
 		}
-		drawHighlight(hcolor, 2.5);
+		drawHighlight(hcolor, 2.5);*/
+		drawHighlight( color(239,50,37,100), color(119,50,32,100), color(0,50,32,100), 2.5, target_index);
 		colorMode(RGB,255);
 				
 		// draw controls
@@ -498,7 +496,8 @@ class EnsembleView extends View {
 			for (int i=0; i < member_select0.size(); i++){
 				TextHoverable h = member_select0.get(i);
 				//if ((selectFromContour && (target_index == 0)) /*|| lastHoverable != null*/) h.rollover = (i == member_index);
-				h.rollover = ((selectFromContour || lastHoverable != null) && (target_index == 0) && (i == member_index)); //internal hoverable state set now meaningless
+				//h.rollover = ((selectFromContour || lastHoverable != null) && (target_index == 0) && (i == member_index)); 
+				h.rollover = (((selectFromContour && target_index == 0) || lastHoverable != null) && i == member_index);//internal hoverable state set now meaningless
 				h.display();
 			}
 		}
@@ -525,7 +524,8 @@ class EnsembleView extends View {
 			for (int i=0; i < member_select1.size(); i++){
 				TextHoverable h = member_select1.get(i);
 				//if ((selectFromContour && (target_index == 1)) /*|| lastHoverable != null*/) h.rollover = (i == member_index);
-				h.rollover =  ((selectFromContour || lastHoverable != null) && (target_index == 1) && (i == member_index));//internal hoverable state set now meaningless
+				//h.rollover =  ((selectFromContour && (target_index == 1) || lastHoverable != null)  && (i == member_index));
+				h.rollover = (((selectFromContour && target_index == 1) || lastHoverable != null) && i == member_index);//internal hoverable state set now meaningless
 				h.display();
 			}
 		}
@@ -552,7 +552,8 @@ class EnsembleView extends View {
 			for (int i=0; i < member_select2.size(); i++){
 				TextHoverable h = member_select2.get(i);
 				//if ((selectFromContour && (target_index == 2)) /*|| lastHoverable != null*/) h.rollover = (i == member_index);
-				h.rollover =  ((selectFromContour || lastHoverable != null) && (target_index == 2) && (i == member_index));//internal hoverable state set now meaningless
+				//h.rollover =  ((selectFromContour || lastHoverable != null) && (target_index == 2) && (i == member_index));
+				h.rollover = (((selectFromContour && target_index == 2) || lastHoverable != null) && i == member_index);//internal hoverable state set now meaningless
 				h.display();
 			}
 		}
@@ -602,9 +603,63 @@ class EnsembleView extends View {
 			strokeWeight(weight);
 			stroke(select);
 			highlight.drawContour();
+		}			
+	}
+	
+	protected void drawHighlight(color select0, color select1, color select2, float weight, int target){
+		
+		strokeWeight(weight);
+		// draw all except actual highlight if comes from hoverables
+		Contour2D h_tmp;
+		if (lastHoverable != null && member_index > -1 && !selectFromContour){
+			if (target != 0 && target0.hasSelectable()){
+				h_tmp = contours_0.get(member_index);
+				if (h_tmp != null){
+					stroke(select0);
+					h_tmp.drawContour();	
+				}
+			} 
+				
+			if (target != 1 && target1.hasSelectable()){
+				h_tmp = contours_1.get(member_index);
+				if (h_tmp != null){
+					stroke(select1);
+					h_tmp.drawContour();	
+				}
+			} 
+			
+			if (target != 2 && target2.hasSelectable()){
+				h_tmp = contours_2.get(member_index);
+				if (h_tmp != null){
+					stroke(select2);
+					h_tmp.drawContour();	
+				}
+			} 
+		}
+		
+		//draw actual highlight always		
+		color tmp;
+		switch(target){
+			case 0:
+				tmp = select0;
+				break;
+			case 1:
+				tmp = select1;
+				break;
+			case 2:
+				tmp = select2;
+				break;
+			default:
+				tmp = color(0,0);
+		}
+		
+		if (highlight != null){
+			stroke(tmp);
+			highlight.drawContour();
 		}
 			
 	}
+	
 	
 	protected void drawToolTip(){
 		if ((highlight != null)){// && trigger){		
@@ -643,13 +698,14 @@ class EnsembleView extends View {
 			return true;
 		}
 		else {
-			if (cbp_switch.isOn()){
+			return selectHighlight();
+			/*if (cbp_switch.isOn()){
 				//CBP
-				return selectFromHoverables();											
+				return selectFromHoverables();
 			}
 			else {
 				return selectHighlight();
-			}
+			}*/
 		}
 	}
 	
@@ -726,12 +782,10 @@ class EnsembleView extends View {
 	private boolean selectFromHoverables(){
 		
 		highlight = null;
-		/*highlight2 = null;
-		highlight3 = null;*/
 		target_index = -1;
 		member_index = -2;
 		selectFromContour = false;
-		if (lastHoverable != null){ //will need to convert to a queue of active hoverables
+		if (lastHoverable != null){
 			lastHoverable.rollover = false;
 			lastHoverable = null;
 		}

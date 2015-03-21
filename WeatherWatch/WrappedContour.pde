@@ -33,9 +33,9 @@ class WrappedContour2D {
 	 return (contour == null) ? -1 : contour.getMemberCount();
  }
  
- // void addAllSegmentsToQuadTree(QuadTree_Node<Segment2D> qtree){
- // 	 contour.addAllSegmentsToQuadTree(qtree);
- // }
+ void addAllSegmentsToQuadTree(QuadTree_Node<Segment2D> qtree){
+ 	 if (contour != null) contour.addAllSegmentsToQuadTree(qtree);
+ }
  //
  // void clearAll(){
  // 	 contour.clearAll();
