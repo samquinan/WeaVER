@@ -108,7 +108,7 @@ class Library {
 					if (t.interact(mx,my)){
 						dragging = t.handoffDragging();
 						interacted = true;
-						break;
+						//break;
 					}
 				} 
 			}
