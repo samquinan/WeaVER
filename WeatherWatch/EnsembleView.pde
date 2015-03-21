@@ -36,6 +36,8 @@ class EnsembleView extends View {
 	ArrayList<Contour2D> outliers2;
 	
 	Contour2D highlight;
+ 	/*Contour2D highlight2;
+	Contour2D highlight3;*/
 	int target_index;
 	int member_index;
 	QuadTree_Node<Segment2D> ctooltip;
@@ -69,6 +71,9 @@ class EnsembleView extends View {
 		cselect_2 = new QuadTree_Node<Segment2D>(cornerx, cornery, cornerx+samplesx*spacing, cornery+samplesy*spacing, n);
 		
 		highlight = null;
+		/*highlight2 = null;
+		highlight3 = null;*/
+		
 		target_index = -1;
 		member_index = -2;
 		ctooltip = new QuadTree_Node<Segment2D>(cornerx, cornery, cornerx+samplesx*spacing, cornery+samplesy*spacing, 7);
@@ -492,7 +497,8 @@ class EnsembleView extends View {
 			// member labels
 			for (int i=0; i < member_select0.size(); i++){
 				TextHoverable h = member_select0.get(i);
-				if (selectFromContour && (target_index == 0)) h.rollover = (i == member_index);
+				//if ((selectFromContour && (target_index == 0)) /*|| lastHoverable != null*/) h.rollover = (i == member_index);
+				h.rollover = ((selectFromContour || lastHoverable != null) && (target_index == 0) && (i == member_index)); //internal hoverable state set now meaningless
 				h.display();
 			}
 		}
@@ -518,7 +524,8 @@ class EnsembleView extends View {
 			// member labels
 			for (int i=0; i < member_select1.size(); i++){
 				TextHoverable h = member_select1.get(i);
-				if (selectFromContour && (target_index == 1)) h.rollover = (i == member_index);
+				//if ((selectFromContour && (target_index == 1)) /*|| lastHoverable != null*/) h.rollover = (i == member_index);
+				h.rollover =  ((selectFromContour || lastHoverable != null) && (target_index == 1) && (i == member_index));//internal hoverable state set now meaningless
 				h.display();
 			}
 		}
@@ -544,7 +551,8 @@ class EnsembleView extends View {
 			// member labels
 			for (int i=0; i < member_select2.size(); i++){
 				TextHoverable h = member_select2.get(i);
-				if (selectFromContour && (target_index == 2)) h.rollover = (i == member_index);
+				//if ((selectFromContour && (target_index == 2)) /*|| lastHoverable != null*/) h.rollover = (i == member_index);
+				h.rollover =  ((selectFromContour || lastHoverable != null) && (target_index == 2) && (i == member_index));//internal hoverable state set now meaningless
 				h.display();
 			}
 		}
@@ -681,11 +689,11 @@ class EnsembleView extends View {
 	
 	private boolean selectHighlight(){
 		//Spaghetti Plots                                           //TODO better solution than nested if statements?
-		Segment2D selection = cselect_0.select(mouseX, mouseY, 2);			
+		Segment2D selection = cselect_2.select(mouseX, mouseY, 2);			
 		if (selection != null){
 			highlight = selection.getSrcContour();
-			target_index = 0;
-			member_index = contours_0.indexOf(highlight);
+			target_index = 2;
+			member_index = contours_2.indexOf(highlight);
 			selectFromContour = true;
 			return true;
 		}
@@ -699,11 +707,11 @@ class EnsembleView extends View {
 				return true;
 			}
 			else{
-				selection = cselect_2.select(mouseX, mouseY, 2);
+				selection = cselect_0.select(mouseX, mouseY, 2);
 				if (selection != null){
 					highlight = selection.getSrcContour();
-					target_index = 2;
-					member_index = contours_2.indexOf(highlight);
+					target_index = 0;
+					member_index = contours_0.indexOf(highlight);
 					selectFromContour = true;
 					return true;
 				}
@@ -718,10 +726,12 @@ class EnsembleView extends View {
 	private boolean selectFromHoverables(){
 		
 		highlight = null;
+		/*highlight2 = null;
+		highlight3 = null;*/
 		target_index = -1;
 		member_index = -2;
 		selectFromContour = false;
-		if (lastHoverable != null){
+		if (lastHoverable != null){ //will need to convert to a queue of active hoverables
 			lastHoverable.rollover = false;
 			lastHoverable = null;
 		}
@@ -1266,7 +1276,7 @@ class EnsembleView extends View {
 			cbp = new ContourBoxPlot(ordering);
 		}
 		else{
-			println("loading low res");
+			/*println("loading low res");*/
 			String run = String.format("%02d", run_input);
 			String grid = "212";
 			PVector corner = new PVector(cornerx, cornery);

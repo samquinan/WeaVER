@@ -33,6 +33,10 @@ class TextHoverable{
 		return  h;
 	}
 	
+	float getWidth(){
+		return  w;
+	}
+	
 	void setColors(color a, color r, color h){
 		inactive  = a;
 		rest      = r;
