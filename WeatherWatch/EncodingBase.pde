@@ -5,6 +5,8 @@ abstract class EncodingBase {
 	boolean interpolate;
 	Converter convert;
 	int conversionState;
+	DecimalFormat df;
+	
 	
 	protected EncodingBase(){		
 		cmap = new ColorMapf();		
@@ -14,6 +16,7 @@ abstract class EncodingBase {
 		interpolate = false;
 		convert = null;
 		conversionState = 0;
+		df = new DecimalFormat("#.##");
 	}
 			
 	void useBilinear(boolean b){
@@ -67,6 +70,11 @@ abstract class EncodingBase {
 	
 	void convert_fakeHaines(){
 		conversionState = 5;
+		if(convert == null) convert = new Converter();
+	}
+	
+	void convert_kgmm2in(){
+		conversionState = 6;
 		if(convert == null) convert = new Converter();
 	}
 	

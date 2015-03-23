@@ -14,10 +14,13 @@ class MNSDView extends View {
 	
 	QuadTree_Node<Segment2D> ctooltip;
 	PVector tooltipPos;
-	
+	ColorMapf mnsd, mnsd2;
 	
 	MNSDView(int sx, int sy, float ds, int cx, int cy, int tw, int th, int libsize){
 		super(sx, sy, ds, cx, cy, tw, th, libsize);
+		
+		library.addCollection(3,1);
+		library.addCollection(3,1);
 		
 		// Initialize Render State
 			//Color Map
@@ -97,6 +100,7 @@ class MNSDView extends View {
 		tracker.display();
 		timer.display();
 		
+		//Error Message		
 	 	buildErrString();
 		if (!errmsg.isEmpty()){
 			boolean fontsAvailable = (fReg != null) && (fErr != null);
@@ -107,18 +111,18 @@ class MNSDView extends View {
 			else textSize(12);
 			textAlign(CENTER, TOP);
 			fill(120, 12, 12);
-			text(errmsg, cornerx+(samplesx*spacing/2), cornery+(samplesy*spacing)+5);
+			text(errmsg, cornerx+(samplesx*spacing/2), cornery+(samplesy*spacing)+20);
 			if (fontsAvailable){
 				textFont(fReg);
 			}
 		}
-		else{ //Default Label
-			textSize(11);
-			textAlign(CENTER, TOP);
-			fill(70);
-			String full_label = (origin == null) ? "" : origin.getDateString(timer.getValue()); 
-			text(full_label, cornerx+(samplesx*spacing/2), cornery+(samplesy*spacing)+5);
-		}
+		
+		//Default Label
+		textSize(11);
+		textAlign(CENTER, TOP);
+		fill(70);
+		String full_label = (origin == null) ? "" : origin.getDateString(timer.getValue()); 
+		text(full_label, cornerx+(samplesx*spacing/2), cornery+(samplesy*spacing)+5);
 		
 		/*//frame rate for testing
 		textSize(10);
@@ -326,25 +330,53 @@ class MNSDView extends View {
 	void loadData(String dataDir, int run_input){
 		
 		// testing MNSD
-		ColorMapf test = new ColorMapf();
+		mnsd = new ColorMapf();
 		colorMode(HSB, 360, 100, 100, 100);
-        test.add(  0, color(360, 20, 84, 0));
-		test.add(1.49, color(360, 20, 84, 0));
-		test.add( 1.5, color(360, 20, 84, 100));
-		test.add(   2, color(337, 26, 80, 100));
-		test.add(   3, color(315, 32, 76, 100));
-		test.add(   5, color(292, 38, 71, 100));
-		test.add(   7, color(270, 45, 65, 100));
-		test.add(  10, color(247, 51, 59, 100));
-		test.add(  15, color(225, 57, 52, 100));
-		test.add(  20, color(202, 63, 43, 100));
-		test.add(  25, color(180, 70, 29, 100));
+        mnsd.add(  0, color(360, 20, 84, 0));
+		mnsd.add(1.49, color(360, 20, 84, 0));
+		mnsd.add( 1.5, color(360, 20, 84, 100));
+		mnsd.add(   2, color(337, 26, 80, 100));
+		mnsd.add(   3, color(315, 32, 76, 100));
+		mnsd.add(   5, color(292, 38, 71, 100));
+		mnsd.add(   7, color(270, 45, 65, 100));
+		mnsd.add(  10, color(247, 51, 59, 100));
+		mnsd.add(  15, color(225, 57, 52, 100));
+		mnsd.add(  20, color(202, 63, 43, 100));
+		mnsd.add(  25, color(180, 70, 29, 100));
 		colorMode(RGB,255);
+		
+		mnsd2 = new ColorMapf();
+		colorMode(HSB, 360, 100, 100, 100);
+        mnsd2.add(  0, color(360, 20, 84, 0));
+		mnsd2.add(9.99, color(360, 20, 84, 0));
+		mnsd2.add(  10, color(360, 20, 84, 100));
+		mnsd2.add(  30, color(337, 26, 80, 100));
+		mnsd2.add(  40, color(315, 32, 76, 100));
+		mnsd2.add(  50, color(292, 38, 71, 100));
+		mnsd2.add(  60, color(270, 45, 65, 100));
+		mnsd2.add(  70, color(247, 51, 59, 100));
+		mnsd2.add(  80, color(225, 57, 52, 100));
+		mnsd2.add(  90, color(202, 63, 43, 100));
+		mnsd2.add( 100, color(180, 70, 29, 100));
+		colorMode(RGB,255);
+		
 
-		Field f;
+		println("loading 500mb");
+		addMNSD_TMP(dataDir, run_input, "500mb", 0);
+		addMNSD_HGT(dataDir, run_input, "500mb", 0);
+		
+		println("loading 700mb");
+		addMNSD_TMP(dataDir, run_input, "700mb", 1);
+		addMNSD_HGT(dataDir, run_input, "700mb", 1);
+		
+		println("loading 2m");
+		addMNSD_TMP(dataDir, run_input, "2m", 2);
+		addMNSD_RH( dataDir, run_input, "2m", 2);
+		
+		/*Field f;
 		ScalarEncoding encd, encd2;
 		PVector corner = new PVector(cornerx, cornery);
-		
+
 		// 700mb tmp
 		ArrayList<Field> fields = new ArrayList<Field>();
 		String dir = dataDir + "/StatFields/700mb_TMP/";
@@ -357,13 +389,13 @@ class MNSDView extends View {
 			f = new Field(file, samplesx, samplesy, corner, samplesy*spacing, samplesx*spacing);
 			fields.add(f);
 		}
-	
+
 		encd = new ScalarEncoding(fields);
 		encd.useBilinear(true);
 		encd.useInterpolation(false);
 		encd.convert_K2C();
 		encd.genIsovalues(273.15, 5);
-		
+
 		// LOAD STDDEV
 		ArrayList<Field> fields2 = new ArrayList<Field>();
 		deriv = "stddev";
@@ -373,11 +405,11 @@ class MNSDView extends View {
 			f = new Field(file, samplesx, samplesy, corner, samplesy*spacing, samplesx*spacing);
 			fields2.add(f);
 		}
-		
+
 		encd2 = new ScalarEncoding(fields2);
 		encd2.useBilinear(true);
 		encd2.useInterpolation(false);
-		encd2.setColorMap(test);
+		encd2.setColorMap(mnsd);
 		encd2.addIsovalue(1);
 		encd2.addIsovalue(1.5);
 		encd2.addIsovalue(2);
@@ -387,11 +419,11 @@ class MNSDView extends View {
 		encd2.addIsovalue(10);
 		encd2.addIsovalue(15);
 		encd2.addIsovalue(20);
-		
-		// Create Selectable 
+
+		// Create Selectable
 		library.add(new MNSDSelect(tabw,tabh, encd, encd2, "TMP", "700mb"));
-		
-		//500mb tmp 
+
+		//500mb tmp
 		fields = new ArrayList<Field>();
 		dir = dataDir + "/StatFields/500mb_TMP/";
 		deriv = "mean";
@@ -401,13 +433,13 @@ class MNSDView extends View {
 			f = new Field(file, samplesx, samplesy, corner, samplesy*spacing, samplesx*spacing);
 			fields.add(f);
 		}
-		
+
 		encd = new ScalarEncoding(fields);
 		encd.useBilinear(true);
 		encd.useInterpolation(false);
 		encd.convert_K2C();
-		encd.genIsovalues(273.15, 5);		
-		
+		encd.genIsovalues(273.15, 5);
+
 		fields2 = new ArrayList<Field>();
 		deriv = "stddev";
 		for (int k=0; k<=87; k+=3){
@@ -416,7 +448,7 @@ class MNSDView extends View {
 			f = new Field(file, samplesx, samplesy, corner, samplesy*spacing, samplesx*spacing);
 			fields2.add(f);
 		}
-		
+
 		encd2 = new ScalarEncoding(fields2);
 		encd2.useBilinear(true);
 		encd2.useInterpolation(false);
@@ -430,9 +462,155 @@ class MNSDView extends View {
 		encd2.addIsovalue(10);
 		encd2.addIsovalue(15);
 		encd2.addIsovalue(20);
+
+		library.add(new MNSDSelect(tabw,tabh, encd, encd2, "TMP", "500mb"));*/
+	}
+	
+	private void addMNSD_RH(String dataDir, int run_input, String hgt, int libIndex){
+		String var = "RH";
+		String dir = dataDir + "/StatFields/"+hgt+"_"+var+"/";;
+		PVector corner = new PVector(cornerx, cornery);
+		String run = String.format("%02d", run_input);
+		String grid = "212";
 		
-		library.add(new MNSDSelect(tabw,tabh, encd, encd2, "TMP", "500mb"));
+		Field f;
+		ArrayList<Field> fields = new ArrayList<Field>();
+		String deriv = "mean";
+		for (int k=0; k<=87; k+=3){
+			String fhr = String.format("%02d", k);
+			String file = dir + "sref.t" + run + "z.pgrb" + grid + ".f" + fhr + "."+ deriv + ".txt";
+			f = new Field(file, samplesx, samplesy, corner, samplesy*spacing, samplesx*spacing);
+			fields.add(f);
+		}
 		
+		ScalarEncoding encd = new ScalarEncoding(fields);
+		encd.useBilinear(true);
+		encd.useInterpolation(false);
+		encd.genIsovalues(0, 10);
+		
+		ArrayList<Field> fields2 = new ArrayList<Field>();
+		deriv = "stddev";
+		for (int k=0; k<=87; k+=3){
+			String fhr = String.format("%02d", k);
+			String file = dir + "sref.t" + run + "z.pgrb" + grid + ".f" + fhr + "."+ deriv + ".txt";
+			f = new Field(file, samplesx, samplesy, corner, samplesy*spacing, samplesx*spacing);
+			fields2.add(f);
+		}
+		
+		ScalarEncoding encd2 = new ScalarEncoding(fields2);
+		encd2.useBilinear(true);
+		encd2.useInterpolation(false);
+		encd2.setColorMap(mnsd);
+		encd2.addIsovalue(1);
+		encd2.addIsovalue(1.5);
+		encd2.addIsovalue(2);
+		encd2.addIsovalue(3);
+		encd2.addIsovalue(5);
+		encd2.addIsovalue(7);
+		encd2.addIsovalue(10);
+		encd2.addIsovalue(15);
+		encd2.addIsovalue(20);
+		
+		library.add(new MNSDSelect(tabw,tabh, encd, encd2, var, hgt), libIndex);
+	}
+	
+	private void addMNSD_HGT(String dataDir, int run_input, String hgt, int libIndex){
+		String var = "HGT";
+		String dir = dataDir + "/StatFields/"+hgt+"_"+var+"/";;
+		PVector corner = new PVector(cornerx, cornery);
+		String run = String.format("%02d", run_input);
+		String grid = "212";
+		
+		Field f;
+		ArrayList<Field> fields = new ArrayList<Field>();
+		String deriv = "mean";
+		for (int k=0; k<=87; k+=3){
+			String fhr = String.format("%02d", k);
+			String file = dir + "sref.t" + run + "z.pgrb" + grid + ".f" + fhr + "."+ deriv + ".txt";
+			f = new Field(file, samplesx, samplesy, corner, samplesy*spacing, samplesx*spacing);
+			fields.add(f);
+		}
+		
+		ScalarEncoding encd = new ScalarEncoding(fields);
+		encd.useBilinear(true);
+		encd.useInterpolation(false);
+		encd.genIsovalues(0, 60);
+		
+		ArrayList<Field> fields2 = new ArrayList<Field>();
+		deriv = "stddev";
+		for (int k=0; k<=87; k+=3){
+			String fhr = String.format("%02d", k);
+			String file = dir + "sref.t" + run + "z.pgrb" + grid + ".f" + fhr + "."+ deriv + ".txt";
+			f = new Field(file, samplesx, samplesy, corner, samplesy*spacing, samplesx*spacing);
+			fields2.add(f);
+		}
+		
+		ScalarEncoding encd2 = new ScalarEncoding(fields2);
+		encd2.useBilinear(true);
+		encd2.useInterpolation(false);
+		encd2.setColorMap(mnsd2);
+		encd2.addIsovalue( 10);
+		encd2.addIsovalue( 30);
+		encd2.addIsovalue( 40);
+		encd2.addIsovalue( 50);
+		encd2.addIsovalue( 60);
+		encd2.addIsovalue( 70);
+		encd2.addIsovalue( 80);
+		encd2.addIsovalue( 90);
+		encd2.addIsovalue(100);
+		
+		library.add(new MNSDSelect(tabw,tabh, encd, encd2, var, hgt), libIndex);
+	}
+	
+	
+	
+	private void addMNSD_TMP(String dataDir, int run_input, String hgt, int libIndex){
+		String var = "TMP";
+		String dir = dataDir + "/StatFields/"+hgt+"_"+var+"/";;
+		PVector corner = new PVector(cornerx, cornery);
+		String run = String.format("%02d", run_input);
+		String grid = "212";
+		
+		Field f;
+		ArrayList<Field> fields = new ArrayList<Field>();
+		String deriv = "mean";
+		for (int k=0; k<=87; k+=3){
+			String fhr = String.format("%02d", k);
+			String file = dir + "sref.t" + run + "z.pgrb" + grid + ".f" + fhr + "."+ deriv + ".txt";
+			f = new Field(file, samplesx, samplesy, corner, samplesy*spacing, samplesx*spacing);
+			fields.add(f);
+		}
+		
+		ScalarEncoding encd = new ScalarEncoding(fields);
+		encd.useBilinear(true);
+		encd.useInterpolation(false);
+		encd.convert_K2C();
+		encd.genIsovalues(273.15, 5);
+		
+		ArrayList<Field> fields2 = new ArrayList<Field>();
+		deriv = "stddev";
+		for (int k=0; k<=87; k+=3){
+			String fhr = String.format("%02d", k);
+			String file = dir + "sref.t" + run + "z.pgrb" + grid + ".f" + fhr + "."+ deriv + ".txt";
+			f = new Field(file, samplesx, samplesy, corner, samplesy*spacing, samplesx*spacing);
+			fields2.add(f);
+		}
+		
+		ScalarEncoding encd2 = new ScalarEncoding(fields2);
+		encd2.useBilinear(true);
+		encd2.useInterpolation(false);
+		encd2.setColorMap(mnsd);
+		encd2.addIsovalue(1);
+		encd2.addIsovalue(1.5);
+		encd2.addIsovalue(2);
+		encd2.addIsovalue(3);
+		encd2.addIsovalue(5);
+		encd2.addIsovalue(7);
+		encd2.addIsovalue(10);
+		encd2.addIsovalue(15);
+		encd2.addIsovalue(20);
+		
+		library.add(new MNSDSelect(tabw,tabh, encd, encd2, var, hgt), libIndex);
 	}
 
 }

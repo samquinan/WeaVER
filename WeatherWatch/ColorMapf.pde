@@ -51,6 +51,11 @@ class ColorMapf {
 		conversionState = 5;
 	}
 	
+	void convert_kgmm2in(){
+		conversionState = 6;
+	}
+	
+	
 	int getConversionState(){
 		return conversionState;
 	}

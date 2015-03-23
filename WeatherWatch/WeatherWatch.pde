@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Arrays;
 import java.lang.StringBuilder;
 import java.util.BitSet;
+import java.text.DecimalFormat;
 
 PFont plotFont;
 PFont errFont;
@@ -378,14 +379,14 @@ class ViewLoader implements Runnable{
 		view_1.loadData(dir, run);
 
 		// generate view_2
-		view_2 = new MNSDView(samplesx, samplesy, spacing, cornerx, cornery, tabw, tabh, 12);
+		view_2 = new MNSDView(samplesx, samplesy, spacing, cornerx, cornery, tabw, tabh, 3);
 		view_2.setFonts(regular, error);
 		view_2.setMap(map);
 		view_2.setDateTimeOrigin(cur_dt);
 		view_2.loadData(dir, run);
 
 		// generate view_3
-		view_3 = new EnsembleView(samplesx, samplesy, spacing, cornerx, cornery, tabw, tabh, 20);//12
+		view_3 = new EnsembleView(samplesx, samplesy, spacing, cornerx, cornery, tabw, tabh, 15);//12
 		view_3.setFonts(regular, error);
 		view_3.setMap(map);
 		view_3.setDateTimeOrigin(cur_dt);

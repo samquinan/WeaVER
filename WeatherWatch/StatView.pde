@@ -19,7 +19,7 @@ class StatView extends View {
 	PVector tooltipPos;
 	
 	//these really should go into seperate structure
-	ColorMapf wind, rh, tmp_5c, haines;//tmp_3c
+	ColorMapf wind, rh, tmp_5c, haines, apcp;//tmp_3c
 	
 	StatView(int sx, int sy, float ds, int cx, int cy, int tw, int th, int libsize){
 		super(sx, sy, ds, cx, cy, tw, th, libsize);
@@ -30,6 +30,7 @@ class StatView extends View {
 		library.addCollection(3,4);
 		library.addCollection(3,4);
 		library.addCollection(3,4);
+		library.addCollection(3,3);
 		library.addCollection(3,3);
 		/*library.addCollection(3,1);		*/
 		
@@ -181,18 +182,18 @@ class StatView extends View {
 			else textSize(12);
 			textAlign(CENTER, TOP);
 			fill(120, 12, 12);
-			text(errmsg, cornerx+(samplesx*spacing/2), cornery+(samplesy*spacing)+5);
+			text(errmsg, cornerx+(samplesx*spacing/2), cornery+(samplesy*spacing)+20);
 			if (fontsAvailable){
 				textFont(fReg);
 			}
 		}
-		else{ //Default Label
-			textSize(11);
-			textAlign(CENTER, TOP);
-			fill(70);
-			String full_label = (origin == null) ? "" : origin.getDateString(timer.getValue()); 
-			text(full_label, cornerx+(samplesx*spacing/2), cornery+(samplesy*spacing)+5);
-		}
+		
+		//Default Label
+		textSize(11);
+		textAlign(CENTER, TOP);
+		fill(70);
+		String full_label = (origin == null) ? "" : origin.getDateString(timer.getValue()); 
+		text(full_label, cornerx+(samplesx*spacing/2), cornery+(samplesy*spacing)+5);
 		
 		/*//frame rate for testing
 		textSize(10);
@@ -562,6 +563,22 @@ class StatView extends View {
 		wind.add(150, color(  0,  75,  84));//color(  0, 75, 84)); 
 		colorMode(RGB,255);		
 		
+		apcp = new ColorMapf();
+		colorMode(HSB, 360, 100, 100, 100);
+		apcp.add(    4*25.4,  color(230,  65,  29, 100));
+		apcp.add(    3*25.4,  color(223,  60,  41, 100));
+		apcp.add(    2*25.4,  color(216,  55,  49, 100));
+		apcp.add(    1*25.4,  color(209,  50,  55, 100));
+		apcp.add( 0.75*25.4,  color(202,  45,  61, 100));
+		apcp.add(  0.5*25.4,  color(195,  40,  65, 100));
+		apcp.add( 0.25*25.4,  color(188,  35,  70, 100));
+		apcp.add(  0.1*25.4,  color(181,  30,  74, 100));
+		apcp.add( 0.05*25.4,  color(174,  20,  81, 100));//25, 77
+		apcp.add( 0.01*25.4,  color(167,  10,  90, 100));//20, 81
+		apcp.add(	   0.2539,  color(160,  15,  84,   0));
+		apcp.add(         0,  color(160,  15,  84,   0));
+		colorMode(RGB,255);
+		apcp.convert_kgmm2in();
 		
 		/*ColorMapf precip = new ColorMapf();
 		colorMode(HSB, 360, 100, 100, 100);
@@ -684,19 +701,29 @@ class StatView extends View {
 		addStatSelectTMP( dataDir, run_input, hgt,  "max", 4);
 		addStatSelectTMP( dataDir, run_input, hgt,  "min", 4);
 		
+		/*surface*/
+		addStatSelectWIND(dataDir, run_input, "10m", "mean", 5);
+		addStatSelectWIND(dataDir, run_input, "10m", "max", 5);
+		addStatSelectTMP( dataDir, run_input,  "2m", "mean", 5);
+		addStatSelectRH(  dataDir, run_input,  "2m", "mean", 5);
+		addStatSelectAPCP(dataDir, run_input, 3,  "max", 5);
+		addStatSelectAPCP(dataDir, run_input, 6,  "max", 5);
+		addStatSelectAPCP(dataDir, run_input, 12, "max", 5);
+		addStatSelectAPCP(dataDir, run_input, 24, "max", 5);
+		
 		
 		// HAINES
-		addStatSelectHaines( dataDir, run_input, "High", "mean", 5 );
-		addStatSelectHaines( dataDir, run_input, "High",  "max", 5 );
-		addStatSelectHaines( dataDir, run_input, "High",  "min", 5 );
+		addStatSelectHaines( dataDir, run_input, "High", "mean", 6 );
+		addStatSelectHaines( dataDir, run_input, "High",  "max", 6 );
+		addStatSelectHaines( dataDir, run_input, "High",  "min", 6 );
 		
-		addStatSelectHaines( dataDir, run_input,  "Med", "mean", 5 );
-		addStatSelectHaines( dataDir, run_input,  "Med",  "max", 5 );
-		addStatSelectHaines( dataDir, run_input,  "Med",  "min", 5 );
+		addStatSelectHaines( dataDir, run_input,  "Med", "mean", 6 );
+		addStatSelectHaines( dataDir, run_input,  "Med",  "max", 6 );
+		addStatSelectHaines( dataDir, run_input,  "Med",  "min", 6 );
 		
-		addStatSelectHaines( dataDir, run_input,  "Low", "mean", 5 );
-		addStatSelectHaines( dataDir, run_input,  "Low",  "max", 5 );
-		addStatSelectHaines( dataDir, run_input,  "Low",  "min", 5 );
+		addStatSelectHaines( dataDir, run_input,  "Low", "mean", 6 );
+		addStatSelectHaines( dataDir, run_input,  "Low",  "max", 6 );
+		addStatSelectHaines( dataDir, run_input,  "Low",  "min", 6 );
 		
 		
 				
@@ -857,6 +884,46 @@ class StatView extends View {
 
 		library.add(new StatSelect(tabw,tabh,cSurface, encd, "APCP", "surface", "3hr "+deriv));*/
 	}
+	
+	private void addStatSelectAPCP(String dataDir, int run_input, int interval, String deriv, int libIndex){
+		String var = "APCP";
+		String hgt = "surface";
+		String accPeriod = interval+"hr";
+		String dir = dataDir + "/StatFields/"+hgt+"_"+var+"/"+accPeriod+"/";
+		PVector corner = new PVector(cornerx, cornery);
+		String run = String.format("%02d", run_input);
+		String grid = "212";
+		
+		Field f;		
+		ArrayList<Field> fields = new ArrayList<Field>();
+		for (int k=0; k<=87; k+=3){
+			if (k >= interval){
+				String fhr = String.format("%02d", k);
+				String file = dir + "sref.t" + run + "z.pgrb" + grid + ".f" + fhr + "."+ deriv + ".txt";
+				f = new Field(file, samplesx, samplesy, corner, samplesy*spacing, samplesx*spacing);
+			}
+			else f = new Field();
+			fields.add(f);
+		}
+		
+		ScalarEncoding encd = new ScalarEncoding(fields);
+		encd.useBilinear(true);
+		encd.useInterpolation(false);
+		encd.setColorMap(apcp);
+		encd.convert_kgmm2in();
+		encd.addIsovalue(4*25.4);
+		encd.addIsovalue(3*25.4);
+		encd.addIsovalue(2*25.4);
+		encd.addIsovalue(1*25.4);
+		encd.addIsovalue(0.75*25.4);
+		encd.addIsovalue( 0.5*25.4);
+		encd.addIsovalue(0.25*25.4);
+		encd.addIsovalue( 0.1*25.4);
+		encd.addIsovalue(0.05*25.4);
+		encd.addIsovalue(0.01*25.4);
+		library.add(new StatSelect(tabw, tabh, encd, var, accPeriod, deriv), libIndex);	
+	}
+	
 	
 	private void addStatSelectRH(String dataDir, int run_input, String hgt, String deriv, int libIndex){
 		String var = "RH";

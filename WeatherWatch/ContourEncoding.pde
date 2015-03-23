@@ -99,11 +99,14 @@ class ContourEncoding extends EncodingBase implements EncodesContour{
 	  				break;
 	  			case 5:
 	  				val = convert.fakeHaines(val);
-	  				break;															
+	  				break;
+	  			case 6:
+	  				val = convert.kgmm_to_in(val);
+	  				break;																												
 	  			default:
 	  				break;
 	  		}
-			c.setID(Float.toString(val)); 
+			c.setID(df.format(val)); 
 			contours.add(c);
 		}
 	}
@@ -130,11 +133,14 @@ class ContourEncoding extends EncodingBase implements EncodesContour{
   	  				break;
 	  			case 5:
 	  				val = convert.fakeHaines(val);
-	  				break;																									
+	  				break;
+	  			case 6:
+	  				val = convert.kgmm_to_in(val);
+	  				break;																																																							
   	  			default:
   	  				break;
   	  		}
-  			c.setID(Float.toString(val));  
+  			c.setID(df.format(val));  
 		   	contours.add(c);
 		}
 	}	

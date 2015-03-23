@@ -305,7 +305,7 @@ class ConditionTarget extends ScalarTargetBase {
 				for (Float iso: iso_cur){
 					  c = new Contour2D(2*current.dimy);
 					  current.genIsocontour(iso, c);
-					  c.setID(Float.toString(iso)); 
+					  c.setID(df.format(iso)); 
 				   	  layer1.add(c);
 				}
 				for (StickyLabel l : labels){

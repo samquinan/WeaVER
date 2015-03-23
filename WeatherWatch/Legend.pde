@@ -8,6 +8,7 @@ class Legend {
 	int m,n;
 	
 	Converter convert;	
+	DecimalFormat df;
 	
 	Legend(float ix, float iy, int iw, int ih){
 		x = ix;
@@ -26,6 +27,7 @@ class Legend {
 		/*convert = false;*/
 		
 		convert = new Converter();
+		df = new DecimalFormat("#.##");
 	}
 	
 	void useInterpolation(boolean b){
@@ -79,13 +81,16 @@ class Legend {
 					break;
 				case 5:
 					val = convert.fakeHaines(val);
-					break;							
+					break;
+				case 6:
+					val = convert.kgmm_to_in(val);
+					break;																		
 				default:
 					break;
 			}
 			//line(x-10, y+tag_y, x-5, y+tag_y);
 			//if (convert) val = cc.K_to_C(val);
-			text(Float.toString(val), x-3, y-2+tag_y);
+			text(df.format(val), x-3, y-2+tag_y);
 		}
 		
 	}

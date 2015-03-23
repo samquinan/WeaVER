@@ -46,7 +46,9 @@ class EnsembleView extends View {
 		super(sx, sy, ds, cx, cy, tw, th, libsize);
 		
 		//add collections to library
-		//library.addCollection(2,2);
+		library.addCollection(3,2);
+		library.addCollection(3,1);
+		/*library.addCollection(3,1);*/
 		
 		int n = 50;
 		
@@ -848,7 +850,7 @@ class EnsembleView extends View {
 		boolean skipLowRes = false;//low res: if false and no cache
 		boolean cacheMe = false;//if true, always uses high-res cache
 		
-		println("HGT"); 
+		println("500mb HGT"); 
 		addEnsembleSelect(ensemble, member_labels, getCBP(dataDir+"/CBP/500mb_HGT/5100/", run_input, skipLowRes), cacheMe, 5100, "HGT", "500mb", "5100", 0);
 		addEnsembleSelect(ensemble, member_labels, getCBP(dataDir+"/CBP/500mb_HGT/5160/", run_input, skipLowRes), cacheMe, 5160, "HGT", "500mb", "5160", 0);
 		addEnsembleSelect(ensemble, member_labels, getCBP(dataDir+"/CBP/500mb_HGT/5220/", run_input, skipLowRes), cacheMe, 5220, "HGT", "500mb", "5220", 0);
@@ -863,18 +865,41 @@ class EnsembleView extends View {
 		addEnsembleSelect(ensemble, member_labels, getCBP(dataDir+"/CBP/500mb_HGT/5820/", run_input, skipLowRes), cacheMe, 5820, "HGT", "500mb", "5820", 0);
 		addEnsembleSelect(ensemble, member_labels, getCBP(dataDir+"/CBP/500mb_HGT/5820/", run_input, skipLowRes), cacheMe, 5820, "HGT", "500mb", "5820", 0);
 		
-		println("WIND");
+		/*println("10m WIND");
+		ensemble = getEnsemble(dataDir + "/EnsembleFields/10m_Wind/", run_input, models, perturbations);
+		addEnsembleSelect(ensemble, member_labels, getCBP(dataDir+"/CBP/10m_WSPD/18kts/", run_input, skipLowRes), cacheMe, 18, "WSPD", "10m", "18kts", 1);		*/
+		
+		println("2m TMP");
+		ensemble = getEnsemble(dataDir + "/EnsembleFields/2m_TMP/", run_input, models, perturbations);
+		addEnsembleSelect(ensemble, member_labels, getCBP(dataDir+"/CBP/2m_TMP/32F/", run_input, skipLowRes), cacheMe, 273.15, "TMP", "2m", "32F", 1);
+		addEnsembleSelect(ensemble, member_labels, getCBP(dataDir+"/CBP/2m_TMP/60F/", run_input, skipLowRes), cacheMe, 288.706, "TMP", "2m", "60F", 1);
+		
+		println("2m RH");
+		ensemble = getEnsemble(dataDir + "/EnsembleFields/2m_RH/", run_input, models, perturbations);
+		addEnsembleSelect(ensemble, member_labels, getCBP(dataDir+"/CBP/2m_RH/10/", run_input, skipLowRes), cacheMe, 10, "RH", "2m", "10%", 1);
+		addEnsembleSelect(ensemble, member_labels, getCBP(dataDir+"/CBP/2m_RH/20/", run_input, skipLowRes), cacheMe, 20, "RH", "2m", "20%", 1);
+		addEnsembleSelect(ensemble, member_labels, getCBP(dataDir+"/CBP/2m_RH/30/", run_input, skipLowRes), cacheMe, 30, "RH", "2m", "30%", 1);
+		
+		/*println("3hr APCP");
+		ensemble = getEnsemble(dataDir + "/EnsembleFields/surface_APCP/3hr/", run_input, models, perturbations);
+		addEnsembleSelect(ensemble, member_labels, getCBP(dataDir+"/CBP/surface_APCP/3hr/0_254/", run_input, skipLowRes), cacheMe, 0.254, "APCP", "3hr", "0.01in", 2);
+		addEnsembleSelect(ensemble, member_labels, getCBP(dataDir+"/CBP/surface_APCP/3hr/2_54/",  run_input, skipLowRes), cacheMe, 2.54,  "APCP", "3hr", "0.1in",  2);*/
+				
+		println("Haines");
+		ensemble = getEnsemble(dataDir + "/EnsembleFields/Haines/High/", run_input, models, perturbations);
+		addEnsembleSelect(ensemble, member_labels, getCBP(dataDir+"/CBP/Haines/High/5/", run_input, skipLowRes), cacheMe, 4.5, "Haines", "High", "5", 2);	
+		/*println("WIND");
 		ensemble = getEnsemble(dataDir + "/EnsembleFields/500mb_WIND/ensemble/", run_input, models, perturbations);
 		addEnsembleSelect(ensemble, member_labels, getCBP(dataDir+"/CBP/500mb_WIND/50/", run_input, skipLowRes), cacheMe, 50, "WIND", "500mb", "50", 0);
 		addEnsembleSelect(ensemble, member_labels, getCBP(dataDir+"/CBP/500mb_WIND/60/", run_input, skipLowRes), cacheMe, 60, "WIND", "500mb", "60", 0);
 		addEnsembleSelect(ensemble, member_labels, getCBP(dataDir+"/CBP/500mb_WIND/70/", run_input, skipLowRes), cacheMe, 70, "WIND", "500mb", "70", 0);
-		
+
 		println("TMP");
 		ensemble = getEnsemble(dataDir + "/EnsembleFields/500mb_TMP/", run_input, models, perturbations);
 		addEnsembleSelect(ensemble, member_labels, getCBP(dataDir+"/CBP/500mb_TMP/258_15/", run_input, skipLowRes), cacheMe, 258.15, "TMP", "500mb", "-15", 0);
 		addEnsembleSelect(ensemble, member_labels, getCBP(dataDir+"/CBP/500mb_TMP/253_15/", run_input, skipLowRes), cacheMe, 253.15, "TMP", "500mb", "-20", 0);
 		addEnsembleSelect(ensemble, member_labels, getCBP(dataDir+"/CBP/500mb_TMP/248_15/", run_input, skipLowRes), cacheMe, 248.15, "TMP", "500mb", "-25", 0);
-		addEnsembleSelect(ensemble, member_labels, getCBP(dataDir+"/CBP/500mb_TMP/238_15/", run_input, skipLowRes), cacheMe, 238.15, "TMP", "500mb", "-35", 0);
+		addEnsembleSelect(ensemble, member_labels, getCBP(dataDir+"/CBP/500mb_TMP/238_15/", run_input, skipLowRes), cacheMe, 238.15, "TMP", "500mb", "-35", 0);*/
 		
 		
 		

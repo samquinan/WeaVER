@@ -106,23 +106,29 @@ class WindEncoding extends EncodingBase implements EncodesScalar, EncodesVector{
 			c = new Contour2D(2*f.dimy);
 			f.genIsocontour(iso, c);
 			float val = iso;
-	  		switch (conversionState){
-	  			case 1:
-	  				val = convert.K_to_C(val);
+  	  		switch (conversionState){
+  	  			case 1:
+  	  				val = convert.K_to_C(val);
+  	  				break;
+  	  			case 2:
+  	  				val = convert.K_to_F(val);
+  	  				break;				
+  	  			case 3:
+  	  				val = convert.mps_to_mph(val);
+  	  				break;
+  	  			case 4:
+  	  				val = convert.mps_to_kt(val);
+  	  				break;
+	  			case 5:
+	  				val = convert.fakeHaines(val);
 	  				break;
-	  			case 2:
-	  				val = convert.K_to_F(val);
-	  				break;				
-	  			case 3:
-	  				val = convert.mps_to_mph(val);
-	  				break;
-	  			case 4:
-	  				val = convert.mps_to_kt(val);
-	  				break;						
-	  			default:
-	  				break;
-	  		}
-			c.setID(Float.toString(val)); 
+	  			case 6:
+	  				val = convert.kgmm_to_in(val);
+	  				break;																																																							
+  	  			default:
+  	  				break;
+  	  		}
+			c.setID(df.format(val)); 
 			contours.add(c);
 		}
 	}
@@ -134,23 +140,29 @@ class WindEncoding extends EncodingBase implements EncodesScalar, EncodesVector{
 			c = new Contour2D(2*f.dimy);
 			f.genIsocontour(iso, c);
 			float val = iso;
-	  		switch (conversionState){
-	  			case 1:
-	  				val = convert.K_to_C(val);
+  	  		switch (conversionState){
+  	  			case 1:
+  	  				val = convert.K_to_C(val);
+  	  				break;
+  	  			case 2:
+  	  				val = convert.K_to_F(val);
+  	  				break;				
+  	  			case 3:
+  	  				val = convert.mps_to_mph(val);
+  	  				break;
+  	  			case 4:
+  	  				val = convert.mps_to_kt(val);
+  	  				break;
+	  			case 5:
+	  				val = convert.fakeHaines(val);
 	  				break;
-	  			case 2:
-	  				val = convert.K_to_F(val);
-	  				break;				
-	  			case 3:
-	  				val = convert.mps_to_mph(val);
-	  				break;
-	  			case 4:
-	  				val = convert.mps_to_kt(val);
-	  				break;						
-	  			default:
-	  				break;
-	  		}
-			c.setID(Float.toString(val)); 
+	  			case 6:
+	  				val = convert.kgmm_to_in(val);
+	  				break;																																																							
+  	  			default:
+  	  				break;
+  	  		}
+			c.setID(df.format(val)); 
 			contours.add(c);
 		}
 	}	

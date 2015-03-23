@@ -19,6 +19,10 @@ class ProbabilityView extends View {
 	ProbabilityView(int sx, int sy, float ds, int cx, int cy, int tw, int th, int libsize){
 		super(sx, sy, ds, cx, cy, tw, th, libsize);
 		
+		library.addCollection(3,4);
+		library.addCollection(3,7);
+		library.addCollection(3,3);
+		
 		joint_switch = new Switch(cornerx+(samplesx*spacing)-120, cornery-tabh-10, 16, 14);
 		joint_switch.setColors(color(170), color(110), color(70));
 		joint_switch.setLabels("JOINT", "INDEPENDENT"); 
@@ -138,19 +142,19 @@ class ProbabilityView extends View {
 			else textSize(12);
 			textAlign(CENTER, TOP);
 			fill(120, 12, 12);
-			text("Data for " + errmsg + " unavailable", cornerx+(samplesx*spacing/2), cornery+(samplesy*spacing)+5);
+			text("Data for " + errmsg + " unavailable", cornerx+(samplesx*spacing/2), cornery+(samplesy*spacing)+20);
 			if (fontsAvailable){
 				textFont(fReg);
 			}
 		}
-		else{ //Default Label
-			textSize(11);
-			textAlign(CENTER, TOP);
-			fill(70);
-			String full_label = (origin == null) ? "" : origin.getDateString(timer.getValue()); 
-			text(full_label, cornerx+(samplesx*spacing/2), cornery+(samplesy*spacing)+5);
-		}
 		
+		//Default Label
+		textSize(11);
+		textAlign(CENTER, TOP);
+		fill(70);
+		String full_label = (origin == null) ? "" : origin.getDateString(timer.getValue()); 
+		text(full_label, cornerx+(samplesx*spacing/2), cornery+(samplesy*spacing)+5);
+				
 		/*//frame rate for testing
 		textSize(10);
 		textAlign(RIGHT, BOTTOM);
@@ -347,14 +351,66 @@ class ProbabilityView extends View {
 	
 	void loadData(String dataDir, int run_input){
 		
-		addProbSelect( dataDir+"/Probabilities/2m_RH/", run_input,    "le.15",   "RH",  "2m",     "≤ 10%", 0);
-		addProbSelect( dataDir+"/Probabilities/2m_RH/", run_input,    "ge.30",   "RH",  "2m",     "≥ 30%", 0);
-		addProbSelect( dataDir+"/Probabilities/10m_WSPD/", run_input,    "ge.20", "WSPD", "10m",   "≥ 20mph", 0);
+		addProbSelect( dataDir+"/Probabilities/10m_WSPD/kts/", run_input, "ge.18", "WSPD", "10m", "≥ 18kts", 0);
+		addProbSelect( dataDir+"/Probabilities/10m_WSPD/mph/", run_input, "ge.10", "WSPD", "10m", "≥ 10mph", 0);
+		addProbSelect( dataDir+"/Probabilities/10m_WSPD/mph/", run_input, "ge.15", "WSPD", "10m", "≥ 15mph", 0);
+		addProbSelect( dataDir+"/Probabilities/10m_WSPD/mph/", run_input, "ge.20", "WSPD", "10m", "≥ 20mph", 0);
+		addProbSelect( dataDir+"/Probabilities/10m_WSPD/mph/", run_input, "ge.30", "WSPD", "10m", "≥ 30mph", 0);
 		
-		addProbSelect( dataDir+"/Probabilities/Haines/High/", run_input, "ge.5", "Haines", "High", "5 or 6", 0);
-		addProbSelect( dataDir+"/Probabilities/Haines/High/", run_input, "ge.3.le.4", "Haines", "High", "3 or 4", 0);
+		addProbSelect( dataDir+"/Probabilities/2m_TMP/" , run_input, "ge.288.706", "TMP",  "2m", "≥ 60F", 1);
+		addProbSelect( dataDir+"/Probabilities/2m_RH/",   run_input, "le.10",      "RH",   "2m", "≤ 10%", 1);
+		addProbSelect( dataDir+"/Probabilities/2m_RH/",   run_input, "le.15",      "RH",   "2m", "≤ 15%", 1);
+		addProbSelect( dataDir+"/Probabilities/2m_RH/",   run_input, "le.20",      "RH",   "2m", "≤ 20%", 1);
+		addProbSelect( dataDir+"/Probabilities/2m_RH/",   run_input, "le.25",      "RH",   "2m", "≤ 25%", 1);
+		addProbSelect( dataDir+"/Probabilities/2m_RH/",   run_input, "le.30",      "RH",   "2m", "≤ 30%", 1);
+		addProbSelect( dataDir+"/Probabilities/2m_RH/",   run_input, "le.35",      "RH",   "2m", "≤ 35%", 1);
+		addProbSelect( dataDir+"/Probabilities/2m_RH/",   run_input, "ge.20",      "RH",   "2m", "≥ 20%", 1);
+		addProbSelect( dataDir+"/Probabilities/2m_RH/",   run_input, "ge.25",      "RH",   "2m", "≥ 25%", 1);
+		addProbSelect( dataDir+"/Probabilities/2m_RH/",   run_input, "ge.30",      "RH",   "2m", "≥ 30%", 1);
+		addProbSelect( dataDir+"/Probabilities/2m_RH/",   run_input, "ge.40",      "RH",   "2m", "≥ 40%", 1);
 		
-		addProbSelect( dataDir+"/Probabilities/12hr_APCP/", run_input, "le.0.254", 12, "APCP", "12hr", "≤ 0.01in", 0);
+		addProbSelect( dataDir+"/Probabilities/3hr_APCP/", run_input, "le.0.254",   3, "APCP", "3hr", "≤ 0.01in", 2);
+		addProbSelect( dataDir+"/Probabilities/3hr_APCP/", run_input, "le.1.27",    3, "APCP", "3hr", "≤ 0.05in", 2);
+		addProbSelect( dataDir+"/Probabilities/3hr_APCP/", run_input, "le.2.54",    3, "APCP", "3hr",  "≤ 0.1in", 2);
+		addProbSelect( dataDir+"/Probabilities/3hr_APCP/", run_input, "le.6.35",    3, "APCP", "3hr", "≤ 0.25in", 2);
+		addProbSelect( dataDir+"/Probabilities/3hr_APCP/", run_input, "le.12.7",    3, "APCP", "3hr",  "≤ 0.5in", 2);
+		
+		addProbSelect( dataDir+"/Probabilities/6hr_APCP/", run_input, "le.0.254",   6, "APCP", "6hr", "≤ 0.01in", 2);
+		addProbSelect( dataDir+"/Probabilities/6hr_APCP/", run_input, "le.1.27",    6, "APCP", "6hr", "≤ 0.05in", 2);
+		addProbSelect( dataDir+"/Probabilities/6hr_APCP/", run_input, "le.2.54",    6, "APCP", "6hr",  "≤ 0.1in", 2);
+		addProbSelect( dataDir+"/Probabilities/6hr_APCP/", run_input, "le.6.35",    6, "APCP", "6hr", "≤ 0.25in", 2);
+		addProbSelect( dataDir+"/Probabilities/6hr_APCP/", run_input, "le.12.7",    6, "APCP", "6hr",  "≤ 0.5in", 2);
+		
+		addProbSelect( dataDir+"/Probabilities/12hr_APCP/", run_input, "le.0.254", 12, "APCP", "12hr", "≤ 0.01in", 2);
+		addProbSelect( dataDir+"/Probabilities/12hr_APCP/", run_input, "le.1.27",  12, "APCP", "12hr", "≤ 0.05in", 2);
+		addProbSelect( dataDir+"/Probabilities/12hr_APCP/", run_input, "le.2.54",  12, "APCP", "12hr",  "≤ 0.1in", 2);
+		addProbSelect( dataDir+"/Probabilities/12hr_APCP/", run_input, "le.6.35",  12, "APCP", "12hr", "≤ 0.25in", 2);
+		addProbSelect( dataDir+"/Probabilities/12hr_APCP/", run_input, "le.12.7",  12, "APCP", "12hr",  "≤ 0.5in", 2);
+		
+		addProbSelect( dataDir+"/Probabilities/24hr_APCP/", run_input, "le.0.254", 24, "APCP", "24hr", "≤ 0.01in", 2);
+		addProbSelect( dataDir+"/Probabilities/24hr_APCP/", run_input, "le.1.27",  24, "APCP", "24hr", "≤ 0.05in", 2);
+		addProbSelect( dataDir+"/Probabilities/24hr_APCP/", run_input, "le.2.54",  24, "APCP", "24hr",  "≤ 0.1in", 2);
+		addProbSelect( dataDir+"/Probabilities/24hr_APCP/", run_input, "le.6.35",  24, "APCP", "24hr", "≤ 0.25in", 2);
+		addProbSelect( dataDir+"/Probabilities/24hr_APCP/", run_input, "le.12.7",  24, "APCP", "24hr",  "≤ 0.5in", 2);
+		
+		addProbSelect( dataDir+"/Probabilities/Haines/High/", run_input, "le.4", "Haines", "High", "≤ 4", 3);
+		addProbSelect( dataDir+"/Probabilities/Haines/High/", run_input, "ge.5", "Haines", "High", "≥ 5", 3);
+		addProbSelect( dataDir+"/Probabilities/Haines/High/", run_input, "ge.6", "Haines", "High", "≥ 6", 3);
+		addProbSelect( dataDir+"/Probabilities/Haines/Med/", run_input, "le.4", "Haines", "Med", "≤ 4", 3);
+		addProbSelect( dataDir+"/Probabilities/Haines/Med/", run_input, "ge.5", "Haines", "Med", "≥ 5", 3);
+		addProbSelect( dataDir+"/Probabilities/Haines/Med/", run_input, "ge.6", "Haines", "Med", "≥ 6", 3);
+		addProbSelect( dataDir+"/Probabilities/Haines/Low/", run_input, "le.4", "Haines", "Low", "≤ 4", 3);
+		addProbSelect( dataDir+"/Probabilities/Haines/Low/", run_input, "ge.5", "Haines", "Low", "≥ 5", 3);
+		addProbSelect( dataDir+"/Probabilities/Haines/Low/", run_input, "ge.6", "Haines", "Low", "≥ 6", 3);		
+		
+		/*addProbSelect( dataDir+"/Probabilities/2m_RH/", run_input,    "le.15",   "RH",  "2m",     "≤ 10%", 0);
+		addProbSelect( dataDir+"/Probabilities/2m_RH/", run_input,    "ge.30",   "RH",  "2m",     "≥ 30%", 0);*/
+		/*addProbSelect( dataDir+"/Probabilities/10m_WSPD/", run_input,    "ge.20", "WSPD", "10m",   "≥ 20mph", 0);*/
+		
+		/*addProbSelect( dataDir+"/Probabilities/Haines/High/", run_input, "ge.5", "Haines", "High", "5 or 6", 0);*/
+		/*addProbSelect( dataDir+"/Probabilities/Haines/High/", run_input, "ge.3.le.4", "Haines", "High", "3 or 4", 0);*/
+		
+		/*addProbSelect( dataDir+"/Probabilities/12hr_APCP/", run_input, "le.0.254", 12, "APCP", "12hr", "≤ 0.01in", 0);*/
 		
 		/*ConditionEnsemble f;
 		ConditionSelect c;

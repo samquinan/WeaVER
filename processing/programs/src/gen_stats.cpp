@@ -3,14 +3,38 @@
 
 int main(int argc, char* argv[])
 {
-	
-	if (argc != 4) {
-	        std::cerr << "Usage: " << argv[0] << " DATA_DIR RUN OUT_DIR" << std::endl;
-	        return 1;
+	std::string outDir = "";
+	int startHr = 0;
+	if (argc == 4) {
+		outDir = argv[3];
+	}
+	else if (argc == 6){
+		outDir = argv[5];
+		std::string time_flag = argv[3];
+		if (time_flag != "-h"){
+		    std::cerr << "Usage: " << argv[0] << " DATA_DIR RUN [-h START_HR] OUT_DIR" << std::endl;
+			std::cerr << "\t where '-h' flag optionally begins processing at "<< std::endl <<"\t specified forecast hour instead of 0" << std::endl;
+			return 1;
+		}
+		try{
+			startHr = std::stoi(argv[4]);
+			if ((startHr < 0) || (startHr > 87) || ((startHr % 3)!=0)){
+				std::cerr << argv[4] << " is not a valid integer multiple of 3 between 0 and 87" << std::endl;
+				return 1;
+			} 
+		}
+		catch(std::invalid_argument&){
+			std::cerr << argv[4] << " is not a valid integer multiple of 3 between 0 and 87" << std::endl;
+			return 1;
+		}
+	}
+	else{
+	    std::cerr << "Usage: " << argv[0] << " DATA_DIR RUN [-h START_HR] OUT_DIR" << std::endl;
+		std::cerr << "\t where '-h' flag optionally begins processing at "<< std::endl <<"\t specified forecast hour instead of 0" << std::endl;
+		return 1;
 	}
 	
-	std::string dataDir = argv[1];//"../data/";
-	std::string outDir = argv[3];
+	std::string dataDir = argv[1];//"../data/"
 	
 	std::vector<std::string> models{"em", "nmb", "nmm"};
 	std::vector<std::string> perturbations{"ctl", "n1", "n2", "n3", "p1", "p2", "p3"};
@@ -23,7 +47,7 @@ int main(int argc, char* argv[])
 	std::string run = sstmp.str();//"03";
 	
 	int h;
-	for(h=0; h <= 87; h += 3){
+	for(h=startHr; h <= 87; h += 3){
 		std::vector <std::vector <double>> data;
 		
 		sstmp.str(std::string());

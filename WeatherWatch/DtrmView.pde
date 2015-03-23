@@ -18,7 +18,7 @@ class DtrmView extends View {
 	QuadTree_Node<Segment2D> ctooltip;
 	PVector tooltipPos;
 	
-	ColorMapf wind, rh, tmp_5c, haines;
+	ColorMapf wind, rh, tmp_5c, haines, apcp;
 	
 	DtrmView(int sx, int sy, float ds, int cx, int cy, int tw, int th, int libsize){
 		super(sx, sy, ds, cx, cy, tw, th, libsize);
@@ -29,6 +29,7 @@ class DtrmView extends View {
 		library.addCollection(3,2);
 		library.addCollection(3,2);
 		library.addCollection(3,2);
+		library.addCollection(3,3);
 		library.addCollection(3,1);
 		/*library.addCollection(3,1);*/
 		
@@ -189,18 +190,18 @@ class DtrmView extends View {
 			else textSize(12);
 			textAlign(CENTER, TOP);
 			fill(120, 12, 12);
-			text(errmsg, cornerx+(samplesx*spacing/2), cornery+(samplesy*spacing)+5);
+			text(errmsg, cornerx+(samplesx*spacing/2), cornery+(samplesy*spacing)+20);
 			if (fontsAvailable){
 				textFont(fReg);
 			}
 		}
-		else{ //Default Label
-			textSize(11);
-			textAlign(CENTER, TOP);
-			fill(70);
-			String full_label = (origin == null) ? "" : origin.getDateString(timer.getValue()); 
-			text(full_label, cornerx+(samplesx*spacing/2), cornery+(samplesy*spacing)+5);
-		}
+		
+		//Default Label
+		textSize(11);
+		textAlign(CENTER, TOP);
+		fill(70);
+		String full_label = (origin == null) ? "" : origin.getDateString(timer.getValue()); 
+		text(full_label, cornerx+(samplesx*spacing/2), cornery+(samplesy*spacing)+5);
 	
 		/*//frame rate for testing
 		textSize(10);
@@ -578,6 +579,22 @@ class DtrmView extends View {
 		wind.add(150, color(  0,  75,  84));//color(  0, 75, 84)); 
 		colorMode(RGB,255);		
 		
+		apcp = new ColorMapf();
+		colorMode(HSB, 360, 100, 100, 100);
+		apcp.add(    4*25.4,  color(230,  65,  29, 100));
+		apcp.add(    3*25.4,  color(223,  60,  41, 100));
+		apcp.add(    2*25.4,  color(216,  55,  49, 100));
+		apcp.add(    1*25.4,  color(209,  50,  55, 100));
+		apcp.add( 0.75*25.4,  color(202,  45,  61, 100));
+		apcp.add(  0.5*25.4,  color(195,  40,  65, 100));
+		apcp.add( 0.25*25.4,  color(188,  35,  70, 100));
+		apcp.add(  0.1*25.4,  color(181,  30,  74, 100));
+		apcp.add( 0.05*25.4,  color(174,  20,  81, 100));//25, 77
+		apcp.add( 0.01*25.4,  color(167,  10,  90, 100));//20, 81
+		apcp.add(	   0.2539,  color(160,  15,  84,   0));
+		apcp.add(         0,  color(160,  15,  84,   0));
+		colorMode(RGB,255);
+		apcp.convert_kgmm2in();
 		
 		/*ColorMapf precip = new ColorMapf();
 		colorMode(HSB, 360, 100, 100, 100);
@@ -629,7 +646,6 @@ class DtrmView extends View {
 		addDtrmTMP( dataDir, run_input, hgt, "em", "ctl", 2);
 		
 		
-		
 		hgt = "700mb";
 		addDtrmRH(  dataDir, run_input, hgt, "em", "ctl", 3);
 		addDtrmWIND(dataDir, run_input, hgt, "em", "ctl", 3);
@@ -643,9 +659,19 @@ class DtrmView extends View {
 		addDtrmHGT( dataDir, run_input, hgt, "em", "ctl", 4);
 		addDtrmTMP( dataDir, run_input, hgt, "em", "ctl", 4);
 		
-		addDtrmHaines(dataDir, run_input, "High", "em", "ctl", 5);
-		addDtrmHaines(dataDir, run_input,  "Med", "em", "ctl", 5);
-		addDtrmHaines(dataDir, run_input,  "Low", "em", "ctl", 5);
+		/*surface*/
+		addDtrmTMP( dataDir, run_input, "2m", "em", "ctl", 5);
+		addDtrmRH( dataDir, run_input, "2m", "em", "ctl", 5);
+		/*addDtrmWIND(dataDir, run_input, "10m", "em", "ctl", 5);*/ //need to update processing scripts
+		addDtrmAPCP(dataDir, run_input, 3, "em", "ctl", 5);
+		addDtrmAPCP(dataDir, run_input, 6, "em", "ctl", 5);
+		addDtrmAPCP(dataDir, run_input, 12, "em", "ctl", 5);
+		addDtrmAPCP(dataDir, run_input, 24, "em", "ctl", 5);
+			
+		
+		addDtrmHaines(dataDir, run_input, "High", "em", "ctl", 6);
+		addDtrmHaines(dataDir, run_input,  "Med", "em", "ctl", 6);
+		addDtrmHaines(dataDir, run_input,  "Low", "em", "ctl", 6);
 		
 		
 		/*PVector corner = new PVector(cornerx, cornery);
@@ -802,6 +828,45 @@ class DtrmView extends View {
 
 		library.add(new StatSelect(tabw,tabh,cSurface, encd, "APCP", "surface", "3hr"));*/	
 		
+	}
+	
+	private void addDtrmAPCP(String dataDir, int run_input, int interval, String model, String p, int libIndex){
+		String var = "APCP";
+		String hgt = "surface";
+		String deriv = interval+"hr";
+		String dir = dataDir + "/EnsembleFields/"+hgt+"_"+var+"/"+deriv+"/";
+		PVector corner = new PVector(cornerx, cornery);
+		String run = String.format("%02d", run_input);
+		String grid = "212";
+		
+		Field f;		
+		ArrayList<Field> fields = new ArrayList<Field>();
+		for (int k=0; k<=87; k+=3){
+			if (k >= interval){
+				String fhr = String.format("%02d", k);
+				String file = dir + "sref_"+ model +".t" + run + "z.pgrb" + grid + "." + p + ".f" + fhr + ".txt";
+				f = new Field(file, samplesx, samplesy, corner, samplesy*spacing, samplesx*spacing);
+			}
+			else f = new Field();
+			fields.add(f);
+		}
+		
+		ScalarEncoding encd = new ScalarEncoding(fields);
+		encd.useBilinear(true);
+		encd.useInterpolation(false);
+		encd.setColorMap(apcp);
+		encd.convert_kgmm2in();
+		encd.addIsovalue(4*25.4);
+		encd.addIsovalue(3*25.4);
+		encd.addIsovalue(2*25.4);
+		encd.addIsovalue(1*25.4);
+		encd.addIsovalue(0.75*25.4);
+		encd.addIsovalue( 0.5*25.4);
+		encd.addIsovalue(0.25*25.4);
+		encd.addIsovalue( 0.1*25.4);
+		encd.addIsovalue(0.05*25.4);
+		encd.addIsovalue(0.01*25.4);
+		library.add(new StatSelect(tabw, tabh, encd, var, deriv, ""), libIndex);	
 	}
 		
 	private void addDtrmTMP(String dataDir, int run_input, String hgt, String model, String p, int libIndex){

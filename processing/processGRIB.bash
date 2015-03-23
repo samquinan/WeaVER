@@ -18,22 +18,31 @@ TXTDIR=./data/fields/$DATE
 
 mkdir -p $TXTDIR/'surface_APCP'/'3hr'/
 mkdir -p $TXTDIR/'surface_APCP'/'total'/
+
+mkdir -p $TXTDIR/'surface_APCP'/'3hr'/'derived'/
+mkdir -p $TXTDIR/'surface_APCP'/'3hr'/'prob'/
+mkdir -p $TXTDIR/'surface_APCP'/'6hr'/'derived'/
+mkdir -p $TXTDIR/'surface_APCP'/'6hr'/'prob'/
 mkdir -p $TXTDIR/'surface_APCP'/'12hr'/'derived'/
 mkdir -p $TXTDIR/'surface_APCP'/'12hr'/'prob'/
-# mkdir -p $TXTDIR/'surface_APCP'/'3hr'/'derived'/
-# mkdir -p $TXTDIR/'surface_APCP'/'3hr'/'prob'/
+mkdir -p $TXTDIR/'surface_APCP'/'24hr'/'derived'/
+mkdir -p $TXTDIR/'surface_APCP'/'24hr'/'prob'/
 
 mkdir -p $TXTDIR/'2m_RH'/'prob'/
-# mkdir -p $TXTDIR/'2m_RH'/'derived'/
+mkdir -p $TXTDIR/'2m_RH'/'derived'/
 
-# mkdir -p $TXTDIR/'2m_TMP'/'derived'/
-# mkdir -p $TXTDIR/'2m_TMP'/'prob'/
+mkdir -p $TXTDIR/'2m_TMP'/'derived'/
+mkdir -p $TXTDIR/'2m_TMP'/'prob'/
 
 mkdir -p $TXTDIR/'10m_Wind'/'UGRD'/
 mkdir -p $TXTDIR/'10m_Wind'/'VGRD'/
-mkdir -p $TXTDIR/'10m_Wind'/'WSPD'/
-mkdir -p $TXTDIR/'10m_Wind'/'prob'/
-# mkdir -p $TXTDIR/'10m_Wind'/'derived'/
+mkdir -p $TXTDIR/'10m_Wind'/'WSPD'/'kts'/
+mkdir -p $TXTDIR/'10m_Wind'/'WSPD'/'mph'/
+mkdir -p $TXTDIR/'10m_Wind'/'prob'/'kts'/
+mkdir -p $TXTDIR/'10m_Wind'/'prob'/'mph'/
+mkdir -p $TXTDIR/'10m_Wind'/'derived'/'kts'/
+mkdir -p $TXTDIR/'10m_Wind'/'derived'/'mph'/
+mkdir -p $TXTDIR/'10m_Wind'/'dtrm'/
 
 mkdir -p $TXTDIR/'950mb_TMP'/
 
@@ -89,7 +98,9 @@ mkdir -p $TXTDIR/'200mb_Wind'/'derived'/
 mkdir -p $TXTDIR/'200mb_Wind'/'dtrm'/
 
 mkdir -p $TXTDIR/'Haines'/'Low'/'derived'
+mkdir -p $TXTDIR/'Haines'/'Low'/'prob'
 mkdir -p $TXTDIR/'Haines'/'Med'/'derived'
+mkdir -p $TXTDIR/'Haines'/'Med'/'prob'
 mkdir -p $TXTDIR/'Haines'/'High'/'derived'
 mkdir -p $TXTDIR/'Haines'/'High'/'prob'
 
@@ -143,48 +154,49 @@ do
 	
 	#run wgrib2
 	echo $FNAME
-	$WGRIB -match "$MATCH" 		 $FILE -inv /dev/null -csv - | awk -F "," '{print $7}' > $TXTDIR/'surface_APCP'/'3hr'/$FNAME.txt
+	$WGRIB -match "$MATCH" 		 $FILE -inv /dev/null -csv - | awk -F "," '{print $7}' > $TXTDIR/'surface_APCP'/'3hr'/$FNAME.txt &
 	
-	$WGRIB -match ":RH:2 m "	 $FILE -inv /dev/null -csv - | awk -F "," '{print $7}' > $TXTDIR/'2m_RH'/$FNAME.txt
+	$WGRIB -match ":RH:2 m "	 $FILE -inv /dev/null -csv - | awk -F "," '{print $7}' > $TXTDIR/'2m_RH'/$FNAME.txt &
 	
-	# $WGRIB -match ":TMP:2 m "	 $FILE -inv /dev/null -csv - | awk -F "," '{print $7}' > $TXTDIR/'2m_TMP'/$FNAME.txt
+	$WGRIB -match ":TMP:2 m "	 $FILE -inv /dev/null -csv - | awk -F "," '{print $7}' > $TXTDIR/'2m_TMP'/$FNAME.txt &
 	
-	$WGRIB -match ":UGRD:10 m " $FILE -inv /dev/null -csv - | awk -F "," '{print $7}' > $TXTDIR/'10m_Wind'/'UGRD'/$FNAME.txt
-	$WGRIB -match ":VGRD:10 m " $FILE -inv /dev/null -csv - | awk -F "," '{print $7}' > $TXTDIR/'10m_Wind'/'VGRD'/$FNAME.txt
+	$WGRIB -match ":UGRD:10 m " $FILE -inv /dev/null -csv - | awk -F "," '{print $7}' > $TXTDIR/'10m_Wind'/'UGRD'/$FNAME.txt &
+	$WGRIB -match ":VGRD:10 m " $FILE -inv /dev/null -csv - | awk -F "," '{print $7}' > $TXTDIR/'10m_Wind'/'VGRD'/$FNAME.txt &
 	
-	$WGRIB -match ":TMP:950 mb"  $FILE -inv /dev/null -csv - | awk -F "," '{print $7}' > $TXTDIR/'950mb_TMP'/$FNAME.txt
+	$WGRIB -match ":TMP:950 mb"  $FILE -inv /dev/null -csv - | awk -F "," '{print $7}' > $TXTDIR/'950mb_TMP'/$FNAME.txt &
 	
-	$WGRIB -match ":HGT:850 mb"  $FILE -inv /dev/null -csv - | awk -F "," '{print $7}' > $TXTDIR/'850mb_HGT'/$FNAME.txt	
-	$WGRIB -match ":TMP:850 mb"  $FILE -inv /dev/null -csv - | awk -F "," '{print $7}' > $TXTDIR/'850mb_TMP'/$FNAME.txt
-	$WGRIB -match ":DPT:850 mb"  $FILE -inv /dev/null -csv - | awk -F "," '{print $7}' > $TXTDIR/'850mb_DPT'/$FNAME.txt
-	$WGRIB -match ":RH:850 mb"   $FILE -inv /dev/null -csv - | awk -F "," '{print $7}' > $TXTDIR/'850mb_RH'/$FNAME.txt
-	$WGRIB -match ":UGRD:850 mb" $FILE -inv /dev/null -csv - | awk -F "," '{print $7}' > $TXTDIR/'850mb_Wind'/'UGRD'/$FNAME.txt
-	$WGRIB -match ":VGRD:850 mb" $FILE -inv /dev/null -csv - | awk -F "," '{print $7}' > $TXTDIR/'850mb_Wind'/'VGRD'/$FNAME.txt
+	$WGRIB -match ":HGT:850 mb"  $FILE -inv /dev/null -csv - | awk -F "," '{print $7}' > $TXTDIR/'850mb_HGT'/$FNAME.txt	&
+	$WGRIB -match ":TMP:850 mb"  $FILE -inv /dev/null -csv - | awk -F "," '{print $7}' > $TXTDIR/'850mb_TMP'/$FNAME.txt &
+	$WGRIB -match ":DPT:850 mb"  $FILE -inv /dev/null -csv - | awk -F "," '{print $7}' > $TXTDIR/'850mb_DPT'/$FNAME.txt &
+	$WGRIB -match ":RH:850 mb"   $FILE -inv /dev/null -csv - | awk -F "," '{print $7}' > $TXTDIR/'850mb_RH'/$FNAME.txt &
+	$WGRIB -match ":UGRD:850 mb" $FILE -inv /dev/null -csv - | awk -F "," '{print $7}' > $TXTDIR/'850mb_Wind'/'UGRD'/$FNAME.txt &
+	$WGRIB -match ":VGRD:850 mb" $FILE -inv /dev/null -csv - | awk -F "," '{print $7}' > $TXTDIR/'850mb_Wind'/'VGRD'/$FNAME.txt &
 
-	$WGRIB -match ":HGT:700 mb"  $FILE -inv /dev/null -csv - | awk -F "," '{print $7}' > $TXTDIR/'700mb_HGT'/$FNAME.txt	
-	$WGRIB -match ":TMP:700 mb"  $FILE -inv /dev/null -csv - | awk -F "," '{print $7}' > $TXTDIR/'700mb_TMP'/$FNAME.txt
-	$WGRIB -match ":DPT:700 mb"  $FILE -inv /dev/null -csv - | awk -F "," '{print $7}' > $TXTDIR/'700mb_DPT'/$FNAME.txt
-	$WGRIB -match ":RH:700 mb"   $FILE -inv /dev/null -csv - | awk -F "," '{print $7}' > $TXTDIR/'700mb_RH'/$FNAME.txt
-	$WGRIB -match ":UGRD:700 mb" $FILE -inv /dev/null -csv - | awk -F "," '{print $7}' > $TXTDIR/'700mb_Wind'/'UGRD'/$FNAME.txt
-	$WGRIB -match ":VGRD:700 mb" $FILE -inv /dev/null -csv - | awk -F "," '{print $7}' > $TXTDIR/'700mb_Wind'/'VGRD'/$FNAME.txt
+	$WGRIB -match ":HGT:700 mb"  $FILE -inv /dev/null -csv - | awk -F "," '{print $7}' > $TXTDIR/'700mb_HGT'/$FNAME.txt	&
+	$WGRIB -match ":TMP:700 mb"  $FILE -inv /dev/null -csv - | awk -F "," '{print $7}' > $TXTDIR/'700mb_TMP'/$FNAME.txt &
+	$WGRIB -match ":DPT:700 mb"  $FILE -inv /dev/null -csv - | awk -F "," '{print $7}' > $TXTDIR/'700mb_DPT'/$FNAME.txt &
+	$WGRIB -match ":RH:700 mb"   $FILE -inv /dev/null -csv - | awk -F "," '{print $7}' > $TXTDIR/'700mb_RH'/$FNAME.txt  &
+	$WGRIB -match ":UGRD:700 mb" $FILE -inv /dev/null -csv - | awk -F "," '{print $7}' > $TXTDIR/'700mb_Wind'/'UGRD'/$FNAME.txt &
+	$WGRIB -match ":VGRD:700 mb" $FILE -inv /dev/null -csv - | awk -F "," '{print $7}' > $TXTDIR/'700mb_Wind'/'VGRD'/$FNAME.txt &
 	
-	$WGRIB -match ":HGT:500 mb"  $FILE -inv /dev/null -csv - | awk -F "," '{print $7}' > $TXTDIR/'500mb_HGT'/$FNAME.txt	
-	$WGRIB -match ":TMP:500 mb"  $FILE -inv /dev/null -csv - | awk -F "," '{print $7}' > $TXTDIR/'500mb_TMP'/$FNAME.txt
-	$WGRIB -match ":RH:500 mb"   $FILE -inv /dev/null -csv - | awk -F "," '{print $7}' > $TXTDIR/'500mb_RH'/$FNAME.txt
-	$WGRIB -match ":UGRD:500 mb" $FILE -inv /dev/null -csv - | awk -F "," '{print $7}' > $TXTDIR/'500mb_Wind'/'UGRD'/$FNAME.txt
-	$WGRIB -match ":VGRD:500 mb" $FILE -inv /dev/null -csv - | awk -F "," '{print $7}' > $TXTDIR/'500mb_Wind'/'VGRD'/$FNAME.txt
+	$WGRIB -match ":HGT:500 mb"  $FILE -inv /dev/null -csv - | awk -F "," '{print $7}' > $TXTDIR/'500mb_HGT'/$FNAME.txt	&
+	$WGRIB -match ":TMP:500 mb"  $FILE -inv /dev/null -csv - | awk -F "," '{print $7}' > $TXTDIR/'500mb_TMP'/$FNAME.txt &
+	$WGRIB -match ":RH:500 mb"   $FILE -inv /dev/null -csv - | awk -F "," '{print $7}' > $TXTDIR/'500mb_RH'/$FNAME.txt  &
+	$WGRIB -match ":UGRD:500 mb" $FILE -inv /dev/null -csv - | awk -F "," '{print $7}' > $TXTDIR/'500mb_Wind'/'UGRD'/$FNAME.txt &
+	$WGRIB -match ":VGRD:500 mb" $FILE -inv /dev/null -csv - | awk -F "," '{print $7}' > $TXTDIR/'500mb_Wind'/'VGRD'/$FNAME.txt &
 	
-	$WGRIB -match  ":HGT:300 mb" $FILE -inv /dev/null -csv - | awk -F "," '{print $7}' > $TXTDIR/'300mb_HGT'/$FNAME.txt	
-	$WGRIB -match  ":TMP:300 mb" $FILE -inv /dev/null -csv - | awk -F "," '{print $7}' > $TXTDIR/'300mb_TMP'/$FNAME.txt
-	$WGRIB -match   ":RH:300 mb" $FILE -inv /dev/null -csv - | awk -F "," '{print $7}' > $TXTDIR/'300mb_RH'/$FNAME.txt
-	$WGRIB -match ":UGRD:300 mb" $FILE -inv /dev/null -csv - | awk -F "," '{print $7}' > $TXTDIR/'300mb_Wind'/'UGRD'/$FNAME.txt
-	$WGRIB -match ":VGRD:300 mb" $FILE -inv /dev/null -csv - | awk -F "," '{print $7}' > $TXTDIR/'300mb_Wind'/'VGRD'/$FNAME.txt
+	$WGRIB -match  ":HGT:300 mb" $FILE -inv /dev/null -csv - | awk -F "," '{print $7}' > $TXTDIR/'300mb_HGT'/$FNAME.txt	&
+	$WGRIB -match  ":TMP:300 mb" $FILE -inv /dev/null -csv - | awk -F "," '{print $7}' > $TXTDIR/'300mb_TMP'/$FNAME.txt &
+	$WGRIB -match   ":RH:300 mb" $FILE -inv /dev/null -csv - | awk -F "," '{print $7}' > $TXTDIR/'300mb_RH'/$FNAME.txt  &
+	$WGRIB -match ":UGRD:300 mb" $FILE -inv /dev/null -csv - | awk -F "," '{print $7}' > $TXTDIR/'300mb_Wind'/'UGRD'/$FNAME.txt &
+	$WGRIB -match ":VGRD:300 mb" $FILE -inv /dev/null -csv - | awk -F "," '{print $7}' > $TXTDIR/'300mb_Wind'/'VGRD'/$FNAME.txt &
 	
-	$WGRIB -match  ":HGT:200 mb" $FILE -inv /dev/null -csv - | awk -F "," '{print $7}' > $TXTDIR/'200mb_HGT'/$FNAME.txt	
-	$WGRIB -match  ":TMP:200 mb" $FILE -inv /dev/null -csv - | awk -F "," '{print $7}' > $TXTDIR/'200mb_TMP'/$FNAME.txt
-	$WGRIB -match   ":RH:200 mb" $FILE -inv /dev/null -csv - | awk -F "," '{print $7}' > $TXTDIR/'200mb_RH'/$FNAME.txt
-	$WGRIB -match ":UGRD:200 mb" $FILE -inv /dev/null -csv - | awk -F "," '{print $7}' > $TXTDIR/'200mb_Wind'/'UGRD'/$FNAME.txt
-	$WGRIB -match ":VGRD:200 mb" $FILE -inv /dev/null -csv - | awk -F "," '{print $7}' > $TXTDIR/'200mb_Wind'/'VGRD'/$FNAME.txt
+	$WGRIB -match  ":HGT:200 mb" $FILE -inv /dev/null -csv - | awk -F "," '{print $7}' > $TXTDIR/'200mb_HGT'/$FNAME.txt	&
+	$WGRIB -match  ":TMP:200 mb" $FILE -inv /dev/null -csv - | awk -F "," '{print $7}' > $TXTDIR/'200mb_TMP'/$FNAME.txt &
+	$WGRIB -match   ":RH:200 mb" $FILE -inv /dev/null -csv - | awk -F "," '{print $7}' > $TXTDIR/'200mb_RH'/$FNAME.txt  &
+	$WGRIB -match ":UGRD:200 mb" $FILE -inv /dev/null -csv - | awk -F "," '{print $7}' > $TXTDIR/'200mb_Wind'/'UGRD'/$FNAME.txt &
+	$WGRIB -match ":VGRD:200 mb" $FILE -inv /dev/null -csv - | awk -F "," '{print $7}' > $TXTDIR/'200mb_Wind'/'VGRD'/$FNAME.txt &
 	
+	wait
 			
 done
