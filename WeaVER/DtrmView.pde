@@ -451,8 +451,8 @@ class DtrmView extends View {
 		tmp_5c = new ColorMapf();
 		colorMode(HSB, 360, 100, 100, 100);
 		tmp_5c.add(213.15, color(270,  100,  29));
-		tmp_5c.add(218.15, color(260,   91,  40));
-		tmp_5c.add(223.15, color(250,   83,  47));
+		tmp_5c.add(218.15, color(260,   85,  29));
+		tmp_5c.add(223.15, color(250,   85,  43));
 		tmp_5c.add(228.15, color(240,   75,  53));
 		tmp_5c.add(233.15, color(230,   67,  59));
 		tmp_5c.add(238.15, color(220,   59,  63));
@@ -524,12 +524,12 @@ class DtrmView extends View {
 	    // rh.add(90, color(41, 98, 33, 255));
 	    // rh.add(100, color(9, 49, 3, 255));
 		colorMode(HSB, 360, 100, 100, 100);
-		rh.add(   0, color(180, 25, 29,   0));
+		rh.add(   0, color(77,  49, 85,   0));
 		rh.add(69.9999, color(77,  49, 70,   0));	
-		rh.add(  70, color(77,  49, 70, 100));
-		rh.add(  80, color(95,  45, 65, 100));
+		rh.add(  70, color(77,  49, 85, 100));
+		rh.add(  80, color(95,  45, 75, 100));
 		rh.add(  90, color(129, 37, 55, 100));
-		rh.add( 100, color(163, 29, 41, 100));
+		rh.add( 100, color(163, 29, 35, 100));
 		colorMode(RGB,255);
 	
 		// // testing wind isotachs
@@ -564,19 +564,19 @@ class DtrmView extends View {
 		colorMode(HSB, 360, 100, 100, 100);
 		wind.add(  0, color(180,  25,  29, 0));//color(110, 35, 29,0));
 		wind.add(29.99999, color(180,  25,  29, 0));//color(110, 35, 29,0));
-		wind.add( 30, color(180,  25,  29));//color(110, 35, 29)); 
-		wind.add( 40, color(165,  29,  39));//color(100, 38, 39)); 
-		wind.add( 50, color(150,  33,  46));//color( 91, 41, 46)); 
-		wind.add( 60, color(135,  37,  52));//color( 82, 45, 52)); 
-		wind.add( 70, color(120,  41,  57));//color( 73, 48, 57)); 
-		wind.add( 80, color(105,  45,  61));//color( 64, 51, 61)); 
-		wind.add( 90, color( 90,  50,  65));//color( 55, 55, 65)); 
-		wind.add(100, color( 75,  54,  69));//color( 45, 58, 69)); 
-		wind.add(110, color( 60,  58,  72));//color( 36, 61, 72)); 
-		wind.add(120, color( 45,  62,  76));//color( 27, 65, 76)); 
-		wind.add(130, color( 30,  66,  78));//color( 18, 68, 78)); 
-		wind.add(140, color( 15,  70,  81));//color(  9, 71, 81)); 
-		wind.add(150, color(  0,  75,  84));//color(  0, 75, 84)); 
+		wind.add( 30, color(180,  25,  29));//color(110, 35, 29));
+		wind.add( 40, color(165,  29,  39));//color(100, 38, 39));
+		wind.add( 50, color(150,  33,  46));//color( 91, 41, 46));
+		wind.add( 60, color(135,  37,  52));//color( 82, 45, 52));
+		wind.add( 70, color(120,  41,  57));//color( 73, 48, 57));
+		wind.add( 80, color(105,  45,  61));//color( 64, 51, 61));
+		wind.add( 90, color( 90,  50,  65));//color( 55, 55, 65));
+		wind.add(100, color( 75,  50,  74));//color( 45, 58, 69));
+		wind.add(110, color( 60,  50,  78));//color( 36, 61, 72));
+		wind.add(120, color( 45,  62,  81));//color( 27, 65, 76));
+		wind.add(130, color( 30,  66,  84));//color( 18, 68, 78));
+		wind.add(140, color( 15,  70,  87));//color(  9, 71, 81));
+		wind.add(150, color(  0,  75,  90));//color(  0, 75, 84));
 		colorMode(RGB,255);		
 		
 		apcp = new ColorMapf();
@@ -589,10 +589,10 @@ class DtrmView extends View {
 		apcp.add(  0.5*25.4,  color(195,  40,  65, 100));
 		apcp.add( 0.25*25.4,  color(188,  35,  70, 100));
 		apcp.add(  0.1*25.4,  color(181,  30,  74, 100));
-		apcp.add( 0.05*25.4,  color(174,  20,  81, 100));//25, 77
-		apcp.add( 0.01*25.4,  color(167,  10,  90, 100));//20, 81
-		apcp.add(	   0.2539,  color(160,  15,  84,   0));
-		apcp.add(         0,  color(160,  15,  84,   0));
+		apcp.add( 0.05*25.4,  color(174,  20,  83, 100));//25, 77
+		apcp.add( 0.01*25.4,  color(167,  10,  89, 100));//20, 81
+		apcp.add(	 0.2539,  color(160,  15,  95,   0));
+		apcp.add(         0,  color(160,  15,  95,   0));
 		colorMode(RGB,255);
 		apcp.convert_kgmm2in();
 		

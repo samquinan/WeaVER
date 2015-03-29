@@ -414,8 +414,8 @@ class StatView extends View {
 		tmp_5c = new ColorMapf();
 		colorMode(HSB, 360, 100, 100, 100);
 		tmp_5c.add(213.15, color(270,  100,  29));
-		tmp_5c.add(218.15, color(260,   91,  40));
-		tmp_5c.add(223.15, color(250,   83,  47));
+		tmp_5c.add(218.15, color(260,   85,  29));
+		tmp_5c.add(223.15, color(250,   85,  43));
 		tmp_5c.add(228.15, color(240,   75,  53));
 		tmp_5c.add(233.15, color(230,   67,  59));
 		tmp_5c.add(238.15, color(220,   59,  63));
@@ -440,79 +440,18 @@ class StatView extends View {
 		tmp_5c.add(333.15, color(  0,  100,  29));
 		colorMode(RGB,255);
 		tmp_5c.convert_K2C();
-		
-		/*tmp_5c.add(228.15, color(270, 100,  29) );
-		tmp_5c.add(233.15, color(256,  88,  43) );
-		tmp_5c.add(238.15, color(242,  77,  52) );
-		tmp_5c.add(243.15, color(228,  66,  59) );
-		tmp_5c.add(248.15, color(215,  55,  65) );
-		tmp_5c.add(253.15, color(201,  43,  71) );
-		tmp_5c.add(258.15, color(187,  32,  76) );
-		tmp_5c.add(263.15, color(173,  21,  80) );
-		tmp_5c.add(268.15, color(160,  10,  84) );
-		tmp_5c.add(273.15, color(145,   0,  84) );
-		tmp_5c.add(278.15, color(110,  10,  84) );
-		tmp_5c.add(283.15, color( 96,  21,  80) );
-		tmp_5c.add(288.15, color( 82,  32,  76) );
-		tmp_5c.add(293.15, color( 68,  43,  71) );
-		tmp_5c.add(298.15, color( 55,  55,  65) );
-		tmp_5c.add(303.15, color( 41,  66,  59) );
-		tmp_5c.add(308.15, color( 27,  77,  52) );
-		tmp_5c.add(313.15, color( 13,  88,  43) );
-		tmp_5c.add(318.15, color(  0, 100,  29) );*/
-		
+				
 
-		/*// TMP : increments of 3 degrees C
-		tmp_3c = new ColorMapf();
-		colorMode(HSB, 360, 100, 100, 100);
-		tmp_3c.add(228.15, color(270, 100,  29));
-		tmp_3c.add(231.15, color(262,  93,  38));
-		tmp_3c.add(234.15, color(254,  87,  44));
-		tmp_3c.add(237.15, color(246,  80,  50));
-		tmp_3c.add(240.15, color(238,  74,  54));
-		tmp_3c.add(243.15, color(230,  67,  58));
-		tmp_3c.add(246.15, color(222,  61,  62));
-		tmp_3c.add(249.15, color(215,  55,  65));
-		tmp_3c.add(252.15, color(207,  48,  69));
-		tmp_3c.add(255.15, color(199,  42,  71));
-		tmp_3c.add(258.15, color(191,  35,  74));
-		tmp_3c.add(261.15, color(183,  29,  77));
-		tmp_3c.add(264.15, color(175,  22,  79));
-		tmp_3c.add(267.15, color(167,  16,  82));
-		tmp_3c.add(270.15, color(160,  10,  84));
-		tmp_3c.add(273.15, color(160,   0,  84));
-		tmp_3c.add(276.15, color(110,  10,  84));
-		tmp_3c.add(279.15, color(102,  16,  82));
-		tmp_3c.add(282.15, color( 94,  22,  79));
-		tmp_3c.add(285.15, color( 86,  29,  77));
-		tmp_3c.add(288.15, color( 78,  35,  74));
-		tmp_3c.add(291.15, color( 70,  42,  71));
-		tmp_3c.add(294.15, color( 62,  48,  69));
-		tmp_3c.add(297.15, color( 55,  55,  65));
-		tmp_3c.add(300.15, color( 47,  61,  62));
-		tmp_3c.add(303.15, color( 39,  67,  58));
-		tmp_3c.add(306.15, color( 31,  74,  54));
-		tmp_3c.add(309.15, color( 23,  80,  50));
-		tmp_3c.add(312.15, color( 15,  87,  44));
-		tmp_3c.add(315.15, color(  7,  93,  38));
-		tmp_3c.add(318.15, color(  0, 100,  29));
-		colorMode(RGB,255);*/
 		
 		// RH : increments of 3 degrees C
 		rh = new ColorMapf();
-	    // rh.add(0, color(255, 255, 255, 0));
-	    // rh.add(69, color(255, 255, 255, 0));
-	    // rh.add(70, color(93, 180, 80, 255));
-	    // rh.add(80, color(93, 180, 80, 255));
-	    // rh.add(90, color(41, 98, 33, 255));
-	    // rh.add(100, color(9, 49, 3, 255));
 		colorMode(HSB, 360, 100, 100, 100);
-		rh.add(   0, color(180, 25, 29,   0));
+		rh.add(   0, color(77,  49, 85,   0));
 		rh.add(69.9999, color(77,  49, 70,   0));	
-		rh.add(  70, color(77,  49, 70, 100));
-		rh.add(  80, color(95,  45, 65, 100));
+		rh.add(  70, color(77,  49, 85, 100));
+		rh.add(  80, color(95,  45, 75, 100));
 		rh.add(  90, color(129, 37, 55, 100));
-		rh.add( 100, color(163, 29, 41, 100));
+		rh.add( 100, color(163, 29, 35, 100));
 		colorMode(RGB,255);
 	
 		// // testing wind isotachs
@@ -528,39 +467,22 @@ class StatView extends View {
 		// colorMode(RGB,255);
 		
 		wind = new ColorMapf();
-		
-		/*colorMode(HSB, 360, 100, 100, 100);
-		wind.add(   0, color(180, 25, 29,   0));
-		wind.add(49.9999, color(180, 25, 29,   0));
-		wind.add(  50, color(180, 25, 29, 100));
-		wind.add(  60, color(163, 29, 41, 100));
-		wind.add(  70, color(146, 33, 49, 100));
-		wind.add(  80, color(129, 37, 55, 100));
-		wind.add(  90, color(112, 41, 61, 100));
-		wind.add( 100, color(95,  45, 65, 100));
-		wind.add( 110, color(77,  49, 70, 100));
-		wind.add( 120, color(61,  53, 74, 100));
-		wind.add( 130, color(44,  57, 77, 100));
-		wind.add( 140, color(27,  61, 81, 100));
-		wind.add( 150, color(10,  65, 84, 100));
-		colorMode(RGB,255);*/
-		
 		colorMode(HSB, 360, 100, 100, 100);
 		wind.add(  0, color(180,  25,  29, 0));//color(110, 35, 29,0));
 		wind.add(29.99999, color(180,  25,  29, 0));//color(110, 35, 29,0));
-		wind.add( 30, color(180,  25,  29));//color(110, 35, 29)); 
-		wind.add( 40, color(165,  29,  39));//color(100, 38, 39)); 
-		wind.add( 50, color(150,  33,  46));//color( 91, 41, 46)); 
-		wind.add( 60, color(135,  37,  52));//color( 82, 45, 52)); 
-		wind.add( 70, color(120,  41,  57));//color( 73, 48, 57)); 
-		wind.add( 80, color(105,  45,  61));//color( 64, 51, 61)); 
-		wind.add( 90, color( 90,  50,  65));//color( 55, 55, 65)); 
-		wind.add(100, color( 75,  54,  69));//color( 45, 58, 69)); 
-		wind.add(110, color( 60,  58,  72));//color( 36, 61, 72)); 
-		wind.add(120, color( 45,  62,  76));//color( 27, 65, 76)); 
-		wind.add(130, color( 30,  66,  78));//color( 18, 68, 78)); 
-		wind.add(140, color( 15,  70,  81));//color(  9, 71, 81)); 
-		wind.add(150, color(  0,  75,  84));//color(  0, 75, 84)); 
+		wind.add( 30, color(180,  25,  29));//color(110, 35, 29));
+		wind.add( 40, color(165,  29,  39));//color(100, 38, 39));
+		wind.add( 50, color(150,  33,  46));//color( 91, 41, 46));
+		wind.add( 60, color(135,  37,  52));//color( 82, 45, 52));
+		wind.add( 70, color(120,  41,  57));//color( 73, 48, 57));
+		wind.add( 80, color(105,  45,  61));//color( 64, 51, 61));
+		wind.add( 90, color( 90,  50,  65));//color( 55, 55, 65));
+		wind.add(100, color( 75,  50,  74));//color( 45, 58, 69));
+		wind.add(110, color( 60,  50,  78));//color( 36, 61, 72));
+		wind.add(120, color( 45,  62,  81));//color( 27, 65, 76));
+		wind.add(130, color( 30,  66,  84));//color( 18, 68, 78));
+		wind.add(140, color( 15,  70,  87));//color(  9, 71, 81));
+		wind.add(150, color(  0,  75,  90));//color(  0, 75, 84));
 		colorMode(RGB,255);		
 		
 		apcp = new ColorMapf();
@@ -573,10 +495,10 @@ class StatView extends View {
 		apcp.add(  0.5*25.4,  color(195,  40,  65, 100));
 		apcp.add( 0.25*25.4,  color(188,  35,  70, 100));
 		apcp.add(  0.1*25.4,  color(181,  30,  74, 100));
-		apcp.add( 0.05*25.4,  color(174,  20,  81, 100));//25, 77
-		apcp.add( 0.01*25.4,  color(167,  10,  90, 100));//20, 81
-		apcp.add(	   0.2539,  color(160,  15,  84,   0));
-		apcp.add(         0,  color(160,  15,  84,   0));
+		apcp.add( 0.05*25.4,  color(174,  20,  83, 100));//25, 77
+		apcp.add( 0.01*25.4,  color(167,  10,  89, 100));//20, 81
+		apcp.add(	 0.2539,  color(160,  15,  95,   0));
+		apcp.add(         0,  color(160,  15,  95,   0));
 		colorMode(RGB,255);
 		apcp.convert_kgmm2in();
 		

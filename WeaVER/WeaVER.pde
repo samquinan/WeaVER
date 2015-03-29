@@ -386,7 +386,7 @@ class ViewLoader implements Runnable{
 		view_2.loadData(dir, run);
 
 		// generate view_3
-		view_3 = new EnsembleView(samplesx, samplesy, spacing, cornerx, cornery, tabw, tabh, 15);//12
+		view_3 = new EnsembleView(samplesx, samplesy, spacing, cornerx, cornery, tabw, tabh, 3);//12
 		view_3.setFonts(regular, error);
 		view_3.setMap(map);
 		view_3.setDateTimeOrigin(cur_dt);

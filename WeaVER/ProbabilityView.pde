@@ -44,21 +44,21 @@ class ProbabilityView extends View {
 		
 		
 		ColorMapf test = new ColorMapf();
-        test.add(  0, color(164, 206, 197, 0));
-		test.add( 49.9999, color(164, 206, 197, 0));
-		test.add( 50, color(164, 206, 197, 255));
-		test.add( 70, color(92, 120, 162, 255));
-		test.add( 90, color(127, 98, 149, 255));
-		test.add(100, color(138, 78, 108, 255));
+        test.add(  0,      color(179, 215, 207, 0));
+		test.add( 49.9999, color(179, 215, 207, 0));
+		test.add( 50,      color(179, 215, 207, 255));
+		test.add( 70,      color(150, 170, 204, 255));
+		test.add( 90,      color(140, 111, 160, 255));
+		test.add(100,      color(139,  84, 112, 255));
 				
 		ColorMapf test2 = new ColorMapf();
-        test2.add(  0, color(164, 206, 197, 0));
-		test2.add(29.9999, color(164, 206, 197, 0));
-		test2.add( 30, color(164, 206, 197, 255));
-		test2.add( 50, color(164, 206, 197, 255));
-		test2.add( 70, color(92, 120, 162, 255));
-		test2.add( 90, color(127, 98, 149, 255));
-		test2.add(100, color(138, 78, 108, 255));
+        test2.add(  0, 		color(179, 215, 207, 0));
+		test2.add(29.9999, 	color(179, 215, 207, 0));
+		test2.add( 30, 		color(179, 215, 207, 255));
+		test2.add( 50, 		color(179, 215, 207, 255));
+		test2.add( 70, 		color(150, 170, 204, 255));
+		test2.add( 90, 		color(140, 111, 160, 255));
+		test2.add(100, 		color(139,  84, 112, 255));
 				
 		// Initialize Targets		
 		target0 = new ConditionTarget(cornerx+10,cornery-tabh-10,tabw,tabh,4,1);

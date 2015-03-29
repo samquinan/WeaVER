@@ -332,32 +332,32 @@ class MNSDView extends View {
 		// testing MNSD
 		mnsd = new ColorMapf();
 		colorMode(HSB, 360, 100, 100, 100);
-        mnsd.add(  0, color(360, 20, 84, 0));
-		mnsd.add(1.49, color(360, 20, 84, 0));
-		mnsd.add( 1.5, color(360, 20, 84, 100));
-		mnsd.add(   2, color(337, 26, 80, 100));
+        mnsd.add(  0,  color(360, 20, 87, 0));
+		mnsd.add(1.49, color(360, 20, 87, 0));
+		mnsd.add( 1.5, color(360, 20, 87, 100));
+		mnsd.add(   2, color(337, 26, 83, 100));
 		mnsd.add(   3, color(315, 32, 76, 100));
 		mnsd.add(   5, color(292, 38, 71, 100));
 		mnsd.add(   7, color(270, 45, 65, 100));
-		mnsd.add(  10, color(247, 51, 59, 100));
+		mnsd.add(  10, color(247, 51, 62, 100));
 		mnsd.add(  15, color(225, 57, 52, 100));
-		mnsd.add(  20, color(202, 63, 43, 100));
-		mnsd.add(  25, color(180, 70, 29, 100));
+		mnsd.add(  20, color(202, 63, 37, 100));
+		mnsd.add(  25, color(180, 70, 25, 100));
 		colorMode(RGB,255);
 		
 		mnsd2 = new ColorMapf();
 		colorMode(HSB, 360, 100, 100, 100);
-        mnsd2.add(  0, color(360, 20, 84, 0));
-		mnsd2.add(9.99, color(360, 20, 84, 0));
-		mnsd2.add(  10, color(360, 20, 84, 100));
-		mnsd2.add(  30, color(337, 26, 80, 100));
+        mnsd2.add(  0,  color(360, 20, 87, 0));
+		mnsd2.add(9.99, color(360, 20, 87, 0));
+		mnsd2.add(  10, color(360, 20, 87, 100));
+		mnsd2.add(  30, color(337, 26, 83, 100));
 		mnsd2.add(  40, color(315, 32, 76, 100));
 		mnsd2.add(  50, color(292, 38, 71, 100));
 		mnsd2.add(  60, color(270, 45, 65, 100));
-		mnsd2.add(  70, color(247, 51, 59, 100));
+		mnsd2.add(  70, color(247, 51, 62, 100));
 		mnsd2.add(  80, color(225, 57, 52, 100));
-		mnsd2.add(  90, color(202, 63, 43, 100));
-		mnsd2.add( 100, color(180, 70, 29, 100));
+		mnsd2.add(  90, color(202, 63, 37, 100));
+		mnsd2.add( 100, color(180, 70, 25, 100));
 		colorMode(RGB,255);
 		
 
