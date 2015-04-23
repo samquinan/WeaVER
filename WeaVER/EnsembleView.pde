@@ -46,7 +46,7 @@ class EnsembleView extends View {
 		super(sx, sy, ds, cx, cy, tw, th, libsize);
 		
 		//add collections to library
-		library.addCollection(3,1);
+		library.addCollection(3,2);
 		library.addCollection(3,1);
 		/*library.addCollection(3,1);*/
 		
@@ -847,37 +847,37 @@ class EnsembleView extends View {
 		
 		ArrayList<String> member_labels = genMemberLabels(models,perturbations);
 		ArrayList< ArrayList<Field> > ensemble = getEnsemble(dataDir + "/EnsembleFields/500mb_HGT/", run_input, models, perturbations);
-		boolean skipLowRes = true;//low res: if false and no cache
-		boolean cacheMe = true;//if true, always uses high-res cache
+		boolean skipLowRes = false;//low res: if false and no cache
+		boolean cacheMe = false;//if true, always uses high-res cache
 		
 		println("500mb HGT"); 
-		/*addEnsembleSelect(ensemble, member_labels, getCBP(dataDir+"/CBP/500mb_HGT/5100/", run_input, skipLowRes), cacheMe, 5100, "HGT", "500mb", "5100", 0);
+		addEnsembleSelect(ensemble, member_labels, getCBP(dataDir+"/CBP/500mb_HGT/5100/", run_input, skipLowRes), cacheMe, 5100, "HGT", "500mb", "5100", 0);
 		addEnsembleSelect(ensemble, member_labels, getCBP(dataDir+"/CBP/500mb_HGT/5160/", run_input, skipLowRes), cacheMe, 5160, "HGT", "500mb", "5160", 0);
 		addEnsembleSelect(ensemble, member_labels, getCBP(dataDir+"/CBP/500mb_HGT/5220/", run_input, skipLowRes), cacheMe, 5220, "HGT", "500mb", "5220", 0);
 		addEnsembleSelect(ensemble, member_labels, getCBP(dataDir+"/CBP/500mb_HGT/5280/", run_input, skipLowRes), cacheMe, 5280, "HGT", "500mb", "5280", 0);
-		addEnsembleSelect(ensemble, member_labels, getCBP(dataDir+"/CBP/500mb_HGT/5340/", run_input, skipLowRes), cacheMe, 5340, "HGT", "500mb", "5340", 0);*/
-		addEnsembleSelect(ensemble, member_labels, getCBP(dataDir+"/CBP/500mb_HGT/5400/", run_input, skipLowRes), cacheMe, 5400, "HGT", "500mb", "5400", 0);
-		/*addEnsembleSelect(ensemble, member_labels, getCBP(dataDir+"/CBP/500mb_HGT/5520/", run_input, skipLowRes), cacheMe, 5520, "HGT", "500mb", "5520", 0);*/
-		addEnsembleSelect(ensemble, member_labels, getCBP(dataDir+"/CBP/500mb_HGT/5580/", run_input, skipLowRes), cacheMe, 5580, "HGT", "500mb", "5580", 0);
-		/*addEnsembleSelect(ensemble, member_labels, getCBP(dataDir+"/CBP/500mb_HGT/5640/", run_input, skipLowRes), cacheMe, 5640, "HGT", "500mb", "5640", 0);*/
-		addEnsembleSelect(ensemble, member_labels, getCBP(dataDir+"/CBP/500mb_HGT/5700/", run_input, skipLowRes), cacheMe, 5700, "HGT", "500mb", "5700", 0);
-		/*addEnsembleSelect(ensemble, member_labels, getCBP(dataDir+"/CBP/500mb_HGT/5760/", run_input, skipLowRes), cacheMe, 5760, "HGT", "500mb", "5760", 0);
-		addEnsembleSelect(ensemble, member_labels, getCBP(dataDir+"/CBP/500mb_HGT/5820/", run_input, skipLowRes), cacheMe, 5820, "HGT", "500mb", "5820", 0);*/
+		addEnsembleSelect(ensemble, member_labels, getCBP(dataDir+"/CBP/500mb_HGT/5340/", run_input, skipLowRes), cacheMe, 5340, "HGT", "500mb", "5340", 0);
+		addEnsembleSelect(ensemble, member_labels, getCBP(dataDir+"/CBP/500mb_HGT/5400/", run_input, skipLowRes), cacheMe, 5400, "HGT", "500mb", "5400", 0); // 1
+		addEnsembleSelect(ensemble, member_labels, getCBP(dataDir+"/CBP/500mb_HGT/5520/", run_input, skipLowRes), cacheMe, 5520, "HGT", "500mb", "5520", 0);
+		addEnsembleSelect(ensemble, member_labels, getCBP(dataDir+"/CBP/500mb_HGT/5580/", run_input, skipLowRes), cacheMe, 5580, "HGT", "500mb", "5580", 0); // 2
+		addEnsembleSelect(ensemble, member_labels, getCBP(dataDir+"/CBP/500mb_HGT/5640/", run_input, skipLowRes), cacheMe, 5640, "HGT", "500mb", "5640", 0);
+		addEnsembleSelect(ensemble, member_labels, getCBP(dataDir+"/CBP/500mb_HGT/5700/", run_input, skipLowRes), cacheMe, 5700, "HGT", "500mb", "5700", 0); // 3
+		addEnsembleSelect(ensemble, member_labels, getCBP(dataDir+"/CBP/500mb_HGT/5760/", run_input, skipLowRes), cacheMe, 5760, "HGT", "500mb", "5760", 0);
+		addEnsembleSelect(ensemble, member_labels, getCBP(dataDir+"/CBP/500mb_HGT/5820/", run_input, skipLowRes), cacheMe, 5820, "HGT", "500mb", "5820", 0);
 		
 		/*println("10m WIND");
 		ensemble = getEnsemble(dataDir + "/EnsembleFields/10m_Wind/", run_input, models, perturbations);
-		addEnsembleSelect(ensemble, member_labels, getCBP(dataDir+"/CBP/10m_WSPD/18kts/", run_input, skipLowRes), cacheMe, 18, "WSPD", "10m", "18kts", 1);		*/
+		addEnsembleSelect(ensemble, member_labels, getCBP(dataDir+"/CBP/10m_WSPD/18kts/", run_input, skipLowRes), cacheMe, 18, "WSPD", "10m", "18kts", 1);*/
 		
 		println("2m TMP");
 		ensemble = getEnsemble(dataDir + "/EnsembleFields/2m_TMP/", run_input, models, perturbations);
-		/*addEnsembleSelect(ensemble, member_labels, getCBP(dataDir+"/CBP/2m_TMP/32F/", run_input, skipLowRes), cacheMe, 273.15, "TMP", "2m", "32F", 1);*/
-		addEnsembleSelect(ensemble, member_labels, getCBP(dataDir+"/CBP/2m_TMP/60F/", run_input, skipLowRes), cacheMe, 288.706, "TMP", "2m", "60F", 1);
+		addEnsembleSelect(ensemble, member_labels, getCBP(dataDir+"/CBP/2m_TMP/32F/", run_input, skipLowRes), cacheMe, 273.15, "TMP", "2m", "32F", 1);
+		addEnsembleSelect(ensemble, member_labels, getCBP(dataDir+"/CBP/2m_TMP/60F/", run_input, skipLowRes), cacheMe, 288.706, "TMP", "2m", "60F", 1); //4
 		
 		println("2m RH");
 		ensemble = getEnsemble(dataDir + "/EnsembleFields/2m_RH/", run_input, models, perturbations);
-		/*addEnsembleSelect(ensemble, member_labels, getCBP(dataDir+"/CBP/2m_RH/10/", run_input, skipLowRes), cacheMe, 10, "RH", "2m", "10%", 1);*/
-		addEnsembleSelect(ensemble, member_labels, getCBP(dataDir+"/CBP/2m_RH/20/", run_input, skipLowRes), cacheMe, 20, "RH", "2m", "20%", 1);
-		/*addEnsembleSelect(ensemble, member_labels, getCBP(dataDir+"/CBP/2m_RH/30/", run_input, skipLowRes), cacheMe, 30, "RH", "2m", "30%", 1);*/
+		addEnsembleSelect(ensemble, member_labels, getCBP(dataDir+"/CBP/2m_RH/10/", run_input, skipLowRes), cacheMe, 10, "RH", "2m", "10%", 1);
+		addEnsembleSelect(ensemble, member_labels, getCBP(dataDir+"/CBP/2m_RH/20/", run_input, skipLowRes), cacheMe, 20, "RH", "2m", "20%", 1); //5
+		addEnsembleSelect(ensemble, member_labels, getCBP(dataDir+"/CBP/2m_RH/30/", run_input, skipLowRes), cacheMe, 30, "RH", "2m", "30%", 1);
 		
 		/*println("3hr APCP");
 		ensemble = getEnsemble(dataDir + "/EnsembleFields/surface_APCP/3hr/", run_input, models, perturbations);
