@@ -369,29 +369,29 @@ class ProbabilityView extends View {
 		addProbSelect( dataDir+"/Probabilities/2m_RH/",   run_input, "ge.30",      "RH",   "2m", "≥ 30%", 1);
 		addProbSelect( dataDir+"/Probabilities/2m_RH/",   run_input, "ge.40",      "RH",   "2m", "≥ 40%", 1);
 		
-		addProbSelect( dataDir+"/Probabilities/3hr_APCP/", run_input, "le.0.254",   3, "APCP", "3hr", "≤ 0.01in", 2);
-		addProbSelect( dataDir+"/Probabilities/3hr_APCP/", run_input, "le.1.27",    3, "APCP", "3hr", "≤ 0.05in", 2);
-		addProbSelect( dataDir+"/Probabilities/3hr_APCP/", run_input, "le.2.54",    3, "APCP", "3hr",  "≤ 0.1in", 2);
-		addProbSelect( dataDir+"/Probabilities/3hr_APCP/", run_input, "le.6.35",    3, "APCP", "3hr", "≤ 0.25in", 2);
-		addProbSelect( dataDir+"/Probabilities/3hr_APCP/", run_input, "le.12.7",    3, "APCP", "3hr",  "≤ 0.5in", 2);
+		addProbSelect( dataDir+"/Probabilities/3hr_APCP/", run_input, "ge.0.254",   3, "APCP", "3hr", "≤ 0.01in", 2);
+		addProbSelect( dataDir+"/Probabilities/3hr_APCP/", run_input, "ge.1.27",    3, "APCP", "3hr", "≤ 0.05in", 2);
+		addProbSelect( dataDir+"/Probabilities/3hr_APCP/", run_input, "ge.2.54",    3, "APCP", "3hr",  "≤ 0.1in", 2);
+		addProbSelect( dataDir+"/Probabilities/3hr_APCP/", run_input, "ge.6.35",    3, "APCP", "3hr", "≤ 0.25in", 2);
+		addProbSelect( dataDir+"/Probabilities/3hr_APCP/", run_input, "ge.12.7",    3, "APCP", "3hr",  "≤ 0.5in", 2);
 		
-		addProbSelect( dataDir+"/Probabilities/6hr_APCP/", run_input, "le.0.254",   6, "APCP", "6hr", "≤ 0.01in", 2);
-		addProbSelect( dataDir+"/Probabilities/6hr_APCP/", run_input, "le.1.27",    6, "APCP", "6hr", "≤ 0.05in", 2);
-		addProbSelect( dataDir+"/Probabilities/6hr_APCP/", run_input, "le.2.54",    6, "APCP", "6hr",  "≤ 0.1in", 2);
-		addProbSelect( dataDir+"/Probabilities/6hr_APCP/", run_input, "le.6.35",    6, "APCP", "6hr", "≤ 0.25in", 2);
-		addProbSelect( dataDir+"/Probabilities/6hr_APCP/", run_input, "le.12.7",    6, "APCP", "6hr",  "≤ 0.5in", 2);
+		addProbSelect( dataDir+"/Probabilities/6hr_APCP/", run_input, "ge.0.254",   6, "APCP", "6hr", "≤ 0.01in", 2);
+		addProbSelect( dataDir+"/Probabilities/6hr_APCP/", run_input, "ge.1.27",    6, "APCP", "6hr", "≤ 0.05in", 2);
+		addProbSelect( dataDir+"/Probabilities/6hr_APCP/", run_input, "ge.2.54",    6, "APCP", "6hr",  "≤ 0.1in", 2);
+		addProbSelect( dataDir+"/Probabilities/6hr_APCP/", run_input, "ge.6.35",    6, "APCP", "6hr", "≤ 0.25in", 2);
+		addProbSelect( dataDir+"/Probabilities/6hr_APCP/", run_input, "ge.12.7",    6, "APCP", "6hr",  "≤ 0.5in", 2);
 		
-		addProbSelect( dataDir+"/Probabilities/12hr_APCP/", run_input, "le.0.254", 12, "APCP", "12hr", "≤ 0.01in", 2);
-		addProbSelect( dataDir+"/Probabilities/12hr_APCP/", run_input, "le.1.27",  12, "APCP", "12hr", "≤ 0.05in", 2);
-		addProbSelect( dataDir+"/Probabilities/12hr_APCP/", run_input, "le.2.54",  12, "APCP", "12hr",  "≤ 0.1in", 2);
-		addProbSelect( dataDir+"/Probabilities/12hr_APCP/", run_input, "le.6.35",  12, "APCP", "12hr", "≤ 0.25in", 2);
-		addProbSelect( dataDir+"/Probabilities/12hr_APCP/", run_input, "le.12.7",  12, "APCP", "12hr",  "≤ 0.5in", 2);
+		addProbSelect( dataDir+"/Probabilities/12hr_APCP/", run_input, "ge.0.254", 12, "APCP", "12hr", "≤ 0.01in", 2);
+		addProbSelect( dataDir+"/Probabilities/12hr_APCP/", run_input, "ge.1.27",  12, "APCP", "12hr", "≤ 0.05in", 2);
+		addProbSelect( dataDir+"/Probabilities/12hr_APCP/", run_input, "ge.2.54",  12, "APCP", "12hr",  "≤ 0.1in", 2);
+		addProbSelect( dataDir+"/Probabilities/12hr_APCP/", run_input, "ge.6.35",  12, "APCP", "12hr", "≤ 0.25in", 2);
+		addProbSelect( dataDir+"/Probabilities/12hr_APCP/", run_input, "ge.12.7",  12, "APCP", "12hr",  "≤ 0.5in", 2);
 		
-		addProbSelect( dataDir+"/Probabilities/24hr_APCP/", run_input, "le.0.254", 24, "APCP", "24hr", "≤ 0.01in", 2);
-		addProbSelect( dataDir+"/Probabilities/24hr_APCP/", run_input, "le.1.27",  24, "APCP", "24hr", "≤ 0.05in", 2);
-		addProbSelect( dataDir+"/Probabilities/24hr_APCP/", run_input, "le.2.54",  24, "APCP", "24hr",  "≤ 0.1in", 2);
-		addProbSelect( dataDir+"/Probabilities/24hr_APCP/", run_input, "le.6.35",  24, "APCP", "24hr", "≤ 0.25in", 2);
-		addProbSelect( dataDir+"/Probabilities/24hr_APCP/", run_input, "le.12.7",  24, "APCP", "24hr",  "≤ 0.5in", 2);
+		addProbSelect( dataDir+"/Probabilities/24hr_APCP/", run_input, "ge.0.254", 24, "APCP", "24hr", "≤ 0.01in", 2);
+		addProbSelect( dataDir+"/Probabilities/24hr_APCP/", run_input, "ge.1.27",  24, "APCP", "24hr", "≤ 0.05in", 2);
+		addProbSelect( dataDir+"/Probabilities/24hr_APCP/", run_input, "ge.2.54",  24, "APCP", "24hr",  "≤ 0.1in", 2);
+		addProbSelect( dataDir+"/Probabilities/24hr_APCP/", run_input, "ge.6.35",  24, "APCP", "24hr", "≤ 0.25in", 2);
+		addProbSelect( dataDir+"/Probabilities/24hr_APCP/", run_input, "ge.12.7",  24, "APCP", "24hr",  "≤ 0.5in", 2);
 		
 		addProbSelect( dataDir+"/Probabilities/Haines/High/", run_input, "le.4", "Haines", "High", "≤ 4", 3);
 		addProbSelect( dataDir+"/Probabilities/Haines/High/", run_input, "ge.5", "Haines", "High", "≥ 5", 3);

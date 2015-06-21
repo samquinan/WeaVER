@@ -11,9 +11,6 @@ MCYCLE=`printf "%02d" ${2#0}`
 # MCYCLE="21"
 # DATE="20140429"
 
-# Wind Speed per Member
-./programs/build/perMemberWindSpeed data/fields/$DATE/10m_Wind/UGRD/ data/fields/$DATE/10m_Wind/VGRD/ $MCYCLE data/fields/$DATE/10m_Wind/WSPD/mph/ -mph &
-./programs/build/perMemberWindSpeed data/fields/$DATE/10m_Wind/UGRD/ data/fields/$DATE/10m_Wind/VGRD/ $MCYCLE data/fields/$DATE/10m_Wind/WSPD/kts/ -kt &
 
 # APCP
 ./programs/build/totalAcc data/fields/$DATE/surface_APCP/3hr/ $MCYCLE data/fields/$DATE/surface_APCP/total/   &
@@ -51,8 +48,10 @@ wait
 ./programs/build/genStats data/fields/$DATE/200mb_RH/  $MCYCLE data/fields/$DATE/200mb_RH/derived/  &
 ./programs/build/genStats data/fields/$DATE/200mb_TMP/ $MCYCLE data/fields/$DATE/200mb_TMP/derived/ &
 
-./programs/build/genStats data/fields/$DATE/2m_RH/ $MCYCLE data/fields/$DATE/2m_RH/derived/         &
+./programs/build/genStats data/fields/$DATE/2m_RH/  $MCYCLE data/fields/$DATE/2m_RH/derived/        &
 ./programs/build/genStats data/fields/$DATE/2m_TMP/ $MCYCLE data/fields/$DATE/2m_TMP/derived/       &
+./programs/build/genStats data/fields/$DATE/2m_DPT/ $MCYCLE data/fields/$DATE/2m_DPT/derived/       &
+
 
 wait
 
@@ -76,13 +75,19 @@ wait
 ./programs/build/meanWind data/fields/$DATE/200mb_Wind/UGRD/ data/fields/$DATE/200mb_Wind/VGRD/ $MCYCLE data/fields/$DATE/200mb_Wind/derived/   &
 ./programs/build/meanWind data/fields/$DATE/10m_Wind/UGRD/ 	 data/fields/$DATE/10m_Wind/VGRD/ 	$MCYCLE data/fields/$DATE/10m_Wind/derived/kts/ &
 
+# Wind Speed per Member (for probabilities)
+./programs/build/perMemberWindSpeed data/fields/$DATE/10m_Wind/UGRD/ data/fields/$DATE/10m_Wind/VGRD/ $MCYCLE data/fields/$DATE/10m_Wind/WSPD/mph/ -mph &
+./programs/build/perMemberWindSpeed data/fields/$DATE/10m_Wind/UGRD/ data/fields/$DATE/10m_Wind/VGRD/ $MCYCLE data/fields/$DATE/10m_Wind/WSPD/kts/ -kt &
+# will want to handle generation of per-memeber winds, mean, standard deviation, etc. smarter (e.g. integrate standard deviation calcuation into meanWinds)
+# ./programs/build/genStats data/fields/$DATE/10m_Wind/WSPD/kts/ data/fields/$DATE/10m_Wind/derived/kts/mnsd
+
+# deterministic
 ./programs/build/dtrmWind data/fields/$DATE/850mb_Wind/UGRD/ data/fields/$DATE/850mb_Wind/VGRD/ $MCYCLE em ctl data/fields/$DATE/850mb_Wind/dtrm/ -kt &
 ./programs/build/dtrmWind data/fields/$DATE/700mb_Wind/UGRD/ data/fields/$DATE/700mb_Wind/VGRD/ $MCYCLE em ctl data/fields/$DATE/700mb_Wind/dtrm/ -kt &
 ./programs/build/dtrmWind data/fields/$DATE/500mb_Wind/UGRD/ data/fields/$DATE/500mb_Wind/VGRD/ $MCYCLE em ctl data/fields/$DATE/500mb_Wind/dtrm/ -kt &
 ./programs/build/dtrmWind data/fields/$DATE/300mb_Wind/UGRD/ data/fields/$DATE/300mb_Wind/VGRD/ $MCYCLE em ctl data/fields/$DATE/300mb_Wind/dtrm/ -kt &
 ./programs/build/dtrmWind data/fields/$DATE/200mb_Wind/UGRD/ data/fields/$DATE/200mb_Wind/VGRD/ $MCYCLE em ctl data/fields/$DATE/200mb_Wind/dtrm/ -kt &
-./programs/build/dtrmWind data/fields/$DATE/10m_Wind/UGRD/ data/fields/$DATE/10m_Wind/VGRD/ $MCYCLE em ctl data/fields/$DATE/10m_Wind/dtrm/ -kt &
-
+./programs/build/dtrmWind data/fields/$DATE/10m_Wind/UGRD/ 	 data/fields/$DATE/10m_Wind/VGRD/   $MCYCLE em ctl data/fields/$DATE/10m_Wind/dtrm/   -kt &
 
 wait
 
@@ -99,6 +104,12 @@ wait
 ./programs/build/genProb data/fields/$DATE/2m_RH/ $MCYCLE -ge 30 data/fields/$DATE/2m_RH/prob/ &
 ./programs/build/genProb data/fields/$DATE/2m_RH/ $MCYCLE -ge 40 data/fields/$DATE/2m_RH/prob/ &
 
+./programs/build/genProb data/fields/$DATE/2m_DPT/ $MCYCLE -ge 272.0388888889 data/fields/$DATE/2m_RH/prob/ &
+./programs/build/genProb data/fields/$DATE/2m_DPT/ $MCYCLE -ge 274.8166666667 data/fields/$DATE/2m_RH/prob/ &
+./programs/build/genProb data/fields/$DATE/2m_DPT/ $MCYCLE -ge 277.5944444444 data/fields/$DATE/2m_RH/prob/ &
+./programs/build/genProb data/fields/$DATE/2m_DPT/ $MCYCLE -ge 280.3722222222 data/fields/$DATE/2m_RH/prob/ &
+./programs/build/genProb data/fields/$DATE/2m_DPT/ $MCYCLE -ge 283.15 		  data/fields/$DATE/2m_RH/prob/ &
+
 wait
 
 ./programs/build/genProb data/fields/$DATE/2m_TMP/ $MCYCLE -ge 288.706 data/fields/$DATE/2m_TMP/prob/ &
@@ -112,29 +123,29 @@ wait
 wait
 
 # conversion: x in * 25.4 kg/m^2 
-./programs/build/genProb data/fields/$DATE/surface_APCP/3hr/ $MCYCLE -le 0.254 -h 3 data/fields/$DATE/surface_APCP/3hr/prob/ &
-./programs/build/genProb data/fields/$DATE/surface_APCP/3hr/ $MCYCLE -le 1.270 -h 3 data/fields/$DATE/surface_APCP/3hr/prob/ &
-./programs/build/genProb data/fields/$DATE/surface_APCP/3hr/ $MCYCLE -le 2.540 -h 3 data/fields/$DATE/surface_APCP/3hr/prob/ &
-./programs/build/genProb data/fields/$DATE/surface_APCP/3hr/ $MCYCLE -le 6.350 -h 3 data/fields/$DATE/surface_APCP/3hr/prob/ &
-./programs/build/genProb data/fields/$DATE/surface_APCP/3hr/ $MCYCLE -le 12.70 -h 3 data/fields/$DATE/surface_APCP/3hr/prob/ &
+./programs/build/genProb data/fields/$DATE/surface_APCP/3hr/ $MCYCLE -ge 0.254 -h 3 data/fields/$DATE/surface_APCP/3hr/prob/ &
+./programs/build/genProb data/fields/$DATE/surface_APCP/3hr/ $MCYCLE -ge 1.270 -h 3 data/fields/$DATE/surface_APCP/3hr/prob/ &
+./programs/build/genProb data/fields/$DATE/surface_APCP/3hr/ $MCYCLE -ge 2.540 -h 3 data/fields/$DATE/surface_APCP/3hr/prob/ &
+./programs/build/genProb data/fields/$DATE/surface_APCP/3hr/ $MCYCLE -ge 6.350 -h 3 data/fields/$DATE/surface_APCP/3hr/prob/ &
+./programs/build/genProb data/fields/$DATE/surface_APCP/3hr/ $MCYCLE -ge 12.70 -h 3 data/fields/$DATE/surface_APCP/3hr/prob/ &
 
-./programs/build/genProb data/fields/$DATE/surface_APCP/6hr/ $MCYCLE -le 0.254 -h 6 data/fields/$DATE/surface_APCP/6hr/prob/ &
-./programs/build/genProb data/fields/$DATE/surface_APCP/6hr/ $MCYCLE -le 1.270 -h 6 data/fields/$DATE/surface_APCP/6hr/prob/ &
-./programs/build/genProb data/fields/$DATE/surface_APCP/6hr/ $MCYCLE -le 2.540 -h 6 data/fields/$DATE/surface_APCP/6hr/prob/ &
-./programs/build/genProb data/fields/$DATE/surface_APCP/6hr/ $MCYCLE -le 6.350 -h 6 data/fields/$DATE/surface_APCP/6hr/prob/ &
-./programs/build/genProb data/fields/$DATE/surface_APCP/6hr/ $MCYCLE -le 12.70 -h 6 data/fields/$DATE/surface_APCP/6hr/prob/ &
+./programs/build/genProb data/fields/$DATE/surface_APCP/6hr/ $MCYCLE -ge 0.254 -h 6 data/fields/$DATE/surface_APCP/6hr/prob/ &
+./programs/build/genProb data/fields/$DATE/surface_APCP/6hr/ $MCYCLE -ge 1.270 -h 6 data/fields/$DATE/surface_APCP/6hr/prob/ &
+./programs/build/genProb data/fields/$DATE/surface_APCP/6hr/ $MCYCLE -ge 2.540 -h 6 data/fields/$DATE/surface_APCP/6hr/prob/ &
+./programs/build/genProb data/fields/$DATE/surface_APCP/6hr/ $MCYCLE -ge 6.350 -h 6 data/fields/$DATE/surface_APCP/6hr/prob/ &
+./programs/build/genProb data/fields/$DATE/surface_APCP/6hr/ $MCYCLE -ge 12.70 -h 6 data/fields/$DATE/surface_APCP/6hr/prob/ &
 
-./programs/build/genProb data/fields/$DATE/surface_APCP/12hr/ $MCYCLE -le 0.254 -h 12 data/fields/$DATE/surface_APCP/12hr/prob/ &
-./programs/build/genProb data/fields/$DATE/surface_APCP/12hr/ $MCYCLE -le 1.270 -h 12 data/fields/$DATE/surface_APCP/12hr/prob/ &
-./programs/build/genProb data/fields/$DATE/surface_APCP/12hr/ $MCYCLE -le 2.540 -h 12 data/fields/$DATE/surface_APCP/12hr/prob/ &
-./programs/build/genProb data/fields/$DATE/surface_APCP/12hr/ $MCYCLE -le 6.350 -h 12 data/fields/$DATE/surface_APCP/12hr/prob/ &
-./programs/build/genProb data/fields/$DATE/surface_APCP/12hr/ $MCYCLE -le 12.70 -h 12 data/fields/$DATE/surface_APCP/12hr/prob/ &
+./programs/build/genProb data/fields/$DATE/surface_APCP/12hr/ $MCYCLE -ge 0.254 -h 12 data/fields/$DATE/surface_APCP/12hr/prob/ &
+./programs/build/genProb data/fields/$DATE/surface_APCP/12hr/ $MCYCLE -ge 1.270 -h 12 data/fields/$DATE/surface_APCP/12hr/prob/ &
+./programs/build/genProb data/fields/$DATE/surface_APCP/12hr/ $MCYCLE -ge 2.540 -h 12 data/fields/$DATE/surface_APCP/12hr/prob/ &
+./programs/build/genProb data/fields/$DATE/surface_APCP/12hr/ $MCYCLE -ge 6.350 -h 12 data/fields/$DATE/surface_APCP/12hr/prob/ &
+./programs/build/genProb data/fields/$DATE/surface_APCP/12hr/ $MCYCLE -ge 12.70 -h 12 data/fields/$DATE/surface_APCP/12hr/prob/ &
 
-./programs/build/genProb data/fields/$DATE/surface_APCP/24hr/ $MCYCLE -le 0.254 -h 24 data/fields/$DATE/surface_APCP/24hr/prob/ &
-./programs/build/genProb data/fields/$DATE/surface_APCP/24hr/ $MCYCLE -le 1.270 -h 24 data/fields/$DATE/surface_APCP/24hr/prob/ &
-./programs/build/genProb data/fields/$DATE/surface_APCP/24hr/ $MCYCLE -le 2.540 -h 24 data/fields/$DATE/surface_APCP/24hr/prob/ &
-./programs/build/genProb data/fields/$DATE/surface_APCP/24hr/ $MCYCLE -le 6.350 -h 24 data/fields/$DATE/surface_APCP/24hr/prob/ &
-./programs/build/genProb data/fields/$DATE/surface_APCP/24hr/ $MCYCLE -le 12.70 -h 24 data/fields/$DATE/surface_APCP/24hr/prob/ &
+./programs/build/genProb data/fields/$DATE/surface_APCP/24hr/ $MCYCLE -ge 0.254 -h 24 data/fields/$DATE/surface_APCP/24hr/prob/ &
+./programs/build/genProb data/fields/$DATE/surface_APCP/24hr/ $MCYCLE -ge 1.270 -h 24 data/fields/$DATE/surface_APCP/24hr/prob/ &
+./programs/build/genProb data/fields/$DATE/surface_APCP/24hr/ $MCYCLE -ge 2.540 -h 24 data/fields/$DATE/surface_APCP/24hr/prob/ &
+./programs/build/genProb data/fields/$DATE/surface_APCP/24hr/ $MCYCLE -ge 6.350 -h 24 data/fields/$DATE/surface_APCP/24hr/prob/ &
+./programs/build/genProb data/fields/$DATE/surface_APCP/24hr/ $MCYCLE -ge 12.70 -h 24 data/fields/$DATE/surface_APCP/24hr/prob/ &
 
 wait
 

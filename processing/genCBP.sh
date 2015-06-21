@@ -20,6 +20,8 @@ mkdir -p ./data/cbp/$DATE/$MCYCLE/500mb_HGT/5640
 mkdir -p ./data/cbp/$DATE/$MCYCLE/500mb_HGT/5700
 mkdir -p ./data/cbp/$DATE/$MCYCLE/500mb_HGT/5760
 mkdir -p ./data/cbp/$DATE/$MCYCLE/500mb_HGT/5820
+mkdir -p ./data/cbp/$DATE/$MCYCLE/500mb_HGT/5880
+mkdir -p ./data/cbp/$DATE/$MCYCLE/500mb_HGT/5940
 
 mkdir -p ./data/cbp/$DATE/$MCYCLE/2m_RH/10
 mkdir -p ./data/cbp/$DATE/$MCYCLE/2m_RH/20
@@ -52,6 +54,9 @@ mkdir -p ./data/cbp/$DATE/$MCYCLE/surface_APCP/3hr/2_54/
 ./cbp/build/main ./data/fields/$DATE/500mb_HGT/ 212 $MCYCLE 5700 ./data/cbp/$DATE/$MCYCLE/500mb_HGT/5700/ &
 ./cbp/build/main ./data/fields/$DATE/500mb_HGT/ 212 $MCYCLE 5760 ./data/cbp/$DATE/$MCYCLE/500mb_HGT/5760/ &
 ./cbp/build/main ./data/fields/$DATE/500mb_HGT/ 212 $MCYCLE 5820 ./data/cbp/$DATE/$MCYCLE/500mb_HGT/5820/ &
+./cbp/build/main ./data/fields/$DATE/500mb_HGT/ 212 $MCYCLE 5880 ./data/cbp/$DATE/$MCYCLE/500mb_HGT/5880/ &
+./cbp/build/main ./data/fields/$DATE/500mb_HGT/ 212 $MCYCLE 5940 ./data/cbp/$DATE/$MCYCLE/500mb_HGT/5940/ &
+
 
 ./cbp/build/main ./data/fields/$DATE/2m_RH/ 212 $MCYCLE 10 ./data/cbp/$DATE/$MCYCLE/2m_RH/10/ &
 ./cbp/build/main ./data/fields/$DATE/2m_RH/ 212 $MCYCLE 20 ./data/cbp/$DATE/$MCYCLE/2m_RH/20/ &
@@ -66,8 +71,6 @@ mkdir -p ./data/cbp/$DATE/$MCYCLE/surface_APCP/3hr/2_54/
 
 ./cbp/build/main ./data/fields/$DATE/surface_APCP/3hr/  212 $MCYCLE 0.254 ./data/cbp/$DATE/$MCYCLE/surface_APCP/3hr/0_254/  &
 ./cbp/build/main ./data/fields/$DATE/surface_APCP/3hr/  212 $MCYCLE 2.54  ./data/cbp/$DATE/$MCYCLE/surface_APCP/3hr/2_54/  &
-
-
 
 wait
 # mkdir -p ./data/cbp/$DATE/$MCYCLE/500mb_TMP/258_15/

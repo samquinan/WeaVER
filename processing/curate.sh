@@ -26,6 +26,8 @@ mkdir -p ./curated/StatFields/200mb_RH/
 mkdir -p ./curated/StatFields/200mb_TMP/
 mkdir -p ./curated/StatFields/2m_TMP/
 mkdir -p ./curated/StatFields/2m_RH/
+mkdir -p ./curated/StatFields/2m_DPT/
+
 
 
 find ./data/fields/$DATE/850mb_HGT/derived -type f -name *.stddev.txt -prune -o -name '*.t'$MCYCLE'z*' -print  | xargs -I{} cp {} ./curated/StatFields/850mb_HGT/
@@ -45,7 +47,8 @@ find ./data/fields/$DATE/200mb_RH/derived  -type f -name *.stddev.txt -prune -o 
 find ./data/fields/$DATE/200mb_TMP/derived -type f -name *.stddev.txt -prune -o -name '*.t'$MCYCLE'z*' -print  | xargs -I{} cp {} ./curated/StatFields/200mb_TMP/
 
 find ./data/fields/$DATE/2m_TMP/derived -type f -name *.max.txt -prune -o -name *.min.txt -prune -o -name '*.t'$MCYCLE'z*' -print | xargs -I{} cp {} ./curated/StatFields/2m_TMP/
-find ./data/fields/$DATE/2m_RH/derived -type f -name *.max.txt -prune -o -name *.min.txt -prune -o -name '*.t'$MCYCLE'z*' -print | xargs -I{} cp {} ./curated/StatFields/2m_RH/
+find ./data/fields/$DATE/2m_RH/derived  -type f -name *.max.txt -prune -o -name *.min.txt -prune -o -name '*.t'$MCYCLE'z*' -print | xargs -I{} cp {} ./curated/StatFields/2m_RH/
+find ./data/fields/$DATE/2m_DPT/derived -type f -name *.max.txt -prune -o -name *.min.txt -prune -o -name '*.t'$MCYCLE'z*' -print | xargs -I{} cp {} ./curated/StatFields/2m_DPT/
 
 # find ./data/fields/20150322/2m_TMP/derived -type f -name *.max.txt -prune -o -name *.min.txt -prune -o -name '*.t'15'z*' -print
 
@@ -57,14 +60,13 @@ mkdir -p ./curated/StatFields/300mb_Wind/
 mkdir -p ./curated/StatFields/200mb_Wind/
 mkdir -p ./curated/StatFields/10m_Wind/
 
-
 find ./data/fields/$DATE/850mb_Wind/derived -name '*.t'$MCYCLE'z*' -type f | xargs -I{} cp {} ./curated/StatFields/850mb_Wind/
 find ./data/fields/$DATE/700mb_Wind/derived -name '*.t'$MCYCLE'z*' -type f | xargs -I{} cp {} ./curated/StatFields/700mb_Wind/
 find ./data/fields/$DATE/500mb_Wind/derived -name '*.t'$MCYCLE'z*' -type f | xargs -I{} cp {} ./curated/StatFields/500mb_Wind/
 find ./data/fields/$DATE/300mb_Wind/derived -name '*.t'$MCYCLE'z*' -type f | xargs -I{} cp {} ./curated/StatFields/300mb_Wind/
 find ./data/fields/$DATE/200mb_Wind/derived -name '*.t'$MCYCLE'z*' -type f | xargs -I{} cp {} ./curated/StatFields/200mb_Wind/
-find ./data/fields/$DATE/10m_Wind/derived/kts -type f -name *.min.txt -prune -o -name '*.t'$MCYCLE'z*' -print | xargs -I{} cp {} ./curated/StatFields/10m_Wind/
-
+find ./data/fields/$DATE/10m_Wind/derived/kts -maxdepth 1 -mindepth 1 -type f -name *.min.txt -prune -o -name '*.t'$MCYCLE'z*' -print | xargs -I{} cp {} ./curated/StatFields/10m_Wind/
+# find ./data/fields/$DATE/10m_Wind/derived/kts/mnsd -type f -name '*.t'$MCYCLE'z*.stddev.txt' -print | xargs -I{} cp {} ./curated/StatFields/10m_Wind/
 
 mkdir -p ./curated/StatFields/Haines/Low/
 mkdir -p ./curated/StatFields/Haines/Med/
@@ -95,9 +97,10 @@ mkdir -p ./curated/EnsembleFields/2m_RH/
 mkdir -p ./curated/EnsembleFields/surface_APCP/3hr/
 
 find ./data/fields/$DATE/500mb_HGT -maxdepth 1 -mindepth 1 -name '*.t'$MCYCLE'z*' -type f | xargs -I{} cp {} ./curated/EnsembleFields/500mb_HGT/
-find ./data/fields/$DATE/10m_Wind/WSPD/kts -maxdepth 1 -mindepth 1 -name '*.t'$MCYCLE'z*' -type f | xargs -I{} cp {} ./curated/EnsembleFields/10m_Wind/
+find ./data/fields/$DATE/10m_Wind/WSPD/kts/ -maxdepth 1 -mindepth 1 -name '*.t'$MCYCLE'z*' -type f | xargs -I{} cp {} ./curated/EnsembleFields/10m_Wind/
 find ./data/fields/$DATE/2m_TMP -maxdepth 1 -mindepth 1 -name '*.t'$MCYCLE'z*' -type f | xargs -I{} cp {} ./curated/EnsembleFields/2m_TMP/
 find ./data/fields/$DATE/2m_RH  -maxdepth 1 -mindepth 1 -name '*.t'$MCYCLE'z*' -type f | xargs -I{} cp {} ./curated/EnsembleFields/2m_RH/
+
 # find ./data/fields/$DATE/surface_APCP/3hr  -maxdepth 1 -mindepth 1 -name '*t'$MCYCLE'z*' -name *f00.txt* -prune -o -type f -print | xargs -I{} cp {} ./curated/EnsembleFields/surface_APCP/3hr/
 find ./data/fields/$DATE/surface_APCP/3hr  -maxdepth 1 -mindepth 1 -name '*t'$MCYCLE'z*' -type f -print | xargs -I{} cp {} ./curated/EnsembleFields/surface_APCP/3hr/
 
@@ -121,6 +124,8 @@ mkdir -p ./curated/EnsembleFields/200mb_TMP/
 mkdir -p ./curated/EnsembleFields/surface_APCP/6hr/
 mkdir -p ./curated/EnsembleFields/surface_APCP/12hr/
 mkdir -p ./curated/EnsembleFields/surface_APCP/24hr/
+mkdir -p ./curated/EnsembleFields/2m_DPT/
+
 
 find ./data/fields/$DATE/850mb_HGT -maxdepth 1 -mindepth 1 -name '*em.t'$MCYCLE'z.*.ctl.*.txt' -type f | xargs -I{} cp {} ./curated/EnsembleFields/850mb_HGT/
 find ./data/fields/$DATE/850mb_RH  -maxdepth 1 -mindepth 1 -name '*em.t'$MCYCLE'z.*.ctl.*.txt' -type f | xargs -I{} cp {} ./curated/EnsembleFields/850mb_RH/
@@ -140,8 +145,8 @@ find ./data/fields/$DATE/200mb_TMP -maxdepth 1 -mindepth 1 -name '*em.t'$MCYCLE'
 find ./data/fields/$DATE/surface_APCP/6hr  -maxdepth 1 -mindepth 1 -name '*em.t'$MCYCLE'z.*.ctl.*.txt' -type f | xargs -I{} cp {} ./curated/EnsembleFields/surface_APCP/6hr/
 find ./data/fields/$DATE/surface_APCP/12hr -maxdepth 1 -mindepth 1 -name '*em.t'$MCYCLE'z.*.ctl.*.txt' -type f | xargs -I{} cp {} ./curated/EnsembleFields/surface_APCP/12hr/
 find ./data/fields/$DATE/surface_APCP/24hr -maxdepth 1 -mindepth 1 -name '*em.t'$MCYCLE'z.*.ctl.*.txt' -type f | xargs -I{} cp {} ./curated/EnsembleFields/surface_APCP/24hr/
-
-
+find ./data/fields/$DATE/2m_DPT -maxdepth 1 -mindepth 1 -name '*em.t'$MCYCLE'z.*.ctl.*.txt' -type f | xargs -I{} cp {} ./curated/EnsembleFields/2m_DPT/
+ 
 mkdir -p ./curated/EnsembleFields/850mb_Wind/
 mkdir -p ./curated/EnsembleFields/700mb_Wind/
 mkdir -p ./curated/EnsembleFields/500mb_Wind/
@@ -153,6 +158,7 @@ find ./data/fields/$DATE/700mb_Wind/dtrm -name '*em.t'$MCYCLE'z.*.ctl.*.txt' -ty
 find ./data/fields/$DATE/500mb_Wind/dtrm -name '*em.t'$MCYCLE'z.*.ctl.*.txt' -type f | xargs -I{} cp {} ./curated/EnsembleFields/500mb_Wind/
 find ./data/fields/$DATE/300mb_Wind/dtrm -name '*em.t'$MCYCLE'z.*.ctl.*.txt' -type f | xargs -I{} cp {} ./curated/EnsembleFields/300mb_Wind/
 find ./data/fields/$DATE/200mb_Wind/dtrm -name '*em.t'$MCYCLE'z.*.ctl.*.txt' -type f | xargs -I{} cp {} ./curated/EnsembleFields/200mb_Wind/
+find ./data/fields/$DATE/10m_Wind/dtrm/kts  -name '*em.t'$MCYCLE'z*.ctl*.WDIR.txt'-type f | xargs -I{} cp {} ./curated/EnsembleFields/10m_Wind/
 
 mkdir -p ./curated/EnsembleFields/Haines/Low/
 mkdir -p ./curated/EnsembleFields/Haines/Med/

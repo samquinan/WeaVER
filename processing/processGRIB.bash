@@ -30,9 +30,11 @@ mkdir -p $TXTDIR/'surface_APCP'/'24hr'/'prob'/
 
 mkdir -p $TXTDIR/'2m_RH'/'prob'/
 mkdir -p $TXTDIR/'2m_RH'/'derived'/
-
 mkdir -p $TXTDIR/'2m_TMP'/'derived'/
 mkdir -p $TXTDIR/'2m_TMP'/'prob'/
+mkdir -p $TXTDIR/'2m_DPT'/'derived'/
+mkdir -p $TXTDIR/'2m_DPT'/'prob'/
+
 
 mkdir -p $TXTDIR/'10m_Wind'/'UGRD'/
 mkdir -p $TXTDIR/'10m_Wind'/'VGRD'/
@@ -40,9 +42,9 @@ mkdir -p $TXTDIR/'10m_Wind'/'WSPD'/'kts'/
 mkdir -p $TXTDIR/'10m_Wind'/'WSPD'/'mph'/
 mkdir -p $TXTDIR/'10m_Wind'/'prob'/'kts'/
 mkdir -p $TXTDIR/'10m_Wind'/'prob'/'mph'/
-mkdir -p $TXTDIR/'10m_Wind'/'derived'/'kts'/
+mkdir -p $TXTDIR/'10m_Wind'/'derived'/'kts'/ #mnsd/
 mkdir -p $TXTDIR/'10m_Wind'/'derived'/'mph'/
-mkdir -p $TXTDIR/'10m_Wind'/'dtrm'/
+mkdir -p $TXTDIR/'10m_Wind'/'dtrm'/'kts'/
 
 mkdir -p $TXTDIR/'950mb_TMP'/
 
@@ -157,8 +159,8 @@ do
 	$WGRIB -match "$MATCH" 		 $FILE -inv /dev/null -csv - | awk -F "," '{print $7}' > $TXTDIR/'surface_APCP'/'3hr'/$FNAME.txt &
 	
 	$WGRIB -match ":RH:2 m "	 $FILE -inv /dev/null -csv - | awk -F "," '{print $7}' > $TXTDIR/'2m_RH'/$FNAME.txt &
-	
 	$WGRIB -match ":TMP:2 m "	 $FILE -inv /dev/null -csv - | awk -F "," '{print $7}' > $TXTDIR/'2m_TMP'/$FNAME.txt &
+	$WGRIB -match ":DPT:2 m "	 $FILE -inv /dev/null -csv - | awk -F "," '{print $7}' > $TXTDIR/'2m_DPT'/$FNAME.txt &
 	
 	$WGRIB -match ":UGRD:10 m " $FILE -inv /dev/null -csv - | awk -F "," '{print $7}' > $TXTDIR/'10m_Wind'/'UGRD'/$FNAME.txt &
 	$WGRIB -match ":VGRD:10 m " $FILE -inv /dev/null -csv - | awk -F "," '{print $7}' > $TXTDIR/'10m_Wind'/'VGRD'/$FNAME.txt &

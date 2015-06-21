@@ -863,10 +863,12 @@ class EnsembleView extends View {
 		addEnsembleSelect(ensemble, member_labels, getCBP(dataDir+"/CBP/500mb_HGT/5700/", run_input, skipLowRes), cacheMe, 5700, "HGT", "500mb", "5700", 0); // 3
 		addEnsembleSelect(ensemble, member_labels, getCBP(dataDir+"/CBP/500mb_HGT/5760/", run_input, skipLowRes), cacheMe, 5760, "HGT", "500mb", "5760", 0);
 		addEnsembleSelect(ensemble, member_labels, getCBP(dataDir+"/CBP/500mb_HGT/5820/", run_input, skipLowRes), cacheMe, 5820, "HGT", "500mb", "5820", 0);
-		
-		/*println("10m WIND");
+		addEnsembleSelect(ensemble, member_labels, getCBP(dataDir+"/CBP/500mb_HGT/5880/", run_input, skipLowRes), cacheMe, 5880, "HGT", "500mb", "5880", 0);
+		addEnsembleSelect(ensemble, member_labels, getCBP(dataDir+"/CBP/500mb_HGT/5940/", run_input, skipLowRes), cacheMe, 5940, "HGT", "500mb", "5940", 0);
+				
+		println("10m WIND");
 		ensemble = getEnsemble(dataDir + "/EnsembleFields/10m_Wind/", run_input, models, perturbations);
-		addEnsembleSelect(ensemble, member_labels, getCBP(dataDir+"/CBP/10m_WSPD/18kts/", run_input, skipLowRes), cacheMe, 18, "WSPD", "10m", "18kts", 1);*/
+		addEnsembleSelect(ensemble, member_labels, getCBP(dataDir+"/CBP/10m_WSPD/18kts/", run_input, skipLowRes), cacheMe, 18, "WSPD", "10m", "18kts", 1);
 		
 		println("2m TMP");
 		ensemble = getEnsemble(dataDir + "/EnsembleFields/2m_TMP/", run_input, models, perturbations);
