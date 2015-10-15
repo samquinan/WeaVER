@@ -29,9 +29,16 @@ DatasetProperties prop_d;
 
 private int mHeight;
 
+void settings() {
+  //size(displayWidth, displayHeight, P2D);
+  fullScreen(P2D);
+  pixelDensity(2);
+  smooth(8);  
+}
+
 void setup() {
   	/*size(displayWidth, displayHeight, P2D);*/
-	smooth(8);
+	hint(ENABLE_STROKE_PURE);
 	
 	prop_d = new DatasetProperties("../dataset.properties");
 	
@@ -59,17 +66,17 @@ void setup() {
 	
 }
 
-public int sketchWidth() {
-  return displayWidth;//1315;//displayWidth;
-}
-
-public int sketchHeight() {
-  return displayHeight;//800;//displayHeight;
-}
-
-public String sketchRenderer() {
-  return P2D; 
-}
+// public int sketchWidth() {
+//   return displayWidth;//1315;//displayWidth;
+// }
+//
+// public int sketchHeight() {
+//   return displayHeight;//800;//displayHeight;
+// }
+//
+// public String sketchRenderer() {
+//   return P2D;
+// }
 
 void draw(){
   	background(230);
@@ -346,7 +353,7 @@ class ViewLoader implements Runnable{
 		int addY = 60 + tabh; //TODO  smarter solution than manual analysis of view controls
 		int addX = 100 + 3*tabw; //TODO  smarter solution than manual analysis of view controls
 		
-	    int spacing = min(floor((sketchHeight()-mHeight-addY)/samplesy), floor((sketchWidth()-addX)/samplesx));
+	    int spacing = min(floor((height-mHeight-addY)/samplesy), floor((width-addX)/samplesx));
 		int cornerx = 55 + (sketchWidth() - (samplesx*spacing + addX))/2;
 		int cornery = mHeight + tabh + 26 + (sketchHeight()-mHeight - (samplesy*spacing + addY))/2;
 		
@@ -375,14 +382,14 @@ class ViewLoader implements Runnable{
 		view_1.setFonts(regular, error);
 		view_1.setMap(map);
 		view_1.setDateTimeOrigin(cur_dt);
-		view_1.linkGlyphs(glyphs);
+		//view_1.linkGlyphs(glyphs);
 		view_1.loadData(dir, run);
 
 		// generate view_2
 		view_2 = new MNSDView(samplesx, samplesy, spacing, cornerx, cornery, tabw, tabh, 3);
 		view_2.setFonts(regular, error);
 		view_2.setMap(map);
-		view_2.setDateTimeOrigin(cur_dt);
+		//view_2.setDateTimeOrigin(cur_dt);
 		view_2.loadData(dir, run);
 
 		// generate view_3
@@ -391,7 +398,7 @@ class ViewLoader implements Runnable{
 		view_3.setMap(map);
 		view_3.setDateTimeOrigin(cur_dt);
 		long startTime = System.currentTimeMillis();
-		view_3.loadData(dir, run);
+		//view_3.loadData(dir, run);
 		long endTime = System.currentTimeMillis();
 		println("load: " + ((endTime-startTime)/1000.0) + " seconds");
 
@@ -400,7 +407,7 @@ class ViewLoader implements Runnable{
 		view_4.setFonts(regular, error);
 		view_4.setMap(map);
 		view_4.setDateTimeOrigin(cur_dt);
-		view_4.loadData(dir, run);
+		//view_4.loadData(dir, run);
 		
 		finished = true;				
 	}	

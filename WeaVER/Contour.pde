@@ -94,7 +94,7 @@ class Contour2D {
 			for (Segment2D s : members){
 				s.makeVetexCalls();
 			}
-			endShape();
+			endShape(LINES);
 		}
 		else {
 			shape(contour);

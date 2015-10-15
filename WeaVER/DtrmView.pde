@@ -133,16 +133,16 @@ class DtrmView extends View {
 		strokeCap(SQUARE);
 		if (t_contour.isHovering()){
 			clr = color(0,0,15,100);
-			weight = 2.3;
+			weight = 1.5;
 		}
 		else {
 			if(t_barbs.isHovering() || t_cmap.isHovering()){
-				clr = color(0,0,15,50);
+				clr = color(0,0,15,30);
 				weight = 1.0;
 			}
 			else{
 				clr = color(0,0,15,100);
-				weight = 2.0;
+				weight = 1.5;
 			}
 		}
 		stroke(clr);
@@ -152,10 +152,10 @@ class DtrmView extends View {
 	
 		// barbs
 		clr = color(60);
-		strokeWeight(1.3);
+		strokeWeight(1);
 		if(t_barbs.isHovering()){
 			clr = color(40);	
-			strokeWeight(2.3);
+			strokeWeight(1.5);
 			}
 		else if (t_contour.isHovering() || t_cmap.isHovering()) clr = color(60, 60);
 		fill(clr);
@@ -262,7 +262,7 @@ class DtrmView extends View {
 	
 		//draw selection
 		if ((highlight != null)){// && trigger){
-			strokeWeight(weight+1);
+			strokeWeight(weight+0.5);
 			stroke(select);
 			highlight.drawContour();
 		}
