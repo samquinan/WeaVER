@@ -130,7 +130,6 @@ public:
     }
 
     friend Matrix<T> AddConstant(const Matrix<T>& m, T d){
-        //Matrix temp(*this); // copy constructor
         Matrix<T> temp(m.Xdim, m.Ydim);
         for (unsigned int i=0;i<temp.Xdim;++i)
             for (unsigned int j=0;j<temp.Ydim;j++)
@@ -155,26 +154,17 @@ public:
     friend void WriteMatrixLinesFile(const Matrix<T>& m, const string fileName){
         ofstream data(fileName.c_str());
         unsigned int counter = 0;
-		//cout << "dims: " << m.Ydim << ", " << m.Xdim << endl;
 		for(int y=m.Ydim-1; y >= 0 ; y--){
 			for(int x=0; x < m.Xdim; x++){
 				data << m.p[x][y] << endl;
 			}
 		}
-        // while(counter < m.Xdim*m.Ydim){
-        //     int i = counter/m.Ydim, j = counter%m.Ydim;
-        //     // if(counter%m.Ydim == m.Ydim-1)
-        //     data << m.p[i][j] << endl;
-        //     // else
-        //     //     data << m.p[i][j] << " ";
-        //     counter++;
-        // }
         data.close();
     }
 };
 
 ////////////////////
-// constructors
+/// constructors
 ///////////////////
 template <class T>
 Matrix<T>::Matrix(){
@@ -218,7 +208,7 @@ Matrix<T>::~Matrix(){
 }
 
 ////////////////
-// getters
+/// getters
 ////////////////
 
 template <class T>
@@ -291,7 +281,7 @@ void Matrix<T>::set(T val){
 }
 
 /////////////////
-// operators
+/// operators
 /////////////////
 
 template <class T>
@@ -346,7 +336,7 @@ T& Matrix<T>::operator()(int i, int j)const{
 }
 
 //////////////////
-// operations
+/// operations
 //////////////////
 template <class T>
 Matrix<T> Matrix<T>::Transpose(){

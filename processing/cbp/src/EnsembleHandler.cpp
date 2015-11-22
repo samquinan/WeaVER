@@ -33,11 +33,12 @@ Ensemble::~Ensemble(){
 }
 
 void Ensemble::InitializeEnsemble(unsigned int ESize, const double levelSet, unsigned int grid_res){
+    // This function has the SREF grid resolution hard coded
     EnsembleSize = ESize;
     gridRes = grid_res;
-    if(grid_res == 212){//TODO: check this
+    if(grid_res == 212){ // SREF (low) resolution
         Xdim = 185; Ydim = 129;
-    }else if(grid_res == 132){
+    }else if(grid_res == 132){ // SREF (high) resolution
         Xdim = 697; Ydim = 553;
     }else{
         cerr << "invalid grid resolution for SREF" << grid_res << endl;
@@ -63,7 +64,6 @@ string getFileName(string fname, unsigned int fileNumber){
 }
 
 Matrix<double> Ensemble::LoadFieldFileWithCoord(Matrix<double> &toReturn, string fileName){
-    //TODO: Not stable
     ifstream data(fileName.c_str());
 
     if(!data.is_open()){
@@ -98,8 +98,6 @@ Matrix<double> Ensemble::LoadFieldFileWithoutCoord(Matrix<double>& toReturn, str
     while(counter < Xdim*Ydim){
         data >> d;
         i = counter%Xdim; j = counter/Xdim;
-        //cout<<"("<<i<<","<<j<<")"<<d<<endl;
-        //toReturn(i,j) = d;
 		toReturn(i,Ydim-1-j) = d;
         counter++;
     }
@@ -117,15 +115,7 @@ void Ensemble::LoadFieldEnsemble(string fname){
         LoadFieldFileWithCoord(m, fileName);
         Fieldsum += m;
 
-        //WriteMatrixFile(m, "test1.txt");
-
         Members[i] = getLevelSetMask(m, LevelSet);
-
-
-        //string ff = getFileName(StringCat(fname, "_c"), i+1);
-        //cout << ff << endl;
-        //WriteMatrixFile(Members[i], ff);
-        //WriteMatrixFile
     }
 
     FieldAvg = Matrix<double>(Xdim, Ydim);
@@ -135,6 +125,7 @@ void Ensemble::LoadFieldEnsemble(string fname){
 }
 
 void Ensemble::LoadFieldEnsemble(string dir, vector<unsigned int> FrcstH, unsigned int MRun){
+    // This function uses NCEP SREF naming convention
 
     Matrix<double> mem = Matrix<double>(Xdim, Ydim);
     Matrix<double> Fieldsum = Matrix<double>(Xdim, Ydim, 0.0);
@@ -170,7 +161,6 @@ void Ensemble::LoadFieldEnsemble(string dir, vector<unsigned int> FrcstH, unsign
                 MemFileName[counter] = ss.str();
                 ss << ".txt";
 
-                //LoadFieldFileWithCoord(mem, ss.str());
 				LoadFieldFileWithoutCoord(mem, ss.str());
                 Fieldsum += mem;
                 if(counter > EnsembleSize){
@@ -179,14 +169,7 @@ void Ensemble::LoadFieldEnsemble(string dir, vector<unsigned int> FrcstH, unsign
                 }
 
                 Members[counter++] = getLevelSetMask(mem, LevelSet);
-
-                //string fname = "mem";
-                //string ff = getFileName(StringCat(fname, "_c"), counter-1);
-                //cout << ss.str() << endl;
-                //cout << ff << endl;
-                //WriteMatrixFile(Members[counter-1], ff);
             }
-    //WriteMatrixFile(Members[0], "test.txt");
 
     if(counter != EnsembleSize){
         cerr << "size mismatch: " << counter << ", " << EnsembleSize <<endl;
@@ -217,15 +200,11 @@ int Ensemble::getYdim(){
 }
 
 Matrix<int> Ensemble::getMember(unsigned int index){
-    if(index < 0 || index > EnsembleSize){
+    if(index > EnsembleSize){
         throw 1;
         return Matrix<int>();
     }
     return Members[index];
-}
-
-void Ensemble::printSize(){
-    cout<<"[" << EnsembleSize << "]" <<endl;
 }
 
 unsigned int Ensemble::getSize() const{
@@ -235,27 +214,3 @@ unsigned int Ensemble::getSize() const{
 unsigned int Ensemble::getGridRes(){
     return gridRes;
 }
-
-ostream& operator<<(ostream& out, const Ensemble& e){
-    //TODO: maybe expand
-    out<<endl;
-    out<<"Ensemble Size: "<<e.EnsembleSize<<endl;
-    out<<"Ensemble member dimension: ["<<e.Xdim<<", "<<e.Ydim<<"]"<<endl;
-    out<<"Field Average: "<<e.FieldAvg<<endl;
-    return out;
-}
-
-void WriteEnsembleLog(const Ensemble& e, string logName){
-
-    ofstream out(logName.c_str());
-    out<<"Ensemble Size: "<<e.EnsembleSize<<endl;
-    out<<"Level Set: " << e.LevelSet << endl;
-    out<<"Ensemble member dimension: ["<<e.Xdim<<", "<<e.Ydim<<"]"<<endl;
-
-    out<<"Ensemble Field Average: "<<(!(e.FieldAvg.IsEmpty()) ? "Set" : "Not Set")<<endl;
-
-    for(int i=0; i<e.EnsembleSize; i++)
-        out << e.MemFileName[i] << ", " << e.Orders[i] << endl;
-}
-
-

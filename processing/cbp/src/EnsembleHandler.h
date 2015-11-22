@@ -2,7 +2,6 @@
 #define ENSEMBLE_H
 
 #include <algorithm>
-//#include <omp.h>
 #include "Matrix.h"
 #include "Utility.h"
 
@@ -40,14 +39,11 @@ public:
     void InitializeEnsemble(unsigned int ESize, const double levelSet, unsigned int grid_res);
     Matrix<double> LoadFieldFileWithCoord(Matrix<double> &toReturn, string fileName);
     Matrix<double> LoadFieldFileWithoutCoord(Matrix<double> &toReturn, string fileName);
-    void LoadFieldEnsemble(string fileName);//TODO: some how handle sign
-    void LoadFieldEnsemble(string dir, vector<unsigned int> FrcstH, unsigned int MRun); //TODO: check for values
-    friend void WriteEnsembleLog(const Ensemble& e, string logNum);
+    void LoadFieldEnsemble(string fileName);
+    void LoadFieldEnsemble(string dir, vector<unsigned int> FrcstH, unsigned int MRun);
 
     friend string getFileName(string fname, unsigned int fileNumber);
-    friend ostream& operator<<(ostream& out, const Ensemble& e);
 
-    void printSize();
 };
 
 #endif // ENSEMBLE_H

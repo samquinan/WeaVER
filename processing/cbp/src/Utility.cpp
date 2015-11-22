@@ -1,9 +1,10 @@
 #include "Utility.h"
 
-//////////////////
-// Combinatorics
-//////////////////
+////////////////////////////
+/// Combinatorics
+////////////////////////////
 unsigned long choose(unsigned long n, unsigned long k) {
+    // Binomial coefficient or all combinations
     if (k > n) {
         return 0;
     }
@@ -17,6 +18,7 @@ unsigned long choose(unsigned long n, unsigned long k) {
 
 template <typename Iterator>
 bool next_combination(const Iterator first, Iterator k, const Iterator last){
+    // nex combination in Binomial coefficients for n, k
    /* Credits: Thomas Draper */
    if ((first == last) || (first == k) || (last == k))
       return false;
@@ -66,66 +68,43 @@ Matrix<int> getCombinationMatrix(unsigned int n, unsigned int k){
     return combinations;
 }
 
-Matrix<int> zeroCrossing(Matrix<double> M){
-    Matrix<int> toReturn(M.getXdim(), M.getYdim());
-    for(unsigned int i=0; i<M.getXdim()-1;++i)
-        for(unsigned int j=0; j<M.getYdim()-1;++j){
-            double nx = M(i+1, j);//this->p[i+1][j];
-            double ny = M(i, j+1);//this->p[i][j+1];
-            double current = M(i,j);//this->p[i][j];
-            if((nx>0 && current<0) || (nx<0 && current>0) || (nx==0 && current>0) || (nx>0 && current==0)){
-                if(fabs(nx)<fabs(current))
-                    toReturn(i+1,j) = 1;//m.p[i+1][j] = 1;
-                else
-                    toReturn(i,j) = 1;//m.p[i][j] = 1;
-            }
-            if((ny>0 && current<0) || (ny<0 && current>0) || (ny==0 && current>0) || (ny>0 && current ==0)){
-                if(fabs(ny)<fabs(current))
-                    toReturn(i, j+1) = 1;//m.p[i][j+1] = 1;
-                else
-                    toReturn(i, j) = 1;//m.p[i][j] = 1;
-            }
-        }
-    return toReturn;
-}
-
-//template <typename T>
 Matrix<int> getLevelSetMask(Matrix<double> m, double levelSet){
+    // Given a field of value and an isovluae,
+    // this function return a binary mask
     Matrix<int> mask = Matrix<int>(m.getXdim(), m.getYdim(), 0);
     for(unsigned int i=0; i<m.getXdim(); ++i)
         for(unsigned int j=0; j<m.getYdim(); ++j){
-            //MAHSA
-            //mask(i,j) = ((m(i,j)<=levelSet) ? 1 : -1);
             mask(i,j) = ((m(i,j) <= levelSet) ? 0 : 1);
         }
         return mask;
 }
 
 Matrix<int> getBinaryUnion(Matrix<int> m, Matrix<int> n){
+    // Given two binary masks, this function returns the union mask
     Matrix<int> temp(m.getXdim(), m.getYdim());
     temp = MaxMatrix(m, n);
     return temp;
 }
 
 double getBinaryIntersectSum(const Matrix<int>& m, const Matrix<int>& n){
+    // Given two binary masks, this function first take the intersection
+    // and then compute the volume measure of the intesection
     if((m.getXdim() != n.getXdim()) || (m.getYdim() != n.getYdim())){
         throw 1;
         return -1;
     }
 
-    //Volume<int> temp(m.getXdim(), m.getYdim(), m.getZdim(), 0);
     double toReturn = 0.0;
     for(unsigned int i=0; i<m.getXdim();++i)
         for(unsigned int j=0; j<m.getYdim();++j){
-            //for(unsigned int k=0; k<m.getZdim(); ++k){
                 if(m(i,j) == 1 && n(i,j) == 1)
                     toReturn += 1;
-            //}
         }
     return toReturn;
 }
 
 Matrix<int> getBinaryIntersect(Matrix<int> m, Matrix<int> n){
+    // Given two binary masks, this function return the intersection mask
     if((m.getXdim() != n.getXdim()) || (m.getYdim() != n.getYdim())){
         throw 1;
         return Matrix<int>();
@@ -141,6 +120,10 @@ Matrix<int> getBinaryIntersect(Matrix<int> m, Matrix<int> n){
 }
 
 double getPercentBinarySubset(Matrix<int> m, Matrix<int> n){
+    // This function computes the epsilon subset function defined in Eq. 6 in
+    // Ross T. Whitaker, Mahsa Mirzargar, Robert M. Kirby,
+    // “Contour Boxplots: A Method for Charac- terizing Uncertainty in Feature Sets from Simulation Ensembles”,
+    // IEEE Transactions on Visualization and Computer Graphics (TVCG), vol. 19, no. 12, pp. 2713-2722, 2013.
     if((m.getXdim() != n.getXdim()) || (m.getYdim() != n.getYdim())){
         throw 1;
         return -1.0;
@@ -153,20 +136,11 @@ double getPercentBinarySubset(Matrix<int> m, Matrix<int> n){
     return fabs(temp);
 }
 
-
-string StringCat(string s1, string s2){
-    stringstream ss;
-    string s3;
-    ss.str("");
-    ss << s1 << s2;
-    s3 = ss.str();
-    return s3;
-}
-
-
-/***************************** Map Projectioin Utilities *****************************/
+//////////////////////////////
+/// map projection
+//////////////////////////////
 DoublePairVect LambertConformalConicSphere1SP(double R, double lon, double lon0, double lat, double lat0, double SP1){
-    //NOT TESTED
+    // This is standard map projection function
     DoublePairVect toReturn;
 
     double n = sin(SP1);
@@ -182,12 +156,9 @@ DoublePairVect LambertConformalConicSphere1SP(double R, double lon, double lon0,
 }
 
 DoublePairVect getMapProjSphere(double lon, double lat, double cntre_lat, double cntre_lon, double SP){
-    //hard coded Lambeert confomal conic projection for NCEP sphere
-    //NOT TESTED
+    //This function has hard coded information for NCEP SREF ensemble map projection specifications
 
     DoublePairVect toReturn;
-    //DoublePairVect proj;
-
 
     // NCEP specifications
     double R = 637.1200; //radius of earth
@@ -195,220 +166,8 @@ DoublePairVect getMapProjSphere(double lon, double lat, double cntre_lat, double
     double lat0 = cntre_lat*M_PI/180; // centre latitude
     double SP1 = SP*M_PI/180;  // standard parallel
 
-    //for(int i=0; i<pset.size(); i++){
-        toReturn = LambertConformalConicSphere1SP(R, M_PI*(lon)/180, lon0, M_PI*(lat)/180, lat0, SP1);
-        //toReturn.push_back(proj);
-    //}
-    return toReturn;
-}
-
-vector<DoublePairVect> getMapProjSphere(vector<DoublePairVect> pset, double cntre_lat, double cntre_lon, double SP){
-    //hard coded Lambeert confomal conic projection for NCEP sphere
-    //NOT TESTED
-
-    vector<DoublePairVect> toReturn;
-    DoublePairVect proj;
-
-
-    // NCEP specifications
-    double R = 637.1200; //radius of earth
-    double lon0 = cntre_lon*M_PI/180; //centre longitude
-    double lat0 = cntre_lat*M_PI/180; // centre latitude
-    double SP1 = SP*M_PI/180;  // standard parallel
-
-    for(int i=0; i<pset.size(); i++){
-        proj = LambertConformalConicSphere1SP(R, M_PI*(pset[i].first)/180, lon0, M_PI*(pset[i].second)/180, lat0, SP1);
-        toReturn.push_back(proj);
-    }
-    return toReturn;
-}
-
-DoublePairVect LambertConformalConicEllipse1SP(double a, double e, double lon, double lon0, double lat, double lat0, double SP1){
-    //Lambert Conformal Conic map projection for ellipsoide using 1 standard parallel
-
-    DoublePairVect toReturn;
-
-    //map constants
-    double m1 = cos(SP1)/sqrt(1-(e*sin(SP1))*(e*sin(SP1)));
-
-    double t0 = sqrt(((1-sin(lat0))/(1+sin(lat0)))*pow((1+e*sin(lat0))/(1-e*sin(lat0)), e));
-    double t1 = sqrt(((1-sin(SP1))/(1+sin(SP1)))*pow((1+e*sin(SP1))/(1-e*sin(SP1)), e));
-
-    double n = sin(SP1);
-
-    double F = m1/(n*(pow(t1, n)));
-
-    double rho0 = a*F*(pow(t0, n));
-
-    // point dependent spec.
-    double t = sqrt(((1-sin(lat))/(1+sin(lat)))*pow((1+e*sin(lat))/(1-e*sin(lat)), e));
-
-    double rho = a*F*(pow(t, n));
-
-    double theta = n*(lon-lon0);
-
-
-    toReturn.first = rho*sin(theta);
-    toReturn.second = rho0 - rho*cos(theta);
+    toReturn = LambertConformalConicSphere1SP(R, M_PI*(lon)/180, lon0, M_PI*(lat)/180, lat0, SP1);
 
     return toReturn;
 }
 
-vector<DoublePairVect> getMapProjEllipsoid(vector<DoublePairVect> pset){
-    //hard coded Lambeert confomal conic projection for ellipe having 1 standard parallel
-    //the map projection specifications are matching the NCEP specifications
-    // using WGS 84 datum  specification coming with natural earth shapefile
-
-    vector<DoublePairVect> toReturn;
-    DoublePairVect proj;
-
-    //WGS 84 datum information
-    double a = 637.8137; //in kilometers
-    double f = double(1/298.257223563);
-    double e = sqrt(2*f-f*f);
-
-    // NCEP specifications
-    double lon0 = -95*M_PI/180; //centre longitude
-    double lat0 = 35*M_PI/180; // centre latitude
-    double SP1 = 25*M_PI/180;  // standard parallel
-
-    for(int i=0; i<pset.size(); i++){
-        proj = LambertConformalConicEllipse1SP(a, e, M_PI*(pset[i].first)/180, lon0, M_PI*(pset[i].second)/180, lat0, SP1);
-        toReturn.push_back(proj);
-    }
-    return toReturn;
-}
-
-bool IsOnBorder(IntPairVector p, IntPairVector border){
-    if(p.first == 0 || p.first == border.first)
-        return true;
-    if(p.second == 0 || p.second == border.second)
-        return true;
-    return false;
-}
-
-unsigned int getState(IntPairVector p1, IntPairVector p2, IntPairVector border){
-    if(IsOnBorder(p1, border) && IsOnBorder(p2, border))
-        //going along the edge
-        return OnBorder;
-    if(!IsOnBorder(p1, border) && !IsOnBorder(p2, border)){
-        //going along the path
-        return OnPath;
-    }
-    if(!IsOnBorder(p1, border) && IsOnBorder(p2, border))
-        //finished a path
-        return FinishPath;
-    if(IsOnBorder(p1, border) && !IsOnBorder(p2, border))
-        //starting a path
-        return StartPath;
-}
-
-
-Matrix<int> getCCLabeling(Matrix<int> p, bool recip){
-
-    Matrix<int> m = Matrix<int>(p.getXdim(), p.getYdim(), 1);
-    if(recip){
-        for(int i=0; i<p.getXdim(); i++)
-            for(int j=0; j<p.getYdim(); j++)
-                if(p(i,j) == 1)
-                    m(i,j) = 0;
-    }else{
-        for(int i=0; i<p.getXdim(); i++)
-            for(int j=0; j<p.getYdim(); j++)
-                m(i,j) = p(i,j);
-    }
-
-
-    const unsigned int Dimension = 2;
-    typedef unsigned char                       PixelType;
-    typedef itk::RGBPixel<unsigned char>         RGBPixelType;
-    typedef itk::Image<PixelType, 2>     ImageType;
-    typedef itk::Image<RGBPixelType, 2>  RGBImageType;
-
-    //fill ITK image type
-    ImageType::Pointer image = ImageType::New();
-    typename ImageType::IndexType start;// = {{0,0}};//TImage::IndexType start = {{0,0}};
-    start[0] = 0;
-    start[1] = 0;
-
-    typename ImageType::SizeType size;
-    unsigned int NumRows = m.getXdim();
-    unsigned int NumCols = m.getYdim();
-    size[0] = NumRows;
-    size[1] = NumCols;
-
-    ImageType::RegionType region;// region(start, size);
-    region.SetSize(size);
-    region.SetIndex(start);
-    //region.SetSize(size);
-
-    image->SetRegions(region);
-    image->Allocate();
-
-    //cout << "here" << endl;
-
-    for(typename ImageType::IndexValueType r = 0; r < m.getXdim(); r++)
-      {
-        for(typename ImageType::IndexValueType c = 0; c < m.getYdim(); c++)
-        {
-        typename ImageType::IndexType pixelIndex = {{r,c}};
-          if(m(r,c) == 1)
-              image->SetPixel(pixelIndex, 255);
-          else
-              image->SetPixel(pixelIndex, 0);
-        //image->SetPixel(pixelIndex, 255);
-
-        }
-      }
-
-    //cout << "got here" << endl;
-    typedef itk::Image< unsigned short, Dimension > OutputImageType;
-
-      typedef itk::ConnectedComponentImageFilter <ImageType, OutputImageType >
-        ConnectedComponentImageFilterType;
-
-      ConnectedComponentImageFilterType::Pointer connected =
-        ConnectedComponentImageFilterType::New ();
-      connected->SetInput(image);
-      connected->Update();
-
-      //cout << "got CC" << endl;
-
-      //std::cout << "Number of objects: " << connected->GetObjectCount() << std::endl;
-
-      Matrix<int> out = Matrix<int>(m.getXdim(), m.getYdim(), 0);
-
-      //connected->SetMaskImage(image);
-      //connected->GetOutput();
-
-      for(typename ImageType::IndexValueType r = 0; r < m.getXdim(); r++)
-        {
-          for(typename ImageType::IndexValueType c = 0; c < m.getYdim(); c++)
-          {
-          typename ImageType::IndexType pixelIndex = {{r,c}};
-              out(r,c) =  connected->GetOutput()->GetPixel(pixelIndex);
-                //out(r,c) = image->GetPixel(pixelIndex);
-          }
-        }
-    return out;
-}
-
-bool CCWithHole(Matrix<int> p){
-    Matrix<int> cc = getCCLabeling(p, true);
-    int maxVal = cc.getMax();
-    //WriteMatrixFile(m, "damn.txt");
-    //cout << "maxVal here: " << maxVal << endl;
-    if(maxVal >1 )
-        return true;
-    return false;
-}
-
-bool ContourHitsEdge(vector<IntPairVector> contour, unsigned int Xdim, unsigned int Ydim){
-    for(int i=0; i<contour.size(); i++){
-        if(contour[i].first == Xdim-1 || contour[i].first == 0)
-            return true;
-        if(contour[i].second == Ydim-1 || contour[i].second == 0)
-            return true;
-    }
-    return false;
-}
