@@ -40,6 +40,9 @@ else
 fi
 echo
 
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+cd $DIR
+
 # RUN
 ./getData.sh $DATE $RUN
 

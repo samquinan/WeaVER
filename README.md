@@ -7,9 +7,7 @@ A video overview of WeaVER's functionalities can be found [here](https://www.you
 
 WeaVER was written for / designed to be run using Processing 2.2.1. [Processing](https://processing.org) recently went through a major version update to Processing 3, which included fundementally re-working the backend. We are working on getting a modified version of the application running in Processing 3 in a seperate branch; but as this code is no longer under active development, the official branch will remain the version of the code written assumes you have Processing 2.2.1 installed on your system. For the time being, Processing 2.2.1 can still be downloaded from [Processing.org](https://processing.org).
 
-If you simply want to play around with WeaVER, binaries and source code with a pre-processed data set are [available](#binaries).
-
-This repository includes our BASH and C++ data processing routines for downloading the current SREF forecasts and prepping them for WeaVER. 
+If you simply want to play around with WeaVER, binaries and source code with a pre-processed data set are [available](#binaries). *This* repository includes our BASH and C++ data processing routines for downloading the current SREF forecasts and prepping them for WeaVER. 
 
 The dependencies for these routines include:
 

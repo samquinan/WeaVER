@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Update Code Base
-git pull
+# git pull
 
 # Build / Re-Build
 # TODO check smarter way to handle updates without wiping the entire build
