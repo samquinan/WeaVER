@@ -14,7 +14,8 @@
 
 #define _USE_MATH_DEFINES
 
-#define ESIZE 21
+// #define ESIZE 21
+#define ESIZE 26
 #define SMALLGRIDRES 212
 #define BIGGRIDRES 132
 

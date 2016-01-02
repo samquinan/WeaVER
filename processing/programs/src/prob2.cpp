@@ -2,8 +2,14 @@
 #include <cmath>
 #include <bitset>
 
-#define N 21 
+// prob2.cpp -- generates fields of bitsets representing the which members of the the ensemble do or do not meet two conditions,  each greater than, greater than or equal to, less than, or less than or equal to some value
 
+#define N 26
+// note: ensure N defined as (# models * # perturbations) -- need compile time constant for the bitsets
+// pre-10/21/15: #define N 21
+
+// various convenience structures
+// lowercase operator
 struct to_lower {
   int operator() ( int ch )
   {
@@ -11,6 +17,7 @@ struct to_lower {
   }
 };
 
+// comparison functions
 bool gt(double x, double y){ return (x > y);}
 bool ge(double x, double y){ return (x >= y);}
 bool lt(double x, double y){ return (x < y);}
@@ -19,16 +26,21 @@ bool le(double x, double y){ return (x <= y);}
 
 int main(int argc, char* argv[])
 {	
+	// INITAILIZATION
 	
-	// note: ensure N defined as (# models * # perturbations) -- TODO better way than hard coding?
-	std::vector<std::string> models{"em", "nmb", "nmm"};
-	std::vector<std::string> perturbations{"ctl", "n1", "n2", "n3", "p1", "p2", "p3"};
+	std::vector<std::string> models{"arw", "nmb"};
+	std::vector<std::string> perturbations{"ctl", "n1", "n2", "n3", "n4", "n5", "n6", "p1", "p2", "p3", "p4", "p5", "p6"};
+	
+	// // accurate for datasets from before the 10/21/2015 SREF update
+	// std::vector<std::string> models{"em", "nmb", "nmm"};
+	// std::vector<std::string> perturbations{"ctl", "n1", "n2", "n3", "p1", "p2", "p3"};
 	
 	if (models.size()*perturbations.size() != N){
 	        std::cerr << "Compile-time Constant 'N' does not equal the number of models x perturbations";
 	        return 1;
 	}
 	
+	//process arguments
 	std::string outDir = "";
 	int startHr = 0;
 	if (argc == 8) {
@@ -64,13 +76,14 @@ int main(int argc, char* argv[])
 	
 	std::string dataDir = argv[1];
 
+	//determine run
 	std::stringstream sstmp;
 	sstmp.str(std::string());
 	sstmp.clear();
 	sstmp << std::setw(2) << std::setfill('0') << atoi(argv[2]); //TODO switch to strtol call that handles error checking
 	std::string run = sstmp.str();
 			
-	//OP1
+	//determine comparison op 1
 	std::string op_flag = argv[3];
 	std::transform(op_flag.begin(), op_flag.end(), op_flag.begin(), to_lower());
 	std::function<bool (double, double)> op;
@@ -92,6 +105,7 @@ int main(int argc, char* argv[])
 	}
 	op_flag.erase(0, 1);	
 	
+	// determine value for comparison 1
 	char *end;
 	double compare_val = std::strtod(argv[4], &end);
 	if (*end != '\0'){
@@ -99,7 +113,7 @@ int main(int argc, char* argv[])
 		return 1;
 	}
 	
-	//OP2
+	//determine comparison op 2
 	std::string op_flag2 = argv[5];
 	std::transform(op_flag2.begin(), op_flag2.end(), op_flag2.begin(), to_lower());
 	std::function<bool (double, double)> op2;
@@ -121,6 +135,7 @@ int main(int argc, char* argv[])
 	}
 	op_flag2.erase(0, 1);
 	
+	// determine value for comparison 2
 	char *end2;
 	double compare_val2 = std::strtod(argv[6], &end2);
 	if (*end2 != '\0'){
@@ -128,36 +143,36 @@ int main(int argc, char* argv[])
 		return 1;
 	}
 	
-	// for(std::vector<double>::iterator it = valcheck.begin(); it != valcheck.end(); ++it) {
-	// 	std::cout << (*it) << " " << op_flag << " " << compare_val << " : " << op(*it, compare_val) << std::endl;
-	// }
-
+	// PROCESSING ROUTINE
+	std::cout << "probability: processing..." << std::endl;
+	
 	int h;
 	for(h=startHr; h <= 87; h += 3){
 		std::vector <std::vector <double>> data;
-
+		
+		//generate forecast hour string
 		sstmp.str(std::string());
 		sstmp.clear();
 		sstmp << std::setw(2) << std::setfill('0') << h;
 		std::string fhr = sstmp.str();
-
-		std::cout << "sref" << ".t" << run << "z.pgrb212" << ".f" << fhr << std::endl;
-
+		
+		//for each member
 		for (int m=0; m < models.size(); m++){
 			for (int p=0; p < perturbations.size(); p++){
+				//read file
 				std::ostringstream file;
 				file << dataDir;
 				file << "sref_" << models[m] << ".t" << run << "z.pgrb212." << perturbations[p] << ".f" << fhr << ".txt";
 
-				// std::cout << file.str() << std::endl;
 				std::vector <double> d;
 				if (!readFileToVector(file.str().c_str(), d)) return 1;
+				// push file into vector
 				data.push_back(d);
 			}
 		}
 
 
-		//Check Inputs Same Size
+		//Sanity Check -- Inputs Same Size
 		int s = -1;
 		for(std::vector< std::vector<double> >::iterator it = data.begin(); it != data.end(); ++it) {
 			 if (s == -1) s = (*it).size();
@@ -168,13 +183,16 @@ int main(int argc, char* argv[])
 			 }
 		}
 	
-		//CALCULATE PROBABILITY FIELD
+		//Calculate Probability Field
 		std::vector <int> probability;
+		//for each grid point
 		for (int i=0; i < s; i++){
 			
 			double tmp;
 			int pos = 0;
 			std::bitset<N> binaryEnsemble;
+			
+			//for each member, set one bit of bitset according to the result of the comparsion of the member's value to the specified value
 
 			std::vector< std::vector<double> >::iterator it = data.begin();
 			tmp = (*it)[i];
@@ -184,11 +202,12 @@ int main(int argc, char* argv[])
 				tmp = (*it)[i];
 				binaryEnsemble.set(pos, (op(tmp,compare_val) && op2(tmp,compare_val2)));
 			}
-
+			
+			//cast the bitset to ulong and push into vector
 			probability.push_back((int)binaryEnsemble.to_ulong());
 		}
 		
-		// WRITE OUT
+		// write cast bitsets to file
 		std::ostringstream file;
 		file << outDir << "sref" << ".t" << run << "z.pgrb212" << ".f" << fhr << "." << op_flag << "." << compare_val << "." << op_flag2 << "." << compare_val2 << ".txt";
 		writeVectorToFile(file.str().c_str(), probability);

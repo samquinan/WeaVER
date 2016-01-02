@@ -131,9 +131,16 @@ void Ensemble::LoadFieldEnsemble(string dir, vector<unsigned int> FrcstH, unsign
     Matrix<double> Fieldsum = Matrix<double>(Xdim, Ydim, 0.0);
 
     vector<string> model, perts;
-    model.push_back("em"); model.push_back("nmb"); model.push_back("nmm");
+    model.push_back("arw"); model.push_back("nmb");
     perts.push_back("ctl"); perts.push_back("n1"); perts.push_back("n2"); perts.push_back("n3");
-    perts.push_back("p1"); perts.push_back("p2"); perts.push_back("p3");
+    perts.push_back("n4"); perts.push_back("n5"); perts.push_back("n6");
+	perts.push_back("p1"); perts.push_back("p2"); perts.push_back("p3");
+	perts.push_back("p4"); perts.push_back("p5"); perts.push_back("p6");
+	// accurate for runs from before 10/21/2015 Update -- to switch back also need to update ESIZE constant in Utility.h
+    // model.push_back("em"); model.push_back("nmb"); model.push_back("nmm");
+    // perts.push_back("ctl"); perts.push_back("n1"); perts.push_back("n2"); perts.push_back("n3");
+    // perts.push_back("p1"); perts.push_back("p2"); perts.push_back("p3");
+	
     stringstream ss;
     int counter = 0;
 

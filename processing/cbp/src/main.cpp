@@ -13,7 +13,7 @@ int main (int argc, char *argv[]){
         unsigned int j = 2, outlierNum = 3;
 
         if(argc < 6){
-            cout << "Corret usage: ./main <src_dir grid_res run level_set des_dir>" << endl;
+            cout << "Correct usage: ./main <src_dir grid_res run level_set des_dir>" << endl;
             exit(-1);
         }
 

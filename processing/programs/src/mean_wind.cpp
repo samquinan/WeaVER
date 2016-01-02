@@ -2,6 +2,8 @@
 #define _USE_MATH_DEFINES
 #include <cmath> 
 
+// mean_wind.cpp -- generates the mean wind speed and direction across the ensemble using the simulated wind u grid and v grid components
+
 int main(int argc, char* argv[])
 {
 	
@@ -9,13 +11,19 @@ int main(int argc, char* argv[])
 	        std::cerr << "Usage: " << argv[0] << " UGRD_DIR VGRD_DIR RUN OUT_DIR" << std::endl;
 	        return 1;
 	}
+	
+	// INITIALIZATION
 		
 	std::string dataDirU = argv[1];
 	std::string dataDirV = argv[2];
 	std::string outDir = argv[4];
 	
-	std::vector<std::string> models{"em", "nmb", "nmm"};
-	std::vector<std::string> perturbations{"ctl", "n1", "n2", "n3", "p1", "p2", "p3"};
+	std::vector<std::string> models{"arw", "nmb"};
+	std::vector<std::string> perturbations{"ctl", "n1", "n2", "n3", "n4", "n5", "n6", "p1", "p2", "p3", "p4", "p5", "p6"};
+	
+	// // accurate for datasets from before the 10/21/2015 SREF update
+	// std::vector<std::string> models{"em", "nmb", "nmm"};
+	// std::vector<std::string> perturbations{"ctl", "n1", "n2", "n3", "p1", "p2", "p3"};
 	
 	std::stringstream sstmp;
 	sstmp.str(std::string());
@@ -24,6 +32,10 @@ int main(int argc, char* argv[])
 	
 	std::string run = sstmp.str();
 	
+	// PROCESSING ROUTINE
+	std::cout << "mean_wind: processing..." << std::endl;
+	
+	//for each forecast hour 
 	int h;
 	for(h=0; h <= 87; h += 3){
 		std::vector <std::vector <double>> dataU;
@@ -35,10 +47,11 @@ int main(int argc, char* argv[])
 	
 		std::string fhr = sstmp.str();//"f00";
 		
-		std::cout << "sref" << ".t" << run << "z.pgrb212" << ".f" << fhr << std::endl;
-		
-		for (int m=0; m < 3; m++){
-			for (int p=0; p < 7; p++){
+		//for each member
+		for (int m=0; m < models.size(); m++){
+			for (int p=0; p < perturbations.size(); p++){
+				
+				// read wind U
 				std::ostringstream file;
 				file << dataDirU;
 				file << "sref_" << models[m] << ".t" << run << "z.pgrb212." << perturbations[p] << ".f" << fhr << ".txt";
@@ -47,6 +60,7 @@ int main(int argc, char* argv[])
 				if (!readFileToVector(file.str().c_str(), dU)) return 1;
 				dataU.push_back(dU);
 				
+				// read wind V
 				file.str(std::string());
 				file.clear();
 				file << dataDirV;
@@ -58,7 +72,7 @@ int main(int argc, char* argv[])
 			}
 		}
 	
-		//Check Inputs Same Size
+		//Sanity Check -- Inputs Same Size
 		int s = -1;
 		for(std::vector< std::vector<double> >::iterator it = dataU.begin(); it != dataU.end(); ++it) {
 			 if (s == -1) s = (*it).size();
@@ -76,11 +90,10 @@ int main(int argc, char* argv[])
 			 }	 
 		}
 	
-		//CALCULATE DERIVED FIELDS
+		//Calcualte Derived Fields
 		std::vector <double> meanSpeed;
 		std::vector <double> meanDir;
 				
-		
 		for (int i=0; i < s; i++){
 		
 			double mean_U, mean_V, tmp;
@@ -112,7 +125,8 @@ int main(int argc, char* argv[])
 			meanDir.push_back(tmp);
 		}
 		
-		//TODO separate walkthrough inefficient; fix.
+		// calculate max / min win speed and direction
+		//TODO -- having second walkthrough for max / min is definitely inefficient, but it's functional
 		std::vector <double> maxSpeed;
 		std::vector <double> maxDirection;
 		
@@ -155,38 +169,43 @@ int main(int argc, char* argv[])
 			
 		}	
 			
-			
-		// WRITE OUT	
+		// write mean speed	
 		std::ostringstream file;
 		file << outDir << "sref" << ".t" << run << "z.pgrb212" << ".f" << fhr << ".WSPD.mean.txt";
 		writeVectorToFile(file.str().c_str(), meanSpeed);
-	
+		
+		// write mean direction	
 		file.clear();
 		file.str(std::string());
 		file << outDir << "sref" << ".t" << run << "z.pgrb212" << ".f" << fhr << ".WDIR.mean.txt";
 		writeVectorToFile(file.str().c_str(), meanDir);
 		
+		// write max speed	
 		file.clear();
 		file.str(std::string());
 		file << outDir << "sref" << ".t" << run << "z.pgrb212" << ".f" << fhr << ".WSPD.max.txt";
 		writeVectorToFile(file.str().c_str(), maxSpeed);
-	
+		
+		// write max direction	
 		file.clear();
 		file.str(std::string());
 		file << outDir << "sref" << ".t" << run << "z.pgrb212" << ".f" << fhr << ".WDIR.max.txt";
 		writeVectorToFile(file.str().c_str(), maxDirection);
 		
+		// write min speed	
 		file.clear();
 		file.str(std::string());
 		file << outDir << "sref" << ".t" << run << "z.pgrb212" << ".f" << fhr << ".WSPD.min.txt";
 		writeVectorToFile(file.str().c_str(), minSpeed);
-	
+		
+		// write min direction	
 		file.clear();
 		file.str(std::string());
 		file << outDir << "sref" << ".t" << run << "z.pgrb212" << ".f" << fhr << ".WDIR.min.txt";
 		writeVectorToFile(file.str().c_str(), minDirection);
 	
 	}
+	std::cout << "mean_wind: completed" << std::endl;
 	
 	return 0;
 }

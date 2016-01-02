@@ -1,6 +1,8 @@
 #ifndef UTILS_H
 #define UTILS_H
 
+// utils.h -- contains various templated convenience functions for reading and writing single column csv data files to vectors.
+
 #include <iostream>
 #include <fstream>
 #include <iterator>
@@ -13,7 +15,7 @@
 #include <functional>
 #include <algorithm>
 
-
+// reads a file to a vector
 template<typename T>
 bool readFileToVector(const char *fname, std::vector<T> &data) {
 	std::ifstream in;
@@ -39,15 +41,11 @@ bool readFileToVector(const char *fname, std::vector<T> &data) {
 			return false;
 		}
 	}	
-/*	std::istream_iterator<T> itr(in), eof;
-	std::copy (	itr,   	 					// start of source
-	      		eof,    					// end of source
-	      	  	std::back_inserter(data));  // destination
-*/	
 	in.close();
     return true;
 }
 
+// writes a vector to a file
 template<typename T>
 bool writeVectorToFile(const char *fname, std::vector<T> &data) { //TODO add proper error checking like read
 	std::ofstream out(fname);
@@ -59,6 +57,7 @@ bool writeVectorToFile(const char *fname, std::vector<T> &data) { //TODO add pro
 	return true;
 }
 
+// check that all members of a vector of vectors are the same size
 template<typename T>
 bool sizesMatch(std::vector< std::vector<T> > &data) {
 	bool valid = true;
@@ -72,6 +71,7 @@ bool sizesMatch(std::vector< std::vector<T> > &data) {
 	return valid;
 }
 
+// prints templated vector to std::cout -- useful for debugging scripts with toy files
 template<typename T>
 void printVector(std::vector<T> &d){
 	std::cout << std::setprecision(std::numeric_limits<T>::digits10);

@@ -3,9 +3,10 @@ PROJECT(derivedData)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_CXX_FLAGS "-std=c++11")
-if ("${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++")
-endif ()
+# May need on OSX, as default versions of libstdc++ may not be c++11 compliant
+# if ("${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang")
+#     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++")
+# endif ()
 
 SET(total_acc_SRCS total_acc.cpp utils.h)
 add_executable(totalAcc ${total_acc_SRCS})
