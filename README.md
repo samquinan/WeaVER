@@ -7,7 +7,7 @@ A video overview of WeaVER's functionalities can be found [here](https://www.you
 
 WeaVER was written for / designed to be run using Processing 2.2.1. [Processing](https://processing.org) recently went through a major version update to Processing 3, which included fundementally re-working the backend. We are working on getting a modified version of the application running in Processing 3 in a seperate branch; but as this code is no longer under active development, the official branch will remain the version of the code for Processing 2.2.1. For the time being, Processing 2.2.1 can still be downloaded from [Processing.org](https://processing.org).
 
-If you simply want to play around with WeaVER, binaries and source code with a pre-processed data set are [available](#binaries). *This* repository includes our BASH and C++ data processing routines for downloading the current SREF forecasts and prepping them for WeaVER. 
+If you simply want to play around with WeaVER, binaries and source code with a pre-processed data set are [available](#binaries). *This* repository includes our BASH and C++ data processing routines for downloading the current SREF forecasts and prepping them for WeaVER. By nature of our use of BASH scripts, only OSX and Linux are suppoted at this time.
 
 The dependencies for these routines include:
 
@@ -17,7 +17,7 @@ The dependencies for these routines include:
 - [ITK](http://www.itk.org) -- for running the contour boxplot analysis
 
 Downloads and installation instructions for these dependencies can found on the respective sites linked above. Please note that you will want to install CMake before ITK, as CMake is used to compile ITK.
-We 
+ 
 #How to Build / Run#
 
 
@@ -31,9 +31,7 @@ For the time being, binary demos with pre-processed data can be found at [http:/
 
 All the code contained within this repository is being released under the MIT License. 
 
-The contour boxplot code was written by [Mahsa Mirzargar]() and is being made available with her persmission, along with that of [Ross Whittaker](), and [Mike Kirby](). 
-
-All other code was written by [Sam Quinan]() and is being made avilable with the permission of [Miriah Meyer](). This work was funded by NSF Grant ***INSERT GRANT DETAILS***
+The contour boxplot code was written by [Mahsa Mirzargar]() and is being made available with her persmission, along with that of [Ross Whittaker](), and [Mike Kirby](). All other code was written by [Sam Quinan]() and is being made avilable with his permission along with that of [Miriah Meyer](). This work was funded by NSF Grant ***INSERT GRANT DETAILS***
 
 #Questions? Comments#
 
