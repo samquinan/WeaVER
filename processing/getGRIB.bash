@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # NOTE: This version of the download script uses NCEP's NOMADS Server's GRIB filter. 		#
-# 		If you are using this script regulary, you may want to look into using partial http  #
+# 		If you are using this script regularly, you may want to look into using partial http  #
 #		transfers (http://www.cpc.ncep.noaa.gov/products/wesley/fast_downloading_grib.html)  #    
 #		to download the data from the more reliable NCO servers. 							#
 
