@@ -86,6 +86,7 @@ int main(int argc, char* argv[])
 				for (int i=0; i < s; i++){
 					// calculate speed and convert units if appropriate
 					double tmp = (sqrt(pow(dU[i], 2.0) + pow(dV[i], 2.0))) * conversion_constant;
+					speed.push_back(tmp);
 				}
 				
 				// write wind speed	
