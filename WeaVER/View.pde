@@ -14,6 +14,7 @@ abstract class View {
 	int tabw, tabh;
 	
 	String errmsg;
+	String loadDetails;
 		
 	View(int sx, int sy, float ds, int cx, int cy, int tw, int th, int libsize){
 		samplesx = sx;
@@ -34,6 +35,7 @@ abstract class View {
 		targets = new ArrayList<TargetBase>();
 		
 		errmsg = "";
+		loadDetails="";
 		fReg = null;
 		fErr = null;
 						

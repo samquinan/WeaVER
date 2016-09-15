@@ -361,15 +361,15 @@ class MNSDView extends View {
 		colorMode(RGB,255);
 		
 
-		println("loading 500mb");
+		// println("loading 500mb");
 		addMNSD_TMP(dataDir, run_input, "500mb", 0);
 		addMNSD_HGT(dataDir, run_input, "500mb", 0);
 		
-		println("loading 700mb");
+		// println("loading 700mb");
 		addMNSD_TMP(dataDir, run_input, "700mb", 1);
 		addMNSD_HGT(dataDir, run_input, "700mb", 1);
 		
-		println("loading 2m");
+		// println("loading 2m");
 		addMNSD_TMP(dataDir, run_input, "2m", 2);
 		addMNSD_RH( dataDir, run_input, "2m", 2);
 		
@@ -473,6 +473,8 @@ class MNSDView extends View {
 		String run = String.format("%02d", run_input);
 		String grid = "212";
 		
+		loadDetails = "mnsd "+ hgt + " " + var;
+		
 		Field f;
 		ArrayList<Field> fields = new ArrayList<Field>();
 		String deriv = "mean";
@@ -520,6 +522,8 @@ class MNSDView extends View {
 		PVector corner = new PVector(cornerx, cornery);
 		String run = String.format("%02d", run_input);
 		String grid = "212";
+		
+		loadDetails = "mnsd "+ hgt + " " + var;
 		
 		Field f;
 		ArrayList<Field> fields = new ArrayList<Field>();
@@ -570,6 +574,8 @@ class MNSDView extends View {
 		PVector corner = new PVector(cornerx, cornery);
 		String run = String.format("%02d", run_input);
 		String grid = "212";
+		
+		loadDetails = "mnsd "+ hgt + " " + var;
 		
 		Field f;
 		ArrayList<Field> fields = new ArrayList<Field>();

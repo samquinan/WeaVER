@@ -111,7 +111,8 @@ mkdir -p $TXTDIR/'Haines'/'High'/'prob'/
 ## Process the files
 echo "Extracting..."
 
-TOTAL=`echo data/grib/20160101/*t${RUN_CUR}z*.grib2 | wc -w`
+# get total number of files for progress 
+TOTAL=`echo data/grib/${DATE}/*t${RUN_CUR}z*.grib2 | wc -w | xargs`
 COUNT=0
 
 # for each grib2 file
@@ -163,7 +164,7 @@ do
 	#END Generate APCP 3hr match string
 	
 	COUNT=$[COUNT + 1]
-	printf "\033[K  ($COUNT of $TOTAL)\t$FNAME\r" #print current file name to console
+	printf "\033[K\t($COUNT of $TOTAL)\t$FNAME\r" #print progress / current file to console
 	
 	# Extract Fields to Text	
 	$WGRIB -match "$MATCH" 		 $FILE -inv /dev/null -csv - | awk -F "," '{print $7}' > $TXTDIR/'surface_APCP'/'3hr'/$FNAME.txt &
@@ -213,4 +214,4 @@ do
 	
 done
 
-printf "\033[K  completed."
+printf "\033[K\tcompleted."

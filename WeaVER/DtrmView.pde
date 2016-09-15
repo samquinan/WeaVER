@@ -626,52 +626,55 @@ class DtrmView extends View {
 		haines.setCategorical(true);
 		
 		
+		String base_model;
+		base_model = "arw";//for old SREF chnage to "em"
+		
 		String hgt;
 		hgt = "200mb";
-		addDtrmRH(  dataDir, run_input, hgt, "em", "ctl", 0);
-		addDtrmWIND(dataDir, run_input, hgt, "em", "ctl", 0);
-		addDtrmHGT( dataDir, run_input, hgt, "em", "ctl", 0);
+		addDtrmRH(  dataDir, run_input, hgt, base_model, "ctl", 0);
+		addDtrmWIND(dataDir, run_input, hgt, base_model, "ctl", 0);
+		addDtrmHGT( dataDir, run_input, hgt, base_model, "ctl", 0);
 		
 		
 		hgt = "300mb";
-		addDtrmRH(  dataDir, run_input, hgt, "em", "ctl", 1);
-		addDtrmWIND(dataDir, run_input, hgt, "em", "ctl", 1);
-		addDtrmHGT( dataDir, run_input, hgt, "em", "ctl", 1);
+		addDtrmRH(  dataDir, run_input, hgt, base_model, "ctl", 1);
+		addDtrmWIND(dataDir, run_input, hgt, base_model, "ctl", 1);
+		addDtrmHGT( dataDir, run_input, hgt, base_model, "ctl", 1);
 		
 		
 		hgt = "500mb";
-		addDtrmRH(  dataDir, run_input, hgt, "em", "ctl", 2);
-		addDtrmWIND(dataDir, run_input, hgt, "em", "ctl", 2);
-		addDtrmHGT( dataDir, run_input, hgt, "em", "ctl", 2);
-		addDtrmTMP( dataDir, run_input, hgt, "em", "ctl", 2);
+		addDtrmRH(  dataDir, run_input, hgt, base_model, "ctl", 2);
+		addDtrmWIND(dataDir, run_input, hgt, base_model, "ctl", 2);
+		addDtrmHGT( dataDir, run_input, hgt, base_model, "ctl", 2);
+		addDtrmTMP( dataDir, run_input, hgt, base_model, "ctl", 2);
 		
 		
 		hgt = "700mb";
-		addDtrmRH(  dataDir, run_input, hgt, "em", "ctl", 3);
-		addDtrmWIND(dataDir, run_input, hgt, "em", "ctl", 3);
-		addDtrmHGT( dataDir, run_input, hgt, "em", "ctl", 3);
-		addDtrmTMP( dataDir, run_input, hgt, "em", "ctl", 3);
+		addDtrmRH(  dataDir, run_input, hgt, base_model, "ctl", 3);
+		addDtrmWIND(dataDir, run_input, hgt, base_model, "ctl", 3);
+		addDtrmHGT( dataDir, run_input, hgt, base_model, "ctl", 3);
+		addDtrmTMP( dataDir, run_input, hgt, base_model, "ctl", 3);
 		
 		
 		hgt = "850mb";
-		addDtrmRH(  dataDir, run_input, hgt, "em", "ctl", 4);
-		addDtrmWIND(dataDir, run_input, hgt, "em", "ctl", 4);
-		addDtrmHGT( dataDir, run_input, hgt, "em", "ctl", 4);
-		addDtrmTMP( dataDir, run_input, hgt, "em", "ctl", 4);
+		addDtrmRH(  dataDir, run_input, hgt, base_model, "ctl", 4);
+		addDtrmWIND(dataDir, run_input, hgt, base_model, "ctl", 4);
+		addDtrmHGT( dataDir, run_input, hgt, base_model, "ctl", 4);
+		addDtrmTMP( dataDir, run_input, hgt, base_model, "ctl", 4);
 		
 		/*surface*/
-		addDtrmTMP( dataDir, run_input, "2m", "em", "ctl", 5);
-		addDtrmRH( dataDir, run_input, "2m", "em", "ctl", 5);
+		addDtrmTMP( dataDir, run_input, "2m", base_model, "ctl", 5);
+		addDtrmRH( dataDir, run_input, "2m", base_model, "ctl", 5);
 		/*addDtrmWIND(dataDir, run_input, "10m", "em", "ctl", 5);*/ //need to update processing scripts
-		addDtrmAPCP(dataDir, run_input, 3, "em", "ctl", 5);
-		addDtrmAPCP(dataDir, run_input, 6, "em", "ctl", 5);
-		addDtrmAPCP(dataDir, run_input, 12, "em", "ctl", 5);
-		addDtrmAPCP(dataDir, run_input, 24, "em", "ctl", 5);
+		addDtrmAPCP(dataDir, run_input, 3, base_model, "ctl", 5);
+		addDtrmAPCP(dataDir, run_input, 6, base_model, "ctl", 5);
+		addDtrmAPCP(dataDir, run_input, 12, base_model, "ctl", 5);
+		addDtrmAPCP(dataDir, run_input, 24, base_model, "ctl", 5);
 			
 		
-		addDtrmHaines(dataDir, run_input, "High", "em", "ctl", 6);
-		addDtrmHaines(dataDir, run_input,  "Med", "em", "ctl", 6);
-		addDtrmHaines(dataDir, run_input,  "Low", "em", "ctl", 6);
+		addDtrmHaines(dataDir, run_input, "High", base_model, "ctl", 6);
+		addDtrmHaines(dataDir, run_input,  "Med", base_model, "ctl", 6);
+		addDtrmHaines(dataDir, run_input,  "Low", base_model, "ctl", 6);
 		
 		
 		/*PVector corner = new PVector(cornerx, cornery);
@@ -839,6 +842,8 @@ class DtrmView extends View {
 		String run = String.format("%02d", run_input);
 		String grid = "212";
 		
+		loadDetails = "deterministic "+ hgt + " " + var;
+		
 		Field f;		
 		ArrayList<Field> fields = new ArrayList<Field>();
 		for (int k=0; k<=87; k+=3){
@@ -877,6 +882,8 @@ class DtrmView extends View {
 		String run = String.format("%02d", run_input);
 		String grid = "212";
 		
+		loadDetails = "deterministic "+ hgt + " " + var;
+		
 		Field f;		
 		ArrayList<Field> fields = new ArrayList<Field>();
 		for (int k=0; k<=87; k+=3){
@@ -903,6 +910,8 @@ class DtrmView extends View {
 		String run = String.format("%02d", run_input);
 		String grid = "212";
 		
+		loadDetails = "deterministic "+ hgt + " " + var;
+		
 		Field f;		
 		ArrayList<Field> fields = new ArrayList<Field>();
 		for (int k=0; k<=87; k+=3){
@@ -928,6 +937,8 @@ class DtrmView extends View {
 		String run = String.format("%02d", run_input);
 		String grid = "212";
 		
+		loadDetails = "deterministic "+ hgt + " " + var;
+		
 		Field f;		
 		ArrayList<Field> fields = new ArrayList<Field>();
 		for (int k=0; k<=87; k+=3){
@@ -951,6 +962,8 @@ class DtrmView extends View {
 		PVector corner = new PVector(cornerx, cornery);
 		String run = String.format("%02d", run_input);
 		String grid = "212";
+		
+		loadDetails = "deterministic "+ hgt + " " + var;
 		
 		WindField wf;
 		ArrayList<WindField> wfields = new ArrayList<WindField>();
@@ -978,6 +991,8 @@ class DtrmView extends View {
 		PVector corner = new PVector(cornerx, cornery);
 		String run = String.format("%02d", run_input);
 		String grid = "212";
+		
+		loadDetails = "deterministic " + var;
 		
 		Field f;		
 		ArrayList<Field> fields = new ArrayList<Field>();

@@ -660,6 +660,8 @@ class ProbabilityView extends View {
 		String run = String.format("%02d", run_input);
 		String grid = "212";
 		
+		loadDetails = "probability "+ hlabel + " " + vlabel + " " + dlabel;
+		
 		ConditionEnsemble f;
 		ArrayList<ConditionEnsemble> fields = new ArrayList<ConditionEnsemble>();
 		for (int k=0; k<=87; k+=3){
@@ -679,6 +681,8 @@ class ProbabilityView extends View {
 		PVector corner = new PVector(cornerx, cornery);
 		String run = String.format("%02d", run_input);
 		String grid = "212";
+		
+		loadDetails = "probability "+ hlabel + " " + vlabel + " " + dlabel;
 		
 		ConditionEnsemble f;
 		ArrayList<ConditionEnsemble> fields = new ArrayList<ConditionEnsemble>();

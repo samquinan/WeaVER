@@ -208,7 +208,7 @@ class ContourBoxPlot {//implements EncodesCBP{
 		env_gen = new ArrayList< BitSet >(maxIdx);
 		
 		for (int idx=0; idx < maxIdx; idx++){
-			long startTime = System.currentTimeMillis();
+			// long startTime = System.currentTimeMillis();
 					
 			boolean[] union =  new boolean[n];
 			Arrays.fill(union, false);
@@ -257,7 +257,7 @@ class ContourBoxPlot {//implements EncodesCBP{
 				intersection.and(mask);*/
 			}
 			
-			long midTime = System.currentTimeMillis();			
+			// long midTime = System.currentTimeMillis();
 			
 			BitSet band = new BitSet(n);
 			BitSet env = new BitSet(n);
@@ -274,8 +274,8 @@ class ContourBoxPlot {//implements EncodesCBP{
 			bands_gen.add(union_50);
 			env_gen.add(union);*/
 			
-			long endTime = System.currentTimeMillis();			
-			println("cbp: " + ((midTime-startTime)/1000.0) + " s \t" + ((endTime-midTime)/1000.0) + "s");
+			// long endTime = System.currentTimeMillis();
+			// println("cbp: " + ((midTime-startTime)/1000.0) + " s \t" + ((endTime-midTime)/1000.0) + "s");
 		}
 	}
 		

@@ -79,6 +79,7 @@ void draw(){
 	noFill();
 	
 	if (!populated){
+		spinner.details = loader.getDetails();
 		if (!triggered && loader.isComplete()){
 			spinner.switchState();//off
 			triggered = true;
@@ -300,7 +301,6 @@ class ViewLoader implements Runnable{
 		error = e;
 	}
 	
-	
 	public boolean isComplete(){
 		return finished;
 	}
@@ -327,6 +327,16 @@ class ViewLoader implements Runnable{
 	
 	public void run() {
 		load();
+	}
+	
+	public String getDetails(){
+		if (finished) return "finalizing";
+		else if (view_4 != null) return view_4.loadDetails;
+		else if (view_3 != null) return view_3.loadDetails;
+		else if (view_2 != null) return view_2.loadDetails;
+		else if (view_1 != null) return view_1.loadDetails;
+		else if (view_0 != null) return view_0.loadDetails;
+		else return "";
 	}
 	
 	private void load(){
@@ -356,7 +366,6 @@ class ViewLoader implements Runnable{
 		
 		//TODO place into data structure with colormaps, projection, other user defined preferences from config file
 		//		-- Need to determine what prefs we want to give users
-		//TODO PROPER PROJECTION (!)
 		String dir = "../datasets";
 		int run = prop_d.getRun();
 		String date_string = prop_d.getDate();
@@ -390,10 +399,10 @@ class ViewLoader implements Runnable{
 		view_3.setFonts(regular, error);
 		view_3.setMap(map);
 		view_3.setDateTimeOrigin(cur_dt);
-		long startTime = System.currentTimeMillis();
+		// long startTime = System.currentTimeMillis();
 		view_3.loadData(dir, run);
-		long endTime = System.currentTimeMillis();
-		println("load: " + ((endTime-startTime)/1000.0) + " seconds");
+		// long endTime = System.currentTimeMillis();
+		// println("load: " + ((endTime-startTime)/1000.0) + " seconds");
 
 		// generate view_4
 		view_4 = new ProbabilityView(samplesx, samplesy, spacing, cornerx, cornery, tabw, tabh, 6);

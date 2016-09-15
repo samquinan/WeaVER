@@ -854,6 +854,8 @@ class StatView extends View {
 		String run = String.format("%02d", run_input);
 		String grid = "212";
 		
+		loadDetails = "statistic "+ hgt + " " + var;
+		
 		Field f;	
 		ArrayList<Field> fields = new ArrayList<Field>();
 		for (int k=0; k<=87; k+=3){
@@ -877,6 +879,8 @@ class StatView extends View {
 		PVector corner = new PVector(cornerx, cornery);
 		String run = String.format("%02d", run_input);
 		String grid = "212";
+		
+		loadDetails = "statistic "+ hgt + " " + var;
 		
 		Field f;		
 		ArrayList<Field> fields = new ArrayList<Field>();
@@ -903,6 +907,8 @@ class StatView extends View {
 		String run = String.format("%02d", run_input);
 		String grid = "212";
 		
+		loadDetails = "statistic "+ hgt + " " + var;
+		
 		Field f;		
 		ArrayList<Field> fields = new ArrayList<Field>();
 		for (int k=0; k<=87; k+=3){
@@ -926,6 +932,8 @@ class StatView extends View {
 		PVector corner = new PVector(cornerx, cornery);
 		String run = String.format("%02d", run_input);
 		String grid = "212";
+		
+		loadDetails = "statistic "+ hgt + " " + var;
 		
 		WindField wf;
 		ArrayList<WindField> wfields = new ArrayList<WindField>();
@@ -951,6 +959,8 @@ class StatView extends View {
 		PVector corner = new PVector(cornerx, cornery);
 		String run = String.format("%02d", run_input);
 		String grid = "212";
+		
+		loadDetails = "statistic "+ level + " " + var;
 		
 		Field f;		
 		ArrayList<Field> fields = new ArrayList<Field>();
