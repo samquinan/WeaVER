@@ -992,7 +992,7 @@ class DtrmView extends View {
 		String run = String.format("%02d", run_input);
 		String grid = "212";
 		
-		loadDetails = "deterministic " + var;
+		loadDetails = "deterministic "+ var + " (" + level +")";
 		
 		Field f;		
 		ArrayList<Field> fields = new ArrayList<Field>();
