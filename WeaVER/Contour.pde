@@ -55,11 +55,8 @@ class Contour2D {
  }
  
  void clearAll(){
-   // members.clear();
    synchronized (lock){
    	   build = new ArrayList<Segment2D>(members.size()); //less memory efficient but solves threadsafe issues
-	   // cached = false;
-	   // contour = null;
    }
  }
  
@@ -73,13 +70,7 @@ class Contour2D {
 		for (Segment2D s : members){
 			s.makeVetexCalls(c);
 		}
-		
-		// int count = 0;
-		// for (Segment2D s : members){
-		// 	if (count < 1249) s.makeVetexCalls(c);
-		// 	count++;
-		// }
-				
+						
 		c.endShape(LINES);
 		c.disableStyle();
 		contour = c;

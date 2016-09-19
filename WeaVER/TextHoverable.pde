@@ -78,16 +78,5 @@ class TextHoverable{
 		rollover = active && intersected(mx,my);
 		return rollover;
 	}
-	
-	// boolean clicked(int mx, int my) {
-	// 	mouseDown = active && intersected(mx, my);
-	// 	return mouseDown;
-	// }
-	// 
-	//     boolean released(){//returns true if release did work
-	//   boolean tmp = mouseDown && rollover;
-	//       mouseDown = false;
-	//   return tmp;
-	//     }
 
 }

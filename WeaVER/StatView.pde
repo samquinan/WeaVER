@@ -32,14 +32,13 @@ class StatView extends View {
 		library.addCollection(3,4);
 		library.addCollection(3,3);
 		library.addCollection(3,3);
-		/*library.addCollection(3,1);		*/
 		
 		// Initialize Render State
-			//Color Map
+		//Color Map
 		fill = createImage(int(samplesx*spacing), int(samplesy*spacing), ARGB);
 		legend = new Legend(cornerx-22,cornery+1,12,int(samplesy*spacing)-2);
 		
-			//Contours
+		//Contours
 		contours = new ArrayList<Contour2D>();
 		cselect = new QuadTree_Node<Segment2D>(cornerx, cornery, cornerx+samplesx*spacing, cornery+samplesy*spacing, 21);
 		highlight = null;
@@ -50,7 +49,7 @@ class StatView extends View {
 		labels = new ArrayList<StickyLabel>();
 		l_cur = null;
 		
-			//Barbs
+		//Barbs
 		barbs = new ArrayList<Barb>();
 		
 		// Initialize Targets
@@ -119,7 +118,6 @@ class StatView extends View {
 		
 		color clr;
 		float weight;
-		// contours
 		//draw contours
 		colorMode(HSB, 360, 100, 100, 100);
 		strokeCap(SQUARE);
@@ -240,21 +238,19 @@ class StatView extends View {
 		strokeWeight(weight);
 	
 		int n = int(contours.size());
-		// boolean trigger = false;
 	
 		//draw all but selection
 		Contour2D c;
 		for (int i=0; i<n; i++){
 			c = contours.get(i);
 			if (c == highlight){
-				// trigger = true;
 				continue;
 			}
 			c.drawContour();
 		}
 	
 		//draw selection
-		if ((highlight != null)){// && trigger){
+		if ((highlight != null)){
 			strokeWeight(weight+1);
 			stroke(select);
 			highlight.drawContour();
@@ -263,7 +259,7 @@ class StatView extends View {
 
 	
 	protected void drawToolTip(){
-		if ((highlight != null) && (l_cur == null)){// && trigger){		
+		if ((highlight != null) && (l_cur == null)){
 			String s = highlight.getID();
 			fill(255,179);
 			noStroke();
@@ -440,9 +436,7 @@ class StatView extends View {
 		tmp_5c.add(333.15, color(  0,  100,  29));
 		colorMode(RGB,255);
 		tmp_5c.convert_K2C();
-				
-
-		
+						
 		// RH : increments of 3 degrees C
 		rh = new ColorMapf();
 		colorMode(HSB, 360, 100, 100, 100);
@@ -454,18 +448,7 @@ class StatView extends View {
 		rh.add( 100, color(163, 29, 35, 100));
 		colorMode(RGB,255);
 	
-		// // testing wind isotachs
-		// ColorMapf test = new ColorMapf();
-		// colorMode(HSB, 360, 100, 100, 100);	
-		// 	    test.add( 0, color(  0,   0, 100,   0));
-		// 	    test.add(49.9, color(	 0,   0, 100, 0));
-		// test.add(50, color( 96,  21,  80, 100));
-		// test.add(60, color( 96,  21,  80, 100));
-		// test.add(70, color( 68,  43,  71, 100));
-		// test.add(80, color( 41,  66,  59, 100));
-		// test.add(90, color( 13,  88,  43, 100));
-		// colorMode(RGB,255);
-		
+		// WIND
 		wind = new ColorMapf();
 		colorMode(HSB, 360, 100, 100, 100);
 		wind.add(  0, color(180,  25,  29, 0));//color(110, 35, 29,0));
@@ -485,6 +468,7 @@ class StatView extends View {
 		wind.add(150, color(  0,  75,  90));//color(  0, 75, 84));
 		colorMode(RGB,255);		
 		
+		//  APCP
 		apcp = new ColorMapf();
 		colorMode(HSB, 360, 100, 100, 100);
 		apcp.add(    4*25.4,  color(230,  65,  29, 100));
@@ -502,23 +486,7 @@ class StatView extends View {
 		colorMode(RGB,255);
 		apcp.convert_kgmm2in();
 		
-		/*ColorMapf precip = new ColorMapf();
-		colorMode(HSB, 360, 100, 100, 100);
-		precip.add(    4*25.4,  color(230,  65,  29, 100));
-		precip.add(    3*25.4,  color(223,  60,  41, 100));
-		precip.add(    2*25.4,  color(216,  55,  49, 100));
-		precip.add(    1*25.4,  color(209,  50,  55, 100));
-		precip.add( 0.75*25.4,  color(202,  45,  61, 100));
-		precip.add(  0.5*25.4,  color(195,  40,  65, 100));
-		precip.add( 0.25*25.4,  color(188,  35,  70, 100));
-		precip.add(  0.1*25.4,  color(181,  30,  74, 100));
-		precip.add(     2.539,  color(174,  25,  77,   0));
-		// precip.add( 0.05*25.4,  color(174,  25,  77,   0));
-		// precip.add( 0.01*25.4,  color(167,  20,  81,   0));
-		// precip.add(0.019*25.4,  color(160,  15,  84,   0));
-		precip.add(         0,  color(160,  15,  84,   0));
-		colorMode(RGB,255);*/
-		
+		// HAINES
 		haines = new ColorMapf();
 		/*haines.add(0.5, color( 126, 200, 178 ));  //1*/
 		haines.add(1.5, color( 126, 200, 178 ));  //2
@@ -530,15 +498,7 @@ class StatView extends View {
 		haines.add(6.5, color( 145,  31,  31 ));  //7
 		haines.convert_fakeHaines();
 		haines.setCategorical(true);
-		
-		
-		/*color c700mb, c500mb, cSurface;
-		c500mb = color(90, 54, 153);
-		c700mb = color(0, 116, 162);
-		cSurface = color(86, 149, 36);*/
-		
-		// StatSelect entry;
-		
+						
 		String hgt;
 		hgt = "200mb";
 		addStatSelectRH(  dataDir, run_input, hgt, "mean", 0);
@@ -553,8 +513,6 @@ class StatView extends View {
 		addStatSelectHGT( dataDir, run_input, hgt,  "max", 0);
 		addStatSelectHGT( dataDir, run_input, hgt,  "min", 0);
 		
-		
-		
 		hgt = "300mb";
 		addStatSelectRH(  dataDir, run_input, hgt, "mean", 1);
 		addStatSelectRH(  dataDir, run_input, hgt,  "max", 1);
@@ -567,8 +525,6 @@ class StatView extends View {
 		addStatSelectHGT( dataDir, run_input, hgt, "mean", 1);
 		addStatSelectHGT( dataDir, run_input, hgt,  "max", 1);
 		addStatSelectHGT( dataDir, run_input, hgt,  "min", 1);
-		
-		
 		
 		hgt = "500mb";
 		addStatSelectRH(  dataDir, run_input, hgt, "mean", 2);
@@ -587,7 +543,6 @@ class StatView extends View {
 		addStatSelectTMP( dataDir, run_input, hgt,  "max", 2);
 		addStatSelectTMP( dataDir, run_input, hgt,  "min", 2);
 		
-		
 		hgt = "700mb";
 		addStatSelectRH(  dataDir, run_input, hgt, "mean", 3);
 		addStatSelectRH(  dataDir, run_input, hgt,  "max", 3);
@@ -604,7 +559,6 @@ class StatView extends View {
 		addStatSelectTMP( dataDir, run_input, hgt, "mean", 3);
 		addStatSelectTMP( dataDir, run_input, hgt,  "max", 3);
 		addStatSelectTMP( dataDir, run_input, hgt,  "min", 3);
-		
 		
 		hgt = "850mb";
 		addStatSelectRH(  dataDir, run_input, hgt, "mean", 4);
@@ -633,7 +587,6 @@ class StatView extends View {
 		addStatSelectAPCP(dataDir, run_input, 12, "max", 5);
 		addStatSelectAPCP(dataDir, run_input, 24, "max", 5);
 		
-		
 		// HAINES
 		addStatSelectHaines( dataDir, run_input, "High", "mean", 6 );
 		addStatSelectHaines( dataDir, run_input, "High",  "max", 6 );
@@ -646,165 +599,6 @@ class StatView extends View {
 		addStatSelectHaines( dataDir, run_input,  "Low", "mean", 6 );
 		addStatSelectHaines( dataDir, run_input,  "Low",  "max", 6 );
 		addStatSelectHaines( dataDir, run_input,  "Low",  "min", 6 );
-		
-		
-				
-		/*hgt = "10m";
-		addStatSelectWIND(dataDir, run_input, hgt, "mean", 5);
-		addStatSelectWIND(dataDir, run_input, hgt,  "max", 5);
-		addStatSelectWIND(dataDir, run_input, hgt,  "min", 5);*/
-		
-		
-		
-		
-		
-		/*// 700mb tmp
-		ArrayList<Field> fields = new ArrayList<Field>();
-		String dir = dataDir + "/StatFields/700mb_TMP/";
-		String run = String.format("%02d", run_input);
-		String grid = "212";
-		String deriv = "mean";
-		for (int k=0; k<=87; k+=3){
-			String fhr = String.format("%02d", k);
-			String file = dir + "sref.t" + run + "z.pgrb" + grid + ".f" + fhr + "."+ deriv + ".txt";
-			f = new Field(file, samplesx, samplesy, corner, samplesy*spacing, samplesx*spacing);
-			fields.add(f);
-		}
-
-		encd = new ScalarEncoding(fields);
-		encd.useBilinear(true);
-		encd.useInterpolation(false);
-		encd.setColorMap(tmp_3c);
-		encd.genIsovalues(273.15, 2);
-		library.add(new StatSelect(tabw,tabh,c700mb, encd, "TMP", "700mb", deriv));
-
-		// 700mb RH
-		fields = new ArrayList<Field>();
-		dir = dataDir + "/StatFields/700mb_RH/";
-		deriv = "mean";
-		for (int k=0; k<=87; k+=3){
-			String fhr = String.format("%02d", k);
-			String file = dir + "sref.t" + run + "z.pgrb" + grid + ".f" + fhr + "."+ deriv + ".txt";
-			f = new Field(file, samplesx, samplesy, corner, samplesy*spacing, samplesx*spacing);
-			fields.add(f);
-		}
-
-		encd = new ScalarEncoding(fields);
-		encd.useBilinear(true);
-		encd.useInterpolation(false);
-		encd.setColorMap(rh);
-		encd.genIsovalues(0, 10);
-		library.add(new StatSelect(tabw,tabh,c700mb, encd, "RH", "700mb", deriv));
-
-		// 700mb Wind
-		WindField wf;
-		WindEncoding w_encd;
-		ArrayList<WindField> wfields = new ArrayList<WindField>();
-		dir = dataDir + "/StatFields/700mb_Wind/";
-		deriv = "mean";
-		for (int k=0; k<=87; k+=3){
-			String fhr = String.format("%02d", k);
-			String file  = dir + "sref.t" + run + "z.pgrb" + grid + ".f" + fhr + ".WSPD."+ deriv + ".txt";
-			String file2 = dir + "sref.t" + run + "z.pgrb" + grid + ".f" + fhr + ".WDIR."+ deriv + ".txt";
-			wf = new WindField(file, file2, samplesx, samplesy, corner, samplesy*spacing, samplesx*spacing);
-			wfields.add(wf);
-		}
-
-		w_encd = new WindEncoding(wfields, glyphs);
-		w_encd.useBilinear(true);
-		w_encd.useInterpolation(false);
-		w_encd.setColorMap(wind);
-		w_encd.genIsovalues(0, 10);
-		library.add(new WindSelect(tabw,tabh, c700mb, w_encd, "700mb", deriv));
-
-
-
-		// 500mb TMP
-		fields = new ArrayList<Field>();
-		dir = dataDir + "/StatFields/500mb_TMP/";
-		deriv = "mean";
-		for (int k=0; k<=87; k+=3){
-			String fhr = String.format("%02d", k);
-			String file = dir + "sref.t" + run + "z.pgrb" + grid + ".f" + fhr + "."+ deriv + ".txt";
-			f = new Field(file, samplesx, samplesy, corner, samplesy*spacing, samplesx*spacing);
-			fields.add(f);
-		}
-
-		encd = new ScalarEncoding(fields);
-		encd.useBilinear(true);
-		encd.useInterpolation(false);
-		encd.setColorMap(tmp_3c);
-		encd.genIsovalues(273.15, 2);
-		library.add(new StatSelect(tabw,tabh,c500mb, encd, "TMP", "500mb", deriv));
-
-		// 500mb RH
-		fields = new ArrayList<Field>();
-		dir = dataDir + "/StatFields/500mb_RH/";
-		deriv = "mean";
-		for (int k=0; k<=87; k+=3){
-			String fhr = String.format("%02d", k);
-			String file = dir + "sref.t" + run + "z.pgrb" + grid + ".f" + fhr + "."+ deriv + ".txt";
-			f = new Field(file, samplesx, samplesy, corner, samplesy*spacing, samplesx*spacing);
-			fields.add(f);
-		}
-
-		encd = new ScalarEncoding(fields);
-		encd.useBilinear(true);
-		encd.useInterpolation(false);
-		encd.setColorMap(rh);
-		encd.genIsovalues(0, 10);
-		library.add(new StatSelect(tabw,tabh,c500mb, encd, "RH", "500mb", deriv));
-
-
-		// 500mb Wind
-		wfields = new ArrayList<WindField>();
-		dir = dataDir + "/StatFields/500mb_Wind/";
-		deriv = "mean";
-		for (int k=0; k<=87; k+=3){
-			String fhr = String.format("%02d", k);
-			String file  = dir + "sref.t" + run + "z.pgrb" + grid + ".f" + fhr + ".WSPD."+ deriv + ".txt";
-			String file2 = dir + "sref.t" + run + "z.pgrb" + grid + ".f" + fhr + ".WDIR."+ deriv + ".txt";
-			wf = new WindField(file, file2, samplesx, samplesy, corner, samplesy*spacing, samplesx*spacing);
-			wfields.add(wf);
-		}
-
-		w_encd = new WindEncoding(wfields, glyphs);
-		w_encd.useBilinear(true);
-		w_encd.useInterpolation(false);
-		w_encd.setColorMap(wind);
-		w_encd.genIsovalues(0, 10);
-		library.add(new WindSelect(tabw,tabh, c500mb, w_encd, "500mb", deriv));*/
-		
-		/*// Surface APCP
-		fields = new ArrayList<Field>();
-		dir = dataDir + "/StatFields/3hr_APCP/";
-		deriv = "max";
-		for (int k=0; k<=87; k+=3){
-			if (k >= 3){
-				String fhr = String.format("%02d", k);
-				String file = dir + "sref.t" + run + "z.pgrb" + grid + ".f" + fhr + "."+ deriv + ".txt";
-				f = new Field(file, samplesx, samplesy, corner, samplesy*spacing, samplesx*spacing);
-			}
-			else f = new Field();
-			fields.add(f);
-		}
-
-		encd = new ScalarEncoding(fields);
-		encd.useBilinear(true);
-		encd.useInterpolation(false);
-		encd.setColorMap(precip);
-		encd.addIsovalue(4*25.4);
-		encd.addIsovalue(3*25.4);
-		encd.addIsovalue(2*25.4);
-		encd.addIsovalue(1*25.4);
-		encd.addIsovalue(0.75*25.4);
-		encd.addIsovalue( 0.5*25.4);
-		encd.addIsovalue(0.25*25.4);
-		encd.addIsovalue( 0.1*25.4);
-		// encd.addIsovalue(0.05*25.4);
-		// encd.addIsovalue(0.01*25.4);
-
-		library.add(new StatSelect(tabw,tabh,cSurface, encd, "APCP", "surface", "3hr "+deriv));*/
 	}
 	
 	private void addStatSelectAPCP(String dataDir, int run_input, int interval, String deriv, int libIndex){
@@ -975,7 +769,6 @@ class StatView extends View {
 		encd.useBilinear(true);
 		encd.useInterpolation(false);
 		encd.setColorMap(haines);
-		/*encd.genIsovalues(0.5, 1);*/
 		encd.convert_fakeHaines();
 		encd.addIsovalue(1.5);
 		encd.addIsovalue(2.5);

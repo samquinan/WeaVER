@@ -230,20 +230,6 @@ class EnsembleSelect extends Selectable implements EncodesSP, EncodesCBP{
 		encd.getCBPmedian(wrapper, idx);
 	}
 	
-	// Contour2D getCBPmedian(){
-	// 	return encd.getCBPmedian();
-	// }
-	// Contour2D getCBPmedian(int idx){
-	// 	return encd.getCBPmedian(idx);
-	// }
-	
-	// ArrayList<Contour2D> getCBPoutliers(){
-	// 		return encd.getCBPoutliers();
-	// }
-	// ArrayList<Contour2D> getCBPoutliers(int idx){
-	// 		return encd.getCBPoutliers(idx);
-	// }
-	
 	void getCBPoutliers(ArrayList<Contour2D> contours){
 		encd.getCBPoutliers(contours);
 	}
@@ -269,18 +255,5 @@ class EnsembleSelect extends Selectable implements EncodesSP, EncodesCBP{
 	ArrayList<String> getMemberLabels(){
 		return encd.getMemberLabels();
 	}
-	
-	
-	// ColorMapf getColorMap(){
-	// 	return encd.getColorMap();
-	// }
-	
-	// void genFill(PImage img){
-	// 	encd.genFill(img);
-	// }
-	// 
-	// void genFill(PImage img, int time){
-	// 	encd.genFill(img, time);
-	// }	
-	
+		
 }

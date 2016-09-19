@@ -126,12 +126,6 @@ class Library {
 			//add if possible
 			if (dragging.current == null){
 				boolean added = false;
-				/*for (LibCollection c: sources){
-					if(c.isIntersectedAABB(dragging)){
-						added = c.add(dragging);
-						break;
-					}
-				}*/
 				if (!added){
 					for (TargetBase t: targets){
 						if(t.isIntersectedAABB(dragging)){
@@ -140,50 +134,12 @@ class Library {
 						}
 					}
 				}
-			}
-			
-			/*if (interacting.current == null){
-				if (this.isIntersectedAABB(interacting)) this.add(interacting);
-				else{
-					for (TargetBase t: targets){
-						if(t.isIntersectedAABB(interacting)){
-							t.add(interacting);
-							break;
-						}
-					}
-				}
-			}*/
+			}	
 		}
 		
 		return interacted || (dragging != null);
 	}
 	
-	// boolean drag (int mx, int my){
-	// 	// handle movement between containers
-	// 	if (interacting != null && interacting.dragging){
-	// 		
-	// 		//remove if leaves current
-	// 		if (interacting.current != null){
-	// 			boolean inCurrent = interacting.current.isIntersectedAABB(interacting);
-	// 			if (!inCurrent) interacting.current.remove(interacting);
-	// 		}
-	// 		
-	// 		//add if possible
-	// 		if (interacting.current == null){
-	// 			if (this.isIntersectedAABB(interacting)) this.add(interacting);
-	// 			else{
-	// 				for (TargetBase t: targets){
-	// 					if(t.isIntersectedAABB(interacting)){
-	// 						t.add(interacting);
-	// 						break;
-	// 					}
-	// 				}
-	// 			}
-	// 		}
-	// 	}
-	// 	
-	// 	return (interacting != null);
-	// }
 	
 	boolean clicked(int mx, int my) {
 		boolean click = false;

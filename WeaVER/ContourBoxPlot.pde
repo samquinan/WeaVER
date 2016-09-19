@@ -1,6 +1,4 @@
-class ContourBoxPlot {//implements EncodesCBP{
-	// color c_band, c_envl;
-	// ColorMapf cmap, cmap2;
+class ContourBoxPlot {
 	boolean bilinear;
 	boolean interpolate;
 	
@@ -12,23 +10,7 @@ class ContourBoxPlot {//implements EncodesCBP{
 	private boolean cacheAuto;
 	ArrayList < BitSet > bands_gen;
 	ArrayList < BitSet > env_gen;
-	
-	// ArrayList < Contour2D > median;
-	// ArrayList < ArrayList < Contour2D > > outliers;
-	//
-	// ContourBoxPlot(ArrayList < Contour2D > m, ArrayList < Field > b, ArrayList < Field > e, ArrayList < ArrayList < Contour2D > > o){
-	// 	bands = b;
-	// 	envelop = e;
-	//
-	// 	ordering = null;
-	//
-	// 	median = m;
-	// 	outliers = o;
-	//
-	// 	bilinear = true;
-	// 	interpolate = false;
-	// }
-	
+		
 	ContourBoxPlot(ArrayList < Field > b, ArrayList < Field > e, ArrayList < Integer > o){
 		ignoreLowRes = false;
 		bands = b;
@@ -59,8 +41,6 @@ class ContourBoxPlot {//implements EncodesCBP{
 		env_gen = null;
 	}
 	
-	
-		
 	void useBilinear(boolean b){
 		bilinear = b;
 	}
@@ -76,41 +56,7 @@ class ContourBoxPlot {//implements EncodesCBP{
 	boolean ignoreLowRes(){
 		return (cacheAuto || ignoreLowRes);
 	}
-	
-	
-	// ColorMapf getColorMap(){
-	// 	return cmap;
-	// }
 		
-	// void setBandColors(color c0, color c1){ //fix
-	// 	c_band = c0;
-	// 	c_envl = c1;
-	//
-	// 	color tmp;
-	//
-	// 	cmap = new ColorMapf();
-	// 	tmp = (0 << 24) | (c_band & 0x00FFFFFF);
-	// 	cmap.add(0, tmp);
-	// 	cmap.add(0.49, tmp);
-	// 	cmap.add(0.5, tmp);
-	// 	cmap.add(1.0, c_band);
-	//
-	// 	cmap2 = new ColorMapf();
-	// 	tmp = (0 << 24) | (c_envl & 0x00FFFFFF);
-	// 	cmap2.add(0, tmp);
-	// 	cmap2.add(0.49, tmp);
-	// 	cmap2.add(0.5, tmp);
-	// 	cmap2.add(1.0, c_envl);
-	// }
-	
-	// Contour2D getCBPmedian(){
-	// 	return median.get(0);
-	// }
-	//
-	// Contour2D getCBPmedian(int idx){
-	// 	return median.get(idx);
-	// }
-	
 	int getCBPmedianIndex(){
 		if (ordering != null) return ordering.get(0);
 		else return -1;		
@@ -121,37 +67,11 @@ class ContourBoxPlot {//implements EncodesCBP{
 		else return null;
 	}
 	
-	// void getCBPmedian(WrappedContour2D wrapper){
-	// 	if (wrapper != null && median != null) wrapper.replaceContour(median.get(0));
-	// }
-	//
-	// void getCBPmedian(WrappedContour2D wrapper, int idx){
-	// 	if (wrapper != null && median != null) wrapper.replaceContour(median.get(idx));
-	// }
-	
-	
-	// ArrayList<Contour2D> getCBPoutliers(){
-	// 	return outliers.get(0);
-	// }
-	//
-	// ArrayList<Contour2D> getCBPoutliers(int idx){
-	// 	return outliers.get(idx);
-	// }
-	
 	List<Integer> getOutlierIndexList(){
 		int n = ordering.size();
 		if (ordering != null) return ordering.subList(n-3, n);
 		else return null;		
-	}
-	
-	// void getCBPoutliers(ArrayList<Contour2D> contours){
-	// 	if (contours != null && outliers != null) contours.addAll(outliers.get(0));
-	// }
-	//
-	// void getCBPoutliers(ArrayList<Contour2D> contours, int idx){
-	// 	if (contours != null && outliers != null) contours.addAll(outliers.get(idx));
-	// }
-	
+	}	
 	
 	void genCBPbands(PImage img, ColorMapf cmap, ColorMapf cmap2){
 		if ((img != null) && (bands != null) && (envelop!=null)){
@@ -208,17 +128,11 @@ class ContourBoxPlot {//implements EncodesCBP{
 		env_gen = new ArrayList< BitSet >(maxIdx);
 		
 		for (int idx=0; idx < maxIdx; idx++){
-			// long startTime = System.currentTimeMillis();
 					
 			boolean[] union =  new boolean[n];
 			Arrays.fill(union, false);
 			boolean[] intersection =  new boolean[n];
 			Arrays.fill(intersection, true);
-			
-			/*BitSet union = new BitSet(n);
-			BitSet intersection = new BitSet(n);
-			intersection.flip(0,intersection.size()-1);// flip all to true
-			BitSet mask = new BitSet(n);*/
 			
 			for (int i=0; i < half; i++){
 				member = members.get(ordering.get(i));
@@ -231,16 +145,11 @@ class ContourBoxPlot {//implements EncodesCBP{
 				}
 				Field f = member.get(idx);
 				f.genMaskBilinear(union, intersection, w, h, isovalue);
-				/*f.genMaskBilinear(mask, w, h, isovalue);
-				union.or(mask);
-				intersection.and(mask);*/
 			}
 			
 			boolean[] union_50 = union.clone();
 			boolean[] intersection_50 = intersection.clone();
-			/*BitSet union_50 = (BitSet) union.clone();
-			BitSet intersection_50 = (BitSet) intersection.clone();*/
-			
+
 			for (int i=half; i < whole; i++){
 				member = members.get(ordering.get(i));
 				if ((idx==0) && (member.size() != maxIdx)){ //fail gracefully
@@ -252,13 +161,8 @@ class ContourBoxPlot {//implements EncodesCBP{
 				}
 				Field f = member.get(idx);
 				f.genMaskBilinear(union, intersection, w, h, isovalue);
-				/*f.genMaskBilinear(mask, w, h, isovalue);
-				union.or(mask);
-				intersection.and(mask);*/
 			}
-			
-			// long midTime = System.currentTimeMillis();
-			
+						
 			BitSet band = new BitSet(n);
 			BitSet env = new BitSet(n);
 			for (int i=0; i < n; i++){
@@ -267,15 +171,6 @@ class ContourBoxPlot {//implements EncodesCBP{
 			}
 			bands_gen.add(band);
 			env_gen.add(env);
-						
-			/*union_50.andNot(intersection_50); // is band
-			union.andNot(intersection);// is envelope
-
-			bands_gen.add(union_50);
-			env_gen.add(union);*/
-			
-			// long endTime = System.currentTimeMillis();
-			// println("cbp: " + ((midTime-startTime)/1000.0) + " s \t" + ((endTime-midTime)/1000.0) + "s");
 		}
 	}
 		

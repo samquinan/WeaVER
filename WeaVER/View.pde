@@ -104,26 +104,7 @@ abstract class View {
 	protected boolean press(int mx, int my){
 		return press(mx,my,1);
 	}
-	
-	
-	/*void mousePress(int mx, int my, int clickCount){
-		press(mx, my, clickCount);
-	}
-
-	protected boolean press(int mx, int my, int clickCount){
-		if(library.clicked(mx, my)) return true;
-		else if (tracker.clicked(mx, my)){
-			if(tracker.changed()) tracker.update(targets);
-			return true;
-		}
-		else if(timer.clicked(mx, my)) return true;
-		else return false;
-	}
-
-	protected boolean press(int mx, int my){
-		return press(mx,my,1);
-	}*/
-	
+		
 	void mouseMove(int mx, int my){
 		move(mx,my);
 	}

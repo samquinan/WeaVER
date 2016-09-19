@@ -191,10 +191,5 @@ class Container { //TODO double check threadsafety for all operations, reduce le
 	float getDy(){
 		return h/rows;
 	}
-	
-	
-	
-	
-	// void updateRenderContext(){}
-	
+		
 }

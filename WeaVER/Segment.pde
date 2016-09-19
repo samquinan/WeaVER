@@ -19,11 +19,7 @@ class Segment2D implements QuadTreeElement {
   Contour2D getSrcContour(){ // TODO refactor so don't have two identical methods
     return parent;
   }
-  
-  /*Contour2D getSource(){
-	  return parent;
-  }*/
-  
+    
   void drawSegment(){
     line(p0.x, p0.y, p1.x, p1.y);
   }

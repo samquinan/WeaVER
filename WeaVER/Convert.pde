@@ -8,11 +8,5 @@ class Converter{
 	public float mps_to_kt(float val){ return (val*3.6/1.852); }
 	public float fakeHaines(float val){ return (val+0.5); }
 	public float kgmm_to_in(float val){ return (val/25.4); }
-	
-	
-	/*public Field K_to_C(Field f){
-		FloatList new_data
-
-	}*/
-	
+		
 }

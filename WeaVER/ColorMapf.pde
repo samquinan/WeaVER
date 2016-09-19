@@ -195,7 +195,6 @@ class ColorMapf {
 		println("ColorMapf:");
 		for (int i=0; i < val.size(); i++){
 			println(val.get(i) + " , " + hex(col.get(i)));
-			//println(val.get(i));
 		}
 	}
 

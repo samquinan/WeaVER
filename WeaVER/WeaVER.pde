@@ -30,7 +30,6 @@ DatasetProperties prop_d;
 private int mHeight;
 
 void setup() {
-  	/*size(displayWidth, displayHeight, P2D);*/
 	smooth(8);
 	
 	prop_d = new DatasetProperties("../dataset.properties");
@@ -60,11 +59,11 @@ void setup() {
 }
 
 public int sketchWidth() {
-  return displayWidth;//1315;//displayWidth;
+  return displayWidth;
 }
 
 public int sketchHeight() {
-  return displayHeight;//800;//displayHeight;
+  return displayHeight;
 }
 
 public String sketchRenderer() {
@@ -360,10 +359,6 @@ class ViewLoader implements Runnable{
 		int cornerx = 55 + (sketchWidth() - (samplesx*spacing + addX))/2;
 		int cornery = mHeight + tabh + 26 + (sketchHeight()-mHeight - (samplesy*spacing + addY))/2;
 		
-	    /*int spacing =  5;
-		int cornerx = 60;
-		int cornery = 80;*/
-		
 		//TODO place into data structure with colormaps, projection, other user defined preferences from config file
 		//		-- Need to determine what prefs we want to give users
 		String dir = "../datasets";
@@ -395,15 +390,12 @@ class ViewLoader implements Runnable{
 		view_2.loadData(dir, run);
 
 		// generate view_3
-		view_3 = new EnsembleView(samplesx, samplesy, spacing, cornerx, cornery, tabw, tabh, 15);
+		view_3 = new EnsembleView(samplesx, samplesy, spacing, cornerx, cornery, tabw, tabh, 4);
 		view_3.setFonts(regular, error);
 		view_3.setMap(map);
 		view_3.setDateTimeOrigin(cur_dt);
-		// long startTime = System.currentTimeMillis();
 		view_3.loadData(dir, run);
-		// long endTime = System.currentTimeMillis();
-		// println("load: " + ((endTime-startTime)/1000.0) + " seconds");
-
+		
 		// generate view_4
 		view_4 = new ProbabilityView(samplesx, samplesy, spacing, cornerx, cornery, tabw, tabh, 6);
 		view_4.setFonts(regular, error);

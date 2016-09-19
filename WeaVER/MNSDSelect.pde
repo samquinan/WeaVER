@@ -94,7 +94,6 @@ class MNSDSelect extends Selectable implements EncodesScalar{
 			textSize(11);
 			textAlign(LEFT, CENTER);
 			fill(0);
-			//text(var,x+15,y+h/2-2);
 			text(var,x+6,y+h/2-2);
 		
 			textSize(9);

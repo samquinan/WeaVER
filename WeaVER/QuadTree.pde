@@ -26,14 +26,7 @@ class QuadTree_Node<E extends QuadTreeElement> {
 	float getMaxY(){return maxAABBy;}
 	int getMaxMembers(){return maxMembers;}
 	
-	public void clear(){
-		/*if (tr != null){
-			tr.clear();
-			tl.clear();
-			br.clear();
-			bl.clear();
-		}*/
-		
+	public void clear(){		
 		tr = null;//should not need recursive clear -- 
 				  // exiting scope will trigger garbage collection, but timing could be issue
 		tl = null;

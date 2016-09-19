@@ -18,9 +18,6 @@ class State {
 		
 		dtargetEntries = new ArrayList< ArrayList<Selectable> >();
 		dtargetLabels = new ArrayList< ArrayList<StickyLabel> >();
-		// dtargetEntries.add(new ArrayList<Selectable>());
-		// dtargetEntries.add(new ArrayList<Selectable>());
-		// dtargetEntries.add(new ArrayList<Selectable>());
 	}
 	
 	void setTextSize(int s){
@@ -51,20 +48,7 @@ class State {
 		textAlign(CENTER, CENTER);
 		text(s, x+(w/2), y+(h/3));
 	}
-	
-	// void saveState(Container t1, Container t2, Container t3){
-	// 	dtargetEntries.clear();
-	// 	dtargetEntries.add(new ArrayList<Selectable>(t1.entries));
-	// 	dtargetEntries.add(new ArrayList<Selectable>(t2.entries));
-	// 	dtargetEntries.add(new ArrayList<Selectable>(t3.entries));
-	// }
-	// 
-	// void restoreState(Container t1, Container t2, Container t3){
-	// 	t1.entries = dtargetEntries.get(0);
-	// 	t2.entries = dtargetEntries.get(1);
-	// 	t3.entries = dtargetEntries.get(2);
-	// }
-	
+		
 	void saveState(ArrayList<TargetBase> targets){
 		dtargetEntries.clear();
 		dtargetLabels.clear();
@@ -137,7 +121,7 @@ class State {
 		return !active && intersected(mx, my);
 	}
 	
-	    void released(){
-	    }
+    void released(){
+    }
 	
 }

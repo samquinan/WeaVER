@@ -1,16 +1,11 @@
 class LoadAnimation {
 	PVector pCenter;
-	// float rOrbit;
-	// float angularVelocity;
 	ArrayList<Orbiter> sats;
 	private boolean is_off;
 	String message;
 	String details;
 
 	LoadAnimation(PVector center, float radius, float angVel, float s){
-		// cOrbit = center;
-		// rOrbit = radius;
-		// angularVelocity = angVel;
 		message = "LOADING";
 		sats = new ArrayList<Orbiter>();
 		sats.add(new Orbiter(center, radius, angVel, radians(0),    3 ));

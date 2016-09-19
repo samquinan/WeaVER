@@ -144,23 +144,5 @@ class ContourEncoding extends EncodingBase implements EncodesContour{
 		   	contours.add(c);
 		}
 	}	
-	
-	/*void genFill(PImage img){
-		if (bilinear){
-			(fields.get(0)).genFillBilinear(img, cmap, interpolate);
-		}
-		else{
-			(fields.get(0)).genFillNearestNeighbor(img, cmap, interpolate);
-		}
-	}
-
-	void genFill(PImage img, int idx){
-		if (bilinear){
-			(fields.get(idx)).genFillBilinear(img, cmap, interpolate);
-		}
-		else{
-			(fields.get(idx)).genFillNearestNeighbor(img, cmap, interpolate);
-		}
-	}*/
-	
+		
 }

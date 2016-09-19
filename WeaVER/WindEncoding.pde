@@ -1,17 +1,7 @@
 class WindEncoding extends EncodingBase implements EncodesScalar, EncodesVector{
 	ArrayList<WindField> fields;
 	BarbGlyphList glyphs;
-	
-	// WindEncoding(WindField f){
-	// 	super();
-	// 	fields = new ArrayList<WindField>();
-	// 	fields.add(f);
-	// 	glyphs = new BarbGlyphList();
-	// 	
-	// 	cmap.add(fields.get(0).getMin(), color(0, 0, 0, 0));
-	// 	cmap.add(fields.get(0).getMax(), color(0, 0, 0, 0));
-	// }
-	
+		
 	WindEncoding(WindField f, BarbGlyphList g){
 		super();
 		fields = new ArrayList<WindField>();
@@ -21,13 +11,7 @@ class WindEncoding extends EncodingBase implements EncodesScalar, EncodesVector{
 		cmap.add(fields.get(0).getMin(), color(0, 0, 0, 0));
 		cmap.add(fields.get(0).getMax(), color(0, 0, 0, 0));
 	}
-	
-	// WindEncoding(ArrayList<WindField> f){
-	// 	super();
-	// 	fields = f;
-	// 	glyphs = new BarbGlyphList();
-	// }
-	
+		
 	WindEncoding(ArrayList<WindField> f, BarbGlyphList g){
 		super();
 		fields = f;

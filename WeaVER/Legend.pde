@@ -2,7 +2,6 @@ class Legend {
 	PImage img;
 	ColorMapf cmap;
 	boolean interpolate;
-	/*boolean convert;*/
 	float x,y;
 	int w,h;
 	int m,n;
@@ -24,7 +23,6 @@ class Legend {
 		img = createImage(int(w), int(h), ARGB);
 		
 		interpolate=false;
-		/*convert = false;*/
 		
 		convert = new Converter();
 		df = new DecimalFormat("#.##");
@@ -39,11 +37,7 @@ class Legend {
 		cmap = c;
 		update();
 	}
-	
-	/*void convertToCelcius(boolean b){
-		convert = b;
-	}*/
-	
+		
 	void display(){
 		
 		if (cmap == null || cmap.col.size() < 2) return; 
@@ -88,8 +82,6 @@ class Legend {
 				default:
 					break;
 			}
-			//line(x-10, y+tag_y, x-5, y+tag_y);
-			//if (convert) val = cc.K_to_C(val);
 			text(df.format(val), x-3, y-2+tag_y);
 		}
 		

@@ -11,15 +11,7 @@ class EnsembleEncoding implements EncodesSP, EncodesCBP {
 	
 	private boolean initComplete;
 	float isovalue;
-	
-	// CBP
-	// ColorMapf cmap;
-	// boolean bilinear;
-	// boolean interpolate;
-	//
-	// ArrayList < Field > bands;
-	// ArrayList< ArrayList<Contour2D> > outliers;
-	
+		
 	EnsembleEncoding(ArrayList< ArrayList<Field> > fields, ContourBoxPlot c){
 		members = fields;
 		cbp = c;
@@ -27,8 +19,6 @@ class EnsembleEncoding implements EncodesSP, EncodesCBP {
 		cached_sp = null;
 		cacheSPContours();
 		tmp = new ArrayList<Contour2D>();
-		// bilinear = true;
-		// interpolate = false;
 		genMemberLabels();	
 		
 		
@@ -57,8 +47,6 @@ class EnsembleEncoding implements EncodesSP, EncodesCBP {
 		initComplete = false;
 		cached_sp = null;
 		cacheSPContours();
-		// bilinear = true;
-		// interpolate = false;
 		if (members.size() != member_labels.size()){
 			println("ERROR: Number of labels for EnsembleEncoding does not match number of members");
 			genMemberLabels();
@@ -159,9 +147,7 @@ class EnsembleEncoding implements EncodesSP, EncodesCBP {
 			for (int idx = 0; idx < n; idx++){
 				ArrayList<Contour2D> contours = new ArrayList<Contour2D>(m);
 				Contour2D c;
-				// ArrayList<Field> member;
 				for (int i = 0; i < members.size(); i++){
-					// member = members.get(i);
 					Field f = (members.get(i)).get(idx);
 					c = new Contour2D(2*f.dimy);
 					f.genIsocontour(isovalue, c);
@@ -206,9 +192,6 @@ class EnsembleEncoding implements EncodesSP, EncodesCBP {
 			if(member != -1) c = tmp.get(member);
 		}
 		wrapper.replaceContour(c);
-		
-		
-		// cbp.getCBPmedian(wrapper);
 	}
 	
 	void getCBPmedian(WrappedContour2D wrapper, int idx){
@@ -221,25 +204,8 @@ class EnsembleEncoding implements EncodesSP, EncodesCBP {
 			if(member != -1) c = tmp.get(member);
 		}
 		wrapper.replaceContour(c);
-		
-		//cbp.getCBPmedian(wrapper, idx);
 	}
-	
-	
-	// Contour2D getCBPmedian(){
-	// 	return cbp.getCBPmedian();
-	// }
-	// Contour2D getCBPmedian(int idx){
-	// 	return cbp.getCBPmedian(idx);
-	// }
-	
-	// ArrayList<Contour2D> getCBPoutliers(){
-	// 		return cbp.getCBPoutliers();
-	// }
-	// ArrayList<Contour2D> getCBPoutliers(int idx){
-	// 		return cbp.getCBPoutliers(idx);
-	// }
-	
+		
 	void getCBPoutliers(ArrayList<Contour2D> contours){
 		List<Integer> outlier_idx = cbp.getOutlierIndexList();
 		if (outlier_idx != null){
@@ -254,7 +220,6 @@ class EnsembleEncoding implements EncodesSP, EncodesCBP {
 				contours.add(c);
 			}
 		}		
-		// cbp.getCBPoutliers(contours);
 	}
 	
 	void getCBPoutliers(ArrayList<Contour2D> contours, int idx){
@@ -271,7 +236,6 @@ class EnsembleEncoding implements EncodesSP, EncodesCBP {
 				contours.add(c);
 			}
 		}		
-		//cbp.getCBPoutliers(contours, idx);
 	}
 	
 	void genCBPbands(PImage img, ColorMapf cmap, ColorMapf cmap2){
@@ -281,47 +245,6 @@ class EnsembleEncoding implements EncodesSP, EncodesCBP {
 	void genCBPbands(PImage img, ColorMapf cmap, ColorMapf cmap2, int idx){
 		cbp.genCBPbands(img, cmap, cmap2, idx);
 	}
-	
-	/*void genCBPbands(PImage img, color c1, color c2, int idx){
-		ArrayList<Integer> ordering = cbp.getOrdering();
-		if (ordering != null){
-
-			boolean[] union =  new boolean[img.width*img.height];
-			Arrays.fill(union, false);
-			boolean[] intersection =  new boolean[img.width*img.height];
-			Arrays.fill(intersection, true);
-
-			ArrayList<Field> member;
-
-			int half = round(ordering.size()/2.0);
-			int whole = ordering.size() - 3;
-
-			for (int i=0; i < half; i++){
-				member = members.get(ordering.get(i));
-				Field f = member.get(idx);
-				f.genMaskBilinear(union, intersection, img.width, img.height, isovalue);
-			}
-
-			boolean[] union_50 = union.clone();
-			boolean[] intersection_50 = intersection.clone();
-
-			for (int i=half; i < whole; i++){
-				member = members.get(ordering.get(i));
-				Field f = member.get(idx);
-				f.genMaskBilinear(union, intersection, img.width, img.height, isovalue);
-			}
-
-			img.loadPixels();
-			for (int i=0; i < union.length; i++){
-				color c;
-				if (union_50[i] && !intersection_50[i]) c = c1;
-				else if (union[i] && !intersection[i]) c = c2;
-				else c = (0 << 24) | (c2 & 0x00FFFFFF);
-				img.pixels[i] = c;
-			}
-			img.updatePixels();
-		}
-	}*/
 	
 	void genCBPbands(PImage img, color c1, color c2, int idx){
 		BitSet band = null;
@@ -335,11 +258,6 @@ class EnsembleEncoding implements EncodesSP, EncodesCBP {
 		else{
 			ArrayList<Integer> ordering = cbp.getOrdering();
 			if (ordering != null){
-
-				/*BitSet union =  new BitSet(n); // contructor initializes all bits to false
-				BitSet intersection =  new BitSet(n);
-				intersection.flip(0,intersection.size()-1);// flip all to true
-				BitSet mask = new BitSet(n);*/
 				
 				boolean[] union =  new boolean[n];
 				Arrays.fill(union, false);
@@ -354,33 +272,18 @@ class EnsembleEncoding implements EncodesSP, EncodesCBP {
 				for (int i=0; i < half; i++){
 					member = members.get(ordering.get(i));
 					Field f = member.get(idx);
-					/*f.genMaskBilinear(mask, w, h, isovalue);
-					union.or(mask);
-					intersection.and(mask);*/
 					f.genMaskBilinear(union, intersection, img.width, img.height, isovalue);
 				}
 
-				/*BitSet union_50 = (BitSet) union.clone();
-				BitSet intersection_50 = (BitSet) intersection.clone();*/
 				boolean[] union_50 = union.clone();
 				boolean[] intersection_50 = intersection.clone();
 				
-
 				for (int i=half; i < whole; i++){
 					member = members.get(ordering.get(i));
 					Field f = member.get(idx);
-					/*f.genMaskBilinear(mask, w, h, isovalue);
-					union.or(mask);
-					intersection.and(mask);*/
 					f.genMaskBilinear(union, intersection, img.width, img.height, isovalue);
 				}
-				
-				/*union_50.andNot(intersection_50); //union50 is band
-				union.andNot(intersection);//union is envelope
-
-				band = union_50;
-				envelope = union;*/
-				
+								
 				band = new BitSet(n);
 				envelope = new BitSet(n);
 				for (int i=0; i < n; i++){

@@ -125,9 +125,6 @@ class ConditionSelect extends Selectable implements HandlesConditions{
 			noStroke();
 			fill(color(225,226,227,a));
 			rect(x,y,w,h);
-
-/*			fill(color(r,g,b,a));
-			rect(x+6,y,7,h);*/
 		
 			noFill();
 			if (rollover && !(thereCanBeOnlyOne && (child != null))) {
@@ -144,7 +141,6 @@ class ConditionSelect extends Selectable implements HandlesConditions{
 			textSize(11);
 			textAlign(LEFT, CENTER);
 			fill(0, a);
-			//text(var,x+15,y+h/2-2);
 			text(var,x+6,y+h/2-2);
 		
 			textSize(9);

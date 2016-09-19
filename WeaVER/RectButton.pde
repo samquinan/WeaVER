@@ -32,8 +32,6 @@ class RectButton implements Button {
 		if (!active) fill(190);
 		else if (mouseDown) fill(100);
 		else if (rollover){
-			// strokeWeight(1);
-			// stroke(70);
 			fill(160);
 		}
 		else fill(190);
