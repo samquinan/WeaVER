@@ -1,13 +1,16 @@
 #About#
 WeaVER is a visualization system developed as part of a [design study](http://vdl.sci.utah.edu/publications/2015_infovis_weaver/) in collaboration with meteorologists working in a variety of domains. WeaVER is not intended to be a fully viable alternative to current operational forecasting tools; rather, it is a proof-of-concept, designed to allow our collaborators to evaluate our proposals regarding both informed, default encoding choices, which integrate existing meteorological conventions with principles for effective visualization design, and mechanisms for enabling the direct comparison of multiple meteorological features across an ensemble.
 
-A video overview of WeaVER's functionalities can be found [here](https://www.youtube.com/watch?v=Egl_z6oF1oI).
+A video overview of WeaVER's functionalities can be found on [YouTube](https://www.youtube.com/watch?v=Egl_z6oF1oI).
+
+[![youtube link](http://i.imgur.com/Hd0XPMF.jpg)](https://www.youtube.com/watch?v=Egl_z6oF1oI)
+
 
 #Dependencies#
 
-WeaVER was written for / designed to be run using Processing 2.2.1. [Processing](https://processing.org) recently went through a major version update to Processing 3, which included fundamentally re-working the backend. While I looked into updating the application to run in Processing 3, the changes would have required a more significant amount of work than I had time to devote to a project that is no longer under active development. As such, the official branch will remain dependent on Processing 2.2.1, which, at least for the time being, can still be downloaded from [Processing.org](https://processing.org).
+WeaVER was written for / designed to be run using Processing 2.2.1. Around the time we published our [design study](http://vdl.sci.utah.edu/publications/2015_infovis_weaver/), [Processing](https://processing.org) went through a major version update to Processing 3, which included fundamentally re-working the rendering engine. While I looked into updating the application to run in Processing 3, the changes would have required a more significant amount of work than I had time to devote to a project no longer under active development. As such, the official branch remains dependent on Processing 2.2.1, which, at least for the time being, can still be downloaded from [Processing.org](https://processing.org).
 
-If you simply want to play around with WeaVER, binaries and source code with a pre-processed data set are [available](#binaries). *This* repository includes our BASH and C++ data processing routines for downloading the current SREF forecasts and prepping them for WeaVER. By nature of our use of BASH scripts, only OSX and Linux are supported at this time.
+If you simply want to play around with WeaVER, binaries and source code with a pre-processed data set are available through github's release system. *This* repository includes our BASH and C++ data processing routines for downloading the current SREF forecasts (as of the 10/21/2015 [SREF Upgrade](http://www.nws.noaa.gov/os/notification/tin15-32srefaae.htm))and prepping them for WeaVER. By nature of our use of BASH scripts, only OSX and Linux are supported at this time.
 
 The dependencies for these routines include:
 
@@ -107,10 +110,6 @@ At the top of the ```WeaVER/EnsembleView.pde``` file, there are 2 boolean flags 
 ```
 
 Changing ```demo_min``` to ```true``` will load only 4 features for a minimum demo, which should reduce the load time by almost two thirds. Alternatively, you can turn off caching which minimizes load time by moving the band / envelope generation into the draw loop. While the cost in terms of interactivity isn't too bad for a single contour box plot feature, the simultaneous display of 3 features does incur a pretty significant performance hit (2-3 seconds between frames). As such, I don't really recommend disabling caching in this version of the code.
-
-#<a id="binaries"></a>Demo Binaries#
-
-For the time being, binary demos with pre-processed data can be found at [http://www.sci.utah.edu/\~samquinan/software/WeaVER/](http://www.sci.utah.edu/~samquinan/software/WeaVER/).
 
 #License + Attributions#
 
