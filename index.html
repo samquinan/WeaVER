@@ -1,0 +1,163 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Weaver by samquinan</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/github-light.css">
+    <meta name="viewport" content="width=device-width">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Weaver</h1>
+        <p>A visualization system developed as part of a design study in collaboration with meteorologists working in a variety of domains.</p>
+
+        <p class="view"><a href="https://github.com/samquinan/WeaVER">View the Project on GitHub <small>samquinan/WeaVER</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/samquinan/WeaVER/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/samquinan/WeaVER/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/samquinan/WeaVER">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>
+<a id="about" class="anchor" href="#about" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>About</h1>
+
+<p>WeaVER is a visualization system developed as part of a <a href="http://vdl.sci.utah.edu/publications/2015_infovis_weaver/">design study</a> in collaboration with meteorologists working in a variety of domains. WeaVER is not intended to be a fully viable alternative to current operational forecasting tools; rather, it is a proof-of-concept, designed to allow our collaborators to evaluate our proposals regarding both informed, default encoding choices, which integrate existing meteorological conventions with principles for effective visualization design, and mechanisms for enabling the direct comparison of multiple meteorological features across an ensemble.</p>
+
+<p>A video overview of WeaVER's functionalities can be found on <a href="https://www.youtube.com/watch?v=Egl_z6oF1oI">YouTube</a>.</p>
+
+<p><a href="https://www.youtube.com/watch?v=Egl_z6oF1oI"><img src="http://i.imgur.com/Hd0XPMF.jpg" alt="youtube link"></a></p>
+
+<h1>
+<a id="dependencies" class="anchor" href="#dependencies" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Dependencies</h1>
+
+<p>WeaVER was written for / designed to be run using Processing 2.2.1. Around the time we published our <a href="http://vdl.sci.utah.edu/publications/2015_infovis_weaver/">design study</a>, <a href="https://processing.org">Processing</a> went through a major version update to Processing 3, which included fundamentally re-working the rendering engine. While I looked into updating the application to run in Processing 3, the changes would have required a more significant amount of work than I had time to devote to a project no longer under active development. As such, the official branch remains dependent on Processing 2.2.1, which, at least for the time being, can still be downloaded from <a href="https://processing.org">Processing.org</a>.</p>
+
+<p>If you simply want to play around with WeaVER, binaries and source code with a pre-processed data set are available through github's release system. <em>This</em> repository includes our BASH and C++ data processing routines for downloading the current SREF forecasts (as of the 10/21/2015 <a href="http://www.nws.noaa.gov/os/notification/tin15-32srefaae.htm">SREF Upgrade</a>)and prepping them for WeaVER. By nature of our use of BASH scripts, only OSX and Linux are supported at this time.</p>
+
+<p>The dependencies for these routines include:</p>
+
+<ul>
+<li>
+<a href="http://curl.haxx.se">curl</a> -- to download the binary GRIB2 forecasts</li>
+<li>
+<a href="http://www.cpc.ncep.noaa.gov/products/wesley/wgrib2/">wgrib2</a> -- to process the data out of the binary GRIB2 format</li>
+<li>
+<a href="https://cmake.org">CMake</a> [version &gt;= 3.1] -- for easier cross-platform C++ compilation</li>
+<li>
+<a href="http://www.itk.org">ITK</a> -- for running the contour boxplot analysis</li>
+</ul>
+
+<p>Downloads and installation instructions for these dependencies can found on the respective sites linked above. Please note that you will want to install CMake before ITK, as CMake is used to compile ITK. </p>
+
+<h2>
+<a id="taking-advantage-of-openmp-support" class="anchor" href="#taking-advantage-of-openmp-support" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Taking Advantage of OpenMP Support</h2>
+
+<p>Both wgrib2 and the contour boxplot routines will benefit from OpenMP if supported by your compiler. Before building wgrib2 or WeaVER's data processing routines, set the CC, CX, and FC environmental variables to point to compilers with OpenMP support (e.g., current versions of gcc, g++, and gfortran). Then, before running the data processing scripts you'll need to set the following 2 environmental variables:</p>
+
+<div class="highlight highlight-source-shell"><pre><span class="pl-k">export</span> OMP_NUM_THREADS=4
+<span class="pl-k">export</span> OMP_WAIT_POLICY=PASSIVE <span class="pl-c"># or ACTIVE</span></pre></div>
+
+<h1>
+<a id="how-to-build--run" class="anchor" href="#how-to-build--run" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>How to Build / Run</h1>
+
+<h2>
+<a id="check-dependencies--path" class="anchor" href="#check-dependencies--path" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Check Dependencies / Path</h2>
+
+<p>First please check that you've build / installed all the dependencies properly and that they are on your PATH. For the first three dependencies, this can quickly checked via:</p>
+
+<div class="highlight highlight-source-shell"><pre>which curl
+which wgrib2
+which cmake</pre></div>
+
+<p>ITK's default install location should be <code>/usr/local</code> and it should have placed files in</p>
+
+<div class="highlight highlight-source-shell"><pre>/usr/local/bin
+/usr/local/include/InsightToolkit
+/usr/local/lib/InsightToolkit</pre></div>
+
+<p>If you installed ITK somewhere else, use the <code>ITK_DIR</code> env variable to tell cmake where it should look for the ITK files.</p>
+
+<div class="highlight highlight-source-shell"><pre><span class="pl-k">export</span> ITK_DIR=<span class="pl-k">&lt;</span>custom_itk_install_root<span class="pl-k">&gt;</span></pre></div>
+
+<h2>
+<a id="build-data-processing-routines" class="anchor" href="#build-data-processing-routines" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Build Data Processing Routines</h2>
+
+<p>Simply run the included bootstrap.sh program</p>
+
+<div class="highlight highlight-source-shell"><pre>./bootstrap.sh</pre></div>
+
+<h2>
+<a id="download-and-process-the-data" class="anchor" href="#download-and-process-the-data" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Download and Process the Data</h2>
+
+<p>All the data processing code and routines can be found in the <code>processing</code> directory.</p>
+
+<p>There is a wrapper script that will attempt approximate the most recent version of the data, attempt to download and process it.</p>
+
+<div class="highlight highlight-source-shell"><pre>./processing/fetchDialog.sh</pre></div>
+
+<p>As far as getting up an going quickly, that's your best bet.</p>
+
+<p>These processing routines can take a good 20-30 minutes. That timing may vary depending on the specs of your system. Given the fact that this was designed to be a prototype of the data visualization and interaction mechanisms, I didn't really put any time into accelerating the data processing.</p>
+
+<p>The download and processing are actually broken into independent sub-routines. For an overview, take a look at the <code>getData.sh</code> script in the <code>processing</code> directory.</p>
+
+<h2>
+<a id="run-weaver" class="anchor" href="#run-weaver" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Run WeaVER</h2>
+
+<p>Once the data processing routines have finished, there should be a populated <code>datasets</code> directory in the main repository directory, along with an associated <code>dataset.properties</code> file. These, respectively, are where WeaVER expects to read data from.</p>
+
+<p>You will likely need to increase the maximum amount of memory available to Processing due to the amount of data (~2Gb) WeaVER will attempt to read in. To do this, launch the Processing application and open the Preferences. Enable the 'Increase Maximum Available Memory' option and increase the value to to 2500 MB. That should be more than sufficient.</p>
+
+<p>The simplest way to run WeaVER is to simply open <code>WeaVER/WeaVER.pde</code> directly in Processing and run it.</p>
+
+<p>Alternatively, if you make sure <code>processing-java</code> is on your PATH, you can simply run the included script</p>
+
+<div class="highlight highlight-source-shell"><pre>./run.sh</pre></div>
+
+<p>On OSX, <code>processing-java</code> can be enabled on the command-line by opening the Processing application, going to the Tools menu (in the menu bar), and clicking "install processing-java" from the drop down. On Linux, <code>processing-java</code> is included in the <code>processing.tgz</code> download, so simply add the unpacked <code>processing-2.2.1/</code> directory to your PATH.</p>
+
+<h4>
+<a id="a-note-on-the-current-contour-boxplot-display" class="anchor" href="#a-note-on-the-current-contour-boxplot-display" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>A Note on the Current Contour Boxplot Display</h4>
+
+<p>While the contour boxplot analysis is pre-processed, in order to create high-resolution bands for display, WeaVER currently generates and caches the bands on load, which takes a decent chunk of time. On my system, it adds about 5 minutes to the load process.  </p>
+
+<p>At the top of the <code>WeaVER/EnsembleView.pde</code> file, there are 2 boolean flags you can use to modify WeaVER's default behavior.</p>
+
+<div class="highlight highlight-source-java"><pre>    <span class="pl-k">private</span> <span class="pl-k">boolean</span> demo_min <span class="pl-k">=</span> <span class="pl-c1">false</span>; <span class="pl-c">// if true, only loads 4 ensembles of features</span>
+    <span class="pl-k">private</span> <span class="pl-k">boolean</span> cacheMe <span class="pl-k">=</span> <span class="pl-c1">true</span>; <span class="pl-c">// setting false offloads contour boxplot envelope generation to the display loop -- shorter load time, but less responsive</span></pre></div>
+
+<p>Changing <code>demo_min</code> to <code>true</code> will load only 4 features for a minimum demo, which should reduce the load time by almost two thirds. Alternatively, you can turn off caching which minimizes load time by moving the band / envelope generation into the draw loop. While the cost in terms of interactivity isn't too bad for a single contour box plot feature, the simultaneous display of 3 features does incur a pretty significant performance hit (2-3 seconds between frames). As such, I don't really recommend disabling caching in this version of the code.</p>
+
+<h1>
+<a id="license--attributions" class="anchor" href="#license--attributions" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>License + Attributions</h1>
+
+<p>The code contained within this repository is released under the <a href="https://tldrlegal.com/license/mit-license">MIT License</a>. </p>
+
+<p>The contour boxplot code was written by <a href="http://www.cs.miami.edu/home/mirzargar/">Mahsa Mirzargar</a> and is being made available with her permission, along with that of <a href="http://www.cs.utah.edu/%7Ewhitaker/">Ross Whittaker</a>, and <a href="http://www.cs.utah.edu/%7Ekirby/">Mike Kirby</a>. All other code was written by <a href="http://www.sci.utah.edu/%7Esamquinan/">Sam Quinan</a> and is being made available with his permission along with that of <a href="https://www.cs.utah.edu/%7Emiriah/">Miriah Meyer</a>. </p>
+
+<p>This work was funded by NSF Grant IIS–1212806.</p>
+
+<h1>
+<a id="questions-comments" class="anchor" href="#questions-comments" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Questions? Comments</h1>
+
+<p>Feel free to contact <a href="http://www.sci.utah.edu/%7Esamquinan/">Sam Quinan</a>.</p>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/samquinan">samquinan</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
